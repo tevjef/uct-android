@@ -55,6 +55,9 @@ public class SubjectFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, JsonArray result) {
 
+
+                        //TODO: Handle UnknownHostException for when the there's no internet connection
+                        
                         Gson gson = new Gson();
 
                         Type listType = new TypeToken<List<Subject>>() {}.getType();

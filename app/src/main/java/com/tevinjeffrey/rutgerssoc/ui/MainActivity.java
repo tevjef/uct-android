@@ -70,9 +70,4 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, subjectFragment ).addToBackStack(null)
-                .commit();    }
 }

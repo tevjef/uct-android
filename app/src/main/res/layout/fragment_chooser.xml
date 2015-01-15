@@ -1,6 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/window_background">
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Semester"
+        android:id="@+id/semester_title"
+        android:textColor="@color/secondary_text" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spring 2015"
+        android:id="@+id/radioButton_1"
+        android:layout_below="@+id/semester_title"
+        android:layout_alignParentStart="true"
+        android:checked="false"
+        android:textColor="@color/primary_text" />
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Winter 2014"
+        android:id="@+id/radioButton_2"
+        android:layout_below="@+id/radioButton_1"
+        android:layout_alignParentStart="true"
+        android:checked="false"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Location"
+        android:id="@+id/location_title"
+        android:layout_below="@+id/radioButton_2"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/secondary_text"
+        android:layout_marginTop="10dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Brunswick"
+        android:id="@+id/checkBox_1"
+        android:layout_below="@+id/location_title"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/primary_text"
+        android:checked="false" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Newark"
+        android:id="@+id/checkBox_2"
+        android:layout_below="@+id/checkBox_1"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/primary_text"
+        android:checked="false" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Camden"
+        android:id="@+id/checkBox_3"
+        android:layout_below="@+id/checkBox_2"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/primary_text"
+        android:checked="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Level"
+        android:id="@+id/level_title"
+        android:layout_below="@+id/checkBox_3"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/secondary_text"
+        android:layout_marginTop="10dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Undergraduate"
+        android:id="@+id/checkBox_4"
+        android:layout_below="@+id/level_title"
+        android:layout_alignParentStart="true"
+        android:checked="false"
+        android:textColor="@color/primary_text" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Graduate"
+        android:id="@+id/checkBox_5"
+        android:layout_below="@+id/checkBox_4"
+        android:layout_alignParentStart="true"
+        android:checked="false"
+        android:textColor="@color/primary_text" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:id="@+id/search_button"
+        android:layout_below="@+id/checkBox_5"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

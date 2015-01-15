@@ -20,6 +20,8 @@
 
         <item name="android:windowBackground">@color/window_background</item>
 
+        <item name="android:colorButtonNormal">@color/primary</item>
+
 
     </style>
 </resources>
