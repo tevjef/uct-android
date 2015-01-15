@@ -1,4 +1,6 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.model;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +16,15 @@ public class Course {
     }
 
     public void setExpandedTitle(String expendedTitle) {
-        this.expandedTitle = expendedTitle;
+        this.expandedTitle = StringUtils.capitalize(expendedTitle.toLowerCase());;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String expendedTitle) {
-        this.title = expendedTitle;
+    public void setTitle(String title) {
+        this.title = StringUtils.capitalize(title.toLowerCase());
     }
 
 

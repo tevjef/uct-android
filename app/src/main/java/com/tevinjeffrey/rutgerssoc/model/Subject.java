@@ -1,4 +1,6 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.model;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Tevin on 1/14/2015.
@@ -9,7 +11,8 @@ public class Subject {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+
+        this.description = StringUtils.capitalize(description.toLowerCase());;
     }
 
     public int getCode() {

@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.model.Course;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
 
@@ -84,7 +90,9 @@ public class CourseAdapter extends ArrayAdapter {
         String title = item.get(position).getExpandedTitle() == null? item.get(position).getTitle():
                 item.get(position).getExpandedTitle();
 
-        viewHolder.courseTitle.setText(title);
+        String text = title.toLowerCase();
+
+        viewHolder.courseTitle.setText(WordUtils.capitalize(text));
 
         return rowView;
 

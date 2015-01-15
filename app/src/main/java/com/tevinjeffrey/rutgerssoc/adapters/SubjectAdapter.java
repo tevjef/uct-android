@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.model.Subject;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
 
@@ -79,7 +85,8 @@ public class SubjectAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        viewHolder.text.setText(item.get(position).getDescription());
+        String text = item.get(position).getDescription().toLowerCase();
+        viewHolder.text.setText(WordUtils.capitalize(text));
 
         return rowView;
 
