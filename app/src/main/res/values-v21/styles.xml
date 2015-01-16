@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- inherit from the material theme -->
-    <style name="AppTheme" parent="android:Theme.Material">
+    <style name="AppTheme" parent="android:Theme.AppCompat.NoActionBar">
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
         <item name="android:colorPrimary">@color/primary</item>
@@ -22,6 +22,7 @@
 
         <item name="android:colorButtonNormal">@color/primary</item>
 
+        <item name="android:toolbarStyle">?attr/actionBarStyle</item>
 
     </style>
 </resources>

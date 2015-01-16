@@ -25,4 +25,5 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.0.5'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'com.android.support:appcompat-v7:21.0.3'
 }
