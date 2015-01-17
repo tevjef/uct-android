@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RutgersSOC.iml" filepath="$PROJECT_DIR$/RutgersSOC.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/listviewFilter/listviewFilter.iml" filepath="$PROJECT_DIR$/listviewFilter/listviewFilter.iml" />
     </modules>
   </component>
 </project>

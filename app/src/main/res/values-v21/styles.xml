@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- inherit from the material theme -->
-    <style name="AppTheme" parent="android:Theme.Material.NoActionBar.TranslucentDecor">
+    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
+
+        <item name="android:windowNoTitle">true</item>
+        <!--We will be using the toolbar so no need to show ActionBar-->
+        <item name="android:windowActionBar">false</item>
+
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
         <item name="android:colorPrimary">@color/primary</item>

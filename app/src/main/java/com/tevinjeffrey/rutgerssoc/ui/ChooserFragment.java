@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 
@@ -43,7 +44,7 @@ public class ChooserFragment extends Fragment {
     CheckBox firstLevel;
     CheckBox secondLevel;
 
-    Button searchBtn;
+    TextView searchBtn;
 
     Semester semester = new Semester();
     Location locations = new Location();
@@ -71,7 +72,7 @@ public class ChooserFragment extends Fragment {
         secondLevel = (CheckBox) rootView.findViewById(R.id.level2);
 
         //Search Button
-        searchBtn = (Button) rootView.findViewById(R.id.search_button);
+        searchBtn = (TextView) rootView.findViewById(R.id.search_button);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
