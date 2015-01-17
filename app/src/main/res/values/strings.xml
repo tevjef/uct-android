@@ -5,4 +5,28 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="thirdSemester">Summer 2015</string>
+    <string name="secondSemester">Spring 2015</string>
+    <string name="firstSemester">Winter 2015</string>
+
+    <string name="thirdSemester_id">22015</string>
+    <string name="secondSemester_id">12015</string>
+    <string name="firstSemester_id">02015</string>
+
+    <string name="firstLocation">New Brunswick</string>
+    <string name="secondLocation">Newark</string>
+    <string name="thirdLocation">Camden</string>
+
+    <string name="firstLocation_id">NB</string>
+    <string name="secondLocation_id">NK</string>
+    <string name="thirdLocation_id">CM</string>
+
+    <string name="firstLevel">Undergraduate</string>
+    <string name="secondLevel">Graduate</string>
+
+    <string name="firstLevel_id">U</string>
+    <string name="secondLevel_id">G</string>
+
+
+
 </resources>

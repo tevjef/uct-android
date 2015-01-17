@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.R;
@@ -33,7 +34,7 @@ public class MainActivity extends Activity {
 
     ArrayList<Subject> subjects;
     ArrayList<Course> courses;
-    private Fragment subjectFragment = new SubjectFragment();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, subjectFragment ).addToBackStack(null)
+                    .replace(R.id.container, new ChooserFragment()).addToBackStack(null)
                     .commit();
         }
 
@@ -69,5 +70,6 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

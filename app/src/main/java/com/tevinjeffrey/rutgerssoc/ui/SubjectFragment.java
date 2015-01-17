@@ -45,10 +45,9 @@ public class SubjectFragment extends Fragment {
 
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
-        String url = "http://sis.rutgers.edu/soc/subjects.json?semester=12015&campus=NK&level=U";
-
+      
         Ion.with(this)
-                .load(url)
+                .load(getUrl())
                 .asJsonArray()
                 .setCallback(new FutureCallback<JsonArray>() {
 
@@ -94,6 +93,21 @@ public class SubjectFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    private String getUrl() {
+        String params = getArguments().getString("args");
+        String baseUrl = "http://sis.rutgers.edu/soc/";
+        String subjectJson = "subjects.json";
+
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(baseUrl);
+        sb.append(subjectJson);
+        sb.append("?");
+        sb.append(params);
+
+        return sb.toString();
     }
 
 }
