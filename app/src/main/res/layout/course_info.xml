@@ -26,7 +26,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="COMPUTERS &amp; PROGRAMMING I"
+                    android:text="COMPUTERS &amp; PROGRAMMING I and some more"
                     android:id="@+id/course_title"
                     android:textSize="24sp"
                     android:backgroundTint="@color/accent"
@@ -35,12 +35,13 @@
                     android:textColor="@color/white"
                     android:layout_above="@+id/credits_text"
                     android:layout_alignParentStart="true"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:freezesText="true"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
+                    android:maxLines="3"
+
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -154,14 +155,13 @@
                     <TextView
                         android:layout_width="88dp"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                         android:text="Course Notes:"
                         android:id="@+id/courseNotes_title"
-                        android:gravity="center_vertical"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
                         android:textColor="@color/primary_text"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -170,14 +170,14 @@
                         android:id="@+id/courseNotes_text"
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                         android:nestedScrollingEnabled="false"
                         android:elegantTextHeight="true"
                         android:editable="false"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/courseNotes_title"
                         android:focusableInTouchMode="false"
-                        android:maxLines="4"/>
+                        android:maxLines="5"
+                        android:scrollbars="vertical"/>
 
                 </RelativeLayout>
 
@@ -192,14 +192,13 @@
                     <TextView
                         android:layout_width="88dp"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                         android:text="Subject Notes:"
                         android:id="@+id/subjectNotes_title"
-                        android:gravity="center_vertical"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
                         android:textColor="@color/primary_text"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -208,13 +207,13 @@
                         android:id="@+id/subjectNotes_text"
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                         android:nestedScrollingEnabled="false"
                         android:elegantTextHeight="true"
                         android:editable="false"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/subjectNotes_title"
-                        android:maxLines="4"/>
+                        android:maxLines="5"
+                        android:scrollbars="vertical"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -228,14 +227,13 @@
                     <TextView
                         android:layout_width="88dp"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                         android:text="Prereqs:"
                         android:id="@+id/prereq_title"
-                        android:gravity="center_vertical"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
                         android:textColor="@color/primary_text"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -244,20 +242,20 @@
                         android:id="@+id/prereq_text"
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                         android:nestedScrollingEnabled="false"
                         android:elegantTextHeight="true"
                         android:editable="false"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/prereq_title"
-                        android:maxLines="4" />
+                        android:maxLines="5"
+                        android:scrollbars="vertical"/>
                 </RelativeLayout>
             </RelativeLayout>
 
             <TextView
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                 android:text="Sections"
                 android:id="@+id/section_title"
                 android:gravity="center_vertical"
@@ -265,7 +263,8 @@
                 android:textSize="12sp"
                 android:layout_marginTop="16dp"
                 android:layout_alignStart="@+id/course_metadata"
-                android:layout_below="@+id/course_metadata" />
+                android:layout_below="@+id/course_metadata"
+                android:layout_marginBottom="8dp" />
 
             <LinearLayout
                 android:orientation="vertical"

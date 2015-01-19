@@ -4,23 +4,31 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:text="Tuesday 10:00 AM - 11:20 AM"
-        android:id="@+id/time_text"
-        android:textColor="@color/primary_text"
-        android:textSize="12dp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+        android:text="Wednesday"
+        android:id="@+id/day_text"
+        android:textColor="@color/secondary_text"
+        android:textSize="12dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ENG-102  NWK"
         android:id="@+id/sectionLocation_text"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/secondary_text"
         android:textSize="12dp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tuesday 10:00 AM - 11:20 AM"
+        android:id="@+id/time_text"
+        android:textColor="@color/secondary_text"
+        android:textSize="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/day_text" />
 
 </RelativeLayout>

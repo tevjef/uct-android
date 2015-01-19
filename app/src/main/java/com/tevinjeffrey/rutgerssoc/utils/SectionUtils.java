@@ -23,7 +23,7 @@ public class SectionUtils {
         // check pm code
         if (pmcode != "A") meridian = "PM";
             // check like 1pm after 11am
-        else if (Integer.valueOf(endtime.substring(0,2)) <
+        else if (Integer.valueOf(endtime.substring(0,2)) >
                 Integer.valueOf(starttime.substring(0,2))) meridian = "PM";
             // check 12pm
         else if (endtime.substring(0, 2).equals("12")) meridian = "PM";
@@ -34,7 +34,7 @@ public class SectionUtils {
     }
 
     public static String getMeetingHoursBegin(Course.Sections.MeetingTimes time) {
-        String meridian = time.getPmCode() == "A" ? "AM" : "PM";
+        String meridian = time.getPmCode().equals("A") ? "AM" : "PM";
         return formatMeetingHours(time.getStartTime()) + " " + meridian;
     }
 
@@ -63,7 +63,7 @@ public class SectionUtils {
     }
     public static String getClassLocation(Course.Sections.MeetingTimes time) {
         return (time.getBuildingCode() == null && time.getRoomNumber() == null )? "" :
-                time.getRoomNumber() + "-" + time.getRoomNumber();
+                time.getBuildingCode() + "-" + time.getRoomNumber();
     }
 
 

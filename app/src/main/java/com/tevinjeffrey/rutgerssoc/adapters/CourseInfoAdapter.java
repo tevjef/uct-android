@@ -1,25 +1,18 @@
 package com.tevinjeffrey.rutgerssoc.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
+import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
-import org.apache.commons.lang3.text.WordUtils;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,7 +83,7 @@ public class CourseInfoAdapter  {
     }
 
     public void setCourseTitle(Course course) {
-        this.courseTitle.setText(course.getTitle());
+        this.courseTitle.setText(CourseUtils.getTitle(course));
     }
 
     public void setShortenedCourseInfo(Course course) {
@@ -149,12 +142,12 @@ public class CourseInfoAdapter  {
             TextView instructors = (TextView) section.findViewById(R.id.prof_text);
             LinearLayout sectionTimeContainer = (LinearLayout) section.findViewById(R.id.section_time_container);
 
-            RelativeLayout sectionRoot = (RelativeLayout) section.findViewById(R.id.sectionRoot);
+            TextView sectionTitle = (TextView) section.findViewById(R.id.section_number);
 
             if(s.isOpenStatus()) {
-                sectionRoot.setBackgroundColor(context.getResources().getColor(R.color.open_course));
+                sectionTitle.setBackgroundColor(context.getResources().getColor(R.color.open_course));
             } else {
-                sectionRoot.setBackgroundColor(context.getResources().getColor(R.color.closed_course));
+                sectionTitle.setBackgroundColor(context.getResources().getColor(R.color.closed_course));
 
             }
             //setSectionNumber
@@ -164,7 +157,6 @@ public class CourseInfoAdapter  {
             StringBuilder sb= new StringBuilder();
             for(Course.Sections.Instructors i : s.getInstructors()) {
                 sb.append(i.getName());
-                sb.append(", ");
             }
             instructors.setText(sb.toString());
 
@@ -172,6 +164,7 @@ public class CourseInfoAdapter  {
             for(Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
                 View timeLayout  = inflater.inflate(R.layout.time, null);
 
+                TextView dayText = (TextView) timeLayout.findViewById(R.id.day_text);
                 TextView timeText = (TextView) timeLayout.findViewById(R.id.time_text);
                 TextView locationText = (TextView) timeLayout.findViewById(R.id.sectionLocation_text);
 
@@ -179,17 +172,13 @@ public class CourseInfoAdapter  {
                     timeText.setText(Html.fromHtml("<i>Hours By Arrangement</i>"));
                     locationText.setText("");
                 } else {
-                    timeText.setText(SectionUtils.getMeetingDayName(time) + "  "
-                            + SectionUtils.getMeetingHours(time));
+                    dayText.setText(SectionUtils.getMeetingDayName(time));
+                    timeText.setText(SectionUtils.getMeetingHours(time));
                     locationText.setText(SectionUtils.getClassLocation(time));
                 }
-
-
                 sectionTimeContainer.addView(timeLayout);
             }
-
             sectionContainer.addView(section);
-
         }
     }
 }
