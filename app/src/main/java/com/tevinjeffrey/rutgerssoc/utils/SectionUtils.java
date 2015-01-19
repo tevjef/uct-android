@@ -34,37 +34,88 @@ public class SectionUtils {
     }
 
     public static String getMeetingHoursBegin(Course.Sections.MeetingTimes time) {
-        String meridian = time.getPmCode().equals("A") ? "AM" : "PM";
-        return formatMeetingHours(time.getStartTime()) + " " + meridian;
+        String meridian;
+        if(time.getPmCode() != null) {
+             meridian = time.getPmCode().equals("A") ? "AM" : "PM";
+            return formatMeetingHours(time.getStartTime()) + " " + meridian;
+        }
+        return "";
     }
 
     public static String getMeetingDayName(Course.Sections.MeetingTimes time) {
-        if(time.getMeetingDay().equals("M")) {
-            return "Monday";
-        } else if(time.getMeetingDay().equals("T")) {
-            return "Tuesday";
-        } else if(time.getMeetingDay().equals("W")) {
-            return "Wednesday";
-        } else if(time.getMeetingDay().equals("TH")) {
-            return "Thursday";
-        } else if(time.getMeetingDay().equals("F")) {
-            return "Friday";
-        } else if(time.getMeetingDay().equals("S")) {
-            return "Saturday";
-        } else if(time.getMeetingDay().equals("U")) {
-            return "Sunday";
-        } else {
-            return "";
+        if(time.getMeetingDay() != null) {
+            if (time.getMeetingDay().equals("M")) {
+                return "Monday";
+            } else if (time.getMeetingDay().equals("T")) {
+                return "Tuesday";
+            } else if (time.getMeetingDay().equals("W")) {
+                return "Wednesday";
+            } else if (time.getMeetingDay().equals("TH")) {
+                return "Thursday";
+            } else if (time.getMeetingDay().equals("F")) {
+                return "Friday";
+            } else if (time.getMeetingDay().equals("S")) {
+                return "Saturday";
+            } else if (time.getMeetingDay().equals("U")) {
+                return "Sunday";
+            } else {
+                return "";
+            }
         }
+        return "";
     }
+
     public static String getMeetingHours(Course.Sections.MeetingTimes time) {
-        return SectionUtils.getMeetingHoursBegin(time) + " - " +
-                        SectionUtils.getMeetingHoursEnd(time);
+        if(time.getStartTime() != null || time.getEndTime() != null) {
+            String fullTime = SectionUtils.getMeetingHoursBegin(time) + " - " +
+                    SectionUtils.getMeetingHoursEnd(time);
+            if (time.isRecitation()) {
+                return "<i>" + fullTime + "</i>";
+            } else {
+                return fullTime;
+            }
+
+        } else if (time.isLab()) {
+            return time.getMeetingModeDesc();
+        } else if (time.isByArrangement()){
+            return  "<i>Hours By Arrangement</i>";
+        }
+        return time.getMeetingModeDesc();
     }
     public static String getClassLocation(Course.Sections.MeetingTimes time) {
         return (time.getBuildingCode() == null && time.getRoomNumber() == null )? "" :
                 time.getBuildingCode() + "-" + time.getRoomNumber();
     }
 
+    public static int getTimeRank(Course.Sections.MeetingTimes time) {
+        if(time.getMeetingDay().equals("M")) {
+            return 100;
+        } else if(time.getMeetingDay().equals("T")) {
+            return 90;
+        } else if(time.getMeetingDay().equals("W")) {
+            return 80;
+        } else if(time.getMeetingDay().equals("TH")) {
+            return 70;
+        } else if(time.getMeetingDay().equals("F")) {
+            return 60;
+        } else if(time.getMeetingDay().equals("S")) {
+            return 50;
+        } else if(time.getMeetingDay().equals("U")) {
+            return 40;
+        }
+        return -1;
+    }
+    public static int getClassRank(Course.Sections.MeetingTimes time) {
+        if(time.isLecture()) {
+            return 100;
+        } else if(time.isRecitation()) {
+            return 90;
+        } else if(time.isByArrangement()) {
+            return 80;
+        } else if(time.isLab()) {
+            return 70;
+        }
+        return -1;
+    }
 
 }

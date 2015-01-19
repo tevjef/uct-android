@@ -201,17 +201,21 @@ public class Course {
         String campusCode;
         boolean openStatus;
 
-        public class MeetingTimes implements Comparable{
+        public class MeetingTimes implements Comparable {
 
-            private boolean isLecture() {
+            public boolean isLecture() {
                 return getMeetingModeCode().equals("02");
             }
-            private boolean isRecitation() {
+            public boolean isRecitation() {
                 return getMeetingModeCode().equals("03");
+            }
+            public boolean isLab() {
+                return getMeetingModeCode().equals("05");
             }
             public boolean isByArrangement() {
                 return getBaClassHours() != null && getBaClassHours().equals("B");
             }
+
             public String getStartTime() {
                 return startTime;
             }
@@ -306,12 +310,19 @@ public class Course {
             @Override
             public int compareTo(Object time) {
                 MeetingTimes b = (MeetingTimes) time;
-
                 if(b != null) {
-                    if(b.isLecture()) {
-                        return 1;
-                    } else if (b.isRecitation()) {
-                        return -1;
+                    if(b.isLecture() && this.isLecture()) {
+                        if(SectionUtils.getTimeRank(this) < SectionUtils.getTimeRank(b)) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    } else if (!b.isLecture()) {
+                        if (SectionUtils.getClassRank(this) < SectionUtils.getClassRank(b)) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
                     }
                 }
                 return 0;

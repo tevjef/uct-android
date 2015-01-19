@@ -13,6 +13,7 @@ import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -161,6 +162,8 @@ public class CourseInfoAdapter  {
             instructors.setText(sb.toString());
 
             //setMeetingTimes
+            //sort times so that Monday > Tuesday and Lecture > Recitation
+            Collections.sort(s.getMeetingTimes());
             for(Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
                 View timeLayout  = inflater.inflate(R.layout.time, null);
 
@@ -169,12 +172,13 @@ public class CourseInfoAdapter  {
                 TextView locationText = (TextView) timeLayout.findViewById(R.id.sectionLocation_text);
 
                 if(time.isByArrangement() ) {
-                    timeText.setText(Html.fromHtml("<i>Hours By Arrangement</i>"));
-                    locationText.setText("");
+                    dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
+                    timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
+                    locationText.setText(Html.fromHtml(""));
                 } else {
-                    dayText.setText(SectionUtils.getMeetingDayName(time));
-                    timeText.setText(SectionUtils.getMeetingHours(time));
-                    locationText.setText(SectionUtils.getClassLocation(time));
+                    dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
+                    timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
+                    locationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
                 }
                 sectionTimeContainer.addView(timeLayout);
             }
