@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
+import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -76,7 +77,7 @@ public class CourseAdapter extends ArrayAdapter {
 
             viewHolder = new ViewHolder();
 
-            rowView = mInflater.inflate(R.layout.course_info, null);
+            rowView = mInflater.inflate(R.layout.course_name, null);
 
             viewHolder.courseTitle = (TextView) rowView.findViewById(R.id.textView);
 
@@ -87,12 +88,7 @@ public class CourseAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        String title = item.get(position).getExpandedTitle() == null? item.get(position).getTitle():
-                item.get(position).getExpandedTitle();
-
-        String text = title.toLowerCase();
-
-        viewHolder.courseTitle.setText(WordUtils.capitalize(text));
+        viewHolder.courseTitle.setText(CourseUtils.getTitle(item.get(position)));
 
         return rowView;
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:background="@color/primary_light"
+    android:padding="5dp"
+    android:id="@+id/sectionRoot">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/section_details"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A EXAMPLE OF VERY LONG TEXT"
+            android:id="@+id/prof_text"
+            android:textColor="@color/primary_text"
+            android:textSize="12sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/section_time_container"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="46dp"
+            android:layout_height="fill_parent"
+            android:text="01"
+            android:id="@+id/section_number"
+            android:textColor="@color/primary_text"
+            android:textSize="12sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Tuesday 10:00 AM - 11:20 AM"
+            android:id="@+id/section_time_container"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_alignParentTop="true"
+            android:minWidth="100dp"
+            android:orientation="vertical"
+            android:layout_toEndOf="@+id/section_number" >
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

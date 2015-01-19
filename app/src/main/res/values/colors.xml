@@ -2,7 +2,10 @@
 <resources>
   <color name="primary">#F44336</color>
   <color name="primary_dark">#D32F2F</color>
-  <color name="primary_light">#FFCDD2</color>
+  <color name="primary_900">#9B1B1B</color>
+    <color name="primary_light">#FFCDD2</color>
+  <color name="closed_course">#FFCDD2</color>
+  <color name="open_course">#C8E6C9</color>
   <color name="accent">#607D8B</color>
   <color name="primary_text">#212121</color>
   <color name="secondary_text">#727272</color>

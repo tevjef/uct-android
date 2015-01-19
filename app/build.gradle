@@ -26,4 +26,6 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.github.ksoichiro:android-observablescrollview:1.4.0'
+
 }

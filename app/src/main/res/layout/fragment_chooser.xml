@@ -30,13 +30,13 @@
                 android:typeface="normal"
                 android:fontFamily="sans-serif-thin"
                 android:textColor="@color/primary_light"
-                android:layout_above="@+id/textView3"
+                android:layout_above="@+id/credits_text"
                 android:layout_alignParentStart="true" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Choose a term, location and level of study"
-                android:id="@+id/textView3"
+                android:id="@+id/credits_text"
                 android:textSize="16sp"
                 android:backgroundTint="@color/accent"
                 android:typeface="normal"

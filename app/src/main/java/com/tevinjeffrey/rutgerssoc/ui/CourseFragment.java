@@ -18,6 +18,7 @@ import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
+import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class CourseFragment extends Fragment {
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
 
-        String url = "http://sis.rutgers.edu/soc/courses.json?subject=" + formatNumber(subjectNumber) + "&semester=12015&campus=NK&level=U";
+        String url = "http://sis.rutgers.edu/soc/courses.json?subject=" + CourseUtils.formatNumber(subjectNumber) + "&semester=12015&campus=NK&level=U";
 
         Ion.with(this)
                 .load(url)
@@ -86,13 +87,13 @@ public class CourseFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                SubjectFragment subjectFragment = new SubjectFragment();
+                Fragment courseInfoFragment = new CourseInfoFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("subject", ((Subject) parent.getAdapter().getItem(position)).getCode());
-                subjectFragment.setArguments(bundle);
+                bundle.putInt("courseIndex", position);
+                courseInfoFragment.setArguments(bundle);
 
                 getFragmentManager().beginTransaction().addToBackStack(null)
-                        .add(R.id.container, subjectFragment)
+                        .replace(R.id.container, courseInfoFragment)
                         .commit();
             }
         });
@@ -100,16 +101,4 @@ public class CourseFragment extends Fragment {
 
         return rootView;
     }
-
-    private String formatNumber(int subjectCode) {
-        if (subjectCode <10) {
-            return "00" + subjectCode;
-        } else if (subjectCode < 100) {
-            return "0" + subjectCode;
-        } else {
-            return String.valueOf(subjectCode);
-        }
-    }
-
-
 }

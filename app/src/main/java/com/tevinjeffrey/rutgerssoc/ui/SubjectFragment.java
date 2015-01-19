@@ -45,7 +45,7 @@ public class SubjectFragment extends Fragment {
 
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
-      
+
         Ion.with(this)
                 .load(getUrl())
                 .asJsonArray()
