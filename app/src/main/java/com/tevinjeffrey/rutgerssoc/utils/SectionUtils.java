@@ -44,23 +44,25 @@ public class SectionUtils {
 
     public static String getMeetingDayName(Course.Sections.MeetingTimes time) {
         if(time.getMeetingDay() != null) {
+            String formattedDay;
             if (time.getMeetingDay().equals("M")) {
-                return "Monday";
+                 formattedDay = "Monday";
             } else if (time.getMeetingDay().equals("T")) {
-                return "Tuesday";
+                 formattedDay = "Tuesday";
             } else if (time.getMeetingDay().equals("W")) {
-                return "Wednesday";
+                 formattedDay = "Wednesday";
             } else if (time.getMeetingDay().equals("TH")) {
-                return "Thursday";
+                 formattedDay = "Thursday";
             } else if (time.getMeetingDay().equals("F")) {
-                return "Friday";
+                 formattedDay = "Friday";
             } else if (time.getMeetingDay().equals("S")) {
-                return "Saturday";
+                 formattedDay = "Saturday";
             } else if (time.getMeetingDay().equals("U")) {
-                return "Sunday";
+                 formattedDay = "Sunday";
             } else {
                 return "";
             }
+            return !time.isLecture()? "<i>" + formattedDay + "</i>": formattedDay;
         }
         return "";
     }
@@ -84,7 +86,7 @@ public class SectionUtils {
     }
     public static String getClassLocation(Course.Sections.MeetingTimes time) {
         return (time.getBuildingCode() == null && time.getRoomNumber() == null )? "" :
-                time.getBuildingCode() + "-" + time.getRoomNumber();
+                time.getBuildingCode() + "-" + time.getRoomNumber() + " " + time.getCampusAbbrev();
     }
 
     public static int getTimeRank(Course.Sections.MeetingTimes time) {

@@ -2,10 +2,10 @@ package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
@@ -56,8 +56,8 @@ public class CourseInfoAdapter  {
     }
 
     private void init() {
-        courseTitle = (TextView) rowView.findViewById(R.id.course_title);
-        shortenedCourseInfo = (TextView) rowView.findViewById(R.id.shortened_course_info);
+        courseTitle = (TextView) rowView.findViewById(R.id.sectionText_text);
+        shortenedCourseInfo = (TextView) rowView.findViewById(R.id.sectionText_title);
         credits = (TextView) rowView.findViewById(R.id.credits_text);
         courseNotes = (TextView) rowView.findViewById(R.id.courseNotes_text);
         subjectNotes = (TextView) rowView.findViewById(R.id.subjectNotes_text);
@@ -107,6 +107,7 @@ public class CourseInfoAdapter  {
             courseNotesContainer.setVisibility(View.GONE);
         } else {
             this.courseNotes.setText(Html.fromHtml(course.getCourseNotes()));
+            this.courseNotes.setMovementMethod(new ScrollingMovementMethod());
         }
     }
 
@@ -115,6 +116,7 @@ public class CourseInfoAdapter  {
             subjectNotesContainer.setVisibility(View.GONE);
         } else {
             this.subjectNotes.setText(Html.fromHtml(course.getSubjectNotes()));
+            this.subjectNotes.setMovementMethod(new ScrollingMovementMethod());
         }
     }
     public void setOpenSections(Course course) {
@@ -130,12 +132,25 @@ public class CourseInfoAdapter  {
             preReqNotesContainer.setVisibility(View.GONE);
         } else {
             this.preReqNotes.setText(Html.fromHtml(course.getPreReqNotes()));
+            this.preReqNotes.setMovementMethod(new ScrollingMovementMethod());
         }
     }
 
     public void setSections(List<Course.Sections> sections) {
         LayoutInflater inflater =
                 (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // remove classes with a stopPint of 0. These represent some kind of hidden class taught
+        // by STAFF. Though the obvious solution is to loop through the list and on some condition,
+        // remove the class, this results in a ConcurrentModificationException.
+        // Update: Uncommented because it produced unexpected behaviour in the types of classes.
+        /*List<Course.Sections> toRemove = new ArrayList<>();
+        for(Course.Sections s: sections) {
+            if(s.getStopPoint() == 0) {
+                toRemove.add(s);
+            }
+        }
+        sections.removeAll(toRemove);*/
 
         for (Course.Sections s : sections) {
             View section  = inflater.inflate(R.layout.sections, null);
@@ -157,8 +172,14 @@ public class CourseInfoAdapter  {
             //setInstructors
             StringBuilder sb= new StringBuilder();
             for(Course.Sections.Instructors i : s.getInstructors()) {
-                sb.append(i.getName());
+                if(s.getInstructors().size() > 1) {
+                    sb.append(i.getName());
+                    sb.append("; ");
+                } else {
+                    sb.append(i.getName());
+                }
             }
+            if(s.getInstructors().size() > 1) sb = new StringBuilder(sb.substring(0, sb.length() -1));
             instructors.setText(sb.toString());
 
             //setMeetingTimes
@@ -183,6 +204,14 @@ public class CourseInfoAdapter  {
                 sectionTimeContainer.addView(timeLayout);
             }
             sectionContainer.addView(section);
+
+
+            section.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 }

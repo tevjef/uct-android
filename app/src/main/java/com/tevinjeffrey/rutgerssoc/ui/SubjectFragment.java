@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -46,6 +47,7 @@ public class SubjectFragment extends Fragment {
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
 
+        Log.d("URL" , getUrl());
         Ion.with(this)
                 .load(getUrl())
                 .asJsonArray()
@@ -57,20 +59,26 @@ public class SubjectFragment extends Fragment {
 
                         //TODO: Handle UnknownHostException for when the there's no internet connection
 
-                        Gson gson = new Gson();
+                        if(e == null && result.size() > 0) {
+                            Gson gson = new Gson();
 
-                        Type listType = new TypeToken<List<Subject>>() {}.getType();
+                            Type listType = new TypeToken<List<Subject>>() {
+                            }.getType();
 
-                        getParentActivity().setSubjects((ArrayList<Subject>)
-                                gson.fromJson(result.toString(), listType));
+                            getParentActivity().setSubjects((ArrayList<Subject>)
+                                    gson.fromJson(result.toString(), listType));
 
-                        Log.d("Response", result.toString());
+                            Log.d("Response", result.toString());
 
 
-                        final SubjectAdapter subjectAdapter = new SubjectAdapter(getActivity(),
-                                getParentActivity().getSubjects() );
+                            final SubjectAdapter subjectAdapter = new SubjectAdapter(getActivity(),
+                                    getParentActivity().getSubjects());
 
-                        listView.setAdapter(subjectAdapter);
+                            listView.setAdapter(subjectAdapter);
+                        } else {
+                            Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 });
 
@@ -83,6 +91,7 @@ public class SubjectFragment extends Fragment {
                 CourseFragment courseFragment = new CourseFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("subject", ((Subject) parent.getAdapter().getItem(position)).getCode());
+                bundle.putString("semester", )
                 courseFragment.setArguments(bundle);
 
                 getFragmentManager().beginTransaction()

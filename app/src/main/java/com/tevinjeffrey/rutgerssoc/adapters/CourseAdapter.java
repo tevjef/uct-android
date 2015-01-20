@@ -13,9 +13,7 @@ import android.widget.TextView;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
+import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
 import java.util.ArrayList;
 
@@ -35,9 +33,9 @@ public class CourseAdapter extends ArrayAdapter {
 
 
     static class ViewHolder {
-        public TextView text;
-        public ImageView image;
         public TextView courseTitle;
+        public TextView courseSectionsOpen;
+
     }
 
 
@@ -79,7 +77,8 @@ public class CourseAdapter extends ArrayAdapter {
 
             rowView = mInflater.inflate(R.layout.course_name, null);
 
-            viewHolder.courseTitle = (TextView) rowView.findViewById(R.id.textView);
+            viewHolder.courseTitle = (TextView) rowView.findViewById(R.id.course_list_title);
+            viewHolder.courseSectionsOpen = (TextView) rowView.findViewById(R.id.course_list_sections);
 
 
             rowView.setTag(viewHolder);
@@ -88,7 +87,10 @@ public class CourseAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        viewHolder.courseTitle.setText(CourseUtils.getTitle(item.get(position)));
+        Course course = item.get(position);
+
+        viewHolder.courseTitle.setText(CourseUtils.getTitle(course));
+        viewHolder.courseSectionsOpen.setText(course.getOpenSections() + " open sections of " + course.getSections().size());
 
         return rowView;
 

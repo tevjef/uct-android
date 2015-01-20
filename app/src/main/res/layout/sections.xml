@@ -15,7 +15,7 @@
             android:text="A EXAMPLE OF VERY LONG TEXT"
             android:id="@+id/prof_text"
             android:textColor="@color/secondary_text"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"

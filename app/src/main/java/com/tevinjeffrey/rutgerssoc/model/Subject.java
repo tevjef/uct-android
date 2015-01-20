@@ -2,9 +2,6 @@ package com.tevinjeffrey.rutgerssoc.model;
 
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
 public class Subject {
     public String getDescription() {
         return description;

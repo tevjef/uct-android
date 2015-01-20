@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="@color/accent">
     <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="fill_parent">
@@ -26,9 +27,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
+                    android:text="1"
                     android:id="@+id/sectionText_text"
-                    android:textSize="24sp"
+                    android:textSize="44sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
@@ -62,9 +63,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="21:198:101"
+                    android:text="Section"
                     android:id="@+id/sectionText_title"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
@@ -90,49 +91,37 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3"
-                    android:id="@+id/openSections_text"
-                    android:textSize="14sp"
-                    android:backgroundTint="@color/primary"
-                    android:typeface="normal"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="5sp"
-                    android:layout_alignBottom="@+id/credits_title"
-                    android:layout_toEndOf="@+id/credits_title"
-                    android:layout_marginLeft="16dp"
-                    android:alpha="0.5" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="open sections of"
-                    android:id="@+id/openSections_title"
+                    android:text="Index"
+                    android:id="@+id/indexNumber_title"
                     android:textSize="14sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
-                    android:layout_below="@+id/sectionText_text"
+                    android:alpha="0.5"
+                    android:layout_alignTop="@+id/sectionText_title"
                     android:layout_toEndOf="@+id/sectionText_title"
-                    android:layout_toRightOf="@+id/openSections_text"
-                    android:alpha="0.5" />
+                    android:layout_marginLeft="26dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3"
-                    android:id="@+id/totalSections_text"
-                    android:textSize="14sp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="34562"
+                    android:id="@+id/indexNumber_text"
+                    android:textSize="44sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="5sp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_alignBottom="@+id/openSections_title"
-                    android:layout_toEndOf="@+id/openSections_title"
-                    android:alpha="0.5" />
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/white"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:freezesText="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:maxLines="3"
+                    android:layout_alignTop="@+id/sectionText_text"
+                    android:layout_alignStart="@+id/indexNumber_title" />
 
 
             </RelativeLayout>
@@ -158,15 +147,14 @@
                     android:layout_below="@+id/toolbar_header_info"
                     android:layout_alignParentStart="true">
 
-
                     <TextView
                         android:layout_width="88dp"
                         android:layout_height="wrap_content"
-                        android:text="Course Notes:"
+                        android:text="Section Notes:"
                         android:id="@+id/sectionNotes_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 
@@ -179,10 +167,12 @@
                         android:textSize="12sp"
                         android:nestedScrollingEnabled="false"
                         android:elegantTextHeight="true"
-                        android:focusableInTouchMode="false"
+                        android:editable="false"
+                        android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/sectionNotes_title"
-                        android:fillViewport="true"/>
-
+                        android:focusableInTouchMode="false"
+                        android:maxLines="5"
+                        android:scrollbars="vertical"/>
 
                 </RelativeLayout>
 
@@ -197,14 +187,13 @@
                     <TextView
                         android:layout_width="88dp"
                         android:layout_height="wrap_content"
-                        android:text="Subject Notes:"
+                        android:text="Comments:"
                         android:id="@+id/sectionComments_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
-
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -215,9 +204,11 @@
                         android:textSize="12sp"
                         android:nestedScrollingEnabled="false"
                         android:elegantTextHeight="true"
+                        android:editable="false"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionComments_title"/>
-
+                        android:layout_toEndOf="@+id/sectionComments_title"
+                        android:maxLines="5"
+                        android:scrollbars="vertical"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -235,7 +226,7 @@
                         android:id="@+id/prereq_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
 
@@ -253,30 +244,117 @@
                         android:layout_toEndOf="@+id/prereq_title"
                         android:maxLines="5"
                         android:scrollbars="vertical"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/openTo_container"
+                    android:layout_below="@+id/prereq_container"
+                    android:layout_alignStart="@+id/course_metadata"
+                    android:layout_marginTop="10dp" >
+
+                    <TextView
+                        android:layout_width="88dp"
+                        android:layout_height="wrap_content"
+                        android:text="Open to:"
+                        android:id="@+id/sectionOpenTo"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="640:327, 640:211, 220:231, 830:301"
+                        android:id="@+id/textView3"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="12sp"
+                        android:nestedScrollingEnabled="false"
+                        android:elegantTextHeight="true"
+                        android:editable="false"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/sectionOpenTo"
+                        android:maxLines="5"
+                        android:scrollbars="vertical" />
                 </RelativeLayout>
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="88dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                android:text="Sections"
-                android:id="@+id/section_title"
-                android:gravity="center_vertical"
-                android:textColor="@color/primary_text"
-                android:textSize="12sp"
-                android:layout_alignStart="@+id/course_metadata"
-                android:layout_below="@+id/course_metadata"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="5dp" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_below="@+id/section_title"
-                android:layout_alignStart="@+id/section_title"
-                android:id="@+id/sections_container"/>
+                android:id="@+id/sections_container"
+                android:layout_below="@+id/course_metadata"
+                android:layout_alignStart="@+id/course_metadata"
+                android:layout_marginTop="5dp">
+
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:id="@+id/sectionRoot">
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/section_details"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="A EXAMPLE OF VERY LONG TEXT"
+                            android:id="@+id/prof_text"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="11sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/section_time_container"
+                            android:layout_marginTop="5dp" />
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="01"
+                            android:id="@+id/section_number"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:background="@color/open_course"
+                            android:layout_marginRight="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Tuesday 10:00 AM - 11:20 AM"
+                            android:id="@+id/section_time_container"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="14sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                            android:layout_alignParentTop="true"
+                            android:minWidth="100dp"
+                            android:orientation="vertical"
+                            android:layout_toEndOf="@+id/section_number" >
+
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+
+
+
+                </LinearLayout>
         </RelativeLayout>
 
     </RelativeLayout>

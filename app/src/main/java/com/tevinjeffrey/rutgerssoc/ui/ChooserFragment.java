@@ -100,6 +100,7 @@ public class ChooserFragment extends Fragment {
     private Bundle createArgs() {
         Bundle args= new Bundle();
         args.putString("args", buildUrl());
+
         return args;
     }
 

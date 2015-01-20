@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -57,6 +58,8 @@ public class CourseFragment extends Fragment {
 
         String url = "http://sis.rutgers.edu/soc/courses.json?subject=" + CourseUtils.formatNumber(subjectNumber) + "&semester=12015&campus=NK&level=U";
 
+        Log.d("URL" , url);
+
         Ion.with(this)
                 .load(url)
                 .asJsonArray()
@@ -64,21 +67,28 @@ public class CourseFragment extends Fragment {
 
                     @Override
                     public void onCompleted(Exception e, JsonArray result) {
-                        Log.e("Response", result.toString());
 
-                        Gson gson = new Gson();
+                        if(e == null && result.size() > 0) {
 
-                        Type listType = new TypeToken<List<Course>>() {
-                        }.getType();
+                            //if result == 0,no data
+                            //UnknownHostException , no internet
+                            Log.e("Response", result.toString());
 
-                        getParentActivity().setCourses((ArrayList<Course>) gson.fromJson(result.toString(), listType));
+                            Gson gson = new Gson();
 
-                        Log.d("Response", result.toString());
+                            Type listType = new TypeToken<List<Course>>() {
+                            }.getType();
+
+                            getParentActivity().setCourses((ArrayList<Course>) gson.fromJson(result.toString(), listType));
+
+                            Log.d("Response", result.toString());
 
 
-                        final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), getParentActivity().getCourses());
-                        listView.setAdapter(subjectAdapter);
-
+                            final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), getParentActivity().getCourses());
+                            listView.setAdapter(subjectAdapter);
+                        } else {
+                            Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 });
