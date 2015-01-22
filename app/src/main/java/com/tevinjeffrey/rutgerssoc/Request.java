@@ -3,6 +3,8 @@ package com.tevinjeffrey.rutgerssoc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -87,4 +89,10 @@ public class Request implements Parcelable {
             return new Request[size];
         }
     };
+
+    @Override
+    public String toString() {
+        UrlUtils urlUtils = new UrlUtils();
+        return urlUtils.buildParamUrl(this);
+    }
 }

@@ -50,7 +50,7 @@ public class SubjectFragment extends Fragment {
 
         UrlUtils urlUtils = new UrlUtils(getParentActivity());
         request = getArguments().getParcelable("request");
-        String url = UrlUtils.getCourseUrl(urlUtils.buildParamUrl(request));
+        String url = UrlUtils.getSubjectUrl(urlUtils.buildParamUrl(request));
 
         Log.d("URL" , url);
 

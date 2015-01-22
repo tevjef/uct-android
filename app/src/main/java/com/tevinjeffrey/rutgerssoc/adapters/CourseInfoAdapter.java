@@ -9,22 +9,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.Request;
 import com.tevinjeffrey.rutgerssoc.model.Course;
+import com.tevinjeffrey.rutgerssoc.ui.CourseInfoFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
-public class CourseInfoAdapter  {
+public class CourseInfoAdapter {
 
     private Context context;
     private Course course;
     private View rowView;
-
+    private Request request;
 
     //courseTitle
     private TextView courseTitle;
@@ -51,11 +50,14 @@ public class CourseInfoAdapter  {
         this.context = context;
         this.course = item;
         this.rowView = rowView;
-
-        init();
     }
 
-    private void init() {
+    public CourseInfoAdapter(Context context, Course course, View rowView, Request request) {
+        this(context, course, rowView);
+        this.request = request;
+    }
+
+    public CourseInfoAdapter init() {
         courseTitle = (TextView) rowView.findViewById(R.id.sectionText_text);
         shortenedCourseInfo = (TextView) rowView.findViewById(R.id.sectionText_title);
         credits = (TextView) rowView.findViewById(R.id.credits_text);
@@ -69,9 +71,12 @@ public class CourseInfoAdapter  {
         totalSections = (TextView) rowView.findViewById(R.id.totalSections_text);
         preReqNotes = (TextView) rowView.findViewById(R.id.prereq_text);
 
+        setData();
+
+        return this;
     }
 
-    public void setData() {
+    private void setData() {
         setCourseNotes(course);
         setCourseTitle(course);
         setCredits(course);
@@ -91,7 +96,7 @@ public class CourseInfoAdapter  {
         this.shortenedCourseInfo.setText(formatShortenedCourseInfo(course));
     }
 
-    public String formatShortenedCourseInfo(Course string) {
+    public String formatShortenedCourseInfo(Course course) {
         String offeringUnitCode = course.getOfferingUnitCode();
         String subject = course.getSubject();
         String courseNumber = course.getCourseNumber();
@@ -204,6 +209,8 @@ public class CourseInfoAdapter  {
 
                 sectionTimeContainer.addView(timeLayout);
             }
+            section.setTag(request);
+
             sectionContainer.addView(section);
 
 

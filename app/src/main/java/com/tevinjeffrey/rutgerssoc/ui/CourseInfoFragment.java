@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +28,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
 public class CourseInfoFragment extends Fragment {
 
     private Request request;
@@ -45,8 +43,6 @@ public class CourseInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -59,11 +55,31 @@ public class CourseInfoFragment extends Fragment {
         int courseIndex = bundle.getInt("courseIndex");
         request = bundle.getParcelable("request");
 
-        Course selectedCourse = getParentActivity().getCourses().get(courseIndex);
-
-        CourseInfoAdapter adapter = new CourseInfoAdapter(getParentActivity(), selectedCourse, rootView);
-        adapter.setData();
+        Course selectedCourse = getSelectedCourse(courseIndex);
+        inflateViews(selectedCourse, rootView);
 
         return rootView;
+    }
+
+    private Course getSelectedCourse(int position) {
+        return getParentActivity().getCourses().get(position);
+    }
+
+    private void inflateViews(Course course, View rootView) {
+        new CourseInfoAdapter(getParentActivity(), course, rootView, request).init();
+    }
+
+    private void createFragment(Bundle b) {
+        SectionInfoFragment sectionInfoFragment = new SectionInfoFragment();
+        sectionInfoFragment.setArguments(b);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, sectionInfoFragment).addToBackStack(null)
+                .commit();
+    }
+
+    private Bundle createArgs(Parcelable parcelable) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("request", parcelable);
+        return bundle;
     }
 }

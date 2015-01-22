@@ -17,18 +17,34 @@ public class UrlUtils {
         this.context = context;
     }
 
+    public UrlUtils() {
+
+    }
+
+    final String FIRST_LEVEL = "Undergraduate";
+    final String SECOND_LEVEL = "Graduate";
+    final String FIRST_LEVEL_ID = "U";
+    final String SECOND_LEVEL_ID = "G";
+    final String FIRST_SEMESTER = "Winter 2015";
+    final String SECOND_SEMESTER = "Spring 2015";
+    final String THIRD_SEMESTER = "Summer 2015";
+    final String FIRST_SEMESTER_ID = "02015";
+    final String SECOND_SEMESTER_ID = "12015";
+    final String THIRD_SEMESTER_ID = "72015";
+    final String FIRST_LOCATION = "New Brunswick";
+    final String SECOND_LOCATION = "Newark";
+    final String THIRD_LOCATION = "Camden";
+    final String FIRST_LOCATION_ID = "NB";
+    final String SECOND_LOCATION_ID = "NK";
+    final String THIRD_LOCATION_ID = "CM";
+
     private String parseSemester(CharSequence rb) {
         //Abstracted list of semesters with a limit of 3 selections
         //TODO: Abstract this class to handle an unlimited number of selections
 
         String semesterId;
 
-        final String FIRST_SEMESTER = context.getResources().getString(R.string.firstSemester);
-        final String SECOND_SEMESTER = context.getResources().getString(R.string.secondSemester);
-        final String THIRD_SEMESTER = context.getResources().getString(R.string.thirdSemester);
-        final String FIRST_SEMESTER_ID = context.getResources().getString(R.string.firstSemester_id);
-        final String SECOND_SEMESTER_ID = context.getResources().getString(R.string.secondSemester_id);
-        final String THIRD_SEMESTER_ID = context.getResources().getString(R.string.thirdSemester_id);
+
 
         if (FIRST_SEMESTER.equals(rb)) {
             semesterId = FIRST_SEMESTER_ID;
@@ -51,14 +67,6 @@ public class UrlUtils {
         //TODO: Abstract this class to support more location from a server
 
         StringBuilder location = new StringBuilder();
-
-        final String FIRST_LOCATION = context.getResources().getString(R.string.firstLocation);
-        final String SECOND_LOCATION = context.getResources().getString(R.string.secondLocation);
-        final String THIRD_LOCATION = context.getResources().getString(R.string.thirdLocation);
-
-        final String FIRST_LOCATION_ID = context.getResources().getString(R.string.firstLocation_id);
-        final String SECOND_LOCATION_ID = context.getResources().getString(R.string.secondLocation_id);
-        final String THIRD_LOCATION_ID = context.getResources().getString(R.string.thirdLocation_id);
 
         for(String s : loc) {
             if (FIRST_LOCATION.equals(s)) {
@@ -85,10 +93,6 @@ public class UrlUtils {
         StringBuilder level= new StringBuilder();
 
         //TODO: Abstract this class to support more location from a server
-        final String FIRST_LEVEL = context.getResources().getString(R.string.firstLevel);
-        final String SECOND_LEVEL = context.getResources().getString(R.string.secondLevel);
-        final String FIRST_LEVEL_ID = context.getResources().getString(R.string.firstLevel_id);
-        final String SECOND_LEVEL_ID = context.getResources().getString(R.string.secondLevel_id);
 
         for(String s: lvls) {
             if (FIRST_LEVEL.equals(s)) {
@@ -122,8 +126,6 @@ public class UrlUtils {
     public String buildParamUrl(Request request) {
         StringBuilder sb = new StringBuilder();
         sb.append("semester=");
-
-
         sb.append(getSemester(request));
         sb.append("&");
         sb.append("campus=");
