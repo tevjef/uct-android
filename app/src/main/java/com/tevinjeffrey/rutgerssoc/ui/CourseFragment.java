@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.tevinjeffrey.rutgerssoc.Request;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
+import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -30,6 +33,8 @@ import java.util.List;
  */
 public class CourseFragment extends Fragment {
 
+    private Request request;
+
     public CourseFragment() {
     }
 
@@ -38,25 +43,15 @@ public class CourseFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        Bundle bundle = getArguments();
-
-        int subjectNumber = bundle.getInt("subject");
-
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
-
-        String url = "http://sis.rutgers.edu/soc/courses.json?subject=" + CourseUtils.formatNumber(subjectNumber) + "&semester=12015&campus=NK&level=U";
+        UrlUtils urlUtils = new UrlUtils(getParentActivity());
+        request = getArguments().getParcelable("request");
+        String url = UrlUtils.getCourseUrl(urlUtils.buildParamUrl(request));
 
         Log.d("URL" , url);
 
@@ -68,7 +63,7 @@ public class CourseFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, JsonArray result) {
 
-                        if(e == null && result.size() > 0) {
+                        if(e != null && result.size() > 0) {
 
                             //if result == 0,no data
                             //UnknownHostException , no internet
@@ -96,19 +91,26 @@ public class CourseFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Fragment courseInfoFragment = new CourseInfoFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("courseIndex", position);
-                courseInfoFragment.setArguments(bundle);
-
-                getFragmentManager().beginTransaction().addToBackStack(null)
-                        .replace(R.id.container, courseInfoFragment)
-                        .commit();
+                createFragment(createArgs(request, position));
             }
         });
 
 
         return rootView;
+    }
+
+    private void createFragment(Bundle b) {
+        Fragment courseInfoFragment = new CourseInfoFragment();
+        courseInfoFragment.setArguments(b);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, courseInfoFragment).addToBackStack(null)
+                .commit();
+    }
+
+    private Bundle createArgs(Parcelable parcelable, int position) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("request", parcelable);
+        bundle.putInt("courseIndex", position);
+        return bundle;
     }
 }

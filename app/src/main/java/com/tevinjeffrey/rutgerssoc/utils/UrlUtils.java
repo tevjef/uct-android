@@ -146,4 +146,16 @@ public class UrlUtils {
         return sb.toString();
     }
 
+    public static String getCourseUrl(String params) {
+        String baseUrl = "http://sis.rutgers.edu/soc/";
+        String subjectJson = "courses.json";
+        StringBuilder sb = new StringBuilder();
+        sb.append(baseUrl);
+        sb.append(subjectJson);
+        sb.append("?");
+        sb.append(params);
+
+        return sb.toString();
+    }
+
 }

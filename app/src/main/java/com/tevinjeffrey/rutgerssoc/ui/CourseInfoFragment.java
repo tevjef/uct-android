@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.Request;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseInfoAdapter;
 import com.tevinjeffrey.rutgerssoc.model.Course;
@@ -30,6 +31,8 @@ import java.util.List;
  * Created by Tevin on 1/14/2015.
  */
 public class CourseInfoFragment extends Fragment {
+
+    private Request request;
 
     public CourseInfoFragment() {
 
@@ -54,6 +57,7 @@ public class CourseInfoFragment extends Fragment {
         Bundle bundle = getArguments();
 
         int courseIndex = bundle.getInt("courseIndex");
+        request = bundle.getParcelable("request");
 
         Course selectedCourse = getParentActivity().getCourses().get(courseIndex);
 
