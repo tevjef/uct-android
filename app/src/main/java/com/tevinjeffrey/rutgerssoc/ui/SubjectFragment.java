@@ -20,8 +20,10 @@ import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.Request;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
 import com.tevinjeffrey.rutgerssoc.adapters.SubjectAdapter;
+import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -46,10 +48,14 @@ public class SubjectFragment extends Fragment {
 
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
+        UrlUtils urlUtils = new UrlUtils(getParentActivity());
 
-        Log.d("URL" , getUrl());
+        String url  = UrlUtils.getSubjectUrl(urlUtils.buildParamUrl(
+                (com.tevinjeffrey.rutgerssoc.Request) getArguments().getParcelable("request")));
+        Log.d("URL" , url);
+
         Ion.with(this)
-                .load(getUrl())
+                .load(url)
                 .asJsonArray()
                 .setCallback(new FutureCallback<JsonArray>() {
 
@@ -59,7 +65,7 @@ public class SubjectFragment extends Fragment {
 
                         //TODO: Handle UnknownHostException for when the there's no internet connection
 
-                        if(e == null && result.size() > 0) {
+                        if (e == null && result.size() > 0) {
                             Gson gson = new Gson();
 
                             Type listType = new TypeToken<List<Subject>>() {
@@ -89,9 +95,16 @@ public class SubjectFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 CourseFragment courseFragment = new CourseFragment();
+
+                Request request = getArguments()
+                        .getParcelable("request");
+
+                request.setSubject(String.valueOf(((Subject)parent.getAdapter().getItem(position))
+                        .getCode()));
+
                 Bundle bundle = new Bundle();
-                bundle.putInt("subject", ((Subject) parent.getAdapter().getItem(position)).getCode());
-                bundle.putString("semester", )
+                bundle.putParcelable("request", request);
+
                 courseFragment.setArguments(bundle);
 
                 getFragmentManager().beginTransaction()
@@ -104,19 +117,6 @@ public class SubjectFragment extends Fragment {
         return rootView;
     }
 
-    private String getUrl() {
-        String params = getArguments().getString("args");
-        String baseUrl = "http://sis.rutgers.edu/soc/";
-        String subjectJson = "subjects.json";
 
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(baseUrl);
-        sb.append(subjectJson);
-        sb.append("?");
-        sb.append(params);
-
-        return sb.toString();
-    }
 
 }

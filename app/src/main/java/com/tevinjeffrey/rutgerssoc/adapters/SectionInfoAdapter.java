@@ -19,35 +19,21 @@ import java.util.List;
 /**
  * Created by Tevin on 1/14/2015.
  */
-public class CourseInfoAdapter  {
+public class SectionInfoAdapter {
 
     private Context context;
     private Course course;
     private View rowView;
 
 
-    //courseTitle
-    private TextView courseTitle;
-    //offeringUnitCode:subject:courseNumber
-    private TextView shortenedCourseInfo;
-    //credits
-    private TextView credits;
-    //courseNotes
-    private TextView courseNotes;
-    //subjectNotes
-    private TextView subjectNotes;
-    //openSections
-    private TextView openSections;
-    //totalSections
-    private TextView totalSections;
-    //preReqNotes
+
     private TextView preReqNotes;
     private View subjectNotesContainer;
     private View courseNotesContainer;
     private View preReqNotesContainer;
     private LinearLayout sectionContainer;
 
-    public CourseInfoAdapter(Context context, Course item, View rowView ) {
+    public SectionInfoAdapter(Context context, Course item, View rowView) {
         this.context = context;
         this.course = item;
         this.rowView = rowView;

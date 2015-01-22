@@ -58,6 +58,8 @@ public class Course {
     int openSections;
 
 
+
+
     public  String title;
 
     public String getExpandedTitle() {
@@ -247,4 +249,6 @@ public class Course {
             String name;
         }
     }
+
+
 }

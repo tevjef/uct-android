@@ -23,7 +23,7 @@ public class SectionUtils {
         // check pm code
         if (pmcode != "A") meridian = "PM";
             // check like 1pm after 11am
-        else if (Integer.valueOf(endtime.substring(0,2)) >
+        else if (Integer.valueOf(endtime.substring(0,2)) <
                 Integer.valueOf(starttime.substring(0,2))) meridian = "PM";
             // check 12pm
         else if (endtime.substring(0, 2).equals("12")) meridian = "PM";

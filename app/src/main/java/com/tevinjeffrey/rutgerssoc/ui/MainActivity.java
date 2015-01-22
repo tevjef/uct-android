@@ -12,6 +12,7 @@ import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class MainActivity extends Activity {
@@ -35,6 +36,33 @@ public class MainActivity extends Activity {
     ArrayList<Subject> subjects;
     ArrayList<Course> courses;
 
+    public String getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(String semesterId) {
+        this.semesterId = semesterId;
+    }
+
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String campus) {
+        this.campus = campus;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String semesterId;
+    public String campus;
+    public String level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -21,4 +21,21 @@ public class CourseUtils {
         return course.getExpandedTitle() == null? course.getTitle():
                 course.getExpandedTitle();
     }
+
+    enum COURSE_SEMESTER {
+        WINTER (0),
+        SPRING (1),
+        SUMMER (7),
+        FALL (8);
+
+        private final int id;
+
+        COURSE_SEMESTER(int id) {
+            this.id = id;
+        }
+
+        int getId(COURSE_SEMESTER s) {
+            return s.id;
+        }
+    }
 }
