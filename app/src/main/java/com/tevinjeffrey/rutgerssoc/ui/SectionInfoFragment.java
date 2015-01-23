@@ -35,8 +35,6 @@ public class SectionInfoFragment extends Fragment {
 
         Bundle bundle = getArguments();
 
-        int courseIndex = bundle.getInt("sectionIndex");
-
 
         return rootView;
     }
