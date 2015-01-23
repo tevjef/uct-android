@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgerssoc.adapters;
 import android.content.Context;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.Request;
+import com.tevinjeffrey.rutgerssoc.Trackable;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.ui.CourseInfoFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
@@ -20,9 +22,9 @@ import java.util.List;
 
 public class CourseInfoAdapter {
 
-    private Context context;
-    private Course course;
-    private View rowView;
+    private final Context context;
+    private final Course course;
+    private final View rowView;
     private Request request;
 
     //courseTitle
@@ -46,7 +48,9 @@ public class CourseInfoAdapter {
     private View preReqNotesContainer;
     private LinearLayout sectionContainer;
 
-    public CourseInfoAdapter(Context context, Course item, View rowView ) {
+    private LayoutInflater inflater;
+
+    private CourseInfoAdapter(Context context, Course item, View rowView) {
         this.context = context;
         this.course = item;
         this.rowView = rowView;
@@ -88,26 +92,26 @@ public class CourseInfoAdapter {
         setSections(course.getSections());
     }
 
-    public void setCourseTitle(Course course) {
+    void setCourseTitle(Course course) {
         this.courseTitle.setText(CourseUtils.getTitle(course));
     }
 
-    public void setShortenedCourseInfo(Course course) {
+    void setShortenedCourseInfo(Course course) {
         this.shortenedCourseInfo.setText(formatShortenedCourseInfo(course));
     }
 
-    public String formatShortenedCourseInfo(Course course) {
+    String formatShortenedCourseInfo(Course course) {
         String offeringUnitCode = course.getOfferingUnitCode();
         String subject = course.getSubject();
         String courseNumber = course.getCourseNumber();
         return offeringUnitCode + ":" + subject + ":" + courseNumber;
     }
 
-    public void setCredits(Course course) {
+    void setCredits(Course course) {
         this.credits.setText(String.valueOf(course.getCredits()));
     }
 
-    public void setCourseNotes(Course course) {
+    void setCourseNotes(Course course) {
         if (course.getCourseNotes() == null) {
             courseNotesContainer.setVisibility(View.GONE);
         } else {
@@ -116,7 +120,7 @@ public class CourseInfoAdapter {
         }
     }
 
-    public void setSubjectNotes(Course course) {
+    void setSubjectNotes(Course course) {
         if (course.getSubjectNotes() == null) {
             subjectNotesContainer.setVisibility(View.GONE);
         } else {
@@ -124,15 +128,15 @@ public class CourseInfoAdapter {
             this.subjectNotes.setMovementMethod(new ScrollingMovementMethod());
         }
     }
-    public void setOpenSections(Course course) {
-            this.openSections.setText(String.valueOf(course.getOpenSections()));
+    void setOpenSections(Course course) {
+        this.openSections.setText(String.valueOf(course.getOpenSections()));
     }
 
-    public void setTotalSections(Course course) {
+    void setTotalSections(Course course) {
         this.totalSections.setText(String.valueOf(course.getSectionsTotal()));
     }
 
-    public void setPreReqNotes(Course course) {
+    void setPreReqNotes(Course course) {
         if (course.getPreReqNotes() == null) {
             preReqNotesContainer.setVisibility(View.GONE);
         } else {
@@ -141,14 +145,41 @@ public class CourseInfoAdapter {
         }
     }
 
-    public void setSections(List<Course.Sections> sections) {
-        LayoutInflater inflater =
-                (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    void setSections(List<Course.Sections> sections) {
 
-        // remove classes with a stopPint of 0. These represent some kind of hidden class taught
-        // by STAFF. Though the obvious solution is to loop through the list and on some condition,
-        // remove the class, this results in a ConcurrentModificationException.
-        // Update: Uncommented because it produced unexpected behaviour in the types of classes.
+        new SectionAdapter(sectionContainer, sections).init();
+    }
+
+    public class SectionAdapter {
+
+        private View section;
+        private TextView sectionNumber;
+        private TextView instructors;
+        private LinearLayout sectionTimeContainer;
+        private final List<Course.Sections> sectionData;
+
+
+        public SectionAdapter(View sectionContainer, List<Course.Sections> sectionData) {
+            this.sectionData = sectionData;
+        }
+
+        public void init() {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            for(Course.Sections s: sectionData) {
+                Log.d("tag", "adding section " + s.getNumber());
+                setData(s);
+            }
+
+        }
+
+        public void setData(Course.Sections s) {
+
+
+            // remove classes with a stopPint of 0. These represent some kind of hidden class taught
+            // by STAFF. Though the obvious solution is to loop through the list and on some condition,
+            // remove the class, this results in a ConcurrentModificationException.
+            // Update: Uncommented because it produced unexpected behaviour in the types of classes.
         /*List<Course.Sections> toRemove = new ArrayList<>();
         for(Course.Sections s: sections) {
             if(s.getStopPoint() == 0) {
@@ -156,25 +187,76 @@ public class CourseInfoAdapter {
             }
         }
         sections.removeAll(toRemove);*/
+            section  = inflater.inflate(R.layout.sections, null);
+            sectionNumber = (TextView) section.findViewById(R.id.section_number);
+            instructors = (TextView) section.findViewById(R.id.prof_text);
+            sectionTimeContainer = (LinearLayout) section.findViewById(R.id.section_time_container);
 
-        for (Course.Sections s : sections) {
-            View section  = inflater.inflate(R.layout.sections, null);
-            TextView sectionNumber = (TextView) section.findViewById(R.id.section_number);
-            TextView instructors = (TextView) section.findViewById(R.id.prof_text);
-            LinearLayout sectionTimeContainer = (LinearLayout) section.findViewById(R.id.section_time_container);
+            setOpenStatus(s);
+            setSectionNumber(s);
+            setInstructors(s);
+            setTimes(s);
+            setOnClickSectionClickListener();
 
-            TextView sectionTitle = (TextView) section.findViewById(R.id.section_number);
+            Trackable trackable = new Trackable(request);
+            trackable.setIndex(s.getIndex());
 
-            if(s.isOpenStatus()) {
-                sectionTitle.setBackgroundColor(context.getResources().getColor(R.color.open_course));
-            } else {
-                sectionTitle.setBackgroundColor(context.getResources().getColor(R.color.closed_course));
+            section.setTag(trackable);
+            sectionContainer.addView(section);
 
+        }
+
+        private void setOnClickSectionClickListener() {
+            section.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Trackable t = (Trackable) v.getTag();
+                    Log.d("tag", "section clicked, index " + t.getIndex() );
+
+                    //TODO worked out a way to get the data on a clocked section by actually using
+                    // the setTag() method to give the view some meaningful information for later use.
+                    // When on click is called just use v.getTag() and it will return a custom object.
+                    // I suggest using a Course object. Of course you'll now have to modify the
+                    // Course object to hold semester, level and campus information.
+                    Request r = (Request) v.getTag();
+                }
+            });
+        }
+
+        public void setTimes(Course.Sections s) {
+            //sort times so that Monday > Tuesday and Lecture > Recitation
+            Collections.sort(s.getMeetingTimes());
+            for (Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
+
+                Log.d("tag", "adding time to section " + s.getNumber());
+
+                View timeLayout = inflater.inflate(R.layout.time, null);
+
+                TextView dayText = (TextView) timeLayout.findViewById(R.id.day_text);
+                TextView timeText = (TextView) timeLayout.findViewById(R.id.time_text);
+                TextView locationText = (TextView) timeLayout.findViewById(R.id.sectionLocation_text);
+
+                if (time.isByArrangement()) {
+                    dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
+                    timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
+                    locationText.setText(Html.fromHtml(""));
+                } else {
+                    dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
+                    timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
+                    locationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
+                }
+                sectionTimeContainer.addView(timeLayout);
             }
-            //setSectionNumber
-            sectionNumber.setText(s.getNumber());
+        }
+        private void setSectionNumber(Course.Sections s) {
+            Log.d("tag", "adding section number " + s.getNumber());
 
-            //setInstructors
+            sectionNumber.setText(s.getNumber());
+        }
+        private void setInstructors(Course.Sections s) {
+            Log.d("tag", "adding instructors to section " + s.getNumber());
+
             StringBuilder sb= new StringBuilder();
             for(Course.Sections.Instructors i : s.getInstructors()) {
                 if(s.getInstructors().size() > 1) {
@@ -186,46 +268,16 @@ public class CourseInfoAdapter {
             }
             if(s.getInstructors().size() > 1) sb = new StringBuilder(sb.substring(0, sb.length() -1));
             instructors.setText(sb.toString());
+        }
 
-            //setMeetingTimes
-            //sort times so that Monday > Tuesday and Lecture > Recitation
-            Collections.sort(s.getMeetingTimes());
-            for(Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
-                View timeLayout  = inflater.inflate(R.layout.time, null);
+        public void setOpenStatus(Course.Sections s) {
+            Log.d("tag", "setting status to section " + s.getNumber());
 
-                TextView dayText = (TextView) timeLayout.findViewById(R.id.day_text);
-                TextView timeText = (TextView) timeLayout.findViewById(R.id.time_text);
-                TextView locationText = (TextView) timeLayout.findViewById(R.id.sectionLocation_text);
-
-                if(time.isByArrangement() ) {
-                    dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-                    timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
-                    locationText.setText(Html.fromHtml(""));
-                } else {
-                    dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-                    timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
-                    locationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
-                }
-
-                sectionTimeContainer.addView(timeLayout);
+            if(s.isOpenStatus()) {
+                sectionNumber.setBackgroundColor(context.getResources().getColor(R.color.open_course));
+            } else {
+                sectionNumber.setBackgroundColor(context.getResources().getColor(R.color.closed_course));
             }
-            section.setTag(request);
-
-            sectionContainer.addView(section);
-
-
-            section.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    //TODO worked out a way to get the data on a clocked section by actually using
-                    // the setTag() method to give the view some meaningful information for later use.
-                    // When on click is called just use v.getTag() and it will return a custom object.
-                    // I suggest using a Course object. Of course you'll now have to modify the
-                    // Course object to hold semester, level and campus information.
-
-                }
-            });
         }
     }
 }

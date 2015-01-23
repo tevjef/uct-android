@@ -49,9 +49,8 @@ public class CourseFragment extends Fragment {
 
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
-        UrlUtils urlUtils = new UrlUtils(getParentActivity());
         request = getArguments().getParcelable("request");
-        String url = UrlUtils.getCourseUrl(urlUtils.buildParamUrl(request));
+        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(request));
 
         Log.d("URL" , url);
 
@@ -63,7 +62,7 @@ public class CourseFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, JsonArray result) {
 
-                        if(e != null && result.size() > 0) {
+                        if(e == null && result.size() > 0) {
 
                             //if result == 0,no data
                             //UnknownHostException , no internet

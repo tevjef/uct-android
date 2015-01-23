@@ -23,11 +23,6 @@ import java.util.ArrayList;
 public class CourseAdapter extends ArrayAdapter {
 
     private Context context;
-    private String[] navTitles;
-    private TypedArray navIcons;
-    private int type;
-    private ImageView imgIcon = null;
-    private TextView txtTitle = null;
     private ArrayList<Course> item;
 
 

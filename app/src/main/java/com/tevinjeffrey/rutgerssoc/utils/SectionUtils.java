@@ -9,8 +9,9 @@ public class SectionUtils {
     }
 
     private static String formatMeetingHours(String time) {
-        if (time.substring(0,1) == "0") {
-            time = time.substring(1,1) + ":" + time.substring(2);
+        String s;
+        if (time.substring(0,1).equals("0")) {
+            return time.substring(1,2) + ":" + time.substring(2);
         }
         return time.substring(0, 2) + ":" + time.substring(2);
     }
@@ -20,13 +21,20 @@ public class SectionUtils {
         String starttime = time.getStartTime();
         String endtime = time.getEndTime();
         String pmcode = time.getPmCode();
+
+        int e = Integer.valueOf(endtime.substring(0,2));
+        int s = Integer.valueOf(starttime.substring(0,2));
+
         // check pm code
-        if (pmcode != "A") meridian = "PM";
+        if (!pmcode.equals("A")) meridian = "PM";
             // check like 1pm after 11am
-        else if (Integer.valueOf(endtime.substring(0,2)) <
-                Integer.valueOf(starttime.substring(0,2))) meridian = "PM";
+        else if (e < s)  {
+            meridian = "PM";
+        }
             // check 12pm
-        else if (endtime.substring(0, 2).equals("12")) meridian = "PM";
+        else if (endtime.substring(0, 2).equals("12")) {
+            meridian = "PM";
+        }
             // else am
         else meridian = "AM";
 

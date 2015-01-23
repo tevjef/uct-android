@@ -57,9 +57,6 @@ public class Course {
     String offeringUnitCode;
     int openSections;
 
-
-
-
     public  String title;
 
     public String getExpandedTitle() {
@@ -78,7 +75,7 @@ public class Course {
     List<Sections> sections = new ArrayList<>();
     String expandedTitle;
 
-    public class Sections {
+    public static class Sections {
 
         public List<MeetingTimes> getMeetingTimes() {
             return meetingTimes;
@@ -159,13 +156,13 @@ public class Course {
         public class MeetingTimes implements Comparable {
 
             public boolean isLecture() {
-                return getMeetingModeCode().equals("02");
+                return getMeetingModeCode() != null && getMeetingModeCode().equals("02");
             }
             public boolean isRecitation() {
-                return getMeetingModeCode().equals("03");
+                return getMeetingModeCode() != null && getMeetingModeCode().equals("03");
             }
             public boolean isLab() {
-                return getMeetingModeCode().equals("05");
+                return getMeetingModeCode() != null && getMeetingModeCode().equals("05");
             }
             public boolean isByArrangement() {
                 return getBaClassHours() != null && getBaClassHours().equals("B");
@@ -190,19 +187,15 @@ public class Course {
             public String getCampusAbbrev() {
                 return campusAbbrev;
             }
-
             public String getBaClassHours() {
                 return baClassHours;
             }
-
             public String getMeetingDay() {
                 return meetingDay;
             }
-
             public String getRoomNumber() {
                 return roomNumber;
             }
-
             public String getPmCode() {
                 return pmCode;
             }
@@ -240,7 +233,6 @@ public class Course {
             }
         }
 
-
         public class Instructors {
             public String getName() {
                 return name;
@@ -249,6 +241,4 @@ public class Course {
             String name;
         }
     }
-
-
 }

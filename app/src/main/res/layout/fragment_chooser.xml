@@ -184,8 +184,8 @@
         android:background="@color/accent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
             android:text="NEXT"
             android:id="@+id/search_button"
             android:onClick="onSearch"
@@ -196,7 +196,7 @@
             android:elevation="0dp"
             android:textSize="14sp"
             android:textColor="@color/white"
-            android:layout_marginRight="34dp" />
+            android:gravity="center_vertical|center_horizontal" />
     </RelativeLayout>
 
 </RelativeLayout>

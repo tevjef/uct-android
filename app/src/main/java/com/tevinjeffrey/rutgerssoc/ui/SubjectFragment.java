@@ -48,9 +48,8 @@ public class SubjectFragment extends Fragment {
 
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
-        UrlUtils urlUtils = new UrlUtils(getParentActivity());
         request = getArguments().getParcelable("request");
-        String url = UrlUtils.getSubjectUrl(urlUtils.buildParamUrl(request));
+        String url = UrlUtils.getSubjectUrl(UrlUtils.buildParamUrl(request));
 
         Log.d("URL" , url);
 
@@ -65,7 +64,7 @@ public class SubjectFragment extends Fragment {
 
                         //TODO: Handle UnknownHostException for when the there's no internet connection
 
-                        if (e != null && result.size() > 0) {
+                        if (e == null && result.size() > 0) {
                             Gson gson = new Gson();
 
                             Type listType = new TypeToken<List<Subject>>() {

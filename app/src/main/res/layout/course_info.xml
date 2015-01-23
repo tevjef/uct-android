@@ -138,24 +138,27 @@
             </RelativeLayout>
         </Toolbar>
 
+
+
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_header_info"
-            android:padding="16dp">
+            android:id="@+id/section_metadata_container"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:id="@+id/course_metadata"
-                android:layout_below="@+id/toolbar_header_info">
+                android:id="@+id/course_metadata">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/courseNotes_container"
-                    android:layout_below="@+id/toolbar_header_info"
                     android:layout_alignParentStart="true">
 
 
@@ -225,7 +228,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/prereq_container"
                     android:layout_below="@+id/subjectNotes_container"
-                    android:layout_alignStart="@+id/course_metadata"
                     android:layout_marginTop="10dp">
 
                     <TextView
@@ -267,17 +269,17 @@
                 android:textSize="12sp"
                 android:layout_alignStart="@+id/course_metadata"
                 android:layout_below="@+id/course_metadata"
-                android:layout_marginBottom="8dp"
                 android:layout_marginTop="5dp" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/section_title"
-                android:layout_alignStart="@+id/section_title"
-                android:id="@+id/sections_container"/>
         </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sections_container"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/section_metadata_container" />
 
     </RelativeLayout>
 </ScrollView>

@@ -13,32 +13,28 @@ public class UrlUtils {
 
     public Context context;
 
-    public UrlUtils(Context context) {
-        this.context = context;
-    }
-
     public UrlUtils() {
 
     }
 
-    final String FIRST_LEVEL = "Undergraduate";
-    final String SECOND_LEVEL = "Graduate";
-    final String FIRST_LEVEL_ID = "U";
-    final String SECOND_LEVEL_ID = "G";
-    final String FIRST_SEMESTER = "Winter 2015";
-    final String SECOND_SEMESTER = "Spring 2015";
-    final String THIRD_SEMESTER = "Summer 2015";
-    final String FIRST_SEMESTER_ID = "02015";
-    final String SECOND_SEMESTER_ID = "12015";
-    final String THIRD_SEMESTER_ID = "72015";
-    final String FIRST_LOCATION = "New Brunswick";
-    final String SECOND_LOCATION = "Newark";
-    final String THIRD_LOCATION = "Camden";
-    final String FIRST_LOCATION_ID = "NB";
-    final String SECOND_LOCATION_ID = "NK";
-    final String THIRD_LOCATION_ID = "CM";
+    final static String FIRST_LEVEL = "Undergraduate";
+    final static String SECOND_LEVEL = "Graduate";
+    final static String FIRST_LEVEL_ID = "U";
+    final static String SECOND_LEVEL_ID = "G";
+    final static String FIRST_SEMESTER = "Winter 2015";
+    final static String SECOND_SEMESTER = "Spring 2015";
+    final static String THIRD_SEMESTER = "Summer 2015";
+    final static String FIRST_SEMESTER_ID = "02015";
+    final static String SECOND_SEMESTER_ID = "12015";
+    final static String THIRD_SEMESTER_ID = "72015";
+    final static String FIRST_LOCATION = "New Brunswick";
+    final static String SECOND_LOCATION = "Newark";
+    final static String THIRD_LOCATION = "Camden";
+    final static String FIRST_LOCATION_ID = "NB";
+    final static String SECOND_LOCATION_ID = "NK";
+    final static String THIRD_LOCATION_ID = "CM";
 
-    private String parseSemester(CharSequence rb) {
+    private static String parseSemester(CharSequence rb) {
         //Abstracted list of semesters with a limit of 3 selections
         //TODO: Abstract this class to handle an unlimited number of selections
 
@@ -58,12 +54,12 @@ public class UrlUtils {
 
         return semesterId;
     }
-    String getSemester(Request request) {
+    static String getSemester(Request request) {
         return parseSemester(request.getSemester());
 
     }
 
-    public String parseLocations(ArrayList<String> loc) {
+    public static String parseLocations(ArrayList<String> loc) {
         //TODO: Abstract this class to support more location from a server
 
         StringBuilder location = new StringBuilder();
@@ -85,11 +81,11 @@ public class UrlUtils {
         return location.toString();
     }
 
-    public String getLocations(Request request) {
+    public static String getLocations(Request request) {
        return parseLocations(request.getLocations());
     }
 
-    public String parseLevels(ArrayList<String> lvls) {
+    public static String parseLevels(ArrayList<String> lvls) {
         StringBuilder level= new StringBuilder();
 
         //TODO: Abstract this class to support more location from a server
@@ -106,7 +102,7 @@ public class UrlUtils {
         }
         return level.toString();
     }
-    public String getLevels(Request request) {
+    public static String getLevels(Request request) {
         return parseLevels(request.getLevels());
     }
 
@@ -123,8 +119,13 @@ public class UrlUtils {
         return sb.substring(0, sb.length() -3);
     }
 
-    public String buildParamUrl(Request request) {
+    public static String buildParamUrl(Request request) {
         StringBuilder sb = new StringBuilder();
+        if(request.isCourseRequest()) {
+            sb.append("subject=");
+            sb.append(request.getSubject());
+            sb.append("&");
+        }
         sb.append("semester=");
         sb.append(getSemester(request));
         sb.append("&");
