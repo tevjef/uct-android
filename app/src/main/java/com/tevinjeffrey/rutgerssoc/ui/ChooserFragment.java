@@ -52,6 +52,8 @@ public class ChooserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getParentActivity().setPrimaryWindow();
+
         final View rootView = inflater.inflate(R.layout.fragment_chooser, container, false);
 
         //TODO: Abstract to loop through a parent viewgroup to obtain all data.

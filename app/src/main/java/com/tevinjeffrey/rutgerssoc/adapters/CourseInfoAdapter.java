@@ -1,6 +1,10 @@
 package com.tevinjeffrey.rutgerssoc.adapters;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -13,7 +17,7 @@ import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.Request;
 import com.tevinjeffrey.rutgerssoc.Trackable;
 import com.tevinjeffrey.rutgerssoc.model.Course;
-import com.tevinjeffrey.rutgerssoc.ui.CourseInfoFragment;
+import com.tevinjeffrey.rutgerssoc.ui.SectionInfoFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
@@ -22,7 +26,7 @@ import java.util.List;
 
 public class CourseInfoAdapter {
 
-    private final Context context;
+    private final Activity context;
     private final Course course;
     private final View rowView;
     private Request request;
@@ -50,25 +54,25 @@ public class CourseInfoAdapter {
 
     private LayoutInflater inflater;
 
-    private CourseInfoAdapter(Context context, Course item, View rowView) {
+    private CourseInfoAdapter(Activity context, Course item, View rowView) {
         this.context = context;
         this.course = item;
         this.rowView = rowView;
     }
 
-    public CourseInfoAdapter(Context context, Course course, View rowView, Request request) {
+    public CourseInfoAdapter(Activity context, Course course, View rowView, Request request) {
         this(context, course, rowView);
         this.request = request;
     }
 
     public CourseInfoAdapter init() {
-        courseTitle = (TextView) rowView.findViewById(R.id.sectionText_text);
-        shortenedCourseInfo = (TextView) rowView.findViewById(R.id.sectionText_title);
+        courseTitle = (TextView) rowView.findViewById(R.id.sectionNumber_text);
+        shortenedCourseInfo = (TextView) rowView.findViewById(R.id.sectionNumber_title);
         credits = (TextView) rowView.findViewById(R.id.credits_text);
         courseNotes = (TextView) rowView.findViewById(R.id.courseNotes_text);
         subjectNotes = (TextView) rowView.findViewById(R.id.subjectNotes_text);
-        courseNotesContainer = rowView.findViewById(R.id.courseNotes_container);
-        subjectNotesContainer = rowView.findViewById(R.id.subjectNotes_container);
+        courseNotesContainer = rowView.findViewById(R.id.sectionNotes_container);
+        subjectNotesContainer = rowView.findViewById(R.id.sectionComments_container);
         preReqNotesContainer = rowView.findViewById(R.id.prereq_container);
         sectionContainer = (LinearLayout) rowView.findViewById(R.id.sections_container);
         openSections = (TextView) rowView.findViewById(R.id.openSections_text);
@@ -116,7 +120,6 @@ public class CourseInfoAdapter {
             courseNotesContainer.setVisibility(View.GONE);
         } else {
             this.courseNotes.setText(Html.fromHtml(course.getCourseNotes()));
-            this.courseNotes.setMovementMethod(new ScrollingMovementMethod());
         }
     }
 
@@ -125,7 +128,6 @@ public class CourseInfoAdapter {
             subjectNotesContainer.setVisibility(View.GONE);
         } else {
             this.subjectNotes.setText(Html.fromHtml(course.getSubjectNotes()));
-            this.subjectNotes.setMovementMethod(new ScrollingMovementMethod());
         }
     }
     void setOpenSections(Course course) {
@@ -188,7 +190,7 @@ public class CourseInfoAdapter {
         }
         sections.removeAll(toRemove);*/
             section  = inflater.inflate(R.layout.sections, null);
-            sectionNumber = (TextView) section.findViewById(R.id.section_number);
+            sectionNumber = (TextView) section.findViewById(R.id.timeLocation_title);
             instructors = (TextView) section.findViewById(R.id.prof_text);
             sectionTimeContainer = (LinearLayout) section.findViewById(R.id.section_time_container);
 
@@ -214,14 +216,28 @@ public class CourseInfoAdapter {
                     Trackable t = (Trackable) v.getTag();
                     Log.d("tag", "section clicked, index " + t.getIndex() );
 
+                    createFragment(createArgs(t));
                     //TODO worked out a way to get the data on a clocked section by actually using
                     // the setTag() method to give the view some meaningful information for later use.
                     // When on click is called just use v.getTag() and it will return a custom object.
                     // I suggest using a Course object. Of course you'll now have to modify the
                     // Course object to hold semester, level and campus information.
-                    Request r = (Request) v.getTag();
                 }
             });
+        }
+
+        private void createFragment(Bundle b) {
+            Fragment sectionInfoFragment = new SectionInfoFragment();
+            sectionInfoFragment.setArguments(b);
+            context.getFragmentManager().beginTransaction()
+                    .replace(R.id.container, sectionInfoFragment).addToBackStack(null)
+                    .commit();
+        }
+
+        private Bundle createArgs(Parcelable parcelable) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("request", parcelable);
+            return bundle;
         }
 
         public void setTimes(Course.Sections s) {

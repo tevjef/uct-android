@@ -10,7 +10,7 @@ public class Trackable extends Request {
         super(subject, semester, locations, levels);
     }
     public Trackable(Request request) {
-        super(request.getSubject(), request.getSemester(), request.getLocations(), request.getLevels());
+        this(request.getSubject(), request.getSemester(), request.getLocations(), request.getLevels());
     }
 
     String index;

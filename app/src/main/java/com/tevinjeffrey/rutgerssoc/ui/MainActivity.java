@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.R;
@@ -73,9 +74,24 @@ public class MainActivity extends Activity {
                     .replace(R.id.container, new ChooserFragment()).addToBackStack(null)
                     .commit();
         }
-
+        setPrimaryWindow();
     }
 
+    public void setAccentWindow() {
+        Window window = getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.accent_dark));
+        window.setNavigationBarColor(getResources().getColor(R.color.accent_dark));
+    }
+    public void setGreenWindow() {
+        Window window = getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.green_dark));
+        window.setNavigationBarColor(getResources().getColor(R.color.green_dark));
+    }
+    public void setPrimaryWindow() {
+        Window window = getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.primary_dark));
+        window.setNavigationBarColor(getResources().getColor(R.color.primary_dark));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,6 +114,4 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

@@ -19,8 +19,9 @@
         android:textColor="@color/secondary_text"
         android:textSize="11dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:textIsSelectable="false" />
+        android:layout_alignParentEnd="false"
+        android:textIsSelectable="false"
+        android:layout_toLeftOf="@+id/meetingType" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,5 +32,17 @@
         android:textSize="11dp"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/day_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lecture"
+        android:id="@+id/meetingType"
+        android:textColor="@color/secondary_text"
+        android:textSize="11dp"
+        android:textIsSelectable="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp" />
 
 </RelativeLayout>

@@ -85,6 +85,18 @@ public class Course {
             return instructors;
         }
 
+        public List<Comments> getComments() {
+            return comments;
+        }
+
+        public List<Majors> getMajors() {
+            return majors;
+        }
+
+        public List<CrossListedSections> getCrossListedSections() {
+            return crossListedSections;
+        }
+
         public int getStopPoint() {
             return stopPoint;
         }
@@ -95,6 +107,10 @@ public class Course {
 
         public String getSpecialPermissionAddCodeDescription() {
             return specialPermissionAddCodeDescription;
+        }
+
+        public String getSubtitle() {
+            return subtitle;
         }
 
         public String getSpecialPermissionAddCode() {
@@ -139,6 +155,10 @@ public class Course {
 
         List<Instructors> instructors = new ArrayList<>();
         List<MeetingTimes> meetingTimes = new ArrayList<>();
+        List<CrossListedSections> crossListedSections = new ArrayList<>();
+        List<Majors> majors = new ArrayList<>();
+        List<Comments> comments = new ArrayList<>();
+        String subtitle;
         String index;
         String specialPermissionAddCodeDescription;
         String specialPermissionAddCode;
@@ -239,6 +259,57 @@ public class Course {
             }
 
             String name;
+        }
+
+        public class Comments {
+            String description;
+
+            public String getDescription() {
+                return description;
+            }
+        }
+        public class CrossListedSections {
+            String sectionNumber;
+            String offeringUnitCode;
+            String subjectCode;
+            String courseNumber;
+
+            public String getSectionNumber() {
+                return sectionNumber;
+            }
+
+            public String getOfferingUnitCode() {
+                return offeringUnitCode;
+            }
+
+            public String getSubjectCode() {
+                return subjectCode;
+            }
+
+            public String getCourseNumber() {
+                return courseNumber;
+            }
+            public String getFullCrossListedSection() {
+                return getOfferingUnitCode() + ":" + getSubjectCode() + ":"
+                        + getCourseNumber() + ":" + getSectionNumber();
+            }
+        }
+        public class Majors {
+            boolean isMajorCode;
+            boolean isUnitCode;
+            String code;
+
+            public boolean isMajorCode() {
+                return isMajorCode;
+            }
+
+            public boolean isUnitCode() {
+                return isUnitCode;
+            }
+
+            public String getCode() {
+                return code;
+            }
         }
     }
 }

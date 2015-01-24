@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:scrollbarThumbVertical="@drawable/course_scrollbar"
+    android:scrollbarSize="2dip">
+
     <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
 
         <Toolbar
             android:id="@+id/toolbar_header_info"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:minHeight="?android:attr/actionBarSize"
-            android:background="@color/primary"
+            android:background="@color/accent"
             android:elevation="1dp"
             android:paddingRight="16dp">
 
@@ -27,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
-                    android:id="@+id/sectionText_text"
+                    android:id="@+id/sectionNumber_text"
                     android:textSize="24sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
@@ -63,13 +66,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="21:198:101"
-                    android:id="@+id/sectionText_title"
+                    android:id="@+id/sectionNumber_title"
                     android:textSize="12sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
-                    android:layout_above="@+id/sectionText_text"
+                    android:layout_above="@+id/sectionNumber_text"
                     android:layout_alignParentStart="true"
                     android:alpha="0.5" />
 
@@ -83,7 +86,7 @@
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
-                    android:layout_below="@+id/sectionText_text"
+                    android:layout_below="@+id/sectionNumber_text"
                     android:layout_toEndOf="@+id/credits_text"
                     android:alpha="0.5" />
 
@@ -113,8 +116,8 @@
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
-                    android:layout_below="@+id/sectionText_text"
-                    android:layout_toEndOf="@+id/sectionText_title"
+                    android:layout_below="@+id/sectionNumber_text"
+                    android:layout_toEndOf="@+id/sectionNumber_title"
                     android:layout_toRightOf="@+id/openSections_text"
                     android:alpha="0.5" />
 
@@ -158,7 +161,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/courseNotes_container"
+                    android:id="@+id/sectionNotes_container"
                     android:layout_alignParentStart="true">
 
 
@@ -192,8 +195,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/subjectNotes_container"
-                    android:layout_below="@+id/courseNotes_container"
+                    android:id="@+id/sectionComments_container"
+                    android:layout_below="@+id/sectionNotes_container"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="10dp">
 
@@ -227,7 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/prereq_container"
-                    android:layout_below="@+id/subjectNotes_container"
+                    android:layout_below="@+id/sectionComments_container"
                     android:layout_marginTop="10dp">
 
                     <TextView

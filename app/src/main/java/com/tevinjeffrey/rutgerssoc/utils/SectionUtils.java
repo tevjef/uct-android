@@ -9,7 +9,6 @@ public class SectionUtils {
     }
 
     private static String formatMeetingHours(String time) {
-        String s;
         if (time.substring(0,1).equals("0")) {
             return time.substring(1,2) + ":" + time.substring(2);
         }
@@ -26,16 +25,18 @@ public class SectionUtils {
         int s = Integer.valueOf(starttime.substring(0,2));
 
         // check pm code
-        if (!pmcode.equals("A")) meridian = "PM";
-            // check like 1pm after 11am
+        if (!pmcode.equals("A")){
+            meridian = "PM";
+        }
+        // check like 1pm after 11am
         else if (e < s)  {
             meridian = "PM";
         }
-            // check 12pm
+        // check 12pm
         else if (endtime.substring(0, 2).equals("12")) {
             meridian = "PM";
         }
-            // else am
+        // else am
         else meridian = "AM";
 
         return formatMeetingHours(time.getEndTime()) + " " + meridian;
@@ -92,6 +93,7 @@ public class SectionUtils {
         }
         return time.getMeetingModeDesc();
     }
+
     public static String getClassLocation(Course.Sections.MeetingTimes time) {
         return (time.getBuildingCode() == null && time.getRoomNumber() == null )? "" :
                 time.getBuildingCode() + "-" + time.getRoomNumber() + " " + time.getCampusAbbrev();
@@ -115,6 +117,7 @@ public class SectionUtils {
         }
         return -1;
     }
+
     public static int getClassRank(Course.Sections.MeetingTimes time) {
         if(time.isLecture()) {
             return 100;
@@ -127,5 +130,4 @@ public class SectionUtils {
         }
         return -1;
     }
-
 }

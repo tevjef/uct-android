@@ -14,5 +14,6 @@
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
         android:singleLine="true"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:ellipsize="none" />
 </RelativeLayout>
