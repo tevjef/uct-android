@@ -31,5 +31,6 @@ dependencies {
     compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
+    compile 'com.github.satyan:sugar:1.3'
 
 }

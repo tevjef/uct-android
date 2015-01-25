@@ -4,20 +4,16 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgerssoc.R;
-import com.tevinjeffrey.rutgerssoc.Request;
-import com.tevinjeffrey.rutgerssoc.Trackable;
-import com.tevinjeffrey.rutgerssoc.adapters.CourseInfoAdapter;
+import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.adapters.SectionInfoAdapter;
-import com.tevinjeffrey.rutgerssoc.model.Course;
 
 public class SectionInfoFragment extends Fragment {
 
-    private Trackable trackable;
+    private Request request;
     public SectionInfoFragment() {
 
     }
@@ -59,20 +55,12 @@ public class SectionInfoFragment extends Fragment {
 
         Bundle bundle = getArguments();
 
-        trackable = bundle.getParcelable("request");
+        request = bundle.getParcelable("request");
         inflateViews(rootView);
 
         return rootView;
     }
     private void inflateViews(View rootView) {
-        new SectionInfoAdapter(getParentActivity(), trackable, rootView, getParentActivity().getCourses()).init();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == android.R.id.home) {
-            getParentActivity().onBackPressed();
-        }
-        return super.onOptionsItemSelected(menuItem);
+        new SectionInfoAdapter(getParentActivity(), request, rootView, getParentActivity().getCourses()).init();
     }
 }

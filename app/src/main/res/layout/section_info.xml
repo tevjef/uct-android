@@ -533,7 +533,7 @@
             android:src="@drawable/ic_add_white_24dp"
             fab:fab_colorNormal="@color/accent"
             fab:fab_colorPressed="@color/accent_dark"
-            fab:fab_colorRipple="@color/primary_light"
+            fab:fab_colorRipple="@color/blue_grey_light"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:background="@color/black"

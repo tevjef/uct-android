@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:minHeight="?android:attr/actionBarSize"
-            android:background="@color/accent"
+            android:background="@color/cyan"
             android:elevation="1dp"
             android:paddingRight="16dp">
 

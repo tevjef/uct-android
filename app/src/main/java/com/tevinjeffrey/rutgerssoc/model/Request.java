@@ -1,27 +1,39 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.orm.SugarRecord;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tevin on 1/22/2015.
- */
-public class Request implements Parcelable {
+public class Request extends SugarRecord<Request> implements Parcelable {
 
     String subject;
     String semester;
     ArrayList<String> locations;
     ArrayList<String> levels;
+    String index;
 
     public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels) {
         this.subject = subject;
         this.semester = semester;
         this.locations = locations;
         this.levels = levels;
+    }
+
+    public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels, String index) {
+        this(subject, semester, locations, levels);
+        this.index = index;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 
     public String getSubject() {
@@ -92,7 +104,6 @@ public class Request implements Parcelable {
 
     @Override
     public String toString() {
-        UrlUtils urlUtils = new UrlUtils();
-        return urlUtils.buildParamUrl(this);
+        return UrlUtils.buildParamUrl(this);
     }
 }

@@ -74,6 +74,11 @@ public class MainActivity extends ActionBarActivity {
         window.setStatusBarColor(getResources().getColor(R.color.accent_dark));
         window.setNavigationBarColor(getResources().getColor(R.color.accent_dark));
     }
+    public void setCyanWindow() {
+        Window window = getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.cyan_dark));
+        window.setNavigationBarColor(getResources().getColor(R.color.cyan_dark));
+    }
     public void setGreenWindow() {
         Window window = getWindow();
         window.setStatusBarColor(getResources().getColor(R.color.green_dark));
@@ -109,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
