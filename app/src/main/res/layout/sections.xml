@@ -37,7 +37,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:gravity="center_vertical|center_horizontal"
-            android:background="@color/open_course"
+            android:background="@color/green"
             android:layout_marginRight="8dp" />
 
         <LinearLayout

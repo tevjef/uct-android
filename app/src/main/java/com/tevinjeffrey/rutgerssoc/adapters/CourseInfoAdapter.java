@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
-import com.tevinjeffrey.rutgerssoc.Request;
-import com.tevinjeffrey.rutgerssoc.Trackable;
+import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.ui.SectionInfoFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
@@ -200,10 +199,11 @@ public class CourseInfoAdapter {
             setTimes(s);
             setOnClickSectionClickListener();
 
-            Trackable trackable = new Trackable(request);
-            trackable.setIndex(s.getIndex());
+            Request trackableRequest = new Request(request.getSubject(), request.getSemester(),
+                    request.getLocations(), request.getLevels(), s.getIndex());
 
-            section.setTag(trackable);
+
+            section.setTag(trackableRequest);
             sectionContainer.addView(section);
 
         }
@@ -213,7 +213,7 @@ public class CourseInfoAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    Trackable t = (Trackable) v.getTag();
+                    Request t = (Request) v.getTag();
                     Log.d("tag", "section clicked, index " + t.getIndex() );
 
                     createFragment(createArgs(t));
@@ -290,9 +290,9 @@ public class CourseInfoAdapter {
             Log.d("tag", "setting status to section " + s.getNumber());
 
             if(s.isOpenStatus()) {
-                sectionNumber.setBackgroundColor(context.getResources().getColor(R.color.open_course));
+                sectionNumber.setBackgroundColor(context.getResources().getColor(R.color.green));
             } else {
-                sectionNumber.setBackgroundColor(context.getResources().getColor(R.color.closed_course));
+                sectionNumber.setBackgroundColor(context.getResources().getColor(R.color.red));
             }
         }
     }

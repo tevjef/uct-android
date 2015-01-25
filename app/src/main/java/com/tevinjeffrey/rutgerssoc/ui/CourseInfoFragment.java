@@ -2,15 +2,13 @@ package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgerssoc.R;
-import com.tevinjeffrey.rutgerssoc.Request;
+import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseInfoAdapter;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 
@@ -36,7 +34,7 @@ public class CourseInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getParentActivity().setAccentWindow();
+        getParentActivity().setCyanWindow();
         setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.course_info, container, false);
@@ -71,13 +69,5 @@ public class CourseInfoFragment extends Fragment {
 
     private void inflateViews(Course course, View rootView) {
         new CourseInfoAdapter(getParentActivity(), course, rootView, request).init();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == android.R.id.home) {
-            getParentActivity().onBackPressed();
-        }
-        return super.onOptionsItemSelected(menuItem);
     }
 }

@@ -3,8 +3,7 @@ package com.tevinjeffrey.rutgerssoc.utils;
 
 import android.content.Context;
 
-import com.tevinjeffrey.rutgerssoc.R;
-import com.tevinjeffrey.rutgerssoc.Request;
+import com.tevinjeffrey.rutgerssoc.model.Request;
 
 import java.util.ArrayList;
 

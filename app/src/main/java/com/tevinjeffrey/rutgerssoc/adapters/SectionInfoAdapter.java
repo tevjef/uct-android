@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
-import com.tevinjeffrey.rutgerssoc.Trackable;
+import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
@@ -24,7 +23,7 @@ import java.util.List;
 public class SectionInfoAdapter {
 
     private Activity context;
-    private Trackable trackable;
+    private Request request;
     private List<Course> courses;
     private Course courseData;
     private Course.Sections sectionData;
@@ -55,13 +54,13 @@ public class SectionInfoAdapter {
 
     private LinearLayout sectionTimeContainer;
 
-    private SectionInfoAdapter(Activity context, Trackable item, View rowView) {
+    private SectionInfoAdapter(Activity context, Request item, View rowView) {
         this.context = context;
-        this.trackable = item;
+        this.request = item;
         this.rowView = rowView;
     }
     
-    public SectionInfoAdapter(Activity context, Trackable item, View rowView, List<Course> courses) {
+    public SectionInfoAdapter(Activity context, Request item, View rowView, List<Course> courses) {
         this(context,item, rowView);
         this.courses = courses;
     }
@@ -93,7 +92,7 @@ public class SectionInfoAdapter {
 
         for (Course c : courses) {
             for (Course.Sections s : c.getSections())
-                if (s.getIndex().equals(trackable.getIndex())) {
+                if (s.getIndex().equals(request.getIndex())) {
                     sectionData = s;
                     courseData = c;
                 }
@@ -124,10 +123,10 @@ public class SectionInfoAdapter {
 
     public void setToolBarColor(Course.Sections section) {
         if(section.isOpenStatus()) {
-            toolBar.setBackgroundColor(context.getResources().getColor(R.color.open_course));
+            toolBar.setBackgroundColor(context.getResources().getColor(R.color.green));
             setGreenWindow();
         } else {
-            toolBar.setBackgroundColor(context.getResources().getColor(R.color.closed_course));
+            toolBar.setBackgroundColor(context.getResources().getColor(R.color.red));
             setPrimaryWindow();
         }
     }

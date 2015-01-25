@@ -16,12 +16,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.tevinjeffrey.rutgerssoc.Request;
+import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
 import com.tevinjeffrey.rutgerssoc.R;
-import com.tevinjeffrey.rutgerssoc.model.Subject;
-import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.lang.reflect.Type;
