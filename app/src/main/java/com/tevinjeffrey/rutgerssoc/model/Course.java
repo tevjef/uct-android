@@ -7,17 +7,18 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
 public class Course {
 
     public String getSubject() {
         return subject;
     }
 
-    public double getCredits() {
-        return credits;
+    public String getCredits() {
+        if(credits % 1 == 0) {
+            return String.valueOf((int)credits);
+        } else {
+            return String.valueOf(credits);
+        }
     }
 
     public String getCourseNumber() {
