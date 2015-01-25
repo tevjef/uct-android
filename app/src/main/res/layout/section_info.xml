@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:background="@color/window_background">
@@ -22,7 +24,9 @@
                 android:layout_height="fill_parent"
                 android:layout_marginLeft="56dp"
                 android:id="@+id/course_header_container"
-                android:paddingBottom="8dp">
+                android:paddingBottom="16dp">
+
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -34,18 +38,16 @@
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/white"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:freezesText="true"
-                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:freezesText="false"
                     android:scrollHorizontally="true"
-                    android:maxLines="3"
+                    android:maxLines="1"
 
+                    android:singleLine="true"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true"
-                    android:singleLine="true"
-                    android:gravity="center"
-                    android:ellipsize="none" />
+                    android:gravity="center_vertical" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,7 +59,6 @@
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/white"
-                    android:layout_alignParentStart="true"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:freezesText="true"
@@ -66,6 +67,7 @@
                     android:maxLines="3"
 
                     android:layout_alignParentBottom="false"
+                    android:layout_alignParentStart="true"
                     android:layout_above="@+id/instructors_container" />
 
                 <TextView
@@ -80,7 +82,8 @@
                     android:textColor="@color/black"
                     android:alpha="0.5"
                     android:layout_above="@+id/sectionNumber_text"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="-4dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,10 +96,11 @@
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
                     android:alpha="0.5"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="24dp"
                     android:layout_marginStart="23dp"
                     android:layout_alignTop="@+id/sectionNumber_title"
-                    android:layout_toEndOf="@+id/sectionNumber_text" />
+                    android:layout_toEndOf="@+id/sectionNumber_text"
+                    android:layout_marginBottom="-4dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,12 +113,12 @@
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/white"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:freezesText="true"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:freezesText="false"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
-                    android:maxLines="3"
+                    android:maxLines="1"
                     android:textIsSelectable="false"
                     android:layout_below="@+id/indexNumber_title"
                     android:layout_alignStart="@+id/indexNumber_title" />
@@ -132,13 +136,14 @@
                     android:alpha="0.5"
                     android:layout_marginLeft="24dp"
                     android:layout_above="@+id/indexNumber_text"
-                    android:layout_toEndOf="@+id/indexNumber_text" />
+                    android:layout_toEndOf="@+id/indexNumber_text"
+                    android:layout_marginBottom="-4dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="3.0"
+                    android:text="4"
                     android:id="@+id/credits_text"
                     android:textSize="34sp"
                     android:backgroundTint="@color/primary"
@@ -162,12 +167,12 @@
                     android:id="@+id/instructors_container"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="3dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Instructors"
+                        android:text="Instructors:"
                         android:id="@+id/instructors_title"
                         android:textSize="12sp"
                         android:backgroundTint="@color/primary"
@@ -180,19 +185,18 @@
                         android:layout_alignParentStart="true" />
 
                     <TextView
-                        android:layout_width="110dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="MAELLO; CAROLLA"
                         android:id="@+id/instructors_text"
                         android:textSize="12sp"
                         android:backgroundTint="@color/primary"
-                        android:typeface="normal"
                         android:fontFamily="sans-serif-condensed"
                         android:textColor="@color/white"
                         android:singleLine="true"
                         android:layout_toEndOf="@+id/instructors_title"
                         android:layout_alignTop="@+id/instructors_title"
-                        android:layout_marginLeft="8dp" />
+                        android:layout_marginLeft="5dp" />
 
                 </LinearLayout>
 
@@ -205,36 +209,37 @@
                     android:layout_toEndOf="@+id/instructors_container"
                     android:layout_marginLeft="7dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Seats:"
-                        android:id="@+id/classSize_title"
-                        android:textSize="12sp"
-                        android:backgroundTint="@color/primary"
-                        android:typeface="normal"
-                        android:fontFamily="sans-serif-condensed"
-                        android:textColor="@color/black"
-                        android:alpha="0.5"
-                        android:singleLine="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentStart="true" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:id="@+id/classSize_text"
-                        android:textSize="12sp"
-                        android:backgroundTint="@color/primary"
-                        android:typeface="normal"
-                        android:fontFamily="sans-serif-condensed"
-                        android:textColor="@color/white"
-                        android:singleLine="true"
-                        android:layout_toEndOf="@+id/classSize_title"
-                        android:layout_alignTop="@+id/classSize_title"
-                        android:layout_marginLeft="3dp" />
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seats"
+                    android:id="@+id/classSize_title"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/primary"
+                    android:typeface="normal"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/black"
+                    android:alpha="0.5"
+                    android:singleLine="true"
+                    android:layout_marginLeft="24dp"
+                    android:layout_alignTop="@+id/credits_title"
+                    android:layout_toEndOf="@+id/credits_title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="230"
+                    android:id="@+id/classSize_text"
+                    android:textSize="34sp"
+                    android:backgroundTint="@color/primary"
+                    android:typeface="normal"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/white"
+                    android:singleLine="true"
+                    android:layout_below="@+id/credits_title"
+                    android:layout_alignStart="@+id/classSize_title" />
 
 
             </RelativeLayout>
@@ -250,7 +255,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:id="@+id/course_metadata">
+                android:id="@+id/course_metadata"
+                android:layout_marginTop="10dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -519,12 +525,26 @@
 
                 </RelativeLayout>
 
-
-
-
-
                 </LinearLayout>
+
         </RelativeLayout>
 
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_white_24dp"
+            fab:fab_colorNormal="@color/accent"
+            fab:fab_colorPressed="@color/accent_dark"
+            fab:fab_colorRipple="@color/primary_light"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="140dp"
+            android:elevation="2dp" />
     </RelativeLayout>
+
+
 </ScrollView>

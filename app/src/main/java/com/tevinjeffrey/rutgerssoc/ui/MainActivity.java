@@ -3,11 +3,13 @@ package com.tevinjeffrey.rutgerssoc.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
@@ -74,6 +76,7 @@ public class MainActivity extends Activity {
                     .replace(R.id.container, new ChooserFragment()).addToBackStack(null)
                     .commit();
         }
+        Ion.getDefault(getApplicationContext()).configure().setLogging("MyLogs", Log.DEBUG);
         setPrimaryWindow();
     }
 
