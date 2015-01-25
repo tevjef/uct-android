@@ -53,6 +53,7 @@ public class ChooserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getParentActivity().setPrimaryWindow();
+        setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_chooser, container, false);
 
@@ -139,10 +140,4 @@ public class ChooserFragment extends Fragment {
     private Request createRequest() {
         return  new Request(null, getSemester(), getLocations(), getLevels());
     }
-
-
-
-
-
-
 }

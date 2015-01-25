@@ -45,6 +45,7 @@ public class SubjectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getParentActivity().setPrimaryWindow();
+        setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 

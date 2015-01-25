@@ -9,7 +9,7 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Toolbar
+        <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_header_info"
             android:layout_width="match_parent"
             android:layout_height="170dp"
@@ -22,7 +22,6 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="56dp"
                 android:id="@+id/course_header_container">
 
                 <TextView
@@ -139,7 +138,7 @@
 
 
             </RelativeLayout>
-        </Toolbar>
+        </android.support.v7.widget.Toolbar>
 
 
 
@@ -183,11 +182,9 @@
                         android:id="@+id/courseNotes_text"
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
-                        android:nestedScrollingEnabled="false"
                         android:elegantTextHeight="true"
-                        android:focusableInTouchMode="false"
                         android:layout_toEndOf="@+id/sectionNotes_title"
-                        android:fillViewport="true"/>
+   />
 
 
                 </RelativeLayout>

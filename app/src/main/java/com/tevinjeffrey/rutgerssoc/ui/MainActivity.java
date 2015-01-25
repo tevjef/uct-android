@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgerssoc.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     public ArrayList<Subject> getSubjects() {
         return subjects;
@@ -43,24 +44,12 @@ public class MainActivity extends Activity {
         return semesterId;
     }
 
-    public void setSemesterId(String semesterId) {
-        this.semesterId = semesterId;
-    }
-
     public String getCampus() {
         return campus;
     }
 
-    public void setCampus(String campus) {
-        this.campus = campus;
-    }
-
     public String getLevel() {
         return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     public String semesterId;
@@ -99,7 +88,7 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+       // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -116,5 +105,14 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
