@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Activity;
-import android.app.Fragment;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -10,13 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.koushikdutta.ion.Ion;
-import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -40,22 +41,6 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<Subject> subjects;
     ArrayList<Course> courses;
 
-    public String getSemesterId() {
-        return semesterId;
-    }
-
-    public String getCampus() {
-        return campus;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public String semesterId;
-    public String campus;
-    public String level;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,20 +59,26 @@ public class MainActivity extends ActionBarActivity {
         window.setStatusBarColor(getResources().getColor(R.color.accent_dark));
         window.setNavigationBarColor(getResources().getColor(R.color.accent_dark));
     }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setCyanWindow() {
-        Window window = getWindow();
-        window.setStatusBarColor(getResources().getColor(R.color.cyan_dark));
-        window.setNavigationBarColor(getResources().getColor(R.color.cyan_dark));
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.setStatusBarColor(getResources().getColor(R.color.cyan_dark));
+            window.setNavigationBarColor(getResources().getColor(R.color.cyan_dark));
+        }
     }
     public void setGreenWindow() {
         Window window = getWindow();
         window.setStatusBarColor(getResources().getColor(R.color.green_dark));
         window.setNavigationBarColor(getResources().getColor(R.color.green_dark));
     }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setPrimaryWindow() {
-        Window window = getWindow();
-        window.setStatusBarColor(getResources().getColor(R.color.primary_dark));
-        window.setNavigationBarColor(getResources().getColor(R.color.primary_dark));
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.setStatusBarColor(getResources().getColor(R.color.primary_dark));
+            window.setNavigationBarColor(getResources().getColor(R.color.primary_dark));
+        }
     }
 
     @Override
@@ -119,5 +110,10 @@ public class MainActivity extends ActionBarActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void btn(View v) {
+        YoYo.with(Techniques.SlideInRight).delay(200).playOn(v);
+
     }
 }
