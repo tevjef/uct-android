@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:minHeight="?android:attr/actionBarSize"
-            android:background="@color/cyan"
+            android:background="@color/accent"
             android:elevation="1dp"
             android:paddingRight="16dp">
 
@@ -29,13 +29,13 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
-                    android:id="@+id/sectionNumber_text"
+                    android:id="@+id/courseTitle_text"
                     android:textSize="24sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/white"
-                    android:layout_above="@+id/credits_text"
+                    android:layout_above="@+id/subtitle"
                     android:layout_alignParentStart="true"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
@@ -43,13 +43,14 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
                     android:maxLines="3"
+                    android:transitionName="course_title"
 
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3"
-                    android:id="@+id/credits_text"
+                    android:id="@+id/subtitle"
                     android:textSize="14sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
@@ -59,21 +60,22 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="16dp"
                     android:layout_marginRight="5sp"
-                    android:alpha="0.5" />
+                    android:alpha="0.5"
+                    android:transitionName="credit_number"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="21:198:101"
-                    android:id="@+id/sectionNumber_title"
+                    android:id="@+id/shortenedCourseInfo"
                     android:textSize="12sp"
                     android:backgroundTint="@color/primary"
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
-                    android:layout_above="@+id/sectionNumber_text"
-                    android:layout_alignParentStart="true"
-                    android:alpha="0.5" />
+                    android:alpha="0.5"
+                    android:layout_above="@+id/courseTitle_text"
+                    android:layout_alignParentStart="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -85,9 +87,9 @@
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
-                    android:layout_below="@+id/sectionNumber_text"
-                    android:layout_toEndOf="@+id/credits_text"
-                    android:alpha="0.5" />
+                    android:alpha="0.5"
+                    android:layout_alignTop="@+id/subtitle"
+                    android:layout_toEndOf="@+id/subtitle" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -115,10 +117,9 @@
                     android:typeface="normal"
                     android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/black"
-                    android:layout_below="@+id/sectionNumber_text"
-                    android:layout_toEndOf="@+id/sectionNumber_title"
-                    android:layout_toRightOf="@+id/openSections_text"
-                    android:alpha="0.5" />
+                    android:alpha="0.5"
+                    android:layout_alignTop="@+id/openSections_text"
+                    android:layout_toEndOf="@+id/openSections_text" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -160,7 +161,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/sectionNotes_container"
+                    android:id="@+id/courseNotesContainer"
                     android:layout_alignParentStart="true">
 
 
@@ -182,7 +183,7 @@
                         android:id="@+id/courseNotes_text"
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
-                        android:elegantTextHeight="true"
+                        android:elegantTextHeight="false"
                         android:layout_toEndOf="@+id/sectionNotes_title"
    />
 
@@ -192,8 +193,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/sectionComments_container"
-                    android:layout_below="@+id/sectionNotes_container"
+                    android:id="@+id/subjectNotesContainer"
+                    android:layout_below="@+id/courseNotesContainer"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="10dp">
 
@@ -217,7 +218,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
                         android:nestedScrollingEnabled="false"
-                        android:elegantTextHeight="true"
+                        android:elegantTextHeight="false"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/sectionComments_title"/>
 
@@ -226,8 +227,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/prereq_container"
-                    android:layout_below="@+id/sectionComments_container"
+                    android:id="@+id/prereqContainer"
+                    android:layout_below="@+id/subjectNotesContainer"
                     android:layout_marginTop="10dp">
 
                     <TextView
@@ -248,13 +249,9 @@
                         android:id="@+id/prereq_text"
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
-                        android:nestedScrollingEnabled="false"
-                        android:elegantTextHeight="true"
-                        android:editable="false"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/prereq_title"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"/>
+                        android:maxLines="5"/>
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -269,7 +266,8 @@
                 android:textSize="12sp"
                 android:layout_alignStart="@+id/course_metadata"
                 android:layout_below="@+id/course_metadata"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
 
         </RelativeLayout>
 
