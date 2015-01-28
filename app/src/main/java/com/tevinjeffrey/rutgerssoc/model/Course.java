@@ -2,8 +2,6 @@ package com.tevinjeffrey.rutgerssoc.model;
 
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,6 +152,33 @@ public class Course {
             return openStatus;
         }
 
+        public boolean hasNotes() {
+            return getSectionNotes() != null;
+        }
+        public boolean hasComments() {
+            return getComments().size() > 0;
+        }
+        public boolean hasMajors() {
+            return getMajors().size() > 0;
+        }
+        public boolean hasSpecialPermission() {
+            return getSpecialPermissionAddCode() != null;
+        }
+        public boolean hasSubtitle() {
+            return getSubtitle() != null;
+        }
+        public boolean hasCrossListed() {
+            return getCrossListedSections().size() > 0;
+        }
+        public boolean hasMetaData() {
+            return hasCrossListed() ||
+                    hasSpecialPermission() ||
+                    hasSubtitle() ||
+                    hasMajors() ||
+                    hasComments() ||
+                    hasNotes();
+        }
+
         List<Instructors> instructors = new ArrayList<>();
         List<MeetingTimes> meetingTimes = new ArrayList<>();
         List<CrossListedSections> crossListedSections = new ArrayList<>();
@@ -174,7 +199,7 @@ public class Course {
         boolean openStatus;
 
 
-        public class MeetingTimes implements Comparable {
+        public static class MeetingTimes implements Comparable {
 
             public boolean isLecture() {
                 return getMeetingModeCode() != null && getMeetingModeCode().equals("02");
@@ -254,7 +279,7 @@ public class Course {
             }
         }
 
-        public class Instructors {
+        public static class Instructors {
             public String getName() {
                 return name;
             }
@@ -262,14 +287,14 @@ public class Course {
             String name;
         }
 
-        public class Comments {
+        public static class Comments {
             String description;
 
             public String getDescription() {
                 return description;
             }
         }
-        public class CrossListedSections {
+        public static class CrossListedSections {
             String sectionNumber;
             String offeringUnitCode;
             String subjectCode;
@@ -295,7 +320,7 @@ public class Course {
                         + getCourseNumber() + ":" + getSectionNumber();
             }
         }
-        public class Majors {
+        public static class Majors {
             boolean isMajorCode;
             boolean isUnitCode;
             String code;
