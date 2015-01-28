@@ -2,24 +2,20 @@ package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
-import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
 public class CourseAdapter extends ArrayAdapter {
 
     private Context context;
@@ -84,7 +80,7 @@ public class CourseAdapter extends ArrayAdapter {
 
         Course course = item.get(position);
 
-        viewHolder.courseTitle.setText(CourseUtils.getTitle(course));
+        viewHolder.courseTitle.setText(WordUtils.capitalize(CourseUtils.getTitle(course).toLowerCase()));
         viewHolder.courseSectionsOpen.setText(course.getOpenSections() + " open sections of " + course.getSections().size());
 
         return rowView;

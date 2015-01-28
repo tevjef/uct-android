@@ -2,7 +2,6 @@ package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +16,10 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
 public class SubjectAdapter extends ArrayAdapter {
 
     private Context context;
-    private String[] navTitles;
-    private TypedArray navIcons;
-    private int type;
-    private ImageView imgIcon = null;
-    private TextView txtTitle = null;
     private ArrayList<Subject> item;
-
-
 
     static class ViewHolder {
         public TextView text;
@@ -68,7 +57,6 @@ public class SubjectAdapter extends ArrayAdapter {
         ViewHolder viewHolder;
 
         if (rowView == null) {
-
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -77,15 +65,14 @@ public class SubjectAdapter extends ArrayAdapter {
             rowView = mInflater.inflate(R.layout.subject_name, null);
             viewHolder.text = (TextView) rowView.findViewById(R.id.course_list_title);
 
-
             rowView.setTag(viewHolder);
 
         } else {
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        String text =  item.get(position).getCode() + ": " + item.get(position).getDescription().toLowerCase();
-        viewHolder.text.setText(WordUtils.capitalize(text));
+        String text =  item.get(position).getCode() + ": " + item.get(position).getDescription();
+        viewHolder.text.setText(WordUtils.capitalize(text.toLowerCase()));
 
         return rowView;
 
