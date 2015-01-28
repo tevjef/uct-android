@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgerssoc.ui;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,9 @@ import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.adapters.SubjectAdapter;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
-import com.tevinjeffrey.rutgerssoc.adapters.SubjectAdapter;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
@@ -48,10 +49,11 @@ public class SubjectFragment extends Fragment {
         setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
         request = getArguments().getParcelable("request");
+        setToolbar(rootView);
+
         String url = UrlUtils.getSubjectUrl(UrlUtils.buildParamUrl(request));
 
         Log.d("URL" , url);
@@ -96,6 +98,33 @@ public class SubjectFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    private void setToolbar(View rootView) {
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        getParentActivity().setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentActivity().onBackPressed();
+            }
+        });
+        getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        setToolbarTitle(toolbar);
+    }
+
+    private void setToolbarTitle(Toolbar toolbar) {
+        toolbar.setTitle(request.getSemester());
+
+        ArrayList<String> al = new ArrayList<>();
+        for(String s: request.getLocations()) {
+            al.add(UrlUtils.getAbbreviatedLocationName(s));
+        }
+        toolbar.setSubtitle(Request.toStringList(al) + " - "
+                + Request.toStringList(request.getLevels()));
     }
 
     private void setSubject(AdapterView<?> parent, int position) {

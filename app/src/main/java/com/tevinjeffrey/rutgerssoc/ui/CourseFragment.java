@@ -1,8 +1,12 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.widget.Toolbar;
+import android.transition.AutoTransition;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +20,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.tevinjeffrey.rutgerssoc.model.Request;
-import com.tevinjeffrey.rutgerssoc.model.Course;
-import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
+import com.tevinjeffrey.rutgerssoc.model.Course;
+import com.tevinjeffrey.rutgerssoc.model.Request;
+import com.tevinjeffrey.rutgerssoc.model.Subject;
+import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -50,6 +58,8 @@ public class CourseFragment extends Fragment {
         final ListView listView = (ListView) rootView.findViewById(R.id.courses);
 
         request = getArguments().getParcelable("request");
+        setToolbar(rootView);
+
         String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(request));
 
         Log.d("URL" , url);
@@ -98,8 +108,37 @@ public class CourseFragment extends Fragment {
         return rootView;
     }
 
+    private void setToolbar(View rootView) {
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        getParentActivity().setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentActivity().onBackPressed();
+            }
+        });
+        getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        setToolbarTitle(toolbar);
+    }
+
+    private void setToolbarTitle(Toolbar toolbar) {
+        for(Subject s: getParentActivity().getSubjects()) {
+            if(CourseUtils.formatNumber(s.getCode()).equals(request.getSubject())) {
+                toolbar.setTitle(WordUtils.capitalize(s.getDescription().toLowerCase()));
+            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void createFragment(Bundle b) {
         Fragment courseInfoFragment = new CourseInfoFragment();
+
+        courseInfoFragment.setEnterTransition(new AutoTransition());
+        courseInfoFragment.setExitTransition(new AutoTransition());
+
         courseInfoFragment.setArguments(b);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, courseInfoFragment).addToBackStack(null)
