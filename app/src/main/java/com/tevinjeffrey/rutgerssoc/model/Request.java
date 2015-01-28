@@ -3,18 +3,20 @@ package com.tevinjeffrey.rutgerssoc.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.orm.SugarRecord;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.util.ArrayList;
 
-public class Request extends SugarRecord<Request> implements Parcelable {
+public class Request implements Parcelable {
 
     String subject;
     String semester;
     ArrayList<String> locations;
     ArrayList<String> levels;
     String index;
+
+    public Request() {
+    }
 
     public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels) {
         this.subject = subject;
@@ -27,6 +29,8 @@ public class Request extends SugarRecord<Request> implements Parcelable {
         this(subject, semester, locations, levels);
         this.index = index;
     }
+
+
 
     public String getIndex() {
         return index;
@@ -102,8 +106,27 @@ public class Request extends SugarRecord<Request> implements Parcelable {
         }
     };
 
+    public static String toStringList(ArrayList<String> strings) {
+        StringBuilder sb = new StringBuilder();
+        for(String s :strings) {
+            sb.append(s);
+            sb.append(", ");
+        }
+        return UrlUtils.trimTrailingChar(sb.toString());
+    }
     @Override
     public String toString() {
         return UrlUtils.buildParamUrl(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Request) {
+            Request b = (Request) o;
+                return (subject.equals(b.getSubject()) && semester.equals(b.getSemester()) &&
+                        locations.equals(b.getLocations()) && levels.equals(b.getLevels()) &&
+                        levels.equals(b.getLevels()));
+        }
+        return false;
     }
 }
