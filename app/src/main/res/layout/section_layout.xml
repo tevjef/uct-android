@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:id="@+id/sectionRoot"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/section_details">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A EXAMPLE OF VERY LONG TEXT"
+            android:id="@+id/prof_text"
+            android:textColor="@color/secondary_text"
+            android:textSize="11sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/sectionTimeContainer"
+            android:layout_marginTop="5dp" />
+
+        <RelativeLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:minHeight="40dp"
+            android:minWidth="40dp"
+            android:background="@color/green"
+            android:transitionName="section_background"
+
+            android:id="@+id/sectionNumberBackground">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01"
+            android:id="@+id/sectionNumber"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Tuesday 10:00 AM - 11:20 AM"
+            android:id="@+id/sectionTimeContainer"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:minWidth="100dp"
+            android:orientation="vertical"
+            android:layout_toEndOf="@+id/sectionNumberBackground"
+            android:transitionName="instructor_name"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp">
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
