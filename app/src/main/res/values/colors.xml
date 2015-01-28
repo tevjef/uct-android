@@ -15,9 +15,13 @@
     <color name="white">#ffffff</color>
     <color name="window_background">#fafafa</color>
 
+    <color name="section_meta_bg">#D2E8FF</color>
+
     <color name="cyan">#00BCD4</color>
     <color name="cyan_dark">#0097A7</color>
     <color name="cyan_light">#B2EBF2</color>
+
+    <color name="untracked_course">#B6B6B6</color>
 
     <color name="blue_grey">#607D8B</color>
     <color name="blue_grey_dark">#455A64</color>
