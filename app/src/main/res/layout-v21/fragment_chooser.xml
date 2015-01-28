@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:minHeight="?android:attr/actionBarSize"
-        android:background="@color/primary">
+        android:background="?android:attr/colorPrimary"
+        android:elevation="1dp">
 
 
         <RelativeLayout
@@ -23,8 +24,9 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Let's get started"
-                android:id="@+id/textView2"
+                android:id="@+id/header_text"
                 android:textSize="40sp"
+                android:backgroundTint="@color/accent"
                 android:typeface="normal"
                 android:fontFamily="sans-serif-thin"
                 android:textColor="@color/primary_light"
@@ -36,6 +38,7 @@
                 android:text="Choose a term, location and level of study"
                 android:id="@+id/subtitle"
                 android:textSize="16sp"
+                android:backgroundTint="@color/accent"
                 android:typeface="normal"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/white"
@@ -190,6 +193,7 @@
             android:layout_alignParentEnd="true"
             android:background="@android:color/transparent"
             android:textStyle="italic"
+            android:elevation="0dp"
             android:textSize="14sp"
             android:textColor="@color/white"
             android:gravity="center_vertical|center_horizontal" />
