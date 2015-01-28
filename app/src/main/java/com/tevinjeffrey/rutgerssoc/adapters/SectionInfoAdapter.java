@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -9,16 +10,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
+import com.nineoldandroids.animation.ArgbEvaluator;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.view.ViewHelper;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.R;
-import com.tevinjeffrey.rutgerssoc.model.Request;
+import com.tevinjeffrey.rutgerssoc.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgerssoc.model.Course;
+import com.tevinjeffrey.rutgerssoc.model.Request;
+import com.tevinjeffrey.rutgerssoc.model.TrackedSections;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
 import java.util.Collections;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class SectionInfoAdapter {
 
@@ -29,30 +45,87 @@ public class SectionInfoAdapter {
     private Course.Sections sectionData;
     private View rowView;
 
-    private Toolbar toolBar;
-    private TextView sectionNumber;
-    private TextView sectionIndex;
-    private TextView sectionCredits;
-    private TextView courseTitle;
+    @InjectView(R.id.courseTitle_text)
+    TextView mCourseTitleText;
+    @InjectView(R.id.sectionNumber_text)
+    TextView mSectionNumberText;
+    @InjectView(R.id.shortenedCourseInfo)
+    TextView mSectionNumberTitle;
+    @InjectView(R.id.indexNumber_title)
+    TextView mIndexNumberTitle;
+    @InjectView(R.id.indexNumber_text)
+    TextView mIndexNumberText;
+    @InjectView(R.id.credits_title)
+    TextView mCreditsTitle;
+    @InjectView(R.id.subtitle)
+    TextView mCreditsText;
+    @InjectView(R.id.instructors_title)
+    TextView mInstructorsTitle;
+    @InjectView(R.id.instructors_text)
+    TextView mInstructorsText;
+    @InjectView(R.id.instructors_container)
+    LinearLayout mInstructorsContainer;
+    @InjectView(R.id.classSize_title)
+    TextView mClassSizeTitle;
+    @InjectView(R.id.classSize_text)
+    TextView mClassSizeText;
+    @InjectView(R.id.course_header_container)
+    RelativeLayout mCourseHeaderContainer;
+    @InjectView(R.id.toolbar_header_info)
+    Toolbar mToolbarHeaderInfo;
+    @InjectView(R.id.sectionNotes_title)
+    TextView mSectionNotesTitle;
+    @InjectView(R.id.sectionNotes_text)
+    TextView mSectionNotesText;
+    @InjectView(R.id.courseNotesContainer)
+    RelativeLayout mSectionNotesContainer;
+    @InjectView(R.id.sectionComments_title)
+    TextView mSectionCommentsTitle;
+    @InjectView(R.id.sectionComments_text)
+    TextView mSectionCommentsText;
+    @InjectView(R.id.subjectNotesContainer)
+    RelativeLayout mSectionCommentsContainer;
+    @InjectView(R.id.sectionCrossList_title)
+    TextView mSectionCrossListTitle;
+    @InjectView(R.id.sectionCrossList_text)
+    TextView mSectionCrossListText;
+    @InjectView(R.id.sectionCrossList_container)
+    RelativeLayout mSectionCrossListContainer;
+    @InjectView(R.id.sectionSubtitle_title)
+    TextView mSectionSubtitleTitle;
+    @InjectView(R.id.sectionSubtitle_text)
+    TextView mSectionSubtitleText;
+    @InjectView(R.id.sectionSubtitle_container)
+    RelativeLayout mSectionSubtitleContainer;
+    @InjectView(R.id.sectionPermission_title)
+    TextView mSectionPermissionTitle;
+    @InjectView(R.id.sectionPermission_text)
+    TextView mSectionPermissionText;
+    @InjectView(R.id.sectionPermisision_container)
+    RelativeLayout mSectionPermisisionContainer;
+    @InjectView(R.id.sectionOpenTo_title)
+    TextView mSectionOpenToTitle;
+    @InjectView(R.id.sectionOpenTo_text)
+    TextView mSectionOpenToText;
+    @InjectView(R.id.sectionOpenTo_container)
+    RelativeLayout mSectionOpenToContainer;
+    @InjectView(R.id.course_metadata)
+    RelativeLayout mCourseMetadata;
+    @InjectView(R.id.sectionNumber)
+    TextView mTimeLocationTitle;
+    @InjectView(R.id.sectionTimeContainer)
+    LinearLayout mSectionTimeContainer;
+    @InjectView(R.id.section_details)
+    RelativeLayout mSectionDetails;
+    @InjectView(R.id.sectionRoot)
+    RelativeLayout mSectionRoot;
+    @InjectView(R.id.sections_container)
+    LinearLayout mSectionsContainer;
+    @InjectView(R.id.bottomHalf)
+    RelativeLayout mBottomHalf;
+    @InjectView(R.id.fab)
+    FloatingActionButton mFab;
 
-    private TextView sectionNotes;
-    private TextView sectionComments;
-    private TextView sectionOpenTo;
-    private TextView sectionPermission;
-    private TextView sectionCrossList;
-    private TextView sectionSubtitle;
-    private TextView sectionSize;
-    private TextView instructors;
-
-
-    private View sectionNotesContainer;
-    private View sectionCommentsContainer;
-    private View sectionOpenToContainer;
-    private View sectionCrossListContainer;
-    private View sectionSubtitleContainer;
-    private View sectionPermissionContainer;
-
-    private LinearLayout sectionTimeContainer;
 
     private SectionInfoAdapter(Activity context, Request item, View rowView) {
         this.context = context;
@@ -63,32 +136,11 @@ public class SectionInfoAdapter {
     public SectionInfoAdapter(Activity context, Request item, View rowView, List<Course> courses) {
         this(context,item, rowView);
         this.courses = courses;
+
     }
 
     public void init() {
-        toolBar = (Toolbar) rowView.findViewById(R.id.toolbar_header_info);
-        sectionNumber = (TextView) rowView.findViewById(R.id.sectionNumber_text);
-        sectionIndex = (TextView) rowView.findViewById(R.id.indexNumber_text);
-        sectionCredits = (TextView) rowView.findViewById(R.id.credits_text);
-        courseTitle = (TextView) rowView.findViewById(R.id.courseTitle_text);
-        sectionNotes = (TextView) rowView.findViewById(R.id.sectionNotes_text);
-        sectionComments = (TextView) rowView.findViewById(R.id.sectionComments_text);
-        sectionOpenTo = (TextView) rowView.findViewById(R.id.sectionOpenTo_text);
-        sectionPermission = (TextView) rowView.findViewById(R.id.sectionPermission_text);
-        sectionCrossList = (TextView) rowView.findViewById(R.id.sectionCrossList_text);
-        sectionSubtitle = (TextView) rowView.findViewById(R.id.sectionSubtitle_text);
-        sectionSize = (TextView) rowView.findViewById(R.id.classSize_text);
-        instructors = (TextView) rowView.findViewById(R.id.instructors_text);
-
-        sectionCrossListContainer = rowView.findViewById(R.id.sectionCrossList_container);
-        sectionSubtitleContainer = rowView.findViewById(R.id.sectionSubtitle_container);
-        sectionPermissionContainer = rowView.findViewById(R.id.sectionPermisision_container);
-
-        sectionNotesContainer = rowView.findViewById(R.id.sectionNotes_container);
-        sectionCommentsContainer = rowView.findViewById(R.id.sectionComments_container);
-        sectionOpenToContainer = rowView.findViewById(R.id.sectionOpenTo_container);
-
-        sectionTimeContainer = (LinearLayout) rowView.findViewById(R.id.section_time_container);
+        ButterKnife.inject(this, rowView);
 
         for (Course c : courses) {
             for (Course.Sections s : c.getSections())
@@ -97,7 +149,6 @@ public class SectionInfoAdapter {
                     courseData = c;
                 }
         }
-
         setData();
     }
 
@@ -117,70 +168,156 @@ public class SectionInfoAdapter {
         setSectionSize(sectionData);
         setTimes(sectionData);
         setInstructors(sectionData);
+        setActionButton(mFab);
+
+        new SectionInfoAnimator(rowView).init();
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFab();
+
+            }
+
+            private void toggleFab() {
+                if (isSectionTracked()) {
+                    animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(0);
+                    removeSectionFromDb();
+                    Toast.makeText(context, "Stopped tracking...",
+                            Toast.LENGTH_SHORT).show();
+
+                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF455A64, /*Blue*/0xFF607D8B);
+                    colorAnim.setDuration(250);
+                    colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            mFab.setColorNormal((Integer) animation.getAnimatedValue());
+                        }
+                    });
+                    colorAnim.setEvaluator(new ArgbEvaluator());
+                    colorAnim.start();
+
+                } else {
+                    animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(225);
+                    addSectionToDb(request);
+                    Toast.makeText(context, "Started tracking...",
+                            Toast.LENGTH_SHORT).show();
+                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF607D8B, /*Blue*/0xFF455A64);
+                    colorAnim.setDuration(250);
+                    colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            mFab.setColorNormal((Integer) animation.getAnimatedValue());
+                        }
+                    });
+                    colorAnim.setEvaluator(new ArgbEvaluator());
+                    colorAnim.start();
+                }
+            }
+        });
     }
+
+    private void setActionButton(FloatingActionButton fab) {
+        if(isSectionTracked()) {
+            ViewHelper.setRotation(fab, 225);
+            fab.setBackgroundColor(context.getResources().getColor(R.color.accent_dark));
+        }
+    }
+
+    private void removeSectionFromDb() {
+        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
+                "INDEX_NUMBER = ?", sectionData.getIndex());
+        for(TrackedSections ts : trackedSections) {
+                ts.delete();
+        }
+    }
+
+    private boolean isSectionTracked() {
+        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
+                "INDEX_NUMBER = ?", sectionData.getIndex());
+
+        for(TrackedSections ts : trackedSections) {
+            if(request.getIndex().equals(ts.getIndexNumber())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addSectionToDb(Request request) {
+        TrackedSections trackedSections = new TrackedSections(request.getSubject(),
+                request.getSemester(), Request.toStringList(request.getLocations()),
+                Request.toStringList(request.getLevels()), request.getIndex());
+        trackedSections.save();
+    }
+
 
 
 
     public void setToolBarColor(Course.Sections section) {
         if(section.isOpenStatus()) {
-            toolBar.setBackgroundColor(context.getResources().getColor(R.color.green));
+            mToolbarHeaderInfo.setBackgroundColor(context.getResources().getColor(R.color.green));
             setGreenWindow();
         } else {
-            toolBar.setBackgroundColor(context.getResources().getColor(R.color.red));
+            mToolbarHeaderInfo.setBackgroundColor(context.getResources().getColor(R.color.red));
             setPrimaryWindow();
         }
     }
     public void setGreenWindow() {
-        Window window = context.getWindow();
-        window.setStatusBarColor(context.getResources().getColor(R.color.green_dark));
-        window.setNavigationBarColor(context.getResources().getColor(R.color.green_dark));
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            Window window = context.getWindow();
+            window.setStatusBarColor(context.getResources().getColor(R.color.green_dark));
+            window.setNavigationBarColor(context.getResources().getColor(R.color.green_dark));
+        }
     }
     public void setPrimaryWindow() {
-        Window window = context.getWindow();
-        window.setStatusBarColor(context.getResources().getColor(R.color.primary_dark));
-        window.setNavigationBarColor(context.getResources().getColor(R.color.primary_dark));
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            Window window = context.getWindow();
+            window.setStatusBarColor(context.getResources().getColor(R.color.primary_dark));
+            window.setNavigationBarColor(context.getResources().getColor(R.color.primary_dark));
+        }
     }
 
     public void setSectionNumber(Course.Sections section) {
-        sectionNumber.setText(section.getNumber());
+        mSectionNumberText.setText(section.getNumber());
     }
 
     public void setSectionIndex(Course.Sections section) {
-        sectionIndex.setText(section.getIndex());
+        mIndexNumberText.setText(section.getIndex());
     }
 
     public void setSectionCredits(Course course) {
-        sectionCredits.setText(String.valueOf(course.getCredits()));
+        mCreditsText.setText(String.valueOf(course.getCredits()));
     }
 
     public void setCourseTitle(Course course) {
-        this.courseTitle.setText(CourseUtils.getTitle(course));
+        mCourseTitleText.setText(CourseUtils.getTitle(course));
     }
 
     public void setSectionNotes(Course.Sections section) {
-        if (section.getSectionNotes() == null) {
-            sectionNotesContainer.setVisibility(View.GONE);
+        if (!section.hasNotes()) {
+            mSectionNotesContainer.setVisibility(View.GONE);
         } else {
-            this.sectionNotes.setText(Html.fromHtml(section.getSectionNotes()));
+            mSectionNotesText.setText(Html.fromHtml(section.getSectionNotes()));
         }
     }
 
     public void setSectionComments(Course.Sections section) {
-        if (section.getComments().size() == 0) {
-            sectionCommentsContainer.setVisibility(View.GONE);
+        if (!section.hasComments()) {
+            mSectionCommentsContainer.setVisibility(View.GONE);
         } else {
             StringBuilder sb= new StringBuilder();
             for(Course.Sections.Comments i : section.getComments()) {
                     sb.append(i.getDescription());
                     sb.append(", ");
             }
-            this.sectionComments.setText(Html.fromHtml(sb.toString()));
+            mSectionCommentsText.setText(Html.fromHtml(sb.toString()));
         }
     }
 
     public void setSectionOpenTo(Course.Sections section) {
-        if (section.getMajors().size() == 0) {
-            sectionOpenToContainer.setVisibility(View.GONE);
+        if (!section.hasMajors()) {
+            mSectionOpenToContainer.setVisibility(View.GONE);
         } else {
             boolean isMajorHeaderSet = false;
             boolean isUnitHeaderSet = false;
@@ -202,41 +339,41 @@ public class SectionInfoAdapter {
                     sb.append(", ");
                 }
             }
-            this.sectionOpenTo.setText(Html.fromHtml(sb.toString()));
+            mSectionOpenToText.setText(Html.fromHtml(sb.toString()));
         }
     }
 
     public void setSectionPermission(Course.Sections section) {
-        if (section.getSpecialPermissionAddCodeDescription() == null) {
-            sectionPermissionContainer.setVisibility(View.GONE);
+        if (!section.hasSpecialPermission()) {
+            mSectionPermisisionContainer.setVisibility(View.GONE);
         } else {
-            this.sectionPermission.setText(Html.fromHtml(section.getSpecialPermissionAddCodeDescription()));
+            mSectionPermissionText.setText(Html.fromHtml(section.getSpecialPermissionAddCodeDescription()));
         }
     }
 
     public void setSectionCrossList(Course.Sections section) {
-        if (section.getCrossListedSections().size() == 0) {
-            sectionCrossListContainer.setVisibility(View.GONE);
+        if (!section.hasCrossListed()) {
+            mSectionCrossListContainer.setVisibility(View.GONE);
         } else {
             StringBuilder sb= new StringBuilder();
             for(Course.Sections.CrossListedSections i : section.getCrossListedSections()) {
                 sb.append(i.getFullCrossListedSection());
                 sb.append(", ");
             }
-            this.sectionCrossList.setText(Html.fromHtml(sb.toString()));
+            mSectionCrossListText.setText(Html.fromHtml(sb.toString()));
         }
     }
 
     public void setSectionSubtitle(Course.Sections section) {
-        if (section.getSubtitle() == null) {
-            sectionSubtitleContainer.setVisibility(View.GONE);
+        if (!section.hasSubtitle()) {
+            mSectionSubtitleContainer.setVisibility(View.GONE);
         } else {
-            this.sectionSubtitle.setText(Html.fromHtml(section.getSubtitle()));
+            mSectionSubtitleText.setText(Html.fromHtml(section.getSubtitle()));
         }
     }
 
     public void setSectionSize(Course.Sections section) {
-            this.sectionSize.setText(String.valueOf(section.getStopPoint()));
+            mClassSizeText.setText(String.valueOf(section.getStopPoint()));
     }
 
     public void setTimes(Course.Sections s) {
@@ -262,7 +399,7 @@ public class SectionInfoAdapter {
             locationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
             meetingTimeText.setText(time.getMeetingModeDesc());
 
-            sectionTimeContainer.addView(timeLayout);
+            mSectionTimeContainer.addView(timeLayout);
         }
     }
 
@@ -277,6 +414,6 @@ public class SectionInfoAdapter {
             }
         }
         if(s.getInstructors().size() > 1) sb = new StringBuilder(sb.substring(0, sb.length() -1));
-        instructors.setText(sb.toString());
+        mInstructorsText.setText(sb.toString());
     }
 }
