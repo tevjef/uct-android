@@ -1,16 +1,11 @@
 package com.tevinjeffrey.rutgerssoc.utils;
 
 
-import android.content.Context;
-
 import com.tevinjeffrey.rutgerssoc.model.Request;
 
 import java.util.ArrayList;
 
 public class UrlUtils {
-
-
-    public Context context;
 
     public UrlUtils() {
 
@@ -114,10 +109,6 @@ public class UrlUtils {
             appendComma(sb);
         sb.append(loc);
     }
-    public static String trim(StringBuilder sb){
-        return sb.substring(0, sb.length() -3);
-    }
-
     public static String buildParamUrl(Request request) {
         StringBuilder sb = new StringBuilder();
         if(request.isCourseRequest()) {
@@ -159,5 +150,26 @@ public class UrlUtils {
 
         return sb.toString();
     }
+    public static String trimTrailingChar(String s) {
+        return s.substring(0, s.length() -2);
+    }
+    public static String trimTrailingChar(String s, char c) {
+        if(s.charAt(s.length() -1) == c) {
+            return s.substring(0, s.length() - 1);
+        } else {
+            return s;
+        }
+    }
 
+    public static String getAbbreviatedLocationName(String s) {
+        if (FIRST_LOCATION.equals(s)) {
+            return FIRST_LOCATION_ID;
+        } else if (SECOND_LOCATION.equals(s)) {
+            return SECOND_LOCATION_ID;
+        } else if (THIRD_LOCATION.equals(s)) {
+            return THIRD_LOCATION_ID;
+        } else {
+            return null;
+        }
+    }
 }
