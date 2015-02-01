@@ -59,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
         window.setStatusBarColor(getResources().getColor(R.color.accent_dark));
         window.setNavigationBarColor(getResources().getColor(R.color.accent_dark));
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
     public void setCyanWindow() {
         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -72,7 +72,7 @@ public class MainActivity extends ActionBarActivity {
         window.setStatusBarColor(getResources().getColor(R.color.green_dark));
         window.setNavigationBarColor(getResources().getColor(R.color.green_dark));
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
     public void setPrimaryWindow() {
         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -110,10 +110,5 @@ public class MainActivity extends ActionBarActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    public void btn(View v) {
-        YoYo.with(Techniques.SlideInRight).delay(200).playOn(v);
-
     }
 }

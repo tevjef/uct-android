@@ -114,6 +114,8 @@ public class Request implements Parcelable {
         }
         return UrlUtils.trimTrailingChar(sb.toString());
     }
+
+
     @Override
     public String toString() {
         return UrlUtils.buildParamUrl(this);

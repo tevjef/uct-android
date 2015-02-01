@@ -9,6 +9,7 @@
     android:paddingRight="16dp"
     android:paddingLeft="16dp">
 
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -35,20 +36,21 @@
             android:background="@color/green"
             android:transitionName="section_background"
 
-            android:id="@+id/sectionNumberBackground">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="01"
-            android:id="@+id/sectionNumber"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_marginRight="8dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            />
+            android:id="@+id/sectionNumberBackground"
+            android:layout_below="@+id/sectionTitle_text">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01"
+                android:id="@+id/sectionNumber"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginRight="8dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                />
         </RelativeLayout>
 
         <LinearLayout
@@ -63,11 +65,27 @@
             android:orientation="vertical"
             android:layout_toEndOf="@+id/sectionNumberBackground"
             android:transitionName="instructor_name"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="8dp">
+            android:layout_alignParentTop="false"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@+id/sectionTitle_text">
 
-
+            <?xml version="1.0" encoding="utf-8"?>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Computer Science | Computer &amp; Programming I"
+            android:id="@+id/sectionTitle_text"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed" />
 
     </RelativeLayout>
 

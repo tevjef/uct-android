@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_header_chooser"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:minHeight="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
+        android:elevation="1dp">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="34dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Tracked Courses"
+                android:id="@+id/header_text"
+                android:textSize="40sp"
+                android:backgroundTint="@color/accent"
+                android:typeface="normal"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/primary_light"
+                android:layout_above="@+id/subtitle"
+                android:layout_alignParentStart="true"
+                android:focusableInTouchMode="false" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Course Sniper for Android"
+                android:id="@+id/subtitle"
+                android:textSize="16sp"
+                android:backgroundTint="@color/accent"
+                android:typeface="normal"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="16dp" />
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/accent"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="Find Courses"
+            android:id="@+id/search_button"
+            android:onClick="onSearch"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:textStyle="italic"
+            android:elevation="0dp"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical|center_horizontal" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_above="@+id/relativeLayout3"
+        android:layout_marginBottom="18dp">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout3"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_alignParentStart="true">
+
+    </RelativeLayout>
+
+</RelativeLayout>
