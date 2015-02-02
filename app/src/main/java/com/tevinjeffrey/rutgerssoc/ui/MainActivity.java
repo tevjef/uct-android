@@ -1,8 +1,15 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +20,7 @@ import android.view.Window;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.koushikdutta.ion.Ion;
+import com.tevinjeffrey.rutgerssoc.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
@@ -52,6 +60,21 @@ public class MainActivity extends ActionBarActivity {
         }
         Ion.getDefault(getApplicationContext()).configure().setLogging("MyLogs", Log.DEBUG);
         setPrimaryWindow();
+
+        setAlarm();
+    }
+
+    private void setAlarm() {
+        AlarmManager alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent wakefulBroadcastReceiverIntent = new Intent(this,
+                AlarmWakefulReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 1234, wakefulBroadcastReceiverIntent,
+                0);
+
+        alarmMgr.cancel(alarmIntent);
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+
     }
 
     public void setAccentWindow() {
