@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -28,6 +29,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RequestService extends Service {
     public RequestService() {
@@ -40,18 +43,17 @@ public class RequestService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //TODO reduce memory usage by removing objects from the requests list and if the list is empty, stop the service.
         Log.d("RequestService-Response", "RequestService started");
 
         //Construct a list of requests by semester.
-        List<Request> requests = new ArrayList<>();
+        //List<Request> requests = new ArrayList<>();
 
-        for(Iterator<TrackedSections> allTrackedSections =
+        for(final Iterator<TrackedSections> allTrackedSections =
                     TrackedSections.findAll(TrackedSections.class); allTrackedSections.hasNext();) {
             TrackedSections ts = allTrackedSections.next();
-            requests.add(new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber()));
-        }
-
-        for(final Request r: requests) {
+            final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
             String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
             Ion.with(this)
                     .load(url)
@@ -64,19 +66,26 @@ public class RequestService extends Service {
                                 Log.d("RequestService-Response", result.toString());
                                 ArrayList<Course> courses = getListFromJson(result);
 
-                                for(Course c: courses) {
-                                    for(Course.Sections s: c.getSections()) {
+                                for(final Course c: courses) {
+                                    for(final Course.Sections s: c.getSections()) {
                                         if(s.getIndex().equals(r.getIndex()) && s.isOpenStatus()) {
-                                            makeNotification(c, s, r);
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    makeNotification(c, s, r);
+
+                                                    if(!allTrackedSections.hasNext()) {
+                                                        stopSelf();
+                                                    }
+                                                }
+                                            }, 8000);
                                         }
                                     }
                                 }
                             } else {
                                 Toast.makeText(RequestService.this, "No Internet connection", Toast.LENGTH_LONG).show();
                             }
-
                         }
-
                         private ArrayList<Course> getListFromJson(JsonArray result) {
                             Type listType = new TypeToken<List<Course>>() {
                             }.getType();
@@ -84,11 +93,11 @@ public class RequestService extends Service {
                         }
                     });
         }
-
         AlarmWakefulReceiver.completeWakefulIntent(intent);
-
         return START_NOT_STICKY;
     }
+
+
 
     private void makeNotification(Course c, Course.Sections s, Request r) {
         String courseTitle = CourseUtils.getTitle(c);
@@ -96,6 +105,10 @@ public class RequestService extends Service {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText("Section " + sectionNumber + " of " + courseTitle
+                                        + " has opened")
+                                .setBigContentTitle("A section has opened"))
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setWhen(System.currentTimeMillis())
                         .setDefaults(NotificationCompat.DEFAULT_ALL)

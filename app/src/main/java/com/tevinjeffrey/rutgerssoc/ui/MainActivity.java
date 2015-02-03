@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
                     .replace(R.id.container, new ChooserFragment()).addToBackStack(null)
                     .commit();
         }
-        Ion.getDefault(getApplicationContext()).configure().setLogging("MyLogs", Log.DEBUG);
+        Ion.getDefault(getApplicationContext()).configure().setLogging("MyLogs", Log.VERBOSE);
         setPrimaryWindow();
 
         setAlarm();
