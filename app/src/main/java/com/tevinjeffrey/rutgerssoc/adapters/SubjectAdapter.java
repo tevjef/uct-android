@@ -15,11 +15,12 @@ import com.tevinjeffrey.rutgerssoc.model.Subject;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SubjectAdapter extends ArrayAdapter {
 
     private Context context;
-    private ArrayList<Subject> item;
+    private List<Subject> item;
 
     static class ViewHolder {
         public TextView text;
@@ -27,7 +28,7 @@ public class SubjectAdapter extends ArrayAdapter {
     }
 
 
-    public SubjectAdapter(Context context, ArrayList<Subject> item){
+    public SubjectAdapter(Context context, List<Subject> item){
         super(context, -1, item);
         this.context = context;
         this.item = item;

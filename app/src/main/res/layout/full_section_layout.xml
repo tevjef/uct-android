@@ -69,7 +69,6 @@
             android:layout_marginLeft="8dp"
             android:layout_below="@+id/sectionTitle_text">
 
-            <?xml version="1.0" encoding="utf-8"?>
         </LinearLayout>
 
         <TextView

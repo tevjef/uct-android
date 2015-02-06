@@ -25,6 +25,7 @@ import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.lang.reflect.Type;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,33 +61,25 @@ public class SubjectFragment extends Fragment {
 
         Ion.with(this)
                 .load(url)
-                .asJsonArray()
-                .setCallback(new FutureCallback<JsonArray>() {
-
+                .as(new TypeToken<List<Subject>>() {
+                })
+                .setCallback(new FutureCallback<List<Subject>>() {
                     @Override
-                    public void onCompleted(Exception e, JsonArray result) {
-
-
+                    public void onCompleted(Exception e, List<Subject> subjects) {
                         //TODO: Handle UnknownHostException for when the there's no internet connection
+                        if (e == null && subjects.size() > 0) {
 
-                        if (e == null && result.size() > 0) {
-                            Gson gson = new Gson();
-
-                            Type listType = new TypeToken<List<Subject>>() {
-                            }.getType();
-
-                            getParentActivity().setSubjects((ArrayList<Subject>)
-                                    gson.fromJson(result.toString(), listType));
-
-                            Log.d("Response", result.toString());
-
+                            getParentActivity().setSubjects(subjects);
 
                             final SubjectAdapter subjectAdapter = new SubjectAdapter(getActivity(),
                                     getParentActivity().getSubjects());
 
                             listView.setAdapter(subjectAdapter);
                         } else {
-                            Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                            if (e instanceof UnknownHostException) {
+                                Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                            }
+                            Toast.makeText(getParentActivity(), "Error: " + (e != null ? e.getMessage() : null), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

@@ -26,15 +26,16 @@ import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    public ArrayList<Subject> getSubjects() {
+    public List<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(ArrayList<Subject> subjects) {
+    public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }
 
@@ -46,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
         this.courses = courses;
     }
 
-    ArrayList<Subject> subjects;
+    List<Subject> subjects;
     ArrayList<Course> courses;
 
     @Override
