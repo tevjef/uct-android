@@ -34,15 +34,17 @@
         android:layout_toEndOf="@+id/day_text" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="39dp"
         android:layout_height="wrap_content"
-        android:text="Lecture"
+        android:text="STUDIO"
         android:id="@+id/meetingType"
         android:textColor="@color/secondary_text"
         android:textSize="11dp"
         android:textIsSelectable="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="6dp"
+        android:gravity="right"
+        android:singleLine="true" />
 
 </RelativeLayout>

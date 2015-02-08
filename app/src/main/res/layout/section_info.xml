@@ -247,7 +247,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:id="@+id/course_metadata"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="12dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -523,7 +523,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_white_24dp"
+            android:src="@drawable/ic_add_white"
             fab:fab_colorNormal="@color/accent"
             fab:fab_colorPressed="@color/accent_dark"
             fab:fab_colorRipple="@color/blue_grey_light"
