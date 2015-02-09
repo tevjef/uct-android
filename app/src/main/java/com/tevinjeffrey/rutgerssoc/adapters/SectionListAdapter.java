@@ -102,10 +102,7 @@ public class SectionListAdapter {
         sectionLayout.setTag(new Request(mRequest.getSubject(), mRequest.getSemester(),
                 mRequest.getLocations(), mRequest.getLevels(), s.getIndex()));
 
-        if (mInflationType.equals(MainActivity.TRACKED_SECTION)) {
-            //mSectionsContainer.addView(sectionLayout, index);
-            mSectionsContainer.addView(sectionLayout);
-        }
+        mSectionsContainer.addView(sectionLayout);
     }
 /*
         private void setSectionBackground(Course.Sections section, View sectionRoot) {
