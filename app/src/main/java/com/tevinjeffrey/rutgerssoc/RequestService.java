@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgerssoc;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -10,14 +9,13 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.splunk.mint.Mint;
+import com.splunk.mint.MintLogLevel;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.TrackedSections;
@@ -25,12 +23,10 @@ import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class RequestService extends Service {
     public RequestService() {
@@ -43,61 +39,60 @@ public class RequestService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        //TODO reduce memory usage by removing objects from the requests list and if the list is empty, stop the service.
-        Log.d("RequestService-Response", "RequestService started");
-
         //Construct a list of requests by semester.
         //List<Request> requests = new ArrayList<>();
-
-        for(final Iterator<TrackedSections> allTrackedSections =
-                    TrackedSections.findAll(TrackedSections.class); allTrackedSections.hasNext();) {
+        Mint.transactionStart("startRequestService");
+        for (final Iterator<TrackedSections> allTrackedSections = TrackedSections.findAll(TrackedSections.class); allTrackedSections.hasNext(); ) {
             TrackedSections ts = allTrackedSections.next();
             final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
-            String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
-            Ion.with(this)
-                    .load(url)
-                    .asJsonArray()
-                    .setCallback(new FutureCallback<JsonArray>() {
-                        @Override
-                        public void onCompleted(Exception e, JsonArray result) {
 
-                            if(e == null && result.size() > 0) {
-                                Log.d("RequestService-Response", result.toString());
-                                ArrayList<Course> courses = getListFromJson(result);
-
-                                for(final Course c: courses) {
-                                    for(final Course.Sections s: c.getSections()) {
-                                        if(s.getIndex().equals(r.getIndex()) && s.isOpenStatus()) {
-                                            new Handler().postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    makeNotification(c, s, r);
-
-                                                    if(!allTrackedSections.hasNext()) {
-                                                        stopSelf();
-                                                    }
-                                                }
-                                            }, 8000);
-                                        }
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(RequestService.this, "No Internet connection", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        private ArrayList<Course> getListFromJson(JsonArray result) {
-                            Type listType = new TypeToken<List<Course>>() {
-                            }.getType();
-                            return  new Gson().fromJson(result.toString(), listType);
-                        }
-                    });
+            getCourse(allTrackedSections, r);
         }
+        Mint.transactionStop("startRequestService");
         AlarmWakefulReceiver.completeWakefulIntent(intent);
         return START_NOT_STICKY;
     }
 
-
+    private void getCourse(final Iterator<TrackedSections> allTrackedSections, final Request r) {
+        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
+        Ion.with(this)
+                .load(url)
+                .as(new TypeToken<List<Course>>() {
+                })
+                .setCallback(new FutureCallback<List<Course>>() {
+                    @Override
+                    public void onCompleted(Exception e, List<Course> courses) {
+                        if (e == null && courses.size() > 0) {
+                            for (final Course c : courses) {
+                                for (final Course.Sections s : c.getSections()) {
+                                    if (s.getIndex().equals(r.getIndex()) && s.isOpenStatus()) {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                makeNotification(c, s, r);
+                                                if (!allTrackedSections.hasNext()) {
+                                                    stopSelf();
+                                                }
+                                            }
+                                        }, 8000);
+                                    }
+                                }
+                            }
+                        } else {
+                            Mint.transactionCancel("startRequestService", (e != null ? e.getMessage() : null));
+                            if (e instanceof UnknownHostException) {
+                                Toast.makeText(RequestService.this, "No Internet connection", Toast.LENGTH_LONG).show();
+                            } else {
+                                HashMap<String, Object> map = new HashMap<>();
+                                map.put("Request", r.toString());
+                                map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
+                                Mint.logExceptionMap(map, e);
+                                Toast.makeText(RequestService.this, "Error: " + (e != null ? e.getMessage() : "An error occurred"), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+    }
 
     private void makeNotification(Course c, Course.Sections s, Request r) {
         String courseTitle = CourseUtils.getTitle(c);
@@ -121,13 +116,13 @@ public class RequestService extends Service {
         //Intent to start web browser
         Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
         openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
-        PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this,0 , openInBrowser, 0);
+        PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this, 0, openInBrowser, 0);
         mBuilder.addAction(0, "Open WebReg", pOpenInBrowser);
 
 
         //Intent open tracked sections.
         Intent openTracked = new Intent(RequestService.this, MainActivity.class);
-        PendingIntent pOpenTracked = PendingIntent.getActivity(RequestService.this,0 , openTracked, 0);
+        PendingIntent pOpenTracked = PendingIntent.getActivity(RequestService.this, 0, openTracked, 0);
         mBuilder.addAction(0, "Delete", pOpenTracked);
 
 
@@ -137,6 +132,8 @@ public class RequestService extends Service {
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Builds the notification and issues it.
         mNotifyMgr.notify(Integer.valueOf(r.getIndex()), mBuilder.build());
+
+        Mint.logEvent("Courses Sniped", MintLogLevel.Info);
     }
 
     @Override

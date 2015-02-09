@@ -3,44 +3,70 @@ package com.tevinjeffrey.rutgerssoc.ui;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.SubjectAdapter;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
-import java.lang.reflect.Type;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SubjectFragment extends Fragment {
 
+    @InjectView(R.id.toolbar)
+    Toolbar mToolbar;
+    @InjectView(R.id.courses)
+    ListView mCourses;
+    @InjectView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private Request request;
+    private ArrayList<Subject> subjects;
 
     public SubjectFragment() {
     }
 
     private MainActivity getParentActivity() {
-        return (MainActivity)getActivity();
+        return (MainActivity) getActivity();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        if (savedInstanceState != null) {
+            request = savedInstanceState.getParcelable(MainActivity.REQUEST);
+        }
     }
 
     @Override
@@ -50,47 +76,103 @@ public class SubjectFragment extends Fragment {
         setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        final ListView listView = (ListView) rootView.findViewById(R.id.courses);
+        ButterKnife.inject(this, rootView);
 
-        request = getArguments().getParcelable("request");
+        request = getArguments().getParcelable(MainActivity.REQUEST);
         setToolbar(rootView);
 
+        getSubjects(mCourses);
+
+        setRefreshListener();
+        refresh();
+
+        mCourses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setSubjectInRequest(parent, position);
+                createFragment(createArgs(request));
+            }
+        });
+        return rootView;
+    }
+
+    private void getSubjects(final ListView listView) {
         String url = UrlUtils.getSubjectUrl(UrlUtils.buildParamUrl(request));
-
-        Log.d("URL" , url);
-
+        Log.d("URL", url);
         Ion.with(this)
                 .load(url)
                 .as(new TypeToken<List<Subject>>() {
                 })
                 .setCallback(new FutureCallback<List<Subject>>() {
                     @Override
-                    public void onCompleted(Exception e, List<Subject> subjects) {
-                        //TODO: Handle UnknownHostException for when the there's no internet connection
-                        if (e == null && subjects.size() > 0) {
+                    public void onCompleted(Exception e, List<Subject> subjectList) {
+                        if (e == null && subjectList.size() > 0) {
 
-                            getParentActivity().setSubjects(subjects);
-
+                            subjects = (ArrayList<Subject>) subjectList;
                             final SubjectAdapter subjectAdapter = new SubjectAdapter(getActivity(),
-                                    getParentActivity().getSubjects());
-
+                                    subjectList);
                             listView.setAdapter(subjectAdapter);
                         } else {
                             if (e instanceof UnknownHostException) {
                                 Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                            } else if (e instanceof CancellationException) {
+                                Mint.logException(e);
+                            } else {
+                                HashMap<String, Object> map = new HashMap<>();
+                                map.put("Request", request.toString());
+                                map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
+                                Mint.logExceptionMap(map, e);
+                                Toast.makeText(getParentActivity(), "Error: " + (e != null ? e.getMessage() : null), Toast.LENGTH_LONG).show();
                             }
-                            Toast.makeText(getParentActivity(), "Error: " + (e != null ? e.getMessage() : null), Toast.LENGTH_LONG).show();
                         }
+                        dismissProgress();
                     }
                 });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    }
+
+    private void refresh() {
+        if (mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mSwipeRefreshLayout != null) {
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        getSubjects(mCourses);
+                    }
+                }
+            });
+        }
+    }
+
+    private void setRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setSubject(parent, position);
-                createFragment(createArgs(request));
+            public void onRefresh() {
+                AnimatorSet set = new AnimatorSet();
+                set.playTogether(
+                        ObjectAnimator.ofFloat(mCourses, "translationY", 50),
+                        ObjectAnimator.ofFloat(mCourses, "alpha", 1, 0)
+                );
+                set.setInterpolator(new EaseOutQuint());
+                set.setDuration(500).start();
+
+                getSubjects(mCourses);
             }
         });
-        return rootView;
+    }
+
+    private void dismissProgress() {
+        if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(
+                    ObjectAnimator.ofFloat(mCourses, "translationY", 50, 0),
+                    ObjectAnimator.ofFloat(mCourses, "alpha", 0, 1)
+
+            );
+            set.setInterpolator(new EaseOutQuint());
+            set.setDuration(500).start();
+        }
     }
 
     private void setToolbar(View rootView) {
@@ -113,14 +195,14 @@ public class SubjectFragment extends Fragment {
         toolbar.setTitle(request.getSemester());
 
         ArrayList<String> al = new ArrayList<>();
-        for(String s: request.getLocations()) {
+        for (String s : request.getLocations()) {
             al.add(UrlUtils.getAbbreviatedLocationName(s));
         }
         toolbar.setSubtitle(Request.toStringList(al) + " - "
                 + Request.toStringList(request.getLevels()));
     }
 
-    private void setSubject(AdapterView<?> parent, int position) {
+    private void setSubjectInRequest(AdapterView<?> parent, int position) {
         request.setSubject(CourseUtils.formatNumber(((Subject) parent.getAdapter()
                 .getItem(position))
                 .getCode()));
@@ -136,7 +218,44 @@ public class SubjectFragment extends Fragment {
 
     private Bundle createArgs(Parcelable parcelable) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("request", parcelable);
+        bundle.putParcelable(MainActivity.REQUEST, parcelable);
+        bundle.putParcelableArrayList(MainActivity.SUBJECTS_LIST, subjects);
         return bundle;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(MainActivity.REQUEST, request);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_fragment_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                refresh();
+                return true;
+            case R.id.action_track:
+                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, trackedSectionsFragment)
+                        .commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll(this);
+        ButterKnife.reset(this);
     }
 }

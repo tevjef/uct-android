@@ -2,6 +2,8 @@ package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,15 +21,19 @@ import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.view.ViewHelper;
-import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
+import com.splunk.mint.Mint;
+import com.splunk.mint.MintLogLevel;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.TrackedSections;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
+import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,13 +44,6 @@ import butterknife.InjectView;
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class SectionInfoAdapter {
-
-    private Activity context;
-    private Request request;
-    private List<Course> courses;
-    private Course courseData;
-    private Course.Sections sectionData;
-    private View rowView;
 
     @InjectView(R.id.courseTitle_text)
     TextView mCourseTitleText;
@@ -125,16 +125,25 @@ public class SectionInfoAdapter {
     RelativeLayout mBottomHalf;
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
-
+    @InjectView(R.id.prof_rmp_search)
+    Button rmpSearch;
+    @InjectView(R.id.prof_google_search)
+    Button googleSearch;
+    private Activity context;
+    private Request request;
+    private List<Course> courses;
+    private Course courseData;
+    private Course.Sections sectionData;
+    private View rowView;
 
     private SectionInfoAdapter(Activity context, Request item, View rowView) {
         this.context = context;
         this.request = item;
         this.rowView = rowView;
     }
-    
+
     public SectionInfoAdapter(Activity context, Request item, View rowView, List<Course> courses) {
-        this(context,item, rowView);
+        this(context, item, rowView);
         this.courses = courses;
 
     }
@@ -152,7 +161,7 @@ public class SectionInfoAdapter {
         setData();
     }
 
-    private void setData(){
+    private void setData() {
         setToolBarColor(sectionData);
         setSectionNumber(sectionData);
         setSectionIndex(sectionData);
@@ -169,6 +178,7 @@ public class SectionInfoAdapter {
         setTimes(sectionData);
         setInstructors(sectionData);
         setActionButton(mFab);
+        setSearch(rmpSearch, googleSearch);
 
         new SectionInfoAnimator(rowView).init();
 
@@ -183,7 +193,7 @@ public class SectionInfoAdapter {
                 if (isSectionTracked()) {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(0);
                     removeSectionFromDb();
-                    Toast.makeText(context, "Stopped tracking...",
+                    Toast.makeText(context, "Stopped tracking",
                             Toast.LENGTH_SHORT).show();
 
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF455A64, /*Blue*/0xFF607D8B);
@@ -200,7 +210,7 @@ public class SectionInfoAdapter {
                 } else {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(225);
                     addSectionToDb(request);
-                    Toast.makeText(context, "Started tracking...",
+                    Toast.makeText(context, "Started tracking",
                             Toast.LENGTH_SHORT).show();
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF607D8B, /*Blue*/0xFF455A64);
                     colorAnim.setDuration(250);
@@ -217,18 +227,60 @@ public class SectionInfoAdapter {
         });
     }
 
-    private void setActionButton(FloatingActionButton fab) {
-        if(isSectionTracked()) {
-            ViewHelper.setRotation(fab, 225);
-            fab.setBackgroundColor(context.getResources().getColor(R.color.accent_dark));
+    private void setSearch(TextView rmpSearch, TextView googleSearch) {
+        String str = StringUtils.join(sectionData.getInstructors(), " and ");
+
+        googleSearch.setText(str);
+        rmpSearch.setText(str);
+
+        rmpSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchRmpSearch();
+            }
+        });
+
+        googleSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchGoogleSearch();
+            }
+        });
+    }
+
+    public void launchRmpSearch() {
+        String url = "http://www.google.com/#q=" + UrlUtils.getRmpUrl(courseData, sectionData);
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        context.startActivity(i);
+    }
+
+    public void launchGoogleSearch() {
+        String url = "http://www.google.com/#q=" + UrlUtils.getGoogleUrl(courseData, sectionData);
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        context.startActivity(i);
+    }
+
+    private void setActionButton(final FloatingActionButton fab) {
+        if (isSectionTracked()) {
+                /**/
+            fab.post(new Runnable() {
+                @Override
+                public void run() {
+                    fab.setRotation(225);
+                    fab.setColorNormalResId(R.color.accent_dark);
+                }
+            });
+
         }
     }
 
     private void removeSectionFromDb() {
         List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
                 "INDEX_NUMBER = ?", sectionData.getIndex());
-        for(TrackedSections ts : trackedSections) {
-                ts.delete();
+        for (TrackedSections ts : trackedSections) {
+            ts.delete();
         }
     }
 
@@ -236,8 +288,8 @@ public class SectionInfoAdapter {
         List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
                 "INDEX_NUMBER = ?", sectionData.getIndex());
 
-        for(TrackedSections ts : trackedSections) {
-            if(request.getIndex().equals(ts.getIndexNumber())) {
+        for (TrackedSections ts : trackedSections) {
+            if (request.getIndex().equals(ts.getIndexNumber())) {
                 return true;
             }
         }
@@ -245,6 +297,8 @@ public class SectionInfoAdapter {
     }
 
     private void addSectionToDb(Request request) {
+        Mint.logEvent("Sections Tracked", MintLogLevel.Info);
+
         TrackedSections trackedSections = new TrackedSections(request.getSubject(),
                 request.getSemester(), Request.toStringList(request.getLocations()),
                 Request.toStringList(request.getLevels()), request.getIndex());
@@ -252,10 +306,8 @@ public class SectionInfoAdapter {
     }
 
 
-
-
     public void setToolBarColor(Course.Sections section) {
-        if(section.isOpenStatus()) {
+        if (section.isOpenStatus()) {
             mToolbarHeaderInfo.setBackgroundColor(context.getResources().getColor(R.color.green));
             setGreenWindow();
         } else {
@@ -263,15 +315,17 @@ public class SectionInfoAdapter {
             setPrimaryWindow();
         }
     }
+
     public void setGreenWindow() {
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = context.getWindow();
             window.setStatusBarColor(context.getResources().getColor(R.color.green_dark));
             window.setNavigationBarColor(context.getResources().getColor(R.color.green_dark));
         }
     }
+
     public void setPrimaryWindow() {
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = context.getWindow();
             window.setStatusBarColor(context.getResources().getColor(R.color.primary_dark));
             window.setNavigationBarColor(context.getResources().getColor(R.color.primary_dark));
@@ -306,10 +360,10 @@ public class SectionInfoAdapter {
         if (!section.hasComments()) {
             mSectionCommentsContainer.setVisibility(View.GONE);
         } else {
-            StringBuilder sb= new StringBuilder();
-            for(Course.Sections.Comments i : section.getComments()) {
-                    sb.append(i.getDescription());
-                    sb.append(", ");
+            StringBuilder sb = new StringBuilder();
+            for (Course.Sections.Comments i : section.getComments()) {
+                sb.append(i.getDescription());
+                sb.append(", ");
             }
             mSectionCommentsText.setText(Html.fromHtml(sb.toString()));
         }
@@ -321,17 +375,17 @@ public class SectionInfoAdapter {
         } else {
             boolean isMajorHeaderSet = false;
             boolean isUnitHeaderSet = false;
-            StringBuilder sb= new StringBuilder();
-            for(Course.Sections.Majors i : section.getMajors()) {
-                if(i.isMajorCode()) {
-                    if(!isMajorHeaderSet) {
+            StringBuilder sb = new StringBuilder();
+            for (Course.Sections.Majors i : section.getMajors()) {
+                if (i.isMajorCode()) {
+                    if (!isMajorHeaderSet) {
                         isMajorHeaderSet = true;
                         sb.append("MAJORS: ");
                     }
                     sb.append(i.getCode());
                     sb.append(", ");
-                } else if(i.isUnitCode()) {
-                    if(!isUnitHeaderSet) {
+                } else if (i.isUnitCode()) {
+                    if (!isUnitHeaderSet) {
                         isUnitHeaderSet = true;
                         sb.append("SCHOOLS: ");
                     }
@@ -355,8 +409,8 @@ public class SectionInfoAdapter {
         if (!section.hasCrossListed()) {
             mSectionCrossListContainer.setVisibility(View.GONE);
         } else {
-            StringBuilder sb= new StringBuilder();
-            for(Course.Sections.CrossListedSections i : section.getCrossListedSections()) {
+            StringBuilder sb = new StringBuilder();
+            for (Course.Sections.CrossListedSections i : section.getCrossListedSections()) {
                 sb.append(i.getFullCrossListedSection());
                 sb.append(", ");
             }
@@ -373,7 +427,7 @@ public class SectionInfoAdapter {
     }
 
     public void setSectionSize(Course.Sections section) {
-            mClassSizeText.setText(String.valueOf(section.getStopPoint()));
+        mClassSizeText.setText(String.valueOf(section.getStopPoint()));
     }
 
     public void setTimes(Course.Sections s) {
@@ -404,16 +458,11 @@ public class SectionInfoAdapter {
     }
 
     public void setInstructors(Course.Sections s) {
-        StringBuilder sb= new StringBuilder();
-        for(Course.Sections.Instructors i : s.getInstructors()) {
-            if(s.getInstructors().size() > 1) {
-                sb.append(i.getName());
-                sb.append("; ");
-            } else {
-                sb.append(i.getName());
-            }
+        StringBuilder sb = new StringBuilder();
+        for (Course.Sections.Instructors i : s.getInstructors()) {
+            sb.append(i.getName());
+            sb.append(" | ");
         }
-        if(s.getInstructors().size() > 1) sb = new StringBuilder(sb.substring(0, sb.length() -1));
-        mInstructorsText.setText(sb.toString());
+        mInstructorsText.setText(UrlUtils.trimTrailingChar(sb.toString(), '|'));
     }
 }

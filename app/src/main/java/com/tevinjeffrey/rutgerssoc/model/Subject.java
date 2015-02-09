@@ -1,15 +1,40 @@
 package com.tevinjeffrey.rutgerssoc.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.apache.commons.lang3.StringUtils;
 
-public class Subject {
+public class Subject implements Parcelable {
+    public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {
+        public Subject createFromParcel(Parcel source) {
+            return new Subject(source);
+        }
+
+        public Subject[] newArray(int size) {
+            return new Subject[size];
+        }
+    };
+    String description;
+    int code;
+    String modifiedDescription;
+
+    public Subject() {
+    }
+
+    private Subject(Parcel in) {
+        this.description = in.readString();
+        this.code = in.readInt();
+        this.modifiedDescription = in.readString();
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
 
-        this.description = StringUtils.capitalize(description.toLowerCase());;
+        this.description = StringUtils.capitalize(description.toLowerCase());
     }
 
     public int getCode() {
@@ -28,7 +53,15 @@ public class Subject {
         this.modifiedDescription = modifiedDescription;
     }
 
-    String description;
-    int code;
-    String modifiedDescription;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.description);
+        dest.writeInt(this.code);
+        dest.writeString(this.modifiedDescription);
+    }
 }

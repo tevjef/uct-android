@@ -9,6 +9,15 @@ import java.util.ArrayList;
 
 public class Request implements Parcelable {
 
+    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
+        public Request createFromParcel(Parcel source) {
+            return new Request(source);
+        }
+
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
     String subject;
     String semester;
     ArrayList<String> locations;
@@ -25,12 +34,27 @@ public class Request implements Parcelable {
         this.levels = levels;
     }
 
+
     public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels, String index) {
         this(subject, semester, locations, levels);
         this.index = index;
     }
 
+    private Request(Parcel in) {
+        this.subject = in.readString();
+        this.semester = in.readString();
+        this.locations = (ArrayList<String>) in.readSerializable();
+        this.levels = (ArrayList<String>) in.readSerializable();
+    }
 
+    public static String toStringList(ArrayList<String> strings) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : strings) {
+            sb.append(s);
+            sb.append(", ");
+        }
+        return UrlUtils.trimTrailingChar(sb.toString());
+    }
 
     public String getIndex() {
         return index;
@@ -71,10 +95,10 @@ public class Request implements Parcelable {
     public void setLevels(ArrayList<String> levels) {
         this.levels = levels;
     }
+
     public boolean isCourseRequest() {
         return getSubject() != null;
     }
-
 
     @Override
     public int describeContents() {
@@ -89,33 +113,6 @@ public class Request implements Parcelable {
         dest.writeSerializable(this.levels);
     }
 
-    private Request(Parcel in) {
-        this.subject = in.readString();
-        this.semester = in.readString();
-        this.locations = (ArrayList<String>) in.readSerializable();
-        this.levels = (ArrayList<String>) in.readSerializable();
-    }
-
-    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
-        public Request createFromParcel(Parcel source) {
-            return new Request(source);
-        }
-
-        public Request[] newArray(int size) {
-            return new Request[size];
-        }
-    };
-
-    public static String toStringList(ArrayList<String> strings) {
-        StringBuilder sb = new StringBuilder();
-        for(String s :strings) {
-            sb.append(s);
-            sb.append(", ");
-        }
-        return UrlUtils.trimTrailingChar(sb.toString());
-    }
-
-
     @Override
     public String toString() {
         return UrlUtils.buildParamUrl(this);
@@ -125,9 +122,9 @@ public class Request implements Parcelable {
     public boolean equals(Object o) {
         if (o instanceof Request) {
             Request b = (Request) o;
-                return (subject.equals(b.getSubject()) && semester.equals(b.getSemester()) &&
-                        locations.equals(b.getLocations()) && levels.equals(b.getLevels()) &&
-                        levels.equals(b.getLevels()));
+            return (subject.equals(b.getSubject()) && semester.equals(b.getSemester()) &&
+                    locations.equals(b.getLocations()) && levels.equals(b.getLevels()) &&
+                    levels.equals(b.getLevels()));
         }
         return false;
     }

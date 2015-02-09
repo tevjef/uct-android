@@ -4,6 +4,9 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,8 +32,10 @@ public class CourseInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        setHasOptionsMenu(true);
+        if (savedInstanceState != null) {
+            request = savedInstanceState.getParcelable(MainActivity.REQUEST);
+        }
     }
 
     @Override
@@ -45,10 +50,9 @@ public class CourseInfoFragment extends Fragment {
 
         Bundle bundle = getArguments();
 
-        int courseIndex = bundle.getInt("courseIndex");
-        request = bundle.getParcelable("request");
+        Course selectedCourse = bundle.getParcelable(MainActivity.SELECTED_COURSE);
+        request = bundle.getParcelable(MainActivity.REQUEST);
 
-        Course selectedCourse = getSelectedCourse(courseIndex);
         inflateViews(selectedCourse, rootView);
 
         return rootView;
@@ -68,10 +72,6 @@ public class CourseInfoFragment extends Fragment {
         getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-    private Course getSelectedCourse(int position) {
-        return getParentActivity().getCourses().get(position);
-    }
-
     private void inflateViews(Course course, View rootView) {
         new CourseInfoAdapter(getParentActivity(), course, rootView, request).init();
     }
@@ -80,5 +80,32 @@ public class CourseInfoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(MainActivity.REQUEST, request);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fragment_info, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_track:
+                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, trackedSectionsFragment)
+                        .commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

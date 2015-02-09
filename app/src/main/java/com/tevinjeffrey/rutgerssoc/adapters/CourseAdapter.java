@@ -14,28 +14,18 @@ import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CourseAdapter extends ArrayAdapter {
 
     private Context context;
-    private ArrayList<Course> item;
+    private List<Course> item;
 
-
-
-    static class ViewHolder {
-        public TextView courseTitle;
-        public TextView courseSectionsOpen;
-
-    }
-
-
-    public CourseAdapter(Context context, ArrayList<Course> item){
+    public CourseAdapter(Context context, List<Course> item) {
         super(context, -1, item);
         this.context = context;
         this.item = item;
     }
-
 
     @Override
     public int getCount() {
@@ -84,6 +74,12 @@ public class CourseAdapter extends ArrayAdapter {
         viewHolder.courseSectionsOpen.setText(course.getOpenSections() + " open sections of " + course.getSections().size());
 
         return rowView;
+
+    }
+
+    static class ViewHolder {
+        public TextView courseTitle;
+        public TextView courseSectionsOpen;
 
     }
 

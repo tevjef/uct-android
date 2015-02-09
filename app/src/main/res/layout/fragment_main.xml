@@ -12,6 +12,12 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_below="@+id/toolbar">
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -20,4 +26,5 @@
         android:layout_below="@+id/toolbar"
         android:layout_alignParentStart="true" />
 
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

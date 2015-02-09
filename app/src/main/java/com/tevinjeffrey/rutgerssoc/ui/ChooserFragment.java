@@ -28,32 +28,15 @@ import butterknife.InjectView;
  */
 public class ChooserFragment extends Fragment {
 
-    @InjectView(R.id.header_text)
-    TextView mHeaderText;
-    @InjectView(R.id.subtitle)
-    TextView mSubtext;
-    @InjectView(R.id.toolbar_header_chooser)
-    Toolbar mToolbarHeaderChooser;
-    @InjectView(R.id.semester_title)
-    TextView mSemesterTitle;
-    @InjectView(R.id.semester1)
-    RadioButton mSemester1;
-    @InjectView(R.id.semester2)
-    RadioButton mSemester2;
-    @InjectView(R.id.semester3)
-    RadioButton mSemester3;
+
     @InjectView(R.id.semester_radiogroup)
     RadioGroup mSemesterRadiogroup;
-    @InjectView(R.id.location_title)
-    TextView mLocationTitle;
     @InjectView(R.id.location1)
     CheckBox mLocation1;
     @InjectView(R.id.location2)
     CheckBox mLocation2;
     @InjectView(R.id.location3)
     CheckBox mLocation3;
-    @InjectView(R.id.level_title)
-    TextView mLevelTitle;
     @InjectView(R.id.level1)
     CheckBox mLevel1;
     @InjectView(R.id.level2)
@@ -76,11 +59,12 @@ public class ChooserFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_chooser, container, false);
         ButterKnife.inject(this, rootView);
+        setToolbar(rootView);
 
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isValidInputs()) {
+                if (isValidInputs()) {
                     changeFragment(createArgs(createRequest()));
                 }
             }
@@ -89,16 +73,30 @@ public class ChooserFragment extends Fragment {
         return rootView;
     }
 
+    private void setToolbar(View rootView) {
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_header_chooser);
+        getParentActivity().setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentActivity().onBackPressed();
+            }
+        });
+        getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
     private boolean isValidInputs() {
         int checkedButton = mSemesterRadiogroup.getCheckedRadioButtonId();
         RadioButton selectedButton = (RadioButton) getParentActivity().findViewById(checkedButton);
-        if(selectedButton == null) {
+        if (selectedButton == null) {
             makeToast("Select a semester");
             return false;
-        } else if(!mLocation1.isChecked() && !mLocation2.isChecked() && !mLocation3.isChecked()) {
+        } else if (!mLocation1.isChecked() && !mLocation2.isChecked() && !mLocation3.isChecked()) {
             makeToast("Select a location");
             return false;
-        } else if(!mLevel1.isChecked() && !mLevel2.isChecked()) {
+        } else if (!mLevel1.isChecked() && !mLevel2.isChecked()) {
             makeToast("Select a level");
             return false;
         } else {
@@ -113,7 +111,7 @@ public class ChooserFragment extends Fragment {
     private void changeFragment(Bundle b) {
         SubjectFragment sf = new SubjectFragment();
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sf.setEnterTransition(new Fade());
             sf.setExitTransition(new Fade());
         }
@@ -127,7 +125,7 @@ public class ChooserFragment extends Fragment {
 
     private Bundle createArgs(Parcelable p) {
         Bundle args = new Bundle();
-        args.putParcelable("request", p);
+        args.putParcelable(MainActivity.REQUEST, p);
 
         return args;
     }

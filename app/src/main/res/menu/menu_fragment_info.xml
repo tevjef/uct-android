@@ -6,16 +6,11 @@
         android:title="@string/add_section"
         android:titleCondensed="@string/add_section"
         app:showAsAction="withText|ifRoom" />-->
-    <item android:id="@+id/action_webreg"
-        android:title="@string/action_webreg"
-        android:titleCondensed="@string/action_webreg"
-        app:showAsAction="never" />
-    <item android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_refresh_white"
-        android:title="@string/action_refresh"
-        android:titleCondensed="@string/action_refresh"
-        app:showAsAction="withText|ifRoom" />
-
+    <item android:id="@+id/action_track"
+        android:icon="@drawable/ic_track_changes_white"
+        android:title="@string/action_track"
+        android:titleCondensed="@string/action_track"
+        app:showAsAction="ifRoom" />
 <!--
     <item android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings_white"

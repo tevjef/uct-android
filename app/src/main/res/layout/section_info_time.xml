@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="20dp">
 
@@ -9,7 +10,8 @@
         android:text="Wednesday"
         android:id="@+id/day_text"
         android:textColor="@color/secondary_text"
-        android:textSize="11dp" />
+        android:textSize="11dp"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,7 +23,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="false"
         android:textIsSelectable="false"
-        android:layout_toLeftOf="@+id/meetingType" />
+        android:layout_toLeftOf="@+id/meetingType"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,7 +34,8 @@
         android:textColor="@color/secondary_text"
         android:textSize="11dp"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/day_text" />
+        android:layout_toEndOf="@+id/day_text"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_width="39dp"
@@ -45,6 +49,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="6dp"
         android:gravity="right"
-        android:singleLine="true" />
+        android:singleLine="true"
+        tools:ignore="HardcodedText" />
 
 </RelativeLayout>

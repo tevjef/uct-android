@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="60dp"
     android:minHeight="64dp"
@@ -19,11 +20,10 @@
             android:text="Large Text"
             android:id="@+id/course_list_title"
             android:textColor="@color/primary_text"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
             android:singleLine="true"
             android:textSize="14sp"
-            android:ellipsize="none" />
+            android:ellipsize="none"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,10 +31,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
             android:id="@+id/course_list_sections"
-            android:layout_below="@+id/course_list_title"
-            android:layout_alignParentStart="true"
             android:textSize="12sp"
-            android:textColor="@color/secondary_text" />
+            android:textColor="@color/secondary_text"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
 </RelativeLayout>

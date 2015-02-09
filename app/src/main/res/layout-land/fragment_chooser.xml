@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
     >
 
     <ImageView
@@ -40,7 +40,8 @@
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/white"
                 android:layout_above="@+id/subtitle"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                tools:ignore="HardcodedText" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,7 +55,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="16dp"
-                android:alpha="0.5" />
+                android:alpha="0.5"
+                tools:ignore="HardcodedText" />
 
 
         </RelativeLayout>
@@ -77,7 +79,8 @@
             android:id="@+id/semester_title"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            tools:ignore="HardcodedText" />
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -105,8 +108,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/thirdSemester"
                 android:id="@+id/semester3"
-                android:layout_below="@+id/semester1"
-                android:layout_alignParentStart="true"
                 android:checked="false"
                 android:textColor="@color/primary_text" />
         </RadioGroup>
@@ -121,7 +122,8 @@
             android:gravity="center_vertical"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/level1"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginLeft="16dp"
+            tools:ignore="HardcodedText" />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -162,7 +164,8 @@
             android:layout_alignParentStart="true"
             android:textColor="@color/secondary_text"
             android:layout_marginTop="10dp"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            tools:ignore="HardcodedText" />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -206,7 +209,8 @@
             android:elevation="0dp"
             android:textSize="14sp"
             android:textColor="@color/white"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center_vertical|center_horizontal"
+            tools:ignore="HardcodedText" />
     </RelativeLayout>
 
 </RelativeLayout>

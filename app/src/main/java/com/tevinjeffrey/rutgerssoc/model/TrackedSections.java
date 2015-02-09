@@ -35,7 +35,7 @@ public class TrackedSections extends SugarRecord<TrackedSections> {
         return new ArrayList<>(Arrays.asList(locations.split(",")));
     }
 
-    public ArrayList<String>  getLevels() {
+    public ArrayList<String> getLevels() {
         return new ArrayList<>(Arrays.asList(levels.split(",")));
     }
 

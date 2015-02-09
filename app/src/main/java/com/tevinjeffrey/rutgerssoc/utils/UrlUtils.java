@@ -1,21 +1,18 @@
 package com.tevinjeffrey.rutgerssoc.utils;
 
 
+import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 
 import java.util.ArrayList;
 
 public class UrlUtils {
 
-    public UrlUtils() {
-
-    }
-
     final static String FIRST_LEVEL = "Undergraduate";
     final static String SECOND_LEVEL = "Graduate";
     final static String FIRST_LEVEL_ID = "U";
     final static String SECOND_LEVEL_ID = "G";
-    final static String FIRST_SEMESTER = "Winter 2015";
+    final static String FIRST_SEMESTER = "Winter 2014";
     final static String SECOND_SEMESTER = "Spring 2015";
     final static String THIRD_SEMESTER = "Summer 2015";
     final static String FIRST_SEMESTER_ID = "02015";
@@ -27,6 +24,9 @@ public class UrlUtils {
     final static String FIRST_LOCATION_ID = "NB";
     final static String SECOND_LOCATION_ID = "NK";
     final static String THIRD_LOCATION_ID = "CM";
+    public UrlUtils() {
+
+    }
 
     private static String parseSemester(CharSequence rb) {
         //Abstracted list of semesters with a limit of 3 selections
@@ -35,12 +35,11 @@ public class UrlUtils {
         String semesterId;
 
 
-
         if (FIRST_SEMESTER.equals(rb)) {
             semesterId = FIRST_SEMESTER_ID;
         } else if (SECOND_SEMESTER.equals(rb)) {
             semesterId = SECOND_SEMESTER_ID;
-        } else if(THIRD_SEMESTER.equals(rb)) {
+        } else if (THIRD_SEMESTER.equals(rb)) {
             semesterId = THIRD_SEMESTER_ID;
         } else {
             semesterId = FIRST_SEMESTER_ID;
@@ -48,6 +47,7 @@ public class UrlUtils {
 
         return semesterId;
     }
+
     static String getSemester(Request request) {
         return parseSemester(request.getSemester());
 
@@ -58,7 +58,7 @@ public class UrlUtils {
 
         StringBuilder location = new StringBuilder();
 
-        for(String s : loc) {
+        for (String s : loc) {
             if (FIRST_LOCATION.equals(s)) {
                 append(location, FIRST_LOCATION_ID);
             } else if (SECOND_LOCATION.equals(s)) {
@@ -76,15 +76,15 @@ public class UrlUtils {
     }
 
     public static String getLocations(Request request) {
-       return parseLocations(request.getLocations());
+        return parseLocations(request.getLocations());
     }
 
     public static String parseLevels(ArrayList<String> lvls) {
-        StringBuilder level= new StringBuilder();
+        StringBuilder level = new StringBuilder();
 
         //TODO: Abstract this class to support more location from a server
 
-        for(String s: lvls) {
+        for (String s : lvls) {
             if (FIRST_LEVEL.equals(s)) {
                 append(level, FIRST_LEVEL_ID);
             } else if (SECOND_LEVEL.equals(s)) {
@@ -96,6 +96,7 @@ public class UrlUtils {
         }
         return level.toString();
     }
+
     public static String getLevels(Request request) {
         return parseLevels(request.getLevels());
     }
@@ -105,13 +106,14 @@ public class UrlUtils {
     }
 
     public static void append(StringBuilder sb, String loc) {
-        if(sb.length() != 0)
+        if (sb.length() != 0)
             appendComma(sb);
         sb.append(loc);
     }
+
     public static String buildParamUrl(Request request) {
         StringBuilder sb = new StringBuilder();
-        if(request.isCourseRequest()) {
+        if (request.isCourseRequest()) {
             sb.append("subject=");
             sb.append(request.getSubject());
             sb.append("&");
@@ -150,16 +152,32 @@ public class UrlUtils {
 
         return sb.toString();
     }
+
     public static String trimTrailingChar(String s) {
-        return s.substring(0, s.length() -2);
-    }
-    public static String trimTrailingChar(String s, char c) {
-        if(s.charAt(s.length() -1) == c) {
+        if (s != null && s.length() != 0) {
+            s = s.trim();
             return s.substring(0, s.length() - 1);
-        } else {
-            return s;
-        }
+        } else return s;
     }
+
+    public static String trimTrailingChar(String s, char c) {
+        if (s != null && s.length() != 0) {
+            s = s.trim();
+            if (s.charAt(s.length() - 1) == c) {
+                return s.substring(0, s.length() - 1);
+            } else {
+                return s;
+            }
+        } else return s;
+    }
+
+    public static String trimTrailingOR(String s) {
+        if (s != null && s.length() != 0) {
+            s = s.trim();
+            return s.substring(0, s.length() - 4);
+        } else return s;
+    }
+
 
     public static String getAbbreviatedLocationName(String s) {
         if (FIRST_LOCATION.equals(s)) {
@@ -171,5 +189,29 @@ public class UrlUtils {
         } else {
             return null;
         }
+    }
+
+    public static String getRmpUrl(Course c, Course.Sections s) {
+        String query = "+rutgers+site:ratemyprofessors.com";
+        return createSearchUrl(query, s);
+
+    }
+
+    private static String createSearchUrl(String query, Course.Sections s) {
+        StringBuilder sb = new StringBuilder();
+        for (String prof : SectionUtils.getInstructors(s)) {
+            sb.append(prof);
+            sb.append("+");
+            sb.append("OR");
+            sb.append("+");
+        }
+        sb = new StringBuilder(trimTrailingOR(sb.toString()));
+        sb.append(query);
+        return sb.toString();
+    }
+
+    public static String getGoogleUrl(Course c, Course.Sections s) {
+        String query = "+rutgers";
+        return createSearchUrl(query, s);
     }
 }

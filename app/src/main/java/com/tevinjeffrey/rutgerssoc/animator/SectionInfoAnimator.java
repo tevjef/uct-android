@@ -98,12 +98,13 @@ public class SectionInfoAnimator {
     RelativeLayout mBottomHalf;
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
-    
+
     View rootView;
 
     public SectionInfoAnimator(View rootView) {
         this.rootView = rootView;
     }
+
     public void init() {
 
         ButterKnife.inject(this, rootView);

@@ -27,9 +27,10 @@
     <string name="firstLevel_id">U</string>
     <string name="secondLevel_id">G</string>
     <string name="add_section">Add Section</string>
-    <string name="add_refresh">Refresh</string>
+    <string name="action_refresh">Refresh</string>
     <string name="action_webreg">Webreg</string>
     <string name="action_feedback">Send Feedback</string>
+    <string name="action_track">Track Sections</string>
 
 
 </resources>

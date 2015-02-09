@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
@@ -14,7 +13,6 @@ import com.tevinjeffrey.rutgerssoc.model.Subject;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectAdapter extends ArrayAdapter {
@@ -22,18 +20,11 @@ public class SubjectAdapter extends ArrayAdapter {
     private Context context;
     private List<Subject> item;
 
-    static class ViewHolder {
-        public TextView text;
-        public ImageView image;
-    }
-
-
-    public SubjectAdapter(Context context, List<Subject> item){
+    public SubjectAdapter(Context context, List<Subject> item) {
         super(context, -1, item);
         this.context = context;
         this.item = item;
     }
-
 
     @Override
     public int getCount() {
@@ -72,11 +63,15 @@ public class SubjectAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        String text =  item.get(position).getCode() + ": " + item.get(position).getDescription();
+        String text = item.get(position).getCode() + ": " + item.get(position).getDescription();
         viewHolder.text.setText(WordUtils.capitalize(text.toLowerCase()));
 
         return rowView;
 
+    }
+
+    static class ViewHolder {
+        public TextView text;
     }
 
 }

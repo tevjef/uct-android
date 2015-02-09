@@ -1,27 +1,32 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.Subject;
@@ -30,82 +35,144 @@ import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.lang.reflect.Type;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class CourseFragment extends Fragment {
 
+    @InjectView(R.id.toolbar)
+    Toolbar mToolbar;
+    @InjectView(R.id.courses)
+    ListView mCoursesListView;
+    @InjectView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private Request request;
+    private ArrayList<Course> courses;
 
     public CourseFragment() {
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        if (savedInstanceState != null) {
+            request = savedInstanceState.getParcelable(MainActivity.REQUEST);
+        }
+    }
+
     private MainActivity getParentActivity() {
-        return (MainActivity)getActivity();
+        return (MainActivity) getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getParentActivity().setPrimaryWindow();
+        setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.inject(this, rootView);
 
-        final ListView listView = (ListView) rootView.findViewById(R.id.courses);
-
-        request = getArguments().getParcelable("request");
+        request = getArguments().getParcelable(MainActivity.REQUEST);
         setToolbar(rootView);
 
-        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(request));
+        getCourses(mCoursesListView);
+        setRefreshListener();
+        refresh();
 
-        Log.d("URL" , url);
-
-        Ion.with(this)
-                .load(url)
-                .asJsonArray()
-                .setCallback(new FutureCallback<JsonArray>() {
-
-                    @Override
-                    public void onCompleted(Exception e, JsonArray result) {
-
-                        if(e == null && result.size() > 0) {
-
-                            //if result == 0,no data
-                            //UnknownHostException , no internet
-                            Log.e("Response", result.toString());
-
-                            Gson gson = new Gson();
-
-                            Type listType = new TypeToken<List<Course>>() {
-                            }.getType();
-
-                            getParentActivity().setCourses((ArrayList<Course>) gson.fromJson(result.toString(), listType));
-
-                            Log.d("Response", result.toString());
-
-
-                            final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), getParentActivity().getCourses());
-                            listView.setAdapter(subjectAdapter);
-                        } else {
-                            Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mCoursesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                createFragment(createArgs(request, position));
+                createFragment(createArgs(request, courses.get(position)));
             }
         });
-
-
         return rootView;
+    }
+
+    private void getCourses(final ListView listView) {
+        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(request));
+        Log.d("URL", url);
+        Ion.with(this)
+                .load(url)
+                .as(new TypeToken<List<Course>>() {
+                })
+                .setCallback(new FutureCallback<List<Course>>() {
+                    @Override
+                    public void onCompleted(Exception e, List<Course> courseList) {
+                        if (e == null && courseList.size() > 0) {
+                            courses = (ArrayList<Course>) courseList;
+                            final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), courseList);
+                            listView.setAdapter(subjectAdapter);
+                        } else {
+                            if (e instanceof UnknownHostException) {
+                                Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                            } else if (e instanceof CancellationException) {
+                                Mint.logException(e);
+                            } else {
+                                HashMap<String, Object> map = new HashMap<>();
+                                map.put("Request", request.toString());
+                                map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
+                                Mint.logExceptionMap(map, e);
+                                Toast.makeText(getParentActivity(), "Error: " + (e != null ? e.getMessage() : null), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        dismissProgress();
+                    }
+                });
+    }
+
+    private void refresh() {
+        if (mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mSwipeRefreshLayout != null) {
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        getCourses(mCoursesListView);
+                    }
+
+                }
+            });
+        }
+    }
+
+    private void setRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                AnimatorSet set = new AnimatorSet();
+                set.playTogether(
+                        ObjectAnimator.ofFloat(mCoursesListView, "translationY", 50),
+                        ObjectAnimator.ofFloat(mCoursesListView, "alpha", 1, 0)
+                );
+                set.setInterpolator(new EaseOutQuint());
+                set.setDuration(500).start();
+
+                getCourses(mCoursesListView);
+
+            }
+        });
+    }
+
+    private void dismissProgress() {
+        if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(
+                    ObjectAnimator.ofFloat(mCoursesListView, "translationY", 50, 0),
+                    ObjectAnimator.ofFloat(mCoursesListView, "alpha", 0, 1)
+
+            );
+            set.setInterpolator(new EaseOutQuint());
+            set.setDuration(500).start();
+        }
     }
 
     private void setToolbar(View rootView) {
@@ -125,19 +192,21 @@ public class CourseFragment extends Fragment {
     }
 
     private void setToolbarTitle(Toolbar toolbar) {
-        for(Subject s: getParentActivity().getSubjects()) {
-            if(CourseUtils.formatNumber(s.getCode()).equals(request.getSubject())) {
+        ArrayList<Subject> al = getArguments().getParcelableArrayList(MainActivity.SUBJECTS_LIST);
+        for (Subject s : al) {
+            if (CourseUtils.formatNumber(s.getCode()).equals(request.getSubject())) {
                 toolbar.setTitle(WordUtils.capitalize(s.getDescription().toLowerCase()));
             }
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void createFragment(Bundle b) {
         Fragment courseInfoFragment = new CourseInfoFragment();
 
-        courseInfoFragment.setEnterTransition(new AutoTransition());
-        courseInfoFragment.setExitTransition(new AutoTransition());
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            courseInfoFragment.setEnterTransition(new AutoTransition());
+            courseInfoFragment.setExitTransition(new AutoTransition());
+        }
 
         courseInfoFragment.setArguments(b);
         getFragmentManager().beginTransaction()
@@ -145,10 +214,48 @@ public class CourseFragment extends Fragment {
                 .commit();
     }
 
-    private Bundle createArgs(Parcelable parcelable, int position) {
+    private Bundle createArgs(Parcelable parcelable, Course selectedCourse) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("request", parcelable);
-        bundle.putInt("courseIndex", position);
+        bundle.putParcelable(MainActivity.REQUEST, parcelable);
+        bundle.putParcelableArrayList(MainActivity.SUBJECTS_LIST, getArguments().getParcelableArrayList(MainActivity.SUBJECTS_LIST));
+        bundle.putParcelableArrayList(MainActivity.COURSE_LIST, courses);
+        bundle.putParcelable(MainActivity.SELECTED_COURSE, selectedCourse);
         return bundle;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(MainActivity.REQUEST, request);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_fragment_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                refresh();
+                return true;
+            case R.id.action_track:
+                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, trackedSectionsFragment)
+                        .commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll(this);
+        ButterKnife.reset(this);
     }
 }

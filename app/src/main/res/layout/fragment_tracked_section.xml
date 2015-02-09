@@ -52,5 +52,36 @@
         android:layout_gravity="bottom|right"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/addCoursesTrack">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_track_changes_large_black"
+            android:alpha="0.1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Add some courses to track"
+            android:id="@+id/textView"
+            android:layout_below="@+id/imageView2"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:alpha="0.3"
+            tools:ignore="HardcodedText" />
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:id="@+id/sectionRoot"
     android:background="?android:attr/selectableItemBackground"
@@ -26,7 +27,8 @@
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/sectionTimeContainer"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            tools:ignore="HardcodedText" />
 
         <RelativeLayout
             android:layout_width="40dp"
@@ -50,7 +52,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                />
+                tools:ignore="HardcodedText" />
         </RelativeLayout>
 
         <LinearLayout
@@ -67,7 +69,8 @@
             android:transitionName="instructor_name"
             android:layout_alignParentTop="false"
             android:layout_marginLeft="8dp"
-            android:layout_below="@+id/courseTitle_text">
+            android:layout_below="@+id/courseTitle_text"
+            tools:ignore="HardcodedText">
 
         </LinearLayout>
 
@@ -83,7 +86,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="8dp"
-            android:fontFamily="sans-serif-condensed" />
+            android:fontFamily="sans-serif-condensed"
+            tools:ignore="HardcodedText" />
 
     </RelativeLayout>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:scrollbarThumbVertical="@drawable/course_scrollbar"
@@ -15,14 +16,14 @@
             android:layout_height="170dp"
             android:minHeight="?android:attr/actionBarSize"
             android:background="@color/accent"
-            android:elevation="1dp"
-            android:paddingRight="16dp">
+            android:elevation="1dp">
 
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/course_header_container">
+                android:id="@+id/course_header_container"
+                android:paddingRight="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -45,7 +46,7 @@
                     android:maxLines="3"
                     android:transitionName="course_title"
 
-                    />
+                    tools:ignore="HardcodedText" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -61,7 +62,8 @@
                     android:layout_marginBottom="16dp"
                     android:layout_marginRight="5sp"
                     android:alpha="0.5"
-                    android:transitionName="credit_number"/>
+                    android:transitionName="credit_number"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,7 +77,8 @@
                     android:textColor="@color/black"
                     android:alpha="0.5"
                     android:layout_above="@+id/courseTitle_text"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,7 +92,8 @@
                     android:textColor="@color/black"
                     android:alpha="0.5"
                     android:layout_alignTop="@+id/subtitle"
-                    android:layout_toEndOf="@+id/subtitle" />
+                    android:layout_toEndOf="@+id/subtitle"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,7 +109,8 @@
                     android:layout_alignBottom="@+id/credits_title"
                     android:layout_toEndOf="@+id/credits_title"
                     android:layout_marginLeft="16dp"
-                    android:alpha="0.5" />
+                    android:alpha="0.5"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,7 +124,8 @@
                     android:textColor="@color/black"
                     android:alpha="0.5"
                     android:layout_alignTop="@+id/openSections_text"
-                    android:layout_toEndOf="@+id/openSections_text" />
+                    android:layout_toEndOf="@+id/openSections_text"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -135,7 +141,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_alignBottom="@+id/openSections_title"
                     android:layout_toEndOf="@+id/openSections_title"
-                    android:alpha="0.5" />
+                    android:alpha="0.5"
+                    tools:ignore="HardcodedText" />
 
 
             </RelativeLayout>
@@ -174,7 +181,8 @@
                         android:layout_alignParentStart="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -185,7 +193,7 @@
                         android:textSize="12sp"
                         android:elegantTextHeight="false"
                         android:layout_toEndOf="@+id/sectionNotes_title"
-   />
+                        tools:ignore="HardcodedText" />
 
 
                 </RelativeLayout>
@@ -207,7 +215,8 @@
                         android:layout_alignParentStart="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                        tools:ignore="HardcodedText" />
 
 
                     <TextView
@@ -220,7 +229,8 @@
                         android:nestedScrollingEnabled="false"
                         android:elegantTextHeight="false"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionComments_title"/>
+                        android:layout_toEndOf="@+id/sectionComments_title"
+                        tools:ignore="HardcodedText" />
 
                 </RelativeLayout>
 
@@ -240,7 +250,8 @@
                         android:layout_alignParentStart="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2" />
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -251,7 +262,8 @@
                         android:textSize="12sp"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/prereq_title"
-                        android:maxLines="5"/>
+                        android:maxLines="5"
+                        tools:ignore="HardcodedText" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -267,7 +279,8 @@
                 android:layout_alignStart="@+id/course_metadata"
                 android:layout_below="@+id/course_metadata"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"
+                tools:ignore="HardcodedText" />
 
         </RelativeLayout>
 
