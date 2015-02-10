@@ -17,7 +17,7 @@ public class SectionUtils {
         return time.substring(0, 2) + ":" + time.substring(2);
     }
 
-    public static String getMeetingHoursEnd(Course.Sections.MeetingTimes time) {
+    private static String getMeetingHoursEnd(Course.Sections.MeetingTimes time) {
         String meridian;
         String starttime = time.getStartTime();
         String endtime = time.getEndTime();
@@ -44,7 +44,7 @@ public class SectionUtils {
         return formatMeetingHours(time.getEndTime()) + " " + meridian;
     }
 
-    public static String getMeetingHoursBegin(Course.Sections.MeetingTimes time) {
+    private static String getMeetingHoursBegin(Course.Sections.MeetingTimes time) {
         String meridian;
         if (time.getPmCode() != null) {
             meridian = time.getPmCode().equals("A") ? "AM" : "PM";

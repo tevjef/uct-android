@@ -14,14 +14,14 @@
         android:alpha="0.1"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"/>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_header_chooser"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:minHeight="?android:attr/actionBarSize"
-        android:background="?android:attr/colorPrimary"
+        android:background="@color/primary"
         android:elevation="1dp">
 
 
@@ -48,7 +48,6 @@
                 android:text="Choose a term, location and level of study"
                 android:id="@+id/subtitle"
                 android:textSize="16sp"
-                android:backgroundTint="@color/accent"
                 android:typeface="normal"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/black"
@@ -201,7 +200,6 @@
             android:layout_height="60dp"
             android:text="NEXT"
             android:id="@+id/search_button"
-            android:onClick="onSearch"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:background="@android:color/transparent"

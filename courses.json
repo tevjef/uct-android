@@ -1,9 +1,8 @@
 http://sis.rutgers.edu/soc/subjects.json?semester=12015&campus=NK&level=U
 
-
-
 http://sis.rutgers.edu/soc/courses.json?subject=198&semester=12015&campus=NK&level=U
 
+http://sis.rutgers.edu/soc/subjects.json?semester=02015&campus=NB%2CNK%2CCM&level=U%2CG
 
 [{
 	"courseDescription": null,

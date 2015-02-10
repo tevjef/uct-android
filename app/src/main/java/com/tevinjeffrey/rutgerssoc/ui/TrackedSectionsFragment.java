@@ -47,16 +47,22 @@ import butterknife.InjectView;
 
 public class TrackedSectionsFragment extends Fragment {
 
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.scrollView)
     ObservableScrollView mScrollView;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionsContainer)
     LinearLayout mSectionsContainer;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.addCoursesTrack)
     RelativeLayout addCoursesToTrack;
 
@@ -78,7 +84,7 @@ public class TrackedSectionsFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_tracked_section, container, false);
         ButterKnife.inject(this, rootView);
-        setToolbar(rootView);
+        setToolbar();
 
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
         mSwipeRefreshLayout.setColorSchemeColors(R.color.accent, R.color.red);
@@ -186,7 +192,7 @@ public class TrackedSectionsFragment extends Fragment {
                                 for (final Course c : courses) {
                                     for (final Course.Sections s : c.getSections()) {
                                         if (s.getIndex().equals(r.getIndex())) {
-                                            List<Course.Sections> currentSection = new ArrayList<Course.Sections>();
+                                            List<Course.Sections> currentSection = new ArrayList<>();
                                             currentSection.add(s);
                                             c.setSections(currentSection);
                                   /*          for(final Iterator<Course.Sections> sectionsInCourse = c.getSections().iterator();  sectionsInCourse.hasNext();) {
@@ -256,7 +262,7 @@ public class TrackedSectionsFragment extends Fragment {
         }
     }
 
-    private void setToolbar(View rootView) {
+    private void setToolbar() {
         setToolbarTitle(mToolbar);
         getParentActivity().setSupportActionBar(mToolbar);
 
@@ -266,7 +272,7 @@ public class TrackedSectionsFragment extends Fragment {
         toolbar.setTitle("Tracked Sections");
     }
 
-    public void launchWebReg() {
+    void launchWebReg() {
         String url = "http://webreg.rutgers.edu";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TrackedSections extends SugarRecord<TrackedSections> {
-    String subject;
-    String semester;
-    String locations;
-    String levels;
-    String indexNumber;
+    private String subject;
+    private String semester;
+    private String locations;
+    private String levels;
+    private String indexNumber;
 
     public TrackedSections() {
     }

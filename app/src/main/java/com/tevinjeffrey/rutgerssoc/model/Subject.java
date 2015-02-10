@@ -15,9 +15,9 @@ public class Subject implements Parcelable {
             return new Subject[size];
         }
     };
-    String description;
-    int code;
-    String modifiedDescription;
+    private String description;
+    private int code;
+    private String modifiedDescription;
 
     public Subject() {
     }

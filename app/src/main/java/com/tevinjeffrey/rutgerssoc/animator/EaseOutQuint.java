@@ -2,9 +2,6 @@ package com.tevinjeffrey.rutgerssoc.animator;
 
 import android.view.animation.Interpolator;
 
-/**
- * Created by Tevin on 7/1/2014.
- */
 public class EaseOutQuint implements Interpolator {
     @Override
     public float getInterpolation(float input) {

@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgerssoc;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
 
+@SuppressWarnings("ALL")
 public class MyApplication extends SugarApp {
     @Override
     public void onCreate() {

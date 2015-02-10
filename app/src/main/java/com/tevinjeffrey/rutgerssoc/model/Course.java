@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgerssoc.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
@@ -19,19 +20,21 @@ public class Course implements Parcelable {
             return new Course[size];
         }
     };
-    public String title;
-    String subject;
-    double credits;
-    String courseNumber;
-    String subjectNotes;
-    String courseNotes;
-    String preReqNotes;
-    String offeringUnitCode;
-    int openSections;
-    List<Sections> sections = new ArrayList<>();
-    String expandedTitle;
+    private String title;
+    private String subject;
+    private double credits;
+    private String courseNumber;
+    private String subjectNotes;
+    private String courseNotes;
+    private String preReqNotes;
+    private String offeringUnitCode;
+    private int openSections;
+    private List<Sections> sections = new ArrayList<>();
+    private String expandedTitle;
+
     public Course() {
     }
+
     private Course(Parcel in) {
         this.subject = in.readString();
         this.credits = in.readDouble();
@@ -133,11 +136,11 @@ public class Course implements Parcelable {
                 return new Sections[size];
             }
         };
-        List<Instructors> instructors = new ArrayList<>();
-        List<MeetingTimes> meetingTimes = new ArrayList<>();
-        List<CrossListedSections> crossListedSections = new ArrayList<>();
-        List<Majors> majors = new ArrayList<>();
-        List<Comments> comments = new ArrayList<>();
+        final List<Instructors> instructors = new ArrayList<>();
+        final List<MeetingTimes> meetingTimes = new ArrayList<>();
+        final List<CrossListedSections> crossListedSections = new ArrayList<>();
+        final List<Majors> majors = new ArrayList<>();
+        final List<Comments> comments = new ArrayList<>();
         String subtitle;
         String index;
         String specialPermissionAddCodeDescription;
@@ -407,21 +410,19 @@ public class Course implements Parcelable {
             }
 
             @Override
-            public int compareTo(Object time) {
+            public int compareTo(@NonNull Object time) {
                 MeetingTimes b = (MeetingTimes) time;
-                if (b != null) {
-                    if (b.isLecture() && this.isLecture()) {
-                        if (SectionUtils.getTimeRank(this) < SectionUtils.getTimeRank(b)) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    } else if (!b.isLecture()) {
-                        if (SectionUtils.getClassRank(this) < SectionUtils.getClassRank(b)) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
+                if (b.isLecture() && this.isLecture()) {
+                    if (SectionUtils.getTimeRank(this) < SectionUtils.getTimeRank(b)) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                } else if (!b.isLecture()) {
+                    if (SectionUtils.getClassRank(this) < SectionUtils.getClassRank(b)) {
+                        return 1;
+                    } else {
+                        return -1;
                     }
                 }
                 return 0;

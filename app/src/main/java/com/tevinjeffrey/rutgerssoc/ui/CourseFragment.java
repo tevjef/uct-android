@@ -48,8 +48,10 @@ public class CourseFragment extends Fragment {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courses)
     ListView mCoursesListView;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     private Request request;

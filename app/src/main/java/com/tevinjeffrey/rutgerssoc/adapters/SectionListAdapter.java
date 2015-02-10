@@ -42,17 +42,20 @@ public class SectionListAdapter {
     private final LinearLayout mSectionsContainer;
     private final Course mCourse;
     private final List<Course.Sections> sectionData;
-    TextView mProfText;
-    TextView mSectionNumber;
-    TextView mCourseTitleText;
-    RelativeLayout mSectionNumberBackground;
-    LinearLayout mSectionTimeContainer;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.day_text)
     TextView mDayText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionLocation_text)
     TextView mSectionLocationText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.time_text)
     TextView mTimeText;
+    private TextView mProfText;
+    private TextView mSectionNumber;
+    private TextView mCourseTitleText;
+    private RelativeLayout mSectionNumberBackground;
+    private LinearLayout mSectionTimeContainer;
     private LayoutInflater inflater;
     private View sectionLayout;
 
@@ -72,12 +75,12 @@ public class SectionListAdapter {
         }
     }
 
-    public void setData(Course.Sections s) {
+    void setData(Course.Sections s) {
         // remove classes with a stopPint of 0. These represent some kind of hidden class taught
         // by STAFF. Though the obvious solution is to loop through the list and on some condition,
         // remove the class, this results in a ConcurrentModificationException.
         // Update: Uncommented because it produced unexpected behaviour in the types of classes.
-        // Some classes are real classes evern though the stopPoint is 0
+        // Some classes are real classes even though the stopPoint is 0
         /*List<Course.Sections> toRemove = new ArrayList<>();
         for(Course.Sections s: sections) {
             if(s.getStopPoint() == 0) {
@@ -130,12 +133,14 @@ public class SectionListAdapter {
     }
 
     private View inflateSectionLayout() {
-
-        if (mInflationType.equals(MainActivity.COURSE_INFO_SECTION)) {
-            return inflater.inflate(R.layout.section_layout, null);
-        } else if (mInflationType.equals(MainActivity.TRACKED_SECTION)) {
-            return inflater.inflate(R.layout.full_section_layout, null);
-        } else return inflater.inflate(R.layout.section_layout, null);
+        switch (mInflationType) {
+            case MainActivity.COURSE_INFO_SECTION:
+                return inflater.inflate(R.layout.section_layout, mSectionsContainer, false);
+            case MainActivity.TRACKED_SECTION:
+                return inflater.inflate(R.layout.full_section_layout, mSectionsContainer, false);
+            default:
+                return inflater.inflate(R.layout.section_layout, mSectionsContainer, false);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -187,7 +192,7 @@ public class SectionListAdapter {
         return bundle;
     }
 
-    public void setTimes(Course.Sections s) {
+    void setTimes(Course.Sections s) {
         //sort times so that Monday > Tuesday and Lecture > Recitation
         Collections.sort(s.getMeetingTimes());
         for (Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
@@ -223,7 +228,7 @@ public class SectionListAdapter {
         mProfText.setText(UrlUtils.trimTrailingChar(sb.toString(), '|'));
     }
 
-    public void setOpenStatus(Course.Sections s) {
+    void setOpenStatus(Course.Sections s) {
         if (s.isOpenStatus()) {
             mSectionNumberBackground.setBackgroundColor(mContext.getResources().getColor(R.color.green));
         } else {

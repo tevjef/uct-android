@@ -9,7 +9,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
-        versionName "0.2-beta"
+        versionName "0.2.1-beta"
     }
     buildTypes {
         release {
@@ -46,5 +46,5 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.6.2.3'
     compile 'com.jenzz:materialpreference:1.1'
     compile 'com.splunk.mint:mint:4.0.8'
-    compile 'com.google.guava:guava:16.0.1'
+    compile 'com.google.guava:guava:18.0'
 }

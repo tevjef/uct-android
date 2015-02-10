@@ -18,11 +18,11 @@ public class Request implements Parcelable {
             return new Request[size];
         }
     };
-    String subject;
-    String semester;
-    ArrayList<String> locations;
-    ArrayList<String> levels;
-    String index;
+    private String subject;
+    private String semester;
+    private ArrayList<String> locations;
+    private ArrayList<String> levels;
+    private String index;
 
     public Request() {
     }
@@ -43,7 +43,9 @@ public class Request implements Parcelable {
     private Request(Parcel in) {
         this.subject = in.readString();
         this.semester = in.readString();
+        //noinspection unchecked
         this.locations = (ArrayList<String>) in.readSerializable();
+        //noinspection unchecked
         this.levels = (ArrayList<String>) in.readSerializable();
     }
 

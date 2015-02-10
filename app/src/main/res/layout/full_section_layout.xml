@@ -28,7 +28,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/sectionTimeContainer"
             android:layout_marginTop="5dp"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,SmallSp" />
 
         <RelativeLayout
             android:layout_width="40dp"

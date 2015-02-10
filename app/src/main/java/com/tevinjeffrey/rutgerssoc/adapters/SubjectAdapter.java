@@ -17,10 +17,11 @@ import java.util.List;
 
 public class SubjectAdapter extends ArrayAdapter {
 
-    private Context context;
-    private List<Subject> item;
+    private final Context context;
+    private final List<Subject> item;
 
     public SubjectAdapter(Context context, List<Subject> item) {
+        //noinspection unchecked
         super(context, -1, item);
         this.context = context;
         this.item = item;

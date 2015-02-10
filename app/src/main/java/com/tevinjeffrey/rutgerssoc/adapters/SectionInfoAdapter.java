@@ -45,96 +45,106 @@ import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class SectionInfoAdapter {
 
+    private final Activity context;
+    private final Request request;
+    private final View rowView;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseTitle_text)
+
     TextView mCourseTitleText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionNumber_text)
+
     TextView mSectionNumberText;
-    @InjectView(R.id.shortenedCourseInfo)
-    TextView mSectionNumberTitle;
-    @InjectView(R.id.indexNumber_title)
-    TextView mIndexNumberTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.indexNumber_text)
+
     TextView mIndexNumberText;
-    @InjectView(R.id.credits_title)
-    TextView mCreditsTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.subtitle)
+
     TextView mCreditsText;
-    @InjectView(R.id.instructors_title)
-    TextView mInstructorsTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.instructors_text)
+
     TextView mInstructorsText;
-    @InjectView(R.id.instructors_container)
-    LinearLayout mInstructorsContainer;
-    @InjectView(R.id.classSize_title)
-    TextView mClassSizeTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.classSize_text)
+
     TextView mClassSizeText;
-    @InjectView(R.id.course_header_container)
-    RelativeLayout mCourseHeaderContainer;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar_header_info)
+
     Toolbar mToolbarHeaderInfo;
-    @InjectView(R.id.sectionNotes_title)
-    TextView mSectionNotesTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionNotes_text)
+
     TextView mSectionNotesText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseNotesContainer)
+
     RelativeLayout mSectionNotesContainer;
-    @InjectView(R.id.sectionComments_title)
-    TextView mSectionCommentsTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionComments_text)
+
     TextView mSectionCommentsText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.subjectNotesContainer)
+
     RelativeLayout mSectionCommentsContainer;
-    @InjectView(R.id.sectionCrossList_title)
-    TextView mSectionCrossListTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionCrossList_text)
+
     TextView mSectionCrossListText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionCrossList_container)
+
     RelativeLayout mSectionCrossListContainer;
-    @InjectView(R.id.sectionSubtitle_title)
-    TextView mSectionSubtitleTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionSubtitle_text)
+
     TextView mSectionSubtitleText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionSubtitle_container)
+
     RelativeLayout mSectionSubtitleContainer;
-    @InjectView(R.id.sectionPermission_title)
-    TextView mSectionPermissionTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionPermission_text)
+
     TextView mSectionPermissionText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionPermisision_container)
+
     RelativeLayout mSectionPermisisionContainer;
-    @InjectView(R.id.sectionOpenTo_title)
-    TextView mSectionOpenToTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionOpenTo_text)
+
     TextView mSectionOpenToText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionOpenTo_container)
+
     RelativeLayout mSectionOpenToContainer;
-    @InjectView(R.id.course_metadata)
-    RelativeLayout mCourseMetadata;
-    @InjectView(R.id.sectionNumber)
-    TextView mTimeLocationTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionTimeContainer)
+
     LinearLayout mSectionTimeContainer;
-    @InjectView(R.id.section_details)
-    RelativeLayout mSectionDetails;
     @InjectView(R.id.sectionRoot)
     RelativeLayout mSectionRoot;
-    @InjectView(R.id.sections_container)
-    LinearLayout mSectionsContainer;
-    @InjectView(R.id.bottomHalf)
-    RelativeLayout mBottomHalf;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.fab)
+
     FloatingActionButton mFab;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prof_rmp_search)
+
     Button rmpSearch;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prof_google_search)
+
     Button googleSearch;
-    private Activity context;
-    private Request request;
     private List<Course> courses;
     private Course courseData;
     private Course.Sections sectionData;
-    private View rowView;
 
     private SectionInfoAdapter(Activity context, Request item, View rowView) {
         this.context = context;
@@ -248,15 +258,15 @@ public class SectionInfoAdapter {
         });
     }
 
-    public void launchRmpSearch() {
-        String url = "http://www.google.com/#q=" + UrlUtils.getRmpUrl(courseData, sectionData);
+    void launchRmpSearch() {
+        String url = "http://www.google.com/#q=" + UrlUtils.getRmpUrl(sectionData);
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         context.startActivity(i);
     }
 
-    public void launchGoogleSearch() {
-        String url = "http://www.google.com/#q=" + UrlUtils.getGoogleUrl(courseData, sectionData);
+    void launchGoogleSearch() {
+        String url = "http://www.google.com/#q=" + UrlUtils.getGoogleUrl(sectionData);
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         context.startActivity(i);
@@ -306,7 +316,7 @@ public class SectionInfoAdapter {
     }
 
 
-    public void setToolBarColor(Course.Sections section) {
+    void setToolBarColor(Course.Sections section) {
         if (section.isOpenStatus()) {
             mToolbarHeaderInfo.setBackgroundColor(context.getResources().getColor(R.color.green));
             setGreenWindow();
@@ -316,7 +326,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setGreenWindow() {
+    void setGreenWindow() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = context.getWindow();
             window.setStatusBarColor(context.getResources().getColor(R.color.green_dark));
@@ -324,7 +334,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setPrimaryWindow() {
+    void setPrimaryWindow() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = context.getWindow();
             window.setStatusBarColor(context.getResources().getColor(R.color.primary_dark));
@@ -332,23 +342,23 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setSectionNumber(Course.Sections section) {
+    void setSectionNumber(Course.Sections section) {
         mSectionNumberText.setText(section.getNumber());
     }
 
-    public void setSectionIndex(Course.Sections section) {
+    void setSectionIndex(Course.Sections section) {
         mIndexNumberText.setText(section.getIndex());
     }
 
-    public void setSectionCredits(Course course) {
+    void setSectionCredits(Course course) {
         mCreditsText.setText(String.valueOf(course.getCredits()));
     }
 
-    public void setCourseTitle(Course course) {
+    void setCourseTitle(Course course) {
         mCourseTitleText.setText(CourseUtils.getTitle(course));
     }
 
-    public void setSectionNotes(Course.Sections section) {
+    void setSectionNotes(Course.Sections section) {
         if (!section.hasNotes()) {
             mSectionNotesContainer.setVisibility(View.GONE);
         } else {
@@ -356,7 +366,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setSectionComments(Course.Sections section) {
+    void setSectionComments(Course.Sections section) {
         if (!section.hasComments()) {
             mSectionCommentsContainer.setVisibility(View.GONE);
         } else {
@@ -369,7 +379,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setSectionOpenTo(Course.Sections section) {
+    void setSectionOpenTo(Course.Sections section) {
         if (!section.hasMajors()) {
             mSectionOpenToContainer.setVisibility(View.GONE);
         } else {
@@ -397,7 +407,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setSectionPermission(Course.Sections section) {
+    void setSectionPermission(Course.Sections section) {
         if (!section.hasSpecialPermission()) {
             mSectionPermisisionContainer.setVisibility(View.GONE);
         } else {
@@ -405,7 +415,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setSectionCrossList(Course.Sections section) {
+    void setSectionCrossList(Course.Sections section) {
         if (!section.hasCrossListed()) {
             mSectionCrossListContainer.setVisibility(View.GONE);
         } else {
@@ -418,7 +428,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setSectionSubtitle(Course.Sections section) {
+    void setSectionSubtitle(Course.Sections section) {
         if (!section.hasSubtitle()) {
             mSectionSubtitleContainer.setVisibility(View.GONE);
         } else {
@@ -426,11 +436,11 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setSectionSize(Course.Sections section) {
+    void setSectionSize(Course.Sections section) {
         mClassSizeText.setText(String.valueOf(section.getStopPoint()));
     }
 
-    public void setTimes(Course.Sections s) {
+    void setTimes(Course.Sections s) {
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -440,7 +450,7 @@ public class SectionInfoAdapter {
 
             Log.d("tag", "adding time to section " + s.getNumber());
 
-            View timeLayout = inflater.inflate(R.layout.section_info_time, null);
+            View timeLayout = inflater.inflate(R.layout.section_info_time, mSectionTimeContainer, false);
 
             TextView dayText = (TextView) timeLayout.findViewById(R.id.day_text);
             TextView timeText = (TextView) timeLayout.findViewById(R.id.time_text);
@@ -457,7 +467,7 @@ public class SectionInfoAdapter {
         }
     }
 
-    public void setInstructors(Course.Sections s) {
+    void setInstructors(Course.Sections s) {
         StringBuilder sb = new StringBuilder();
         for (Course.Sections.Instructors i : s.getInstructors()) {
             sb.append(i.getName());

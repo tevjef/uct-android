@@ -18,10 +18,11 @@ import java.util.List;
 
 public class CourseAdapter extends ArrayAdapter {
 
-    private Context context;
-    private List<Course> item;
+    private final Context context;
+    private final List<Course> item;
 
     public CourseAdapter(Context context, List<Course> item) {
+        //noinspection unchecked
         super(context, -1, item);
         this.context = context;
         this.item = item;

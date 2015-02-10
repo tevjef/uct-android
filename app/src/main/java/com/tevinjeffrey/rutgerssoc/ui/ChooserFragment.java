@@ -23,24 +23,27 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-/**
- * Created by Tevin on 1/14/2015.
- */
 public class ChooserFragment extends Fragment {
 
-
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.semester_radiogroup)
     RadioGroup mSemesterRadiogroup;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.location1)
     CheckBox mLocation1;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.location2)
     CheckBox mLocation2;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.location3)
     CheckBox mLocation3;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.level1)
     CheckBox mLevel1;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.level2)
     CheckBox mLevel2;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.search_button)
     TextView mSearchButton;
 

@@ -22,18 +22,23 @@ public class CourseInfoAdapter {
     private final Activity context;
     private final Course course;
     private final View rootView;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseTitle_text)
     TextView mCourseTitleText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.subtitle)
     TextView mCreditsText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.shortenedCourseInfo)
     TextView mShortenedCourseInfo;
     @InjectView(R.id.credits_title)
     TextView mCreditsTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.openSections_text)
     TextView mOpenSectionsText;
     @InjectView(R.id.openSections_title)
     TextView mOpenSectionsTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.totalSections_text)
     TextView mTotalSectionsText;
     @InjectView(R.id.course_header_container)
@@ -42,20 +47,26 @@ public class CourseInfoAdapter {
     Toolbar mToolbarHeaderInfo;
     @InjectView(R.id.sectionNotes_title)
     TextView mSectionNotesTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseNotes_text)
     TextView mCourseNotesText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseNotesContainer)
     RelativeLayout mCourseNotesContainer;
     @InjectView(R.id.sectionComments_title)
     TextView mSectionCommentsTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.subjectNotes_text)
     TextView mSubjectNotesText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.subjectNotesContainer)
     RelativeLayout mSubjectNotesContainer;
     @InjectView(R.id.prereq_title)
     TextView mPrereqTitle;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prereq_text)
     TextView mPrereqText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prereqContainer)
     RelativeLayout mPrereqContainer;
     @InjectView(R.id.course_metadata)
@@ -64,6 +75,7 @@ public class CourseInfoAdapter {
     TextView mSectionTitle;
     @InjectView(R.id.section_metadata_container)
     RelativeLayout mSectionMetadataContainer;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sections_container)
     LinearLayout mSectionsContainer;
     private Request request;

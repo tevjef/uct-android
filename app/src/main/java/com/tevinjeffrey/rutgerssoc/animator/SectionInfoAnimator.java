@@ -18,6 +18,8 @@ import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class SectionInfoAnimator {
 
+    private final View rootView;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseTitle_text)
     TextView mCourseTitleText;
     @InjectView(R.id.sectionNumber_text)
@@ -28,6 +30,7 @@ public class SectionInfoAnimator {
     TextView mIndexNumberTitle;
     @InjectView(R.id.indexNumber_text)
     TextView mIndexNumberText;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.credits_title)
     TextView mCreditsTitle;
     @InjectView(R.id.subtitle)
@@ -75,7 +78,7 @@ public class SectionInfoAnimator {
     @InjectView(R.id.sectionPermission_text)
     TextView mSectionPermissionText;
     @InjectView(R.id.sectionPermisision_container)
-    RelativeLayout mSectionPermisisionContainer;
+    RelativeLayout mSectionPermissionContainer;
     @InjectView(R.id.sectionOpenTo_title)
     TextView mSectionOpenToTitle;
     @InjectView(R.id.sectionOpenTo_text)
@@ -96,10 +99,9 @@ public class SectionInfoAnimator {
     LinearLayout mSectionsContainer;
     @InjectView(R.id.bottomHalf)
     RelativeLayout mBottomHalf;
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
-
-    View rootView;
 
     public SectionInfoAnimator(View rootView) {
         this.rootView = rootView;

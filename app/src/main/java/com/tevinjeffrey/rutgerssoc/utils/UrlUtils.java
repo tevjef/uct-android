@@ -8,24 +8,24 @@ import java.util.ArrayList;
 
 public class UrlUtils {
 
-    final static String FIRST_LEVEL = "Undergraduate";
-    final static String SECOND_LEVEL = "Graduate";
-    final static String FIRST_LEVEL_ID = "U";
-    final static String SECOND_LEVEL_ID = "G";
-    final static String FIRST_SEMESTER = "Winter 2014";
-    final static String SECOND_SEMESTER = "Spring 2015";
-    final static String THIRD_SEMESTER = "Summer 2015";
-    final static String FIRST_SEMESTER_ID = "02015";
-    final static String SECOND_SEMESTER_ID = "12015";
-    final static String THIRD_SEMESTER_ID = "72015";
-    final static String FIRST_LOCATION = "New Brunswick";
-    final static String SECOND_LOCATION = "Newark";
-    final static String THIRD_LOCATION = "Camden";
-    final static String FIRST_LOCATION_ID = "NB";
-    final static String SECOND_LOCATION_ID = "NK";
-    final static String THIRD_LOCATION_ID = "CM";
-    public UrlUtils() {
+    private final static String FIRST_LEVEL = "Undergraduate";
+    private final static String SECOND_LEVEL = "Graduate";
+    private final static String FIRST_LEVEL_ID = "U";
+    private final static String SECOND_LEVEL_ID = "G";
+    private final static String FIRST_SEMESTER = "Winter 2014";
+    private final static String SECOND_SEMESTER = "Spring 2015";
+    private final static String THIRD_SEMESTER = "Summer 2015";
+    private final static String FIRST_SEMESTER_ID = "02015";
+    private final static String SECOND_SEMESTER_ID = "12015";
+    private final static String THIRD_SEMESTER_ID = "72015";
+    private final static String FIRST_LOCATION = "New Brunswick";
+    private final static String SECOND_LOCATION = "Newark";
+    private final static String THIRD_LOCATION = "Camden";
+    private final static String FIRST_LOCATION_ID = "NB";
+    private final static String SECOND_LOCATION_ID = "NK";
+    private final static String THIRD_LOCATION_ID = "CM";
 
+    public UrlUtils() {
     }
 
     private static String parseSemester(CharSequence rb) {
@@ -48,64 +48,73 @@ public class UrlUtils {
         return semesterId;
     }
 
-    static String getSemester(Request request) {
+    private static String getSemester(Request request) {
         return parseSemester(request.getSemester());
 
     }
 
-    public static String parseLocations(ArrayList<String> loc) {
+    private static String parseLocations(ArrayList<String> loc) {
         //TODO: Abstract this class to support more location from a server
 
         StringBuilder location = new StringBuilder();
 
         for (String s : loc) {
-            if (FIRST_LOCATION.equals(s)) {
-                append(location, FIRST_LOCATION_ID);
-            } else if (SECOND_LOCATION.equals(s)) {
-                append(location, SECOND_LOCATION_ID);
-            } else if (THIRD_LOCATION.equals(s)) {
-                append(location, THIRD_LOCATION_ID);
-            } else {
-                append(location, FIRST_LOCATION_ID);
-                append(location, SECOND_LOCATION_ID);
-                append(location, THIRD_LOCATION_ID);
+            switch (s) {
+                case FIRST_LOCATION:
+                    append(location, FIRST_LOCATION_ID);
+                    break;
+                case SECOND_LOCATION:
+                    append(location, SECOND_LOCATION_ID);
+                    break;
+                case THIRD_LOCATION:
+                    append(location, THIRD_LOCATION_ID);
+                    break;
+                default:
+                    append(location, FIRST_LOCATION_ID);
+                    append(location, SECOND_LOCATION_ID);
+                    append(location, THIRD_LOCATION_ID);
+                    break;
             }
         }
 
         return location.toString();
     }
 
-    public static String getLocations(Request request) {
+    private static String getLocations(Request request) {
         return parseLocations(request.getLocations());
     }
 
-    public static String parseLevels(ArrayList<String> lvls) {
+    private static String parseLevels(ArrayList<String> lvls) {
         StringBuilder level = new StringBuilder();
 
         //TODO: Abstract this class to support more location from a server
 
         for (String s : lvls) {
-            if (FIRST_LEVEL.equals(s)) {
-                append(level, FIRST_LEVEL_ID);
-            } else if (SECOND_LEVEL.equals(s)) {
-                append(level, SECOND_LEVEL_ID);
-            } else {
-                append(level, FIRST_LEVEL_ID);
-                append(level, SECOND_LEVEL_ID);
+            switch (s) {
+                case FIRST_LEVEL:
+                    append(level, FIRST_LEVEL_ID);
+                    break;
+                case SECOND_LEVEL:
+                    append(level, SECOND_LEVEL_ID);
+                    break;
+                default:
+                    append(level, FIRST_LEVEL_ID);
+                    append(level, SECOND_LEVEL_ID);
+                    break;
             }
         }
         return level.toString();
     }
 
-    public static String getLevels(Request request) {
+    private static String getLevels(Request request) {
         return parseLevels(request.getLevels());
     }
 
-    public static void appendComma(StringBuilder sb) {
+    private static void appendComma(StringBuilder sb) {
         sb.append("%2C");
     }
 
-    public static void append(StringBuilder sb, String loc) {
+    private static void append(StringBuilder sb, String loc) {
         if (sb.length() != 0)
             appendComma(sb);
         sb.append(loc);
@@ -132,25 +141,13 @@ public class UrlUtils {
     public static String getSubjectUrl(String params) {
         String baseUrl = "http://sis.rutgers.edu/soc/";
         String subjectJson = "subjects.json";
-        StringBuilder sb = new StringBuilder();
-        sb.append(baseUrl);
-        sb.append(subjectJson);
-        sb.append("?");
-        sb.append(params);
-
-        return sb.toString();
+        return baseUrl + subjectJson + "?" + params;
     }
 
     public static String getCourseUrl(String params) {
         String baseUrl = "http://sis.rutgers.edu/soc/";
         String subjectJson = "courses.json";
-        StringBuilder sb = new StringBuilder();
-        sb.append(baseUrl);
-        sb.append(subjectJson);
-        sb.append("?");
-        sb.append(params);
-
-        return sb.toString();
+        return baseUrl + subjectJson + "?" + params;
     }
 
     public static String trimTrailingChar(String s) {
@@ -171,7 +168,7 @@ public class UrlUtils {
         } else return s;
     }
 
-    public static String trimTrailingOR(String s) {
+    private static String trimTrailingOR(String s) {
         if (s != null && s.length() != 0) {
             s = s.trim();
             return s.substring(0, s.length() - 4);
@@ -180,18 +177,19 @@ public class UrlUtils {
 
 
     public static String getAbbreviatedLocationName(String s) {
-        if (FIRST_LOCATION.equals(s)) {
-            return FIRST_LOCATION_ID;
-        } else if (SECOND_LOCATION.equals(s)) {
-            return SECOND_LOCATION_ID;
-        } else if (THIRD_LOCATION.equals(s)) {
-            return THIRD_LOCATION_ID;
-        } else {
-            return null;
+        switch (s) {
+            case FIRST_LOCATION:
+                return FIRST_LOCATION_ID;
+            case SECOND_LOCATION:
+                return SECOND_LOCATION_ID;
+            case THIRD_LOCATION:
+                return THIRD_LOCATION_ID;
+            default:
+                return null;
         }
     }
 
-    public static String getRmpUrl(Course c, Course.Sections s) {
+    public static String getRmpUrl(Course.Sections s) {
         String query = "+rutgers+site:ratemyprofessors.com";
         return createSearchUrl(query, s);
 
@@ -210,7 +208,7 @@ public class UrlUtils {
         return sb.toString();
     }
 
-    public static String getGoogleUrl(Course c, Course.Sections s) {
+    public static String getGoogleUrl(Course.Sections s) {
         String query = "+rutgers";
         return createSearchUrl(query, s);
     }

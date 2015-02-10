@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:minHeight="?android:attr/actionBarSize"
-        android:background="?android:attr/colorPrimary"
+        android:background="@color/primary"
         android:elevation="1dp">
 
 
@@ -48,7 +48,6 @@
                 android:text="Choose a term, location and level of study"
                 android:id="@+id/subtitle"
                 android:textSize="16sp"
-                android:backgroundTint="@color/accent"
                 android:typeface="normal"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/black"
@@ -67,11 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
         android:layout_below="@+id/toolbar_header_chooser"
-
         android:layout_marginTop="12dp">
-
-
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="48dp"
@@ -201,7 +196,6 @@
             android:layout_height="60dp"
             android:text="NEXT"
             android:id="@+id/search_button"
-            android:onClick="onSearch"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:background="@android:color/transparent"
