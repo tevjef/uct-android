@@ -55,7 +55,7 @@ public class SectionInfoFragment extends Fragment {
     }
 
     private void setToolbar(View rootView) {
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_header_info);
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         getParentActivity().setSupportActionBar(toolbar);
         //IMPORTANT-must be after setting the actionbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

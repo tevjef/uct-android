@@ -9,16 +9,29 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
+import android.transition.ChangeTransform;
+import android.transition.CircularPropagation;
+import android.transition.Fade;
+import android.transition.SidePropagation;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
@@ -39,7 +52,9 @@ public class SectionListAdapter {
     private final Activity mContext;
     private final String mInflationType;
     private final Request mRequest;
-    private final LinearLayout mSectionsContainer;
+    private final View rootView;
+    private LinearLayout mSectionsContainer;
+    private Toolbar mToolbar;
     private final Course mCourse;
     private final List<Course.Sections> sectionData;
     @SuppressWarnings("WeakerAccess")
@@ -58,14 +73,15 @@ public class SectionListAdapter {
     private LinearLayout mSectionTimeContainer;
     private LayoutInflater inflater;
     private View sectionLayout;
+    private FloatingActionButton mFab;
 
-    public SectionListAdapter(Activity context, Course course, LinearLayout sectionsContainer, Request request, String inflationType) {
+    public SectionListAdapter(Activity context, Course course, View rootView, Request request, String inflationType) {
         this.sectionData = course.getSections();
         this.mContext = context;
         this.mCourse = course;
         this.mInflationType = inflationType;
         this.mRequest = request;
-        this.mSectionsContainer = sectionsContainer;
+        this.rootView = rootView;
     }
 
     public void init() {
@@ -127,6 +143,11 @@ public class SectionListAdapter {
         mSectionNumberBackground = ButterKnife.findById(sectionLayout, R.id.sectionNumberBackground);
         mSectionTimeContainer = ButterKnife.findById(sectionLayout, R.id.sectionTimeContainer);
 
+        mSectionsContainer = ButterKnife.findById(rootView, R.id.sectionsContainer);
+        mCourseTitleText = ButterKnife.findById(rootView, R.id.courseTitle_text);
+        mToolbar = ButterKnife.findById(rootView, R.id.toolbar);
+        mFab = ButterKnife.findById(rootView, R.id.fab);
+
         if (mInflationType.equals(MainActivity.TRACKED_SECTION)) {
             mCourseTitleText = ButterKnife.findById(sectionLayout, R.id.courseTitle_text);
         }
@@ -153,25 +174,39 @@ public class SectionListAdapter {
         sectionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createFragment(createArgs((Parcelable) v.getTag()));
+                createFragment(createArgs((Parcelable) v.getTag()), v);
             }
         });
     }
 
-    private void createFragment(Bundle b) {
+    private void createFragment(Bundle b, View v) {
         Fragment sectionInfoFragment = new SectionInfoFragment();
         @SuppressLint("CommitTransaction") FragmentTransaction ft =
                 mContext.getFragmentManager().beginTransaction();
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            sectionInfoFragment.setEnterTransition(new AutoTransition());
-            sectionInfoFragment.setReturnTransition(new AutoTransition());
+            Slide slide = new Slide(Gravity.RIGHT);
+            slide.setInterpolator(new EaseOutQuint());
+
+
+            sectionInfoFragment.setEnterTransition(slide);
+            sectionInfoFragment.setReturnTransition(slide);
             //sectionInfoFragment.setEnterTransition(new AutoTransition());
 
-            sectionInfoFragment.setExitTransition(new AutoTransition());
-            sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds());
-            sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds());
+            sectionInfoFragment.setAllowReturnTransitionOverlap(false);
+            sectionInfoFragment.setAllowEnterTransitionOverlap(false);
 
+            sectionInfoFragment.setExitTransition(new Fade(Fade.OUT));
+
+            sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+
+            if(mFab != null)
+            ft.addSharedElement(mFab, "fab");
+
+            ft.addSharedElement(mToolbar, "toolbar_background");
+            ft.addSharedElement(mCourseTitleText, "course_title");
             ft.addSharedElement(mSectionNumberBackground, "section_background");
             ft.addSharedElement(mProfText, "instructor_name");
             //ft.addSharedElement(credits, "credit_number");

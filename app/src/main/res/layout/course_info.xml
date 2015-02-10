@@ -11,12 +11,15 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_header_info"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:minHeight="?android:attr/actionBarSize"
             android:background="@color/accent"
-            android:elevation="1dp">
+            android:elevation="1dp"
+            android:transitionGroup="false"
+            android:transitionName="toolbar_background"
+            android:touchscreenBlocksFocus="false">
 
 
             <RelativeLayout
@@ -146,7 +149,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar_header_info"
+            android:layout_below="@+id/toolbar"
             android:id="@+id/section_metadata_container"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
@@ -278,7 +281,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/sections_container"
+            android:id="@+id/sectionsContainer"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/section_metadata_container" />
 

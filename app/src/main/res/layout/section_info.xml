@@ -14,13 +14,13 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_header_info"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:minHeight="?android:attr/actionBarSize"
             android:background="@color/primary"
             android:elevation="1dp"
-            android:transitionName="section_background">
+            android:transitionName="toolbar_background">
 
 
             <RelativeLayout
@@ -45,7 +45,7 @@
                     android:layout_alignParentStart="true"
                     android:gravity="center_vertical"
                     android:ellipsize="none"
-                    android:transitionName="course_name"
+                    android:transitionName="course_title"
                     tools:ignore="HardcodedText" />
 
                 <LinearLayout
@@ -55,7 +55,8 @@
                     android:layout_above="@+id/instructors_container"
                     android:layout_alignParentStart="true"
                     android:weightSum="4"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:transitionGroup="true">
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -241,9 +242,10 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/toolbar_header_info"
+            android:layout_below="@+id/toolbar"
             android:padding="16dp"
-            android:id="@+id/bottomHalf">
+            android:id="@+id/bottomHalf"
+            android:transitionGroup="true">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -256,7 +258,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/courseNotesContainer"
-                    android:layout_below="@+id/toolbar_header_info"
+                    android:layout_below="@+id/toolbar"
                     android:layout_alignParentStart="true">
 
                     <TextView
@@ -533,7 +535,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="142dp"
             android:layout_marginRight="16dp"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center_vertical|center_horizontal"
+            android:transitionName="fab" />
     </RelativeLayout>
 
 
@@ -545,7 +548,8 @@
         android:layout_height="120dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@color/accent">
+        android:background="@color/accent"
+        android:transitionGroup="true">
 
         <Button
             android:layout_width="fill_parent"

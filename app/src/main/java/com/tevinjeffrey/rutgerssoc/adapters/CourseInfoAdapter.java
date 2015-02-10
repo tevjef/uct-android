@@ -43,7 +43,7 @@ public class CourseInfoAdapter {
     TextView mTotalSectionsText;
     @InjectView(R.id.course_header_container)
     RelativeLayout mCourseHeaderContainer;
-    @InjectView(R.id.toolbar_header_info)
+    @InjectView(R.id.toolbar)
     Toolbar mToolbarHeaderInfo;
     @InjectView(R.id.sectionNotes_title)
     TextView mSectionNotesTitle;
@@ -76,7 +76,7 @@ public class CourseInfoAdapter {
     @InjectView(R.id.section_metadata_container)
     RelativeLayout mSectionMetadataContainer;
     @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sections_container)
+    @InjectView(R.id.sectionsContainer)
     LinearLayout mSectionsContainer;
     private Request request;
 
@@ -161,6 +161,6 @@ public class CourseInfoAdapter {
     }
 
     void setSections(Course course) {
-        new SectionListAdapter(context, course, mSectionsContainer, request, MainActivity.COURSE_INFO_SECTION).init();
+        new SectionListAdapter(context, course, rootView, request, MainActivity.COURSE_INFO_SECTION).init();
     }
 }

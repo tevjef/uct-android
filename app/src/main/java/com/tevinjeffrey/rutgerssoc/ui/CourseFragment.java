@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -205,13 +208,18 @@ public class CourseFragment extends Fragment {
     private void createFragment(Bundle b) {
         Fragment courseInfoFragment = new CourseInfoFragment();
 
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            courseInfoFragment.setEnterTransition(new AutoTransition());
-            courseInfoFragment.setExitTransition(new AutoTransition());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            courseInfoFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            courseInfoFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            courseInfoFragment.setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+            courseInfoFragment.setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            courseInfoFragment.setAllowReturnTransitionOverlap(false);
+            courseInfoFragment.setAllowEnterTransitionOverlap(false);
+            courseInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            courseInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
         }
-
         courseInfoFragment.setArguments(b);
-        getFragmentManager().beginTransaction()
+        getFragmentManager().beginTransaction().addSharedElement(mToolbar, "toolbar_background")
                 .replace(R.id.container, courseInfoFragment).addToBackStack(null)
                 .commit();
     }

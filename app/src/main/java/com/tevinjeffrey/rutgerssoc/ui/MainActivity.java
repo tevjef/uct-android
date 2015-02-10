@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.ActionBarActivity;
+import android.transition.AutoTransition;
+import android.transition.ChangeImageTransform;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;

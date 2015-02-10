@@ -1,18 +1,31 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.ChangeClipBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.ChangeTransform;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -66,6 +79,7 @@ public class TrackedSectionsFragment extends Fragment {
     @InjectView(R.id.addCoursesTrack)
     RelativeLayout addCoursesToTrack;
 
+    View rootView;
     private MainActivity getParentActivity() {
         return (MainActivity) getActivity();
     }
@@ -74,6 +88,17 @@ public class TrackedSectionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+            setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+            setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            setAllowReturnTransitionOverlap(false);
+            setAllowEnterTransitionOverlap(false);
+            setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+        }
     }
 
     @Override
@@ -82,7 +107,8 @@ public class TrackedSectionsFragment extends Fragment {
         getParentActivity().setPrimaryWindow();
         setRetainInstance(true);
 
-        final View rootView = inflater.inflate(R.layout.fragment_tracked_section, container, false);
+        rootView = inflater.inflate(R.layout.fragment_tracked_section, container, false);
+
         ButterKnife.inject(this, rootView);
         setToolbar();
 
@@ -95,6 +121,7 @@ public class TrackedSectionsFragment extends Fragment {
         setRefreshListener();
         refresh();
         setFabListener();
+
 
         return rootView;
     }
@@ -110,8 +137,24 @@ public class TrackedSectionsFragment extends Fragment {
     }
 
     private void createFragment() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, new ChooserFragment()).addToBackStack(null)
+        ChooserFragment chooserFragment = new ChooserFragment();
+        @SuppressLint("CommitTransaction") FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            chooserFragment.setEnterTransition(new Slide(Gravity.RIGHT).excludeTarget(ImageView.class, true));
+            chooserFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            chooserFragment.setReenterTransition(new Slide(Gravity.LEFT).excludeTarget(ImageView.class, true));
+            chooserFragment.setReturnTransition(new Explode().excludeTarget(ImageView.class, true));
+            setAllowReturnTransitionOverlap(false);
+            setAllowEnterTransitionOverlap(false);
+            chooserFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            chooserFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+
+
+            ft.addSharedElement(mToolbar, "toolbar_background");
+            ft.addSharedElement(mFab, "snackbar");
+        }
+
+                ft.replace(R.id.container, chooserFragment).addToBackStack(null)
                 .commit();
     }
 
@@ -166,6 +209,10 @@ public class TrackedSectionsFragment extends Fragment {
                     }
                 }
             });
+        } else if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+            dismissProgress();
+            Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll(this);
+            //refresh();
         }
     }
 
@@ -190,7 +237,7 @@ public class TrackedSectionsFragment extends Fragment {
                         public void onCompleted(Exception e, List<Course> courses) {
                             if (e == null && courses.size() > 0) {
                                 for (final Course c : courses) {
-                                    //TODO: figure out why it sometimes there's 2 courses when multiple school locations are selected
+                                    //TODO: figure out why it sometimes there's more than one courses when multiple school locations are selected
                                     for (final Course.Sections s : c.getSections()) {
                                         if (s.getIndex().equals(r.getIndex())) {
                                             List<Course.Sections> currentSection = new ArrayList<>();
@@ -203,7 +250,7 @@ public class TrackedSectionsFragment extends Fragment {
                                             }*/
 
                                             Log.d("TAG", "Adding section to layout | " + CourseUtils.getTitle(c));
-                                            new SectionListAdapter(getParentActivity(), c, mSectionsContainer, r, MainActivity.TRACKED_SECTION).init();
+                                            new SectionListAdapter(getParentActivity(), c, rootView, r, MainActivity.TRACKED_SECTION).init();
 
                                             if (isLastSection) {
                                                 dismissProgress();
@@ -227,8 +274,6 @@ public class TrackedSectionsFragment extends Fragment {
                             dismissProgress();
                         }
                     });
-
-
         }
         if (allTrackedSections.size() == 0) {
             dismissProgress();

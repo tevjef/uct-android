@@ -1,14 +1,17 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseInfoAdapter;
@@ -36,6 +39,18 @@ public class CourseInfoFragment extends Fragment {
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class,true));
+            setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            setAllowReturnTransitionOverlap(false);
+            setAllowEnterTransitionOverlap(true);
+/*            setSharedElementEnterTransition(new ChangeBounds());
+            setSharedElementReturnTransition(new ChangeBounds());*/
+        }
+
     }
 
     @Override
@@ -59,7 +74,7 @@ public class CourseInfoFragment extends Fragment {
     }
 
     private void setToolbar(View rootView) {
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_header_info);
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         getParentActivity().setSupportActionBar(toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -90,9 +105,7 @@ public class CourseInfoFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_info, menu);
-
     }
 
     @Override

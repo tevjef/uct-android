@@ -73,7 +73,7 @@ public class SectionInfoAdapter {
 
     TextView mClassSizeText;
     @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.toolbar_header_info)
+    @InjectView(R.id.toolbar)
 
     Toolbar mToolbarHeaderInfo;
     @SuppressWarnings("WeakerAccess")

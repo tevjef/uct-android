@@ -47,7 +47,7 @@ public class SectionInfoAnimator {
     TextView mClassSizeText;
     @InjectView(R.id.course_header_container)
     RelativeLayout mCourseHeaderContainer;
-    @InjectView(R.id.toolbar_header_info)
+    @InjectView(R.id.toolbar)
     Toolbar mToolbarHeaderInfo;
     @InjectView(R.id.sectionNotes_title)
     TextView mSectionNotesTitle;
@@ -193,7 +193,6 @@ public class SectionInfoAnimator {
 */
 
         AnimatorSet set7 = new AnimatorSet();
-        set7.setDuration(200);
         set7.playTogether(
                 ObjectAnimator.ofFloat(mFab, "scaleX", 0, 1),
                 ObjectAnimator.ofFloat(mFab, "scaleY", 0, 1),
@@ -201,8 +200,8 @@ public class SectionInfoAnimator {
 
         );
         set7.setInterpolator(new EaseOutQuint());
-        set7.setStartDelay(400);
-        set7.setDuration(500).start();
+        set7.setStartDelay(200);
+        set7.setDuration(250).start();
 /*
         AnimatorSet set8 = new AnimatorSet();
         set8.setDuration(200);
