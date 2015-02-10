@@ -146,8 +146,8 @@ public class UrlUtils {
 
     public static String getCourseUrl(String params) {
         String baseUrl = "http://sis.rutgers.edu/soc/";
-        String subjectJson = "courses.json";
-        return baseUrl + subjectJson + "?" + params;
+        String courseJson = "courses.json";
+        return baseUrl + courseJson + "?" + params;
     }
 
     public static String trimTrailingChar(String s) {

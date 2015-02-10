@@ -32,11 +32,11 @@ public class TrackedSections extends SugarRecord<TrackedSections> {
     }
 
     public ArrayList<String> getLocations() {
-        return new ArrayList<>(Arrays.asList(locations.split(",")));
+        return new ArrayList<>(Arrays.asList(locations.split(", ")));
     }
 
     public ArrayList<String> getLevels() {
-        return new ArrayList<>(Arrays.asList(levels.split(",")));
+        return new ArrayList<>(Arrays.asList(levels.split(", ")));
     }
 
     public String getIndexNumber() {
