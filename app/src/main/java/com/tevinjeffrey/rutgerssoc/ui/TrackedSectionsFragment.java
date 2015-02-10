@@ -190,6 +190,7 @@ public class TrackedSectionsFragment extends Fragment {
                         public void onCompleted(Exception e, List<Course> courses) {
                             if (e == null && courses.size() > 0) {
                                 for (final Course c : courses) {
+                                    //TODO: figure out why it sometimes there's 2 courses when multiple school locations are selected
                                     for (final Course.Sections s : c.getSections()) {
                                         if (s.getIndex().equals(r.getIndex())) {
                                             List<Course.Sections> currentSection = new ArrayList<>();
@@ -200,6 +201,7 @@ public class TrackedSectionsFragment extends Fragment {
                                                     sectionsInCourse.remove();
                                                 }
                                             }*/
+
                                             Log.d("TAG", "Adding section to layout | " + CourseUtils.getTitle(c));
                                             new SectionListAdapter(getParentActivity(), c, mSectionsContainer, r, MainActivity.TRACKED_SECTION).init();
 

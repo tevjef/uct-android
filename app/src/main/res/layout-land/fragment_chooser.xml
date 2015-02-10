@@ -19,7 +19,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_header_chooser"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="110dp"
         android:minHeight="?android:attr/actionBarSize"
         android:background="@color/primary"
         android:elevation="1dp">
@@ -35,7 +35,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Rutgers Schedule of Classes"
                 android:id="@+id/header_text"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:typeface="normal"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/white"
@@ -70,12 +70,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:text="Term"
+            tools:text="Term"
             android:id="@+id/semester_title"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
-            android:gravity="center_vertical"
-            tools:ignore="HardcodedText" />
+            android:gravity="center_vertical" />
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -155,32 +154,30 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Level"
             android:id="@+id/level_title"
-            android:layout_below="@+id/location3"
-            android:layout_alignParentStart="true"
             android:textColor="@color/secondary_text"
-            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/location1" />
 
-        <CheckBox
+<!--        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/firstLevel"
             android:id="@+id/level1"
-            android:layout_below="@+id/level_title"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentStart="false"
             android:checked="false"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+            android:layout_below="@+id/level_title" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/secondLevel"
             android:id="@+id/level2"
-            android:layout_below="@+id/level1"
             android:layout_alignParentStart="true"
             android:checked="false"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text" />-->
 
     </RelativeLayout>
 
