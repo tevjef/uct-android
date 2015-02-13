@@ -115,7 +115,6 @@ public class SectionListAdapter {
         setOnClickSectionClickListener();
         //setSectionBackground(s, mSectionRoot);
 
-
         sectionLayout.setTag(new Request(mRequest.getSubject(), mRequest.getSemester(),
                 mRequest.getLocations(), mRequest.getLevels(), s.getIndex()));
 

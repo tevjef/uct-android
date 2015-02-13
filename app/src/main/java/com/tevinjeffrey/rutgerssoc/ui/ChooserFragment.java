@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -119,6 +120,7 @@ public class ChooserFragment extends Fragment {
     private void changeFragment(Bundle b) {
         SubjectFragment sf = new SubjectFragment();
 
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sf.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             sf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
@@ -128,12 +130,11 @@ public class ChooserFragment extends Fragment {
             sf.setAllowEnterTransitionOverlap(false);
             sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            ft.addSharedElement(toolbar, "toolbar_background");
         }
 
         sf.setArguments(b);
-
-        getFragmentManager().beginTransaction().addSharedElement(toolbar, "toolbar_background")
-                .replace(R.id.container, sf).addToBackStack(null)
+                ft.replace(R.id.container, sf).addToBackStack(null)
                 .commit();
     }
 

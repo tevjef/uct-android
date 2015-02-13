@@ -1,6 +1,8 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -72,13 +74,6 @@ public class SubjectFragment extends Fragment {
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
-
-        setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
-        setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
-        setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
-        setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-        setAllowReturnTransitionOverlap(false);
-        setAllowEnterTransitionOverlap(false);
     }
 
     @Override
@@ -254,8 +249,12 @@ public class SubjectFragment extends Fragment {
                 return true;
             case R.id.action_track:
                 TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
-                getFragmentManager().beginTransaction().addSharedElement(mToolbar, "toolbar_background")
-                        .replace(R.id.container, trackedSectionsFragment)
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ft.addSharedElement(mToolbar, "toolbar_background");
+                }
+                        ft.replace(R.id.container, trackedSectionsFragment)
                         .commit();
                 return true;
             default:
