@@ -113,7 +113,7 @@ public class TrackedSectionsFragment extends Fragment {
         setToolbar();
 
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-        mSwipeRefreshLayout.setColorSchemeColors(R.color.accent, R.color.red);
+        mSwipeRefreshLayout.setColorSchemeColors(R.color.accent);
 
 /*       progress = ProgressDialog.show(getParentActivity(), "",
                 "Checking classes", true);*/

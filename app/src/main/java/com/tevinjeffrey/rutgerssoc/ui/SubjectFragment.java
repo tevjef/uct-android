@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.transition.AutoTransition;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -69,6 +72,13 @@ public class SubjectFragment extends Fragment {
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
+
+        setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+        setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+        setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+        setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+        setAllowReturnTransitionOverlap(false);
+        setAllowEnterTransitionOverlap(false);
     }
 
     @Override
@@ -244,7 +254,7 @@ public class SubjectFragment extends Fragment {
                 return true;
             case R.id.action_track:
                 TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
-                getFragmentManager().beginTransaction()
+                getFragmentManager().beginTransaction().addSharedElement(mToolbar, "toolbar_background")
                         .replace(R.id.container, trackedSectionsFragment)
                         .commit();
                 return true;

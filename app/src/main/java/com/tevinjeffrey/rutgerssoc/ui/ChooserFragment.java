@@ -122,7 +122,7 @@ public class ChooserFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sf.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             sf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
-            sf.setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+            sf.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             sf.setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             sf.setAllowReturnTransitionOverlap(false);
             sf.setAllowEnterTransitionOverlap(false);

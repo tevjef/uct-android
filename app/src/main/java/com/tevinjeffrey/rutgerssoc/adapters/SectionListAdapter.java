@@ -114,9 +114,7 @@ public class SectionListAdapter {
         setTimes(s);
         setOnClickSectionClickListener();
         //setSectionBackground(s, mSectionRoot);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setTransitions();
-        }
+
 
         sectionLayout.setTag(new Request(mRequest.getSubject(), mRequest.getSemester(),
                 mRequest.getLocations(), mRequest.getLevels(), s.getIndex()));
@@ -132,7 +130,7 @@ public class SectionListAdapter {
         }*/
 
     private void setCourseTitle() {
-        if (mCourseTitleText != null) {
+        if (mCourseTitleText != null && mInflationType.equals(MainActivity.TRACKED_SECTION)) {
             mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getCourseNumber() + ": " + CourseUtils.getTitle(mCourse));
         }
     }
@@ -162,12 +160,6 @@ public class SectionListAdapter {
             default:
                 return inflater.inflate(R.layout.section_layout, mSectionsContainer, false);
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setTransitions() {
-        mSectionNumberBackground.setTransitionName("section_background");
-        mProfText.setTransitionName("instructor_name");
     }
 
     private void setOnClickSectionClickListener() {
@@ -208,7 +200,7 @@ public class SectionListAdapter {
             ft.addSharedElement(mToolbar, "toolbar_background");
             ft.addSharedElement(mCourseTitleText, "course_title");
             ft.addSharedElement(mSectionNumberBackground, "section_background");
-            ft.addSharedElement(mProfText, "instructor_name");
+//            ft.addSharedElement(mProfText, "instructor_name");
             //ft.addSharedElement(credits, "credit_number");
 
         }
