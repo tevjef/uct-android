@@ -38,6 +38,7 @@ import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ import java.util.concurrent.CancellationException;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class CourseFragment extends Fragment {
+public class CourseFragment extends MainFragment {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
@@ -66,14 +67,12 @@ public class CourseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
-    }
 
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
+        getFragmentManager().dump("", null,
+                new PrintWriter(System.out, true), null);
     }
 
     @Override
@@ -206,7 +205,7 @@ public class CourseFragment extends Fragment {
     }
 
     private void createFragment(Bundle b) {
-        Fragment courseInfoFragment = new CourseInfoFragment();
+        CourseInfoFragment courseInfoFragment = new CourseInfoFragment();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             courseInfoFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
@@ -220,7 +219,7 @@ public class CourseFragment extends Fragment {
         }
         courseInfoFragment.setArguments(b);
         getFragmentManager().beginTransaction().addSharedElement(mToolbar, "toolbar_background")
-                .replace(R.id.container, courseInfoFragment).addToBackStack(null)
+                .replace(R.id.container, courseInfoFragment).addToBackStack(this.toString())
                 .commit();
     }
 
@@ -241,6 +240,7 @@ public class CourseFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_main, menu);
     }
 
@@ -249,12 +249,6 @@ public class CourseFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 refresh();
-                return true;
-            case R.id.action_track:
-                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, trackedSectionsFragment)
-                        .commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

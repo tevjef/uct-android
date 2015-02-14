@@ -47,7 +47,7 @@ import butterknife.InjectView;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SubjectFragment extends Fragment {
+public class SubjectFragment extends MainFragment {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
@@ -63,14 +63,9 @@ public class SubjectFragment extends Fragment {
     public SubjectFragment() {
     }
 
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
@@ -219,7 +214,7 @@ public class SubjectFragment extends Fragment {
         CourseFragment courseFragment = new CourseFragment();
         courseFragment.setArguments(b);
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, courseFragment).addToBackStack(null)
+                .replace(R.id.container, courseFragment).addToBackStack(this.toString())
                 .commit();
     }
 
@@ -238,6 +233,7 @@ public class SubjectFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_main, menu);
     }
 
@@ -246,16 +242,6 @@ public class SubjectFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 refresh();
-                return true;
-            case R.id.action_track:
-                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ft.addSharedElement(mToolbar, "toolbar_background");
-                }
-                        ft.replace(R.id.container, trackedSectionsFragment)
-                        .commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

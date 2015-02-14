@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgerssoc.adapters;
 
-import android.app.Activity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
@@ -12,6 +11,7 @@ import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
+import com.tevinjeffrey.rutgerssoc.ui.MainFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 
 import butterknife.ButterKnife;
@@ -19,9 +19,10 @@ import butterknife.InjectView;
 
 public class CourseInfoAdapter {
 
-    private final Activity context;
+    private final MainActivity mContext;
     private final Course course;
     private final View rootView;
+    private final MainFragment callingFragment;
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseTitle_text)
     TextView mCourseTitleText;
@@ -80,14 +81,15 @@ public class CourseInfoAdapter {
     LinearLayout mSectionsContainer;
     private Request request;
 
-    private CourseInfoAdapter(Activity context, Course item, View rootView) {
-        this.context = context;
+    private CourseInfoAdapter(MainFragment callingFragment, Course item, View rootView) {
+        this.callingFragment = callingFragment;
         this.course = item;
         this.rootView = rootView;
+        this.mContext = callingFragment.getParentActivity();
     }
 
-    public CourseInfoAdapter(Activity context, Course course, View rootView, Request request) {
-        this(context, course, rootView);
+    public CourseInfoAdapter(MainFragment callingFragment, Course course, View rootView, Request request) {
+        this(callingFragment, course, rootView);
         this.request = request;
     }
 
@@ -161,6 +163,6 @@ public class CourseInfoAdapter {
     }
 
     void setSections(Course course) {
-        new SectionListAdapter(context, course, rootView, request, MainActivity.COURSE_INFO_SECTION).init();
+        new SectionListAdapter(callingFragment, course, rootView, request, MainActivity.COURSE_INFO_SECTION).init();
     }
 }

@@ -18,7 +18,7 @@ import com.tevinjeffrey.rutgerssoc.model.Request;
 import java.util.List;
 
 
-public class SectionInfoFragment extends Fragment {
+public class SectionInfoFragment extends MainFragment {
 
     private Request request;
 
@@ -26,14 +26,9 @@ public class SectionInfoFragment extends Fragment {
 
     }
 
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -76,21 +71,12 @@ public class SectionInfoFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_info, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_track:
-                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, trackedSectionsFragment)
-                        .commit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
+        return super.onOptionsItemSelected(item);
     }
 }

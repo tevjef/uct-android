@@ -2,11 +2,11 @@ package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
@@ -58,7 +58,7 @@ import java.util.concurrent.CancellationException;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class TrackedSectionsFragment extends Fragment {
+public class TrackedSectionsFragment extends MainFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.swipeRefreshLayout)
@@ -80,14 +80,10 @@ public class TrackedSectionsFragment extends Fragment {
     RelativeLayout addCoursesToTrack;
 
     View rootView;
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
@@ -153,8 +149,7 @@ public class TrackedSectionsFragment extends Fragment {
             ft.addSharedElement(mToolbar, "toolbar_background");
             ft.addSharedElement(mFab, "snackbar");
         }
-
-                ft.replace(R.id.container, chooserFragment).addToBackStack(null)
+                ft.replace(R.id.container, chooserFragment).addToBackStack(this.toString())
                 .commit();
     }
 
@@ -237,7 +232,6 @@ public class TrackedSectionsFragment extends Fragment {
                         public void onCompleted(Exception e, List<Course> courses) {
                             if (e == null && courses.size() > 0) {
                                 for (final Course c : courses) {
-                                    //TODO: figure out why it sometimes there's more than one courses when multiple school locations are selected
                                     for (final Course.Sections s : c.getSections()) {
                                         if (s.getIndex().equals(r.getIndex())) {
                                             List<Course.Sections> currentSection = new ArrayList<>();
@@ -250,7 +244,7 @@ public class TrackedSectionsFragment extends Fragment {
                                             }*/
 
                                             Log.d("TAG", "Adding section to layout | " + CourseUtils.getTitle(c));
-                                            new SectionListAdapter(getParentActivity(), c, rootView, r, MainActivity.TRACKED_SECTION).init();
+                                            new SectionListAdapter(TrackedSectionsFragment.this, c, rootView, r, MainActivity.TRACKED_SECTION).init();
 
                                             if (isLastSection) {
                                                 dismissProgress();
@@ -328,6 +322,7 @@ public class TrackedSectionsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_tracked_sections, menu);
     }
 
@@ -343,7 +338,6 @@ public class TrackedSectionsFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     @Override

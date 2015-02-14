@@ -2,29 +2,19 @@ package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
-import android.transition.ChangeTransform;
-import android.transition.CircularPropagation;
 import android.transition.Fade;
-import android.transition.SidePropagation;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,6 +25,7 @@ import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
+import com.tevinjeffrey.rutgerssoc.ui.MainFragment;
 import com.tevinjeffrey.rutgerssoc.ui.SectionInfoFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
@@ -49,10 +40,11 @@ import butterknife.InjectView;
 
 public class SectionListAdapter {
 
-    private final Activity mContext;
+    private final MainActivity mContext;
     private final String mInflationType;
     private final Request mRequest;
     private final View rootView;
+    private final MainFragment mCallingFragment;
     private LinearLayout mSectionsContainer;
     private Toolbar mToolbar;
     private final Course mCourse;
@@ -75,13 +67,14 @@ public class SectionListAdapter {
     private View sectionLayout;
     private FloatingActionButton mFab;
 
-    public SectionListAdapter(Activity context, Course course, View rootView, Request request, String inflationType) {
+    public SectionListAdapter(MainFragment callingFragment, Course course, View rootView, Request request, String inflationType) {
         this.sectionData = course.getSections();
-        this.mContext = context;
+        this.mCallingFragment = callingFragment;
         this.mCourse = course;
         this.mInflationType = inflationType;
         this.mRequest = request;
         this.rootView = rootView;
+        this.mContext = callingFragment.getParentActivity();
     }
 
     public void init() {
@@ -171,9 +164,9 @@ public class SectionListAdapter {
     }
 
     private void createFragment(Bundle b, View v) {
-        Fragment sectionInfoFragment = new SectionInfoFragment();
+        SectionInfoFragment sectionInfoFragment = new SectionInfoFragment();
         @SuppressLint("CommitTransaction") FragmentTransaction ft =
-                mContext.getFragmentManager().beginTransaction();
+                mContext.getSupportFragmentManager().beginTransaction();
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -205,7 +198,7 @@ public class SectionListAdapter {
         }
 
         sectionInfoFragment.setArguments(b);
-        ft.replace(R.id.container, sectionInfoFragment).addToBackStack(null)
+        ft.replace(R.id.container, sectionInfoFragment).addToBackStack(mCallingFragment.toString())
                 .commit();
     }
 

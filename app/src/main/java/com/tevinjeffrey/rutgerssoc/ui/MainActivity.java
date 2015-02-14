@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.transition.AutoTransition;
 import android.transition.ChangeImageTransform;
@@ -19,6 +20,8 @@ import com.koushikdutta.ion.Ion;
 import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgerssoc.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgerssoc.R;
+
+import java.io.PrintWriter;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -37,12 +40,14 @@ public class MainActivity extends ActionBarActivity {
         Mint.initAndStartSession(MainActivity.this, "2110a7f1");
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new TrackedSectionsFragment()).addToBackStack(null)
+            TrackedSectionsFragment tsf = new TrackedSectionsFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, tsf)
                     .commit();
         }
 
         Ion.getDefault(getApplicationContext()).configure().setLogging("MyLogs", Log.VERBOSE);
+
         setPrimaryWindow();
 
         setAlarm();
@@ -113,7 +118,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();

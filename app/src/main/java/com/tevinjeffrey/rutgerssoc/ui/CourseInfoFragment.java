@@ -1,17 +1,14 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseInfoAdapter;
@@ -20,7 +17,7 @@ import com.tevinjeffrey.rutgerssoc.model.Request;
 
 import butterknife.ButterKnife;
 
-public class CourseInfoFragment extends Fragment {
+public class CourseInfoFragment extends MainFragment {
 
     private Request request;
 
@@ -28,29 +25,12 @@ public class CourseInfoFragment extends Fragment {
 
     }
 
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class,true));
-            setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
-            setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            setAllowReturnTransitionOverlap(false);
-            setAllowEnterTransitionOverlap(true);
-/*            setSharedElementEnterTransition(new ChangeBounds());
-            setSharedElementReturnTransition(new ChangeBounds());*/
-        }
-
     }
 
     @Override
@@ -88,7 +68,7 @@ public class CourseInfoFragment extends Fragment {
     }
 
     private void inflateViews(Course course, View rootView) {
-        new CourseInfoAdapter(getParentActivity(), course, rootView, request).init();
+        new CourseInfoAdapter(this, course, rootView, request).init();
     }
 
     @Override
@@ -105,20 +85,13 @@ public class CourseInfoFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_info, menu);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_track:
-                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, trackedSectionsFragment)
-                        .commit();
-                return true;
-            default:
                 return super.onOptionsItemSelected(item);
-        }
     }
 }

@@ -1,15 +1,17 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ChooserFragment extends Fragment {
+public class ChooserFragment extends MainFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.semester_radiogroup)
@@ -54,10 +56,6 @@ public class ChooserFragment extends Fragment {
 
     Toolbar toolbar;
     public ChooserFragment() {
-    }
-
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
     }
 
     @Override
@@ -119,7 +117,7 @@ public class ChooserFragment extends Fragment {
 
     private void changeFragment(Bundle b) {
         SubjectFragment sf = new SubjectFragment();
-
+        sf.setArguments(b);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sf.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
@@ -130,11 +128,10 @@ public class ChooserFragment extends Fragment {
             sf.setAllowEnterTransitionOverlap(false);
             sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+
             ft.addSharedElement(toolbar, "toolbar_background");
         }
-
-        sf.setArguments(b);
-                ft.replace(R.id.container, sf).addToBackStack(null)
+                ft.replace(R.id.container, sf).addToBackStack(this.toString())
                 .commit();
     }
 
@@ -186,5 +183,10 @@ public class ChooserFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
