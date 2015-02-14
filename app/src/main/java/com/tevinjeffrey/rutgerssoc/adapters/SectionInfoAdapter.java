@@ -355,7 +355,7 @@ public class SectionInfoAdapter {
     }
 
     void setCourseTitle(Course course) {
-        mCourseTitleText.setText(CourseUtils.getTitle(course));
+        mCourseTitleText.setText(course.getTrueTitle());
     }
 
     void setSectionNotes(Course.Sections section) {

@@ -95,7 +95,7 @@ public class RequestService extends Service {
     }
 
     private void makeNotification(Course c, Course.Sections s, Request r) {
-        String courseTitle = CourseUtils.getTitle(c);
+        String courseTitle = c.getTrueTitle();
         String sectionNumber = s.getNumber();
 
         NotificationCompat.Builder mBuilder =

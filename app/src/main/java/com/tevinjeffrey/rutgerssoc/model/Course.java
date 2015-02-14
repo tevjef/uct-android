@@ -99,12 +99,22 @@ public class Course implements Parcelable {
         return title;
     }
 
+    public String getTrueTitle() {
+        return getExpandedTitle() == null ? getTitle() :
+                getExpandedTitle();
+    }
+
     public List<Sections> getSections() {
         return sections;
     }
 
     public void setSections(List<Sections> sections) {
         this.sections = sections;
+    }
+
+    @Override
+    public String toString() {
+        return getTrueTitle();
     }
 
     @Override
@@ -308,6 +318,11 @@ public class Course implements Parcelable {
                     hasMajors() ||
                     hasComments() ||
                     hasNotes();
+        }
+
+        @Override
+        public String toString() {
+            return "Section #" + getNumber();
         }
 
         @Override
@@ -524,6 +539,11 @@ public class Course implements Parcelable {
             public Comments() {
             }
 
+            @Override
+            public String toString() {
+                return getDescription();
+            }
+
             private Comments(Parcel in) {
                 this.description = in.readString();
             }
@@ -590,6 +610,11 @@ public class Course implements Parcelable {
             }
 
             @Override
+            public String toString() {
+                return getFullCrossListedSection();
+            }
+
+            @Override
             public int describeContents() {
                 return 0;
             }
@@ -636,6 +661,11 @@ public class Course implements Parcelable {
 
             public String getCode() {
                 return code;
+            }
+
+            @Override
+            public String toString() {
+                return getCode() + "MajorCode: " + isMajorCode() + "UnitCode" + isUnitCode();
             }
 
             @Override

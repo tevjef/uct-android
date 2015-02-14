@@ -120,7 +120,7 @@ public class SectionListAdapter {
 
     private void setCourseTitle() {
         if (mCourseTitleText != null && mInflationType.equals(MainActivity.TRACKED_SECTION)) {
-            mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getCourseNumber() + ": " + CourseUtils.getTitle(mCourse));
+            mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getCourseNumber() + ": " + mCourse.getTrueTitle());
         }
     }
 

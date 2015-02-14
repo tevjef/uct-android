@@ -17,9 +17,4 @@ public class CourseUtils {
             return String.valueOf(subjectCode);
         }
     }
-
-    public static String getTitle(Course course) {
-        return course.getExpandedTitle() == null ? course.getTitle() :
-                course.getExpandedTitle();
-    }
 }

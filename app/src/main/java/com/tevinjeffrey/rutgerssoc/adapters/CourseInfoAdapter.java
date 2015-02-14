@@ -112,7 +112,7 @@ public class CourseInfoAdapter {
     }
 
     void setCourseTitle(Course course) {
-        mCourseTitleText.setText(CourseUtils.getTitle(course));
+        mCourseTitleText.setText(course.getTrueTitle());
     }
 
     void setShortenedCourseInfo(Course course) {

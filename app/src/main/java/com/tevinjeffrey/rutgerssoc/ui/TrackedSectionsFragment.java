@@ -243,7 +243,7 @@ public class TrackedSectionsFragment extends MainFragment {
                                                 }
                                             }*/
 
-                                            Log.d("TAG", "Adding section to layout | " + CourseUtils.getTitle(c));
+                                            Log.d("TAG", "Adding section to layout | " + c.getTrueTitle());
                                             new SectionListAdapter(TrackedSectionsFragment.this, c, rootView, r, MainActivity.TRACKED_SECTION).init();
 
                                             if (isLastSection) {
