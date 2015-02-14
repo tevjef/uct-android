@@ -1,14 +1,12 @@
 package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Slide;
@@ -29,7 +27,6 @@ import com.tevinjeffrey.rutgerssoc.ui.MainFragment;
 import com.tevinjeffrey.rutgerssoc.ui.SectionInfoFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
-import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +55,7 @@ public class SectionListAdapter {
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.time_text)
     TextView mTimeText;
-    private TextView mProfText;
+    private TextView mInstructors;
     private TextView mSectionNumber;
     private TextView mCourseTitleText;
     private RelativeLayout mSectionNumberBackground;
@@ -128,7 +125,7 @@ public class SectionListAdapter {
     }
 
     private void initValues() {
-        mProfText = ButterKnife.findById(sectionLayout, R.id.prof_text);
+        mInstructors = ButterKnife.findById(sectionLayout, R.id.prof_text);
         mSectionNumber = ButterKnife.findById(sectionLayout, R.id.sectionNumber);
         mSectionNumberBackground = ButterKnife.findById(sectionLayout, R.id.sectionNumberBackground);
         mSectionTimeContainer = ButterKnife.findById(sectionLayout, R.id.sectionTimeContainer);
@@ -192,7 +189,7 @@ public class SectionListAdapter {
             ft.addSharedElement(mToolbar, "toolbar_background");
             ft.addSharedElement(mCourseTitleText, "course_title");
             ft.addSharedElement(mSectionNumberBackground, "section_background");
-//            ft.addSharedElement(mProfText, "instructor_name");
+//            ft.addSharedElement(mInstructors, "instructor_name");
             //ft.addSharedElement(credits, "credit_number");
 
         }
@@ -222,13 +219,13 @@ public class SectionListAdapter {
             ButterKnife.inject(this, timeLayout);
 
             if (time.isByArrangement()) {
-                mDayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-                mTimeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
+                mDayText.setText(SectionUtils.getMeetingDayName(time));
+                mTimeText.setText(SectionUtils.getMeetingHours(time));
                 mSectionLocationText.setText("");
             } else {
-                mDayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-                mTimeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
-                mSectionLocationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
+                mDayText.setText(SectionUtils.getMeetingDayName(time));
+                mTimeText.setText(SectionUtils.getMeetingHours(time));
+                mSectionLocationText.setText(SectionUtils.getClassLocation(time));
             }
             mSectionTimeContainer.addView(timeLayout);
         }
@@ -239,12 +236,7 @@ public class SectionListAdapter {
     }
 
     private void setInstructors(Course.Sections s) {
-        StringBuilder sb = new StringBuilder();
-        for (Course.Sections.Instructors i : s.getInstructors()) {
-            sb.append(i.getName());
-            sb.append(" | ");
-        }
-        mProfText.setText(UrlUtils.trimTrailingChar(sb.toString(), '|'));
+        mInstructors.setText(s.getToStringInstructors(" | "));
     }
 
     void setOpenStatus(Course.Sections s) {

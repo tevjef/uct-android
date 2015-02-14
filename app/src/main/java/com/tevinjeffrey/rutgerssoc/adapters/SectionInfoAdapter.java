@@ -448,8 +448,6 @@ public class SectionInfoAdapter {
         Collections.sort(s.getMeetingTimes());
         for (Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
 
-            Log.d("tag", "adding time to section " + s.getNumber());
-
             View timeLayout = inflater.inflate(R.layout.section_info_time, mSectionTimeContainer, false);
 
             TextView dayText = (TextView) timeLayout.findViewById(R.id.day_text);
@@ -457,10 +455,9 @@ public class SectionInfoAdapter {
             TextView locationText = (TextView) timeLayout.findViewById(R.id.sectionLocation_text);
             TextView meetingTimeText = (TextView) timeLayout.findViewById(R.id.meetingType);
 
-
-            dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-            timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
-            locationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
+            dayText.setText(SectionUtils.getMeetingDayName(time));
+            timeText.setText(SectionUtils.getMeetingHours(time));
+            locationText.setText(SectionUtils.getClassLocation(time));
             meetingTimeText.setText(time.getMeetingModeDesc());
 
             mSectionTimeContainer.addView(timeLayout);
@@ -473,6 +470,6 @@ public class SectionInfoAdapter {
             sb.append(i.getName());
             sb.append(" | ");
         }
-        mInstructorsText.setText(UrlUtils.trimTrailingChar(sb.toString(), '|'));
+        mInstructorsText.setText(s.getToStringInstructors(" | "));
     }
 }

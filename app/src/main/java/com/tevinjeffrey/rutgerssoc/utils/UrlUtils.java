@@ -4,6 +4,8 @@ package com.tevinjeffrey.rutgerssoc.utils;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 public class UrlUtils {
@@ -150,14 +152,14 @@ public class UrlUtils {
         return baseUrl + courseJson + "?" + params;
     }
 
-    public static String trimTrailingChar(String s) {
+/*    public static String trimTrailingChar(String s) {
         if (s != null && s.length() != 0) {
             s = s.trim();
             return s.substring(0, s.length() - 1);
         } else return s;
-    }
+    }*/
 
-    public static String trimTrailingChar(String s, char c) {
+/*    public static String trimTrailingChar(String s, char c) {
         if (s != null && s.length() != 0) {
             s = s.trim();
             if (s.charAt(s.length() - 1) == c) {
@@ -166,14 +168,14 @@ public class UrlUtils {
                 return s;
             }
         } else return s;
-    }
+    }*/
 
-    private static String trimTrailingOR(String s) {
+/*    private static String trimTrailingOR(String s) {
         if (s != null && s.length() != 0) {
             s = s.trim();
             return s.substring(0, s.length() - 4);
         } else return s;
-    }
+    }*/
 
 
     public static String getAbbreviatedLocationName(String s) {
@@ -196,16 +198,7 @@ public class UrlUtils {
     }
 
     private static String createSearchUrl(String query, Course.Sections s) {
-        StringBuilder sb = new StringBuilder();
-        for (String prof : SectionUtils.getInstructors(s)) {
-            sb.append(prof);
-            sb.append("+");
-            sb.append("OR");
-            sb.append("+");
-        }
-        sb = new StringBuilder(trimTrailingOR(sb.toString()));
-        sb.append(query);
-        return sb.toString();
+        return s.getToStringInstructors("+OR+") + query;
     }
 
     public static String getGoogleUrl(Course.Sections s) {

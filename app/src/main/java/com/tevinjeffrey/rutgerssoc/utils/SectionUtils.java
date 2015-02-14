@@ -73,7 +73,7 @@ public class SectionUtils {
             } else {
                 return "";
             }
-            return !time.isLecture() ? "<i>" + formattedDay + "</i>" : formattedDay;
+            return !time.isLecture() ? formattedDay : formattedDay;
         }
         return "";
     }
@@ -83,7 +83,7 @@ public class SectionUtils {
             String fullTime = SectionUtils.getMeetingHoursBegin(time) + " - " +
                     SectionUtils.getMeetingHoursEnd(time);
             if (time.isRecitation()) {
-                return "<i>" + fullTime + "</i>";
+                return fullTime;
             } else {
                 return fullTime;
             }
@@ -91,7 +91,7 @@ public class SectionUtils {
         } else if (time.isLab()) {
             return time.getMeetingModeDesc();
         } else if (time.isByArrangement()) {
-            return "<i>Hours By Arrangement</i>";
+            return "Hours By Arrangement";
         }
         return time.getMeetingModeDesc();
     }

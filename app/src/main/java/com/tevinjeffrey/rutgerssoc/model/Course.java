@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -197,6 +199,26 @@ public class Course implements Parcelable {
 
         public List<CrossListedSections> getCrossListedSections() {
             return crossListedSections;
+        }
+
+        public String getToStringMeetingTimes(String joiner) {
+            return StringUtils.join(meetingTimes, joiner);
+        }
+
+        public String getToStringInstructors(String joiner) {
+            return StringUtils.join(instructors, joiner);
+        }
+
+        public String getToStringComments(String joiner) {
+            return StringUtils.join(comments, joiner);
+        }
+
+        public String getToStringMajors(String joiner) {
+            return StringUtils.join(majors, joiner);
+        }
+
+        public String getToStringCrossListedSections(String joiner) {
+            return StringUtils.join(instructors, joiner);
         }
 
         public int getStopPoint() {
