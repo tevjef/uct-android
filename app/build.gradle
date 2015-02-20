@@ -1,25 +1,4 @@
-import org.moallemi.gradle.internal.VersionCodeType
-
 apply plugin: 'com.android.application'
-
-advancedVersioning {
-    nameOptions {
-        versionMajor 0
-        versionMinor 3
-        versionPatch 0
-        versionBuild 0
-    }
-    codeOptions {
-        versionCodeType VersionCodeType.DATE
-    }
-    outputOptions {
-        renameOutput true
-        nameFormat '$appName-$buildType-$versionName'
-    }
-}
-
-def appVersionName = advancedVersioning.versionName
-def appVersionCode = advancedVersioning.versionCode
 
 android {
     compileSdkVersion 21
@@ -29,8 +8,8 @@ android {
         applicationId "com.tevinjeffrey.rutgerssoc"
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode appVersionCode
-        versionName appVersionName
+        versionCode 1
+        versionName "0.3.0.0"
     }
     buildTypes {
         release {
