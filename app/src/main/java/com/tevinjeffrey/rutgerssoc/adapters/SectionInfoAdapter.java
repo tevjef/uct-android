@@ -73,7 +73,7 @@ public class SectionInfoAdapter {
 
     TextView mClassSizeText;
     @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.toolbar_header_info)
+    @InjectView(R.id.toolbar)
 
     Toolbar mToolbarHeaderInfo;
     @SuppressWarnings("WeakerAccess")
@@ -337,8 +337,8 @@ public class SectionInfoAdapter {
     void setPrimaryWindow() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = context.getWindow();
-            window.setStatusBarColor(context.getResources().getColor(R.color.primary_dark));
-            window.setNavigationBarColor(context.getResources().getColor(R.color.primary_dark));
+            window.setStatusBarColor(context.getResources().getColor(R.color.red_dark));
+            window.setNavigationBarColor(context.getResources().getColor(R.color.red_dark));
         }
     }
 
@@ -355,7 +355,7 @@ public class SectionInfoAdapter {
     }
 
     void setCourseTitle(Course course) {
-        mCourseTitleText.setText(CourseUtils.getTitle(course));
+        mCourseTitleText.setText(course.getTrueTitle());
     }
 
     void setSectionNotes(Course.Sections section) {
@@ -448,8 +448,6 @@ public class SectionInfoAdapter {
         Collections.sort(s.getMeetingTimes());
         for (Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
 
-            Log.d("tag", "adding time to section " + s.getNumber());
-
             View timeLayout = inflater.inflate(R.layout.section_info_time, mSectionTimeContainer, false);
 
             TextView dayText = (TextView) timeLayout.findViewById(R.id.day_text);
@@ -457,10 +455,9 @@ public class SectionInfoAdapter {
             TextView locationText = (TextView) timeLayout.findViewById(R.id.sectionLocation_text);
             TextView meetingTimeText = (TextView) timeLayout.findViewById(R.id.meetingType);
 
-
-            dayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-            timeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
-            locationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
+            dayText.setText(SectionUtils.getMeetingDayName(time));
+            timeText.setText(SectionUtils.getMeetingHours(time));
+            locationText.setText(SectionUtils.getClassLocation(time));
             meetingTimeText.setText(time.getMeetingModeDesc());
 
             mSectionTimeContainer.addView(timeLayout);
@@ -468,11 +465,6 @@ public class SectionInfoAdapter {
     }
 
     void setInstructors(Course.Sections s) {
-        StringBuilder sb = new StringBuilder();
-        for (Course.Sections.Instructors i : s.getInstructors()) {
-            sb.append(i.getName());
-            sb.append(" | ");
-        }
-        mInstructorsText.setText(UrlUtils.trimTrailingChar(sb.toString(), '|'));
+        mInstructorsText.setText(s.getToStringInstructors(" | "));
     }
 }

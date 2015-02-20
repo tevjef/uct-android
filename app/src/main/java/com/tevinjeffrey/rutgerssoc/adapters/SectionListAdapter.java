@@ -1,31 +1,33 @@
 package com.tevinjeffrey.rutgerssoc.adapters;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.text.Html;
-import android.transition.AutoTransition;
+import android.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
+import com.tevinjeffrey.rutgerssoc.animator.MaterialInterpolator;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
+import com.tevinjeffrey.rutgerssoc.ui.MainFragment;
 import com.tevinjeffrey.rutgerssoc.ui.SectionInfoFragment;
 import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
-import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,10 +38,13 @@ import butterknife.InjectView;
 
 public class SectionListAdapter {
 
-    private final Activity mContext;
+    private final MainActivity mContext;
     private final String mInflationType;
     private final Request mRequest;
-    private final LinearLayout mSectionsContainer;
+    private final View rootView;
+    private final MainFragment mCallingFragment;
+    private LinearLayout mSectionsContainer;
+    private Toolbar mToolbar;
     private final Course mCourse;
     private final List<Course.Sections> sectionData;
     @SuppressWarnings("WeakerAccess")
@@ -51,21 +56,23 @@ public class SectionListAdapter {
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.time_text)
     TextView mTimeText;
-    private TextView mProfText;
+    private TextView mInstructors;
     private TextView mSectionNumber;
     private TextView mCourseTitleText;
     private RelativeLayout mSectionNumberBackground;
     private LinearLayout mSectionTimeContainer;
     private LayoutInflater inflater;
     private View sectionLayout;
+    private FloatingActionButton mFab;
 
-    public SectionListAdapter(Activity context, Course course, LinearLayout sectionsContainer, Request request, String inflationType) {
+    public SectionListAdapter(MainFragment callingFragment, Course course, View rootView, Request request, String inflationType) {
         this.sectionData = course.getSections();
-        this.mContext = context;
+        this.mCallingFragment = callingFragment;
         this.mCourse = course;
         this.mInflationType = inflationType;
         this.mRequest = request;
-        this.mSectionsContainer = sectionsContainer;
+        this.rootView = rootView;
+        this.mContext = callingFragment.getParentActivity();
     }
 
     public void init() {
@@ -98,9 +105,6 @@ public class SectionListAdapter {
         setTimes(s);
         setOnClickSectionClickListener();
         //setSectionBackground(s, mSectionRoot);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setTransitions();
-        }
 
         sectionLayout.setTag(new Request(mRequest.getSubject(), mRequest.getSemester(),
                 mRequest.getLocations(), mRequest.getLevels(), s.getIndex()));
@@ -116,19 +120,25 @@ public class SectionListAdapter {
         }*/
 
     private void setCourseTitle() {
-        if (mCourseTitleText != null) {
-            mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getCourseNumber() + ": " + CourseUtils.getTitle(mCourse));
+        if (mCourseTitleText != null && mInflationType.equals(MainActivity.TRACKED_SECTION)) {
+            mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getCourseNumber() + ": " + mCourse.getTrueTitle());
         }
     }
 
     private void initValues() {
-        mProfText = ButterKnife.findById(sectionLayout, R.id.prof_text);
+        mInstructors = ButterKnife.findById(sectionLayout, R.id.prof_text);
         mSectionNumber = ButterKnife.findById(sectionLayout, R.id.sectionNumber);
         mSectionNumberBackground = ButterKnife.findById(sectionLayout, R.id.sectionNumberBackground);
         mSectionTimeContainer = ButterKnife.findById(sectionLayout, R.id.sectionTimeContainer);
 
+        mSectionsContainer = ButterKnife.findById(rootView, R.id.sectionsContainer);
+        mToolbar = ButterKnife.findById(rootView, R.id.toolbar);
+        mFab = ButterKnife.findById(rootView, R.id.fab);
+
         if (mInflationType.equals(MainActivity.TRACKED_SECTION)) {
             mCourseTitleText = ButterKnife.findById(sectionLayout, R.id.courseTitle_text);
+        } else{
+            mCourseTitleText = ButterKnife.findById(rootView, R.id.courseTitle_text);
         }
     }
 
@@ -143,43 +153,46 @@ public class SectionListAdapter {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setTransitions() {
-        mSectionNumberBackground.setTransitionName("section_background");
-        mProfText.setTransitionName("instructor_name");
-    }
-
     private void setOnClickSectionClickListener() {
         sectionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createFragment(createArgs((Parcelable) v.getTag()));
+                createFragment(createArgs((Parcelable) v.getTag()), v);
             }
         });
     }
 
-    private void createFragment(Bundle b) {
-        Fragment sectionInfoFragment = new SectionInfoFragment();
+    private void createFragment(Bundle b, View v) {
+        SectionInfoFragment sectionInfoFragment = new SectionInfoFragment();
         @SuppressLint("CommitTransaction") FragmentTransaction ft =
                 mContext.getFragmentManager().beginTransaction();
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            sectionInfoFragment.setEnterTransition(new AutoTransition());
-            sectionInfoFragment.setReturnTransition(new AutoTransition());
+            Slide slide = new Slide(Gravity.RIGHT);
+            slide.setInterpolator(new EaseOutQuint());
+
+            sectionInfoFragment.setEnterTransition(slide);
+            sectionInfoFragment.setReturnTransition(slide);
             //sectionInfoFragment.setEnterTransition(new AutoTransition());
 
-            sectionInfoFragment.setExitTransition(new AutoTransition());
-            sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds());
-            sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds());
+            sectionInfoFragment.setExitTransition(new Fade(Fade.OUT));
 
+            //sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            //sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+
+            if(mFab != null)
+            ft.addSharedElement(mFab, "fab");
+
+            ft.addSharedElement(mToolbar, "toolbar_background");
+            ft.addSharedElement(mCourseTitleText, "course_title");
             ft.addSharedElement(mSectionNumberBackground, "section_background");
-            ft.addSharedElement(mProfText, "instructor_name");
+//            ft.addSharedElement(mInstructors, "instructor_name");
             //ft.addSharedElement(credits, "credit_number");
 
         }
-
         sectionInfoFragment.setArguments(b);
-        ft.replace(R.id.container, sectionInfoFragment).addToBackStack(null)
+        ft.replace(R.id.container, sectionInfoFragment).addToBackStack(mCallingFragment.toString())
                 .commit();
     }
 
@@ -203,13 +216,13 @@ public class SectionListAdapter {
             ButterKnife.inject(this, timeLayout);
 
             if (time.isByArrangement()) {
-                mDayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-                mTimeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
+                mDayText.setText(SectionUtils.getMeetingDayName(time));
+                mTimeText.setText(SectionUtils.getMeetingHours(time));
                 mSectionLocationText.setText("");
             } else {
-                mDayText.setText(Html.fromHtml(SectionUtils.getMeetingDayName(time)));
-                mTimeText.setText(Html.fromHtml(SectionUtils.getMeetingHours(time)));
-                mSectionLocationText.setText(Html.fromHtml(SectionUtils.getClassLocation(time)));
+                mDayText.setText(SectionUtils.getMeetingDayName(time));
+                mTimeText.setText(SectionUtils.getMeetingHours(time));
+                mSectionLocationText.setText(SectionUtils.getClassLocation(time));
             }
             mSectionTimeContainer.addView(timeLayout);
         }
@@ -220,12 +233,7 @@ public class SectionListAdapter {
     }
 
     private void setInstructors(Course.Sections s) {
-        StringBuilder sb = new StringBuilder();
-        for (Course.Sections.Instructors i : s.getInstructors()) {
-            sb.append(i.getName());
-            sb.append(" | ");
-        }
-        mProfText.setText(UrlUtils.trimTrailingChar(sb.toString(), '|'));
+        mInstructors.setText(s.getToStringInstructors(" | "));
     }
 
     void setOpenStatus(Course.Sections s) {

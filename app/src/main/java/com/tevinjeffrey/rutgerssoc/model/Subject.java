@@ -64,4 +64,9 @@ public class Subject implements Parcelable {
         dest.writeInt(this.code);
         dest.writeString(this.modifiedDescription);
     }
+
+    @Override
+    public String toString() {
+        return getCode() + " : " + getDescription();
+    }
 }

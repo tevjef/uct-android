@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 public class Request implements Parcelable {
@@ -50,12 +52,7 @@ public class Request implements Parcelable {
     }
 
     public static String toStringList(ArrayList<String> strings) {
-        StringBuilder sb = new StringBuilder();
-        for (String s : strings) {
-            sb.append(s);
-            sb.append(", ");
-        }
-        return UrlUtils.trimTrailingChar(sb.toString());
+        return StringUtils.join(strings, ", ");
     }
 
     public String getIndex() {

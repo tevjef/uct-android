@@ -1,11 +1,15 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -25,6 +31,10 @@ import com.melnykov.fab.ObservableScrollView;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.enums.SnackbarType;
+import com.nispok.snackbar.listeners.EventListener;
 import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.SectionListAdapter;
@@ -32,20 +42,24 @@ import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.TrackedSections;
-import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.TimeoutException;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
+
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class TrackedSectionsFragment extends Fragment {
+public class TrackedSectionsFragment extends MainFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.swipeRefreshLayout)
@@ -66,14 +80,13 @@ public class TrackedSectionsFragment extends Fragment {
     @InjectView(R.id.addCoursesTrack)
     RelativeLayout addCoursesToTrack;
 
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
-    }
+    View rootView;
+
+    String TAG = this.toString();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -82,12 +95,13 @@ public class TrackedSectionsFragment extends Fragment {
         getParentActivity().setPrimaryWindow();
         setRetainInstance(true);
 
-        final View rootView = inflater.inflate(R.layout.fragment_tracked_section, container, false);
+        rootView = inflater.inflate(R.layout.fragment_tracked_section, container, false);
+
         ButterKnife.inject(this, rootView);
         setToolbar();
 
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-        mSwipeRefreshLayout.setColorSchemeColors(R.color.accent, R.color.red);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
 
 /*       progress = ProgressDialog.show(getParentActivity(), "",
                 "Checking classes", true);*/
@@ -96,7 +110,17 @@ public class TrackedSectionsFragment extends Fragment {
         refresh();
         setFabListener();
 
+        warnServerIssues();
         return rootView;
+    }
+
+    private void warnServerIssues() {
+        Calendar c= Calendar.getInstance();
+            Log.i(TAG, String.valueOf(c.get(Calendar.HOUR_OF_DAY)));
+
+        if(c.get(Calendar.HOUR_OF_DAY) == 3 || c.get(Calendar.HOUR_OF_DAY) == 4) {
+            showSnackBar("Expect intermittent server issues between the hours of 3:00am and 4:00am");
+        }
     }
 
     private void setFabListener() {
@@ -110,8 +134,15 @@ public class TrackedSectionsFragment extends Fragment {
     }
 
     private void createFragment() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, new ChooserFragment()).addToBackStack(null)
+        ChooserFragment chooserFragment = new ChooserFragment();
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ft.addSharedElement(mToolbar, mToolbar.getTransitionName());
+            ft.addSharedElement(mFab, "snackbar");
+        }
+                ft.replace(R.id.container, chooserFragment).addToBackStack(this.toString())
                 .commit();
     }
 
@@ -166,14 +197,17 @@ public class TrackedSectionsFragment extends Fragment {
                     }
                 }
             });
+        } else if(mSwipeRefreshLayout != null) {
+            dismissProgress();
+            Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll(this);
+            //refresh();
         }
     }
 
     private void getTrackedSections() {
-        Log.d("TAG", "getTrackedSections Called");
         removeAllViews();
 
-        List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
+        final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
         for (final Iterator<TrackedSections> trackedSectionsIterator = allTrackedSections.iterator(); trackedSectionsIterator.hasNext(); ) {
             TrackedSections ts = trackedSectionsIterator.next();
             final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
@@ -190,20 +224,12 @@ public class TrackedSectionsFragment extends Fragment {
                         public void onCompleted(Exception e, List<Course> courses) {
                             if (e == null && courses.size() > 0) {
                                 for (final Course c : courses) {
-                                    //TODO: figure out why it sometimes there's 2 courses when multiple school locations are selected
                                     for (final Course.Sections s : c.getSections()) {
                                         if (s.getIndex().equals(r.getIndex())) {
                                             List<Course.Sections> currentSection = new ArrayList<>();
                                             currentSection.add(s);
                                             c.setSections(currentSection);
-                                  /*          for(final Iterator<Course.Sections> sectionsInCourse = c.getSections().iterator();  sectionsInCourse.hasNext();) {
-                                                if(!s.getIndex().equals(r.getIndex())) {
-                                                    sectionsInCourse.remove();
-                                                }
-                                            }*/
-
-                                            Log.d("TAG", "Adding section to layout | " + CourseUtils.getTitle(c));
-                                            new SectionListAdapter(getParentActivity(), c, mSectionsContainer, r, MainActivity.TRACKED_SECTION).init();
+                                            new SectionListAdapter(TrackedSectionsFragment.this, c, rootView, r, MainActivity.TRACKED_SECTION).init();
 
                                             if (isLastSection) {
                                                 dismissProgress();
@@ -213,28 +239,37 @@ public class TrackedSectionsFragment extends Fragment {
                                 }
                             } else {
                                 if (e instanceof UnknownHostException) {
-                                    Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                                    showSnackBar("No internet connection.");
                                 } else if (e instanceof CancellationException) {
                                     Mint.transactionCancel("NetworkOp", "Cancelled");
-                                } else {
+                                } else if (e instanceof IllegalStateException){
+                                    Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                    showSnackBar("The server is currently down. Try again later.");
+                                } else if (e instanceof TimeoutException) {
+                                    Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                    showSnackBar("Connection timed out. Check internet connection.");
+                                }else {
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("Request", r.toString());
                                     map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
                                     Mint.logExceptionMap(map, e);
-                                    Toast.makeText(getParentActivity(), "Error: " + (e != null ? e.getMessage() : null), Toast.LENGTH_LONG).show();
+                                    if(e != null) Toast.makeText(getParentActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
                             dismissProgress();
+                            setEmptyLayout(allTrackedSections);
                         }
                     });
-
-
         }
-        if (allTrackedSections.size() == 0) {
+    }
+
+    private void setEmptyLayout(List<TrackedSections> allTrackedSections) {
+        if (allTrackedSections.size() == 0 || ((ViewGroup)ButterKnife.findById(rootView, R.id.sectionsContainer)).getChildCount() == 0) {
             dismissProgress();
             addCoursesToTrack.setVisibility(View.VISIBLE);
         } else {
             addCoursesToTrack.setVisibility(View.GONE);
+            SnackbarManager.dismiss();
         }
     }
 
@@ -247,9 +282,6 @@ public class TrackedSectionsFragment extends Fragment {
     }
 
     private void dismissProgress() {
-//       if(progress.isShowing()) {
-//            progress.dismiss();
-//        }
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
 
@@ -262,6 +294,58 @@ public class TrackedSectionsFragment extends Fragment {
             set.setInterpolator(new EaseOutQuint());
             set.setDuration(500).start();
         }
+    }
+
+    void showSnackBar(String message) {
+        SnackbarManager.show(
+                Snackbar.with(getParentActivity())
+                        .type(SnackbarType.MULTI_LINE)
+                        .text(message)
+                         .actionLabel("DISMISS")// text to display
+                        .actionColor(getResources().getColor(R.color.white))
+                         .color(getResources().getColor(R.color.accent))// action button label color
+                        .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
+                        .eventListener(new EventListener() {
+                            @Override
+                            public void onShow(Snackbar snackbar) {
+                                animate(mFab).translationYBy(-snackbar.getHeight()).setInterpolator(new OvershootInterpolator()).start();
+                            }
+
+                            @Override
+                            public void onShowByReplace(Snackbar snackbar) {
+                                Log.i(TAG, String.format("Snackbar will show by replace. Width: %d Height: %d Offset: %d",
+                                        snackbar.getWidth(), snackbar.getHeight(),
+                                        snackbar.getOffset()));
+                            }
+
+                            @Override
+                            public void onShown(Snackbar snackbar) {
+                                Log.i(TAG, String.format("Snackbar shown. Width: %d Height: %d Offset: %d",
+                                        snackbar.getWidth(), snackbar.getHeight(),
+                                        snackbar.getOffset()));
+                            }
+
+                            @Override
+                            public void onDismiss(Snackbar snackbar) {
+                                animate(mFab).translationYBy(snackbar.getHeight()).setInterpolator(new OvershootInterpolator()).start();
+                            }
+
+                            @Override
+                            public void onDismissByReplace(Snackbar snackbar) {
+                                Log.i(TAG, String.format(
+                                        "Snackbar will dismiss by replace. Width: %d Height: %d Offset: %d",
+                                        snackbar.getWidth(), snackbar.getHeight(),
+                                        snackbar.getOffset()));
+                            }
+
+                            @Override
+                            public void onDismissed(Snackbar snackbar) {
+                                Log.i(TAG, String.format("Snackbar dismissed. Width: %d Height: %d Offset: %d",
+                                        snackbar.getWidth(), snackbar.getHeight(),
+                                        snackbar.getOffset()));
+                            }
+                        }) // Snackbar's EventListener
+                , getParentActivity()); // activity where it is displayed
     }
 
     private void setToolbar() {
@@ -283,6 +367,7 @@ public class TrackedSectionsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_tracked_sections, menu);
     }
 
@@ -298,7 +383,6 @@ public class TrackedSectionsFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     @Override

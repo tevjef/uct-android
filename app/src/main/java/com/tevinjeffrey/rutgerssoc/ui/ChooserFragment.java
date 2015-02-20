@@ -1,21 +1,28 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.ChangeClipBounds;
 import android.transition.Fade;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 
 import java.util.ArrayList;
@@ -23,7 +30,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ChooserFragment extends Fragment {
+public class ChooserFragment extends MainFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.semester_radiogroup)
@@ -47,11 +54,13 @@ public class ChooserFragment extends Fragment {
     @InjectView(R.id.search_button)
     TextView mSearchButton;
 
+    Toolbar toolbar;
     public ChooserFragment() {
     }
 
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -77,7 +86,7 @@ public class ChooserFragment extends Fragment {
     }
 
     private void setToolbar(View rootView) {
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_header_chooser);
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         getParentActivity().setSupportActionBar(toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -113,16 +122,21 @@ public class ChooserFragment extends Fragment {
 
     private void changeFragment(Bundle b) {
         SubjectFragment sf = new SubjectFragment();
+        sf.setArguments(b);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            sf.setEnterTransition(new Fade());
-            sf.setExitTransition(new Fade());
+            sf.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            sf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            sf.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            sf.setReturnTransition(new Fade(Fade.OUT ).excludeTarget(ImageView.class, true));
+            sf.setAllowReturnTransitionOverlap(true);
+            sf.setAllowEnterTransitionOverlap(true);
+            sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            ft.addSharedElement(toolbar, "toolbar_background");
         }
-
-        sf.setArguments(b);
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, sf).addToBackStack(null)
+                ft.replace(R.id.container, sf).addToBackStack(this.toString())
                 .commit();
     }
 
@@ -174,5 +188,10 @@ public class ChooserFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

@@ -17,7 +17,7 @@ import com.tevinjeffrey.rutgerssoc.model.Request;
 
 import butterknife.ButterKnife;
 
-public class CourseInfoFragment extends Fragment {
+public class CourseInfoFragment extends MainFragment {
 
     private Request request;
 
@@ -25,14 +25,9 @@ public class CourseInfoFragment extends Fragment {
 
     }
 
-    private MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
@@ -59,7 +54,7 @@ public class CourseInfoFragment extends Fragment {
     }
 
     private void setToolbar(View rootView) {
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_header_info);
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         getParentActivity().setSupportActionBar(toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -73,7 +68,7 @@ public class CourseInfoFragment extends Fragment {
     }
 
     private void inflateViews(Course course, View rootView) {
-        new CourseInfoAdapter(getParentActivity(), course, rootView, request).init();
+        new CourseInfoAdapter(this, course, rootView, request).init();
     }
 
     @Override
@@ -97,15 +92,6 @@ public class CourseInfoFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_track:
-                TrackedSectionsFragment trackedSectionsFragment = new TrackedSectionsFragment();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, trackedSectionsFragment)
-                        .commit();
-                return true;
-            default:
                 return super.onOptionsItemSelected(item);
-        }
     }
 }

@@ -9,28 +9,26 @@
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
 
 
-<!--    <com.jenzz.materialpreference.PreferenceCategory
-        android:title="Material Category">
+    <com.jenzz.materialpreference.PreferenceCategory
+        android:title="Sync &amp; Data">
 
         <com.jenzz.materialpreference.Preference
-            android:title="Material Preference"
-            android:summary="Material Summary" />
+            android:title="Sync Interval"
+            android:summary="Material Summary"
+            android:key="sync_interval"/>
 
     </com.jenzz.materialpreference.PreferenceCategory>
 
-    <CheckBoxPreference
-        android:key="@string/pref_key_sound"
-        android:title="@string/pref_sound"
-        android:summary="@string/pre_sound_summary"
-        android:defaultValue="true"
-        android:enabled="true"/>
+    <com.jenzz.materialpreference.PreferenceCategory
+        android:title="Developer">
 
-    <CheckBoxPreference
-        android:key="@string/pref_key_auto_upload_screenshots"
-        android:title="@string/pref_auto_upload_screenshots"
-        android:summary="@string/pref_auto_upload_screenshots_summary"
-        android:defaultValue="true"
-        android:enabled="false"/>-->
+        <com.jenzz.materialpreference.Preference
+            android:title="Open Source Licenses"
+            android:key="licenses"/>
+        <com.jenzz.materialpreference.Preference
+            android:title="About"
+            android:key="about"/>
 
+    </com.jenzz.materialpreference.PreferenceCategory>
 
 </PreferenceScreen>

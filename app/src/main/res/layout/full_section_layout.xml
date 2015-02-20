@@ -87,7 +87,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-condensed"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:transitionName="course_title" />
 
     </RelativeLayout>
 

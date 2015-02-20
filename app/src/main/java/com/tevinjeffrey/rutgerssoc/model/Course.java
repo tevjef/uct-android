@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,12 +99,22 @@ public class Course implements Parcelable {
         return title;
     }
 
+    public String getTrueTitle() {
+        return getExpandedTitle() == null ? getTitle() :
+                getExpandedTitle();
+    }
+
     public List<Sections> getSections() {
         return sections;
     }
 
     public void setSections(List<Sections> sections) {
         this.sections = sections;
+    }
+
+    @Override
+    public String toString() {
+        return getTrueTitle();
     }
 
     @Override
@@ -199,6 +211,26 @@ public class Course implements Parcelable {
             return crossListedSections;
         }
 
+        public String getToStringMeetingTimes(String joiner) {
+            return StringUtils.join(meetingTimes, joiner);
+        }
+
+        public String getToStringInstructors(String joiner) {
+            return StringUtils.join(instructors, joiner);
+        }
+
+        public String getToStringComments(String joiner) {
+            return StringUtils.join(comments, joiner);
+        }
+
+        public String getToStringMajors(String joiner) {
+            return StringUtils.join(majors, joiner);
+        }
+
+        public String getToStringCrossListedSections(String joiner) {
+            return StringUtils.join(instructors, joiner);
+        }
+
         public int getStopPoint() {
             return stopPoint;
         }
@@ -286,6 +318,11 @@ public class Course implements Parcelable {
                     hasMajors() ||
                     hasComments() ||
                     hasNotes();
+        }
+
+        @Override
+        public String toString() {
+            return "Section #" + getNumber();
         }
 
         @Override
@@ -502,6 +539,11 @@ public class Course implements Parcelable {
             public Comments() {
             }
 
+            @Override
+            public String toString() {
+                return getDescription();
+            }
+
             private Comments(Parcel in) {
                 this.description = in.readString();
             }
@@ -568,6 +610,11 @@ public class Course implements Parcelable {
             }
 
             @Override
+            public String toString() {
+                return getFullCrossListedSection();
+            }
+
+            @Override
             public int describeContents() {
                 return 0;
             }
@@ -614,6 +661,11 @@ public class Course implements Parcelable {
 
             public String getCode() {
                 return code;
+            }
+
+            @Override
+            public String toString() {
+                return getCode() + "MajorCode: " + isMajorCode() + "UnitCode" + isUnitCode();
             }
 
             @Override
