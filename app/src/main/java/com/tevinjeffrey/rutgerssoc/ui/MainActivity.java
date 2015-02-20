@@ -7,21 +7,27 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
 import android.transition.ChangeImageTransform;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.koushikdutta.ion.Ion;
 import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgerssoc.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgerssoc.R;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -37,17 +43,24 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mint.initAndStartSession(MainActivity.this, "2110a7f1");
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             TrackedSectionsFragment tsf = new TrackedSectionsFragment();
-            getSupportFragmentManager().beginTransaction()
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                tsf.setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+                tsf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+                tsf.setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+                tsf.setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+                tsf.setAllowReturnTransitionOverlap(false);
+                tsf.setAllowEnterTransitionOverlap(false);
+                tsf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+                tsf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            }
+            getFragmentManager().beginTransaction()
                     .replace(R.id.container, tsf)
                     .commit();
         }
-
-        Ion.getDefault(getApplicationContext()).configure().setLogging("MyLogs", Log.VERBOSE);
-
         setPrimaryWindow();
 
         setAlarm();
@@ -62,8 +75,23 @@ public class MainActivity extends ActionBarActivity {
 
         alarmMgr.cancel(alarmIntent);
         alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+                getInterval(), alarmIntent);
+    }
 
+    long getInterval() {
+        int index = PreferenceManager.getDefaultSharedPreferences(this)
+                .getInt(getApplicationContext().getResources().getString(R.string.sync_interval), 1);
+        if(index == 0) {
+            return 5 * 60 * 1000;
+        } else if(index == 1) {
+            return 15 * 60 * 1000;
+        } else if(index == 2) {
+            return 60 * 60 * 1000;
+        } else if(index == 3) {
+            return 3 * 60 * 60 * 1000;
+        } else {
+            return 6 * 60 * 60 * 1000;
+        }
     }
 
     public void setAccentWindow() {

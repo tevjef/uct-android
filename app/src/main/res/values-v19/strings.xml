@@ -32,5 +32,15 @@
     <string name="action_feedback">Send Feedback</string>
     <string name="action_track">Track Sections</string>
 
+    <string name="sync_interval">Sync Interval</string>
+    <string name="set">Set</string>
+
+    <string-array name="intervals">
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+    </string-array>
+
 
 </resources>

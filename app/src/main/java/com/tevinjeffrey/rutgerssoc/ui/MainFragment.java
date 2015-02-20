@@ -2,8 +2,8 @@ package com.tevinjeffrey.rutgerssoc.ui;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,14 +18,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setHasOptionsMenu(true);
-
-        System.out.println("=========================Beginning Dump=========================");
-        getFragmentManager().dump("", null,
-                new PrintWriter(System.out, true), null);
-        System.out.println("=========================Ending Dump=========================");
-
     }
 
     public MainActivity getParentActivity() {
@@ -42,6 +35,9 @@ public class MainFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_track:
                 getFragmentManager().popBackStack("TrackedSectionsFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                return true;
+            case R.id.action_settings:
+                getFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).addToBackStack("SettingsFragment").commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

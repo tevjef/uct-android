@@ -80,15 +80,12 @@ public class RequestService extends Service {
                             }
                         } else {
                             Mint.transactionCancel("startRequestService", (e != null ? e.getMessage() : null));
-                            if (e instanceof UnknownHostException) {
-                                Toast.makeText(RequestService.this, "No Internet connection", Toast.LENGTH_LONG).show();
-                            } else {
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("Request", r.toString());
-                                map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
-                                Mint.logExceptionMap(map, e);
-                                Toast.makeText(RequestService.this, "Error: " + (e != null ? e.getMessage() : "An error occurred"), Toast.LENGTH_LONG).show();
-                            }
+
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("Request", r.toString());
+                            map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
+                            Mint.logExceptionMap(map, e);
+                            if(e != null && e.getMessage() != null) Toast.makeText(RequestService.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

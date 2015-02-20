@@ -6,7 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import java.util.concurrent.TimeUnit;
 
 public class BootReceiver extends BroadcastReceiver {
 
@@ -23,7 +26,23 @@ public class BootReceiver extends BroadcastReceiver {
 
             alarmMgr.cancel(alarmIntent);
             alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000,
-                    AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+                    getInterval(context), alarmIntent);
+        }
+    }
+
+    long getInterval(Context context) {
+        int index = PreferenceManager.getDefaultSharedPreferences(context)
+                .getInt(context.getResources().getString(R.string.sync_interval), 1);
+        if(index == 0) {
+            return 5 * 60 * 1000;
+        } else if(index == 1) {
+            return 15 * 60 * 1000;
+        } else if(index == 2) {
+            return 60 * 60 * 1000;
+        } else if(index == 3) {
+            return 3 * 60 * 60 * 1000;
+        } else {
+            return 6 * 60 * 60 * 1000;
         }
     }
 }

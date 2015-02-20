@@ -337,8 +337,8 @@ public class SectionInfoAdapter {
     void setPrimaryWindow() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = context.getWindow();
-            window.setStatusBarColor(context.getResources().getColor(R.color.primary_dark));
-            window.setNavigationBarColor(context.getResources().getColor(R.color.primary_dark));
+            window.setStatusBarColor(context.getResources().getColor(R.color.red_dark));
+            window.setNavigationBarColor(context.getResources().getColor(R.color.red_dark));
         }
     }
 
@@ -465,11 +465,6 @@ public class SectionInfoAdapter {
     }
 
     void setInstructors(Course.Sections s) {
-        StringBuilder sb = new StringBuilder();
-        for (Course.Sections.Instructors i : s.getInstructors()) {
-            sb.append(i.getName());
-            sb.append(" | ");
-        }
         mInstructorsText.setText(s.getToStringInstructors(" | "));
     }
 }

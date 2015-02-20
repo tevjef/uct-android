@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
@@ -26,6 +27,9 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.enums.SnackbarType;
 import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.CourseAdapter;
@@ -44,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -70,9 +75,6 @@ public class CourseFragment extends MainFragment {
         if (savedInstanceState != null) {
             request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
-
-        getFragmentManager().dump("", null,
-                new PrintWriter(System.out, true), null);
     }
 
     @Override
@@ -83,6 +85,9 @@ public class CourseFragment extends MainFragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
+
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
 
         request = getArguments().getParcelable(MainActivity.REQUEST);
         setToolbar(rootView);
@@ -116,20 +121,39 @@ public class CourseFragment extends MainFragment {
                             listView.setAdapter(subjectAdapter);
                         } else {
                             if (e instanceof UnknownHostException) {
-                                Toast.makeText(getParentActivity(), "No Internet connection", Toast.LENGTH_LONG).show();
+                                showSnackBar("No internet connection.");
                             } else if (e instanceof CancellationException) {
-                                Mint.logException(e);
+                                Mint.transactionCancel("NetworkOp", "Cancelled");
+                            } else if (e instanceof IllegalStateException) {
+                                Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                showSnackBar("The server is currently down. Try again later.");
+                            } else if (e instanceof TimeoutException) {
+                                Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                showSnackBar("Connection timed out. Check internet connection.");
                             } else {
                                 HashMap<String, Object> map = new HashMap<>();
                                 map.put("Request", request.toString());
                                 map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
                                 Mint.logExceptionMap(map, e);
-                                Toast.makeText(getParentActivity(), "Error: " + (e != null ? e.getMessage() : null), Toast.LENGTH_LONG).show();
+                                if (e != null)
+                                    Toast.makeText(getParentActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                         dismissProgress();
                     }
                 });
+    }
+
+    void showSnackBar(String message) {
+        SnackbarManager.show(
+                Snackbar.with(getParentActivity())
+                        .type(SnackbarType.MULTI_LINE)
+                        .text(message)
+                        .actionLabel("DISMISS")// text to display
+                        .actionColor(getResources().getColor(R.color.white))
+                        .color(getResources().getColor(R.color.accent))// action button label color
+                        .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
+                , getParentActivity()); // activity where it is displayed
     }
 
     private void refresh() {
@@ -206,7 +230,7 @@ public class CourseFragment extends MainFragment {
 
     private void createFragment(Bundle b) {
         CourseInfoFragment courseInfoFragment = new CourseInfoFragment();
-
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             courseInfoFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             courseInfoFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
@@ -216,10 +240,10 @@ public class CourseFragment extends MainFragment {
             courseInfoFragment.setAllowEnterTransitionOverlap(false);
             courseInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             courseInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            ft.addSharedElement(mToolbar, "toolbar_background");
         }
         courseInfoFragment.setArguments(b);
-        getFragmentManager().beginTransaction().addSharedElement(mToolbar, "toolbar_background")
-                .replace(R.id.container, courseInfoFragment).addToBackStack(this.toString())
+                ft.replace(R.id.container, courseInfoFragment).addToBackStack(this.toString())
                 .commit();
     }
 

@@ -1,17 +1,23 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.SectionInfoAdapter;
+import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 
@@ -29,6 +35,17 @@ public class SectionInfoFragment extends MainFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+            setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
+            setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            setAllowReturnTransitionOverlap(true);
+            setAllowEnterTransitionOverlap(true);
+            setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+        }
     }
 
     @Override

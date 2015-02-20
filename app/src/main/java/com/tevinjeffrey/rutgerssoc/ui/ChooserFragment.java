@@ -1,13 +1,13 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
+import android.transition.ChangeClipBounds;
 import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,6 +59,11 @@ public class ChooserFragment extends MainFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getParentActivity().setPrimaryWindow();
@@ -81,7 +86,7 @@ public class ChooserFragment extends MainFragment {
     }
 
     private void setToolbar(View rootView) {
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar_header_chooser);
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         getParentActivity().setSupportActionBar(toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -119,16 +124,16 @@ public class ChooserFragment extends MainFragment {
         SubjectFragment sf = new SubjectFragment();
         sf.setArguments(b);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sf.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             sf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
             sf.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            sf.setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            sf.setAllowReturnTransitionOverlap(false);
-            sf.setAllowEnterTransitionOverlap(false);
+            sf.setReturnTransition(new Fade(Fade.OUT ).excludeTarget(ImageView.class, true));
+            sf.setAllowReturnTransitionOverlap(true);
+            sf.setAllowEnterTransitionOverlap(true);
             sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-
             ft.addSharedElement(toolbar, "toolbar_background");
         }
                 ft.replace(R.id.container, sf).addToBackStack(this.toString())

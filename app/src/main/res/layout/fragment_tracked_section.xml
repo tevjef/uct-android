@@ -13,8 +13,7 @@
         android:id="@+id/toolbar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:transitionName="toolbar_background"
-        android:transitionGroup="false">
+        android:transitionName="toolbar_background">
 
     </android.support.v7.widget.Toolbar>
 

@@ -1,3 +1,5 @@
+apply plugin: 'org.moallemi.advanced-build-version'
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
@@ -20,4 +22,3 @@ allprojects {
         }
     }
 }
-apply plugin: 'org.moallemi.advanced-build-version'

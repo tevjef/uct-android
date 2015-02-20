@@ -16,17 +16,17 @@
         android:titleCondensed="@string/action_refresh"
         app:showAsAction="withText|ifRoom" />
 
-<!--
+
     <item android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings_white"
         android:title="@string/action_settings"
         android:titleCondensed="@string/action_settings"
         app:showAsAction="never" />
-    <item android:id="@+id/action_feedback"
+ <!--   <item android:id="@+id/action_feedback"
         android:title="@string/action_feedback"
         android:titleCondensed="@string/action_feedback"
-        app:showAsAction="never" />
--->
+        app:showAsAction="never" />-->
+
 
     <!-- Settings, should always be in the overflow -->
 

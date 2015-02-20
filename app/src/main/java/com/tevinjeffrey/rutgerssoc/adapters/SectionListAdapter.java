@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.melnykov.fab.FloatingActionButton;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
+import com.tevinjeffrey.rutgerssoc.animator.MaterialInterpolator;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
@@ -131,12 +132,13 @@ public class SectionListAdapter {
         mSectionTimeContainer = ButterKnife.findById(sectionLayout, R.id.sectionTimeContainer);
 
         mSectionsContainer = ButterKnife.findById(rootView, R.id.sectionsContainer);
-        mCourseTitleText = ButterKnife.findById(rootView, R.id.courseTitle_text);
         mToolbar = ButterKnife.findById(rootView, R.id.toolbar);
         mFab = ButterKnife.findById(rootView, R.id.fab);
 
         if (mInflationType.equals(MainActivity.TRACKED_SECTION)) {
             mCourseTitleText = ButterKnife.findById(sectionLayout, R.id.courseTitle_text);
+        } else{
+            mCourseTitleText = ButterKnife.findById(rootView, R.id.courseTitle_text);
         }
     }
 
@@ -163,25 +165,21 @@ public class SectionListAdapter {
     private void createFragment(Bundle b, View v) {
         SectionInfoFragment sectionInfoFragment = new SectionInfoFragment();
         @SuppressLint("CommitTransaction") FragmentTransaction ft =
-                mContext.getSupportFragmentManager().beginTransaction();
+                mContext.getFragmentManager().beginTransaction();
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Slide slide = new Slide(Gravity.RIGHT);
             slide.setInterpolator(new EaseOutQuint());
 
-
             sectionInfoFragment.setEnterTransition(slide);
             sectionInfoFragment.setReturnTransition(slide);
             //sectionInfoFragment.setEnterTransition(new AutoTransition());
 
-            sectionInfoFragment.setAllowReturnTransitionOverlap(false);
-            sectionInfoFragment.setAllowEnterTransitionOverlap(false);
-
             sectionInfoFragment.setExitTransition(new Fade(Fade.OUT));
 
-            sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            //sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            //sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
 
             if(mFab != null)
             ft.addSharedElement(mFab, "fab");
@@ -193,7 +191,6 @@ public class SectionListAdapter {
             //ft.addSharedElement(credits, "credit_number");
 
         }
-
         sectionInfoFragment.setArguments(b);
         ft.replace(R.id.container, sectionInfoFragment).addToBackStack(mCallingFragment.toString())
                 .commit();
