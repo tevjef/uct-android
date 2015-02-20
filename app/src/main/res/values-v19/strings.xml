@@ -34,6 +34,8 @@
 
     <string name="sync_interval">Sync Interval</string>
     <string name="set">Set</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="gettingData">Fetching data</string>
 
     <string-array name="intervals">
         <item>5 minutes</item>

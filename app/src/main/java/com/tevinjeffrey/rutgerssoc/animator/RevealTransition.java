@@ -1,5 +1,5 @@
 
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.animator;
 /*
  * Copyright (C) 2014 The Android Open Source Project
  *

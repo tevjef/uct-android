@@ -197,7 +197,7 @@ public class TrackedSectionsFragment extends MainFragment {
                     }
                 }
             });
-        } else if(mSwipeRefreshLayout != null) {
+        } else if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
             dismissProgress();
             Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll(this);
             //refresh();
@@ -206,7 +206,6 @@ public class TrackedSectionsFragment extends MainFragment {
 
     private void getTrackedSections() {
         removeAllViews();
-
         final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
         for (final Iterator<TrackedSections> trackedSectionsIterator = allTrackedSections.iterator(); trackedSectionsIterator.hasNext(); ) {
             TrackedSections ts = trackedSectionsIterator.next();
@@ -229,6 +228,7 @@ public class TrackedSectionsFragment extends MainFragment {
                                             List<Course.Sections> currentSection = new ArrayList<>();
                                             currentSection.add(s);
                                             c.setSections(currentSection);
+
                                             new SectionListAdapter(TrackedSectionsFragment.this, c, rootView, r, MainActivity.TRACKED_SECTION).init();
 
                                             if (isLastSection) {

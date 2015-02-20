@@ -8,26 +8,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
-import android.transition.ChangeImageTransform;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ImageView;
 
-import com.koushikdutta.ion.Ion;
-import com.splunk.mint.Mint;
-import com.tevinjeffrey.rutgerssoc.AlarmWakefulReceiver;
+import com.tevinjeffrey.rutgerssoc.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
-
-import java.io.PrintWriter;
-import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -66,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
         setAlarm();
     }
 
-    private void setAlarm() {
+    void setAlarm() {
         AlarmManager alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent wakefulBroadcastReceiverIntent = new Intent(this,
                 AlarmWakefulReceiver.class);

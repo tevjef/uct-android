@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.receivers;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,7 +9,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.util.concurrent.TimeUnit;
+import com.tevinjeffrey.rutgerssoc.R;
 
 public class BootReceiver extends BroadcastReceiver {
 
@@ -18,16 +18,20 @@ public class BootReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             Log.d("BootReceiver: ", "Caught android.intent.action.BOOT_COMPLETED");
 
-            AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            Intent wakefulBroadcastReceiverIntent = new Intent(context,
-                    AlarmWakefulReceiver.class);
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 1234, wakefulBroadcastReceiverIntent,
-                    0);
-
-            alarmMgr.cancel(alarmIntent);
-            alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000,
-                    getInterval(context), alarmIntent);
+            setAlarm(context);
         }
+    }
+
+    private void setAlarm(Context context) {
+        AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent wakefulBroadcastReceiverIntent = new Intent(context,
+                AlarmWakefulReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 1234, wakefulBroadcastReceiverIntent,
+                0);
+
+        alarmMgr.cancel(alarmIntent);
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000,
+                getInterval(context), alarmIntent);
     }
 
     long getInterval(Context context) {

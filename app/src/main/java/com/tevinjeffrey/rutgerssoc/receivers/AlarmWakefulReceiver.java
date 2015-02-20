@@ -1,10 +1,12 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.receivers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
+
+import com.tevinjeffrey.rutgerssoc.services.RequestService;
 
 public class AlarmWakefulReceiver extends WakefulBroadcastReceiver {
     public AlarmWakefulReceiver() {

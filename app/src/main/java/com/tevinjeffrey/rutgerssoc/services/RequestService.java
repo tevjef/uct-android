@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgerssoc;
+package com.tevinjeffrey.rutgerssoc.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,14 +16,14 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.splunk.mint.Mint;
 import com.splunk.mint.MintLogLevel;
+import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.TrackedSections;
+import com.tevinjeffrey.rutgerssoc.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
-import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;

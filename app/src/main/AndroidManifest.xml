@@ -37,13 +37,13 @@
         </activity>
 
         <receiver
-            android:name=".AlarmWakefulReceiver"
+            android:name=".receivers.AlarmWakefulReceiver"
             android:enabled="true"
             android:exported="false" >
         </receiver>
 
         <receiver
-            android:name=".BootReceiver"
+            android:name=".receivers.BootReceiver"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -52,7 +52,7 @@
         </receiver>
 
         <service
-            android:name=".RequestService"
+            android:name=".services.RequestService"
             android:enabled="true"
             android:exported="false" >
         </service>

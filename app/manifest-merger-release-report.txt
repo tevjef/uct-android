@@ -98,7 +98,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:35:17
 	android:name
 		ADDED from AndroidManifest.xml:35:27
-receiver#com.tevinjeffrey.rutgerssoc.AlarmWakefulReceiver
+receiver#com.tevinjeffrey.rutgerssoc.receivers.AlarmWakefulReceiver
 ADDED from AndroidManifest.xml:39:9
 	android:exported
 		ADDED from AndroidManifest.xml:42:13
@@ -106,7 +106,7 @@ ADDED from AndroidManifest.xml:39:9
 		ADDED from AndroidManifest.xml:41:13
 	android:name
 		ADDED from AndroidManifest.xml:40:13
-receiver#com.tevinjeffrey.rutgerssoc.BootReceiver
+receiver#com.tevinjeffrey.rutgerssoc.receivers.BootReceiver
 ADDED from AndroidManifest.xml:45:9
 	android:exported
 		ADDED from AndroidManifest.xml:48:13
@@ -120,7 +120,7 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from AndroidManifest.xml:50:17
 	android:name
 		ADDED from AndroidManifest.xml:50:25
-service#com.tevinjeffrey.rutgerssoc.RequestService
+service#com.tevinjeffrey.rutgerssoc.services.RequestService
 ADDED from AndroidManifest.xml:54:9
 	android:exported
 		ADDED from AndroidManifest.xml:57:13
