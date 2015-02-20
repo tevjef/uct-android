@@ -38,7 +38,7 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:layout_width="39dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="STUDIO"
         android:id="@+id/meetingType"
@@ -50,6 +50,7 @@
         android:layout_marginLeft="6dp"
         android:gravity="right"
         android:singleLine="true"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:minWidth="39dp" />
 
 </RelativeLayout>

@@ -241,7 +241,7 @@ public class TrackedSectionsFragment extends MainFragment {
                                 if (e instanceof UnknownHostException) {
                                     showSnackBar("No internet connection.");
                                 } else if (e instanceof CancellationException) {
-                                    Mint.transactionCancel("NetworkOp", "Cancelled");
+                                    //
                                 } else if (e instanceof IllegalStateException){
                                     Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
                                     showSnackBar("The server is currently down. Try again later.");

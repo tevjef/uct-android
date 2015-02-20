@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="20">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="?android:attr/actionBarSize"
+        android:background="@color/accent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:elevation="1dp"
+        android:transitionGroup="false"
+        android:transitionName="toolbar_background"
+        android:touchscreenBlocksFocus="false"
+        android:layout_weight="12"
+        >
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/course_header_container"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
+                android:id="@+id/courseTitle_text"
+                android:textSize="20sp"
+                android:typeface="normal"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:freezesText="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:maxLines="3"
+                android:transitionName="course_title"
+
+                tools:ignore="HardcodedText"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/shortenedCourseInfo"
+                android:maxWidth="250dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="21:198:101"
+                android:id="@+id/shortenedCourseInfo"
+                android:textSize="12sp"
+                android:typeface="normal"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/black"
+                android:alpha="0.5"
+                android:layout_alignParentStart="true"
+                tools:ignore="HardcodedText"
+                android:paddingTop="54dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/creditsContainer"
+                android:layout_below="@+id/openSectionsContainer"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:id="@+id/subtitle"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/black"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignParentStart="true"
+                    android:alpha="0.5"
+                    android:transitionName="credit_number"
+                    tools:ignore="HardcodedText"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="3dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="credits"
+                    android:id="@+id/credits_title"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/black"
+                    android:alpha="0.5"
+                    android:layout_alignTop="@+id/subtitle"
+                    android:layout_toEndOf="@+id/subtitle"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/openSectionsContainer"
+                android:layout_below="@+id/courseTitle_text"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:id="@+id/openSections_text"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="5sp"
+                    android:layout_alignBottom="@+id/credits_title"
+                    android:layout_toEndOf="@+id/credits_title"
+                    android:alpha="0.5"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="open sections of"
+                    android:id="@+id/openSections_title"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/black"
+                    android:alpha="0.5"
+                    android:layout_alignTop="@+id/openSections_text"
+                    android:layout_toEndOf="@+id/openSections_text"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:id="@+id/totalSections_text"
+                    android:textSize="14sp"
+                    android:typeface="normal"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="5sp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignBottom="@+id/openSections_title"
+                    android:layout_toEndOf="@+id/openSections_title"
+                    android:alpha="0.5"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:scrollbarThumbVertical="@drawable/course_scrollbar"
+        android:scrollbarSize="2dip"
+        android:layout_weight="8">
+
+        <RelativeLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:id="@+id/section_metadata_container"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/course_metadata">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/courseNotesContainer"
+                        android:layout_alignParentStart="true">
+
+
+                        <TextView
+                            android:layout_width="88dp"
+                            android:layout_height="wrap_content"
+                            android:text="Course Notes:"
+                            android:id="@+id/sectionNotes_title"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true"
+                            android:textColor="@color/primary_text"
+                            android:textSize="12sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="COURSE MEETS: CKB-220"
+                            android:id="@+id/courseNotes_text"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp"
+                            android:layout_toEndOf="@+id/sectionNotes_title"
+                            tools:ignore="HardcodedText" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/subjectNotesContainer"
+                        android:layout_below="@+id/courseNotesContainer"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="88dp"
+                            android:layout_height="wrap_content"
+                            android:text="Subject Notes:"
+                            android:id="@+id/sectionComments_title"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true"
+                            android:textColor="@color/primary_text"
+                            android:textSize="12sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                            tools:ignore="HardcodedText" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="COURSE MEETS: CKB-220"
+                            android:id="@+id/subjectNotes_text"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/sectionComments_title"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/prereqContainer"
+                        android:layout_below="@+id/subjectNotesContainer"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="88dp"
+                            android:layout_height="wrap_content"
+                            android:text="Prereqs:"
+                            android:id="@+id/prereq_title"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true"
+                            android:textColor="@color/primary_text"
+                            android:textSize="12sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="640:327, 640:211, 220:231, 830:301"
+                            android:id="@+id/prereq_text"
+                            android:textColor="@color/secondary_text"
+                            android:textSize="12sp"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/prereq_title"
+                            android:maxLines="5"
+                            tools:ignore="HardcodedText" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="88dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                    android:text="Sections"
+                    android:id="@+id/section_title"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp"
+                    android:layout_alignStart="@+id/course_metadata"
+                    android:layout_below="@+id/course_metadata"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    tools:ignore="HardcodedText" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sectionsContainer"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/section_metadata_container" />
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>
