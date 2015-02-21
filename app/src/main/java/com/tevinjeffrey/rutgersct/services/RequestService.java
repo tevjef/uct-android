@@ -13,7 +13,6 @@ import android.support.v4.app.NotificationCompat;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
@@ -78,7 +77,7 @@ public class RequestService extends Service {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("Request", r.toString());
                             map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
-                            Mint.logExceptionMap(map, e);
+
                         }
                     }
                 });

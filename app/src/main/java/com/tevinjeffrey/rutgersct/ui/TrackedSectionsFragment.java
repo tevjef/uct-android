@@ -33,7 +33,6 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.EventListener;
-import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionListAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -246,7 +245,6 @@ public class TrackedSectionsFragment extends MainFragment {
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("Request", r.toString());
                                     map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
-                                    Mint.logExceptionMap(map, e);
                                 }
                             }
                             dismissProgress();

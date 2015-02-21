@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.R;
 
 import java.net.UnknownHostException;
@@ -141,7 +140,6 @@ public class SettingsFragment extends PreferenceFragment {
                                     } else {
                                         HashMap<String, Object> map = new HashMap<>();
                                         map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
-                                        Mint.logExceptionMap(map, e);
                                     }
                                 }
 
