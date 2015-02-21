@@ -261,7 +261,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/courseNotesContainer"
-                    android:layout_below="@+id/toolbar"
                     android:layout_alignParentStart="true">
 
                     <TextView
@@ -330,7 +329,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sectionCrossList_container"
-                    android:layout_alignStart="@+id/course_metadata"
                     android:layout_marginTop="10dp"
                     android:layout_below="@+id/sectionSubtitle_container" >
 
@@ -364,7 +362,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sectionSubtitle_container"
-                    android:layout_alignStart="@+id/course_metadata"
                     android:layout_marginTop="10dp"
                     android:layout_below="@+id/sectionPermisision_container" >
 
@@ -398,7 +395,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sectionPermisision_container"
-                    android:layout_alignStart="@+id/course_metadata"
                     android:layout_marginTop="10dp"
                     android:layout_below="@+id/sectionOpenTo_container" >
 
@@ -432,7 +428,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sectionOpenTo_container"
-                    android:layout_alignStart="@+id/course_metadata"
                     android:layout_marginTop="10dp"
                     android:layout_below="@+id/subjectNotesContainer">
 

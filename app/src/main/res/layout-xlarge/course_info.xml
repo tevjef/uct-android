@@ -182,13 +182,9 @@
             android:layout_height="wrap_content"
             android:padding="26dp">
 
-
-
-
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
                 android:id="@+id/section_metadata_container"
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"

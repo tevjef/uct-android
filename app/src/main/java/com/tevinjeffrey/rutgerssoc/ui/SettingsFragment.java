@@ -160,7 +160,6 @@ public class SettingsFragment extends PreferenceFragment {
                                     progressDialog.dismiss();
 
                                     new MaterialDialog.Builder(getParentActivity())
-                                            //.content(Html.fromHtml(content)).contentColorRes(R.color.primary_text)
                                             .customView(tv, true)
                                             .show();
                                 }
