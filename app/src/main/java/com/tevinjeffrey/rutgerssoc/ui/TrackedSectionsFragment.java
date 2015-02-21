@@ -380,6 +380,7 @@ public class TrackedSectionsFragment extends MainFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        SnackbarManager.dismiss();
         Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
         ButterKnife.reset(this);
     }
