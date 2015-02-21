@@ -119,10 +119,10 @@ public class SubjectFragment extends MainFragment {
                             if (e instanceof UnknownHostException) {
                                 showSnackBar(getResources().getString(R.string.no_internet));
                             } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
-                                Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                cancelRequests();
                                 showSnackBar(getResources().getString(R.string.server_down));
                             } else if (e instanceof TimeoutException) {
-                                Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                cancelRequests();
                                 showSnackBar(getResources().getString(R.string.timed_out));
                             } else {
                                 HashMap<String, Object> map = new HashMap<>();
@@ -263,12 +263,5 @@ public class SubjectFragment extends MainFragment {
                 return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll(this);
-        ButterKnife.reset(this);
     }
 }

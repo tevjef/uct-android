@@ -1,21 +1,15 @@
 package com.tevinjeffrey.rutgersct.ui;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.transition.AutoTransition;
-import android.transition.ChangeBounds;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionInfoAdapter;
-import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
@@ -33,16 +27,8 @@ public class SectionInfoFragment extends MainFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
-            setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
-            setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
-            setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            setAllowReturnTransitionOverlap(true);
-            setAllowEnterTransitionOverlap(true);
-            setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+        if (savedInstanceState != null) {
+            request = savedInstanceState.getParcelable(MainActivity.REQUEST);
         }
     }
 
@@ -79,7 +65,6 @@ public class SectionInfoFragment extends MainFragment {
     }
 
     private void inflateViews(View rootView) {
-
         List<Course> c = getArguments().getParcelableArrayList(MainActivity.COURSE_LIST);
         new SectionInfoAdapter(getParentActivity(), request, rootView, c).init();
     }

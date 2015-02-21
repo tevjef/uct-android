@@ -9,13 +9,11 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.splunk.mint.Mint;
-import com.splunk.mint.MintLogLevel;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
@@ -41,14 +39,12 @@ public class RequestService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Construct a list of requests by semester.
         //List<Request> requests = new ArrayList<>();
-        Mint.transactionStart("startRequestService");
         for (final Iterator<TrackedSections> allTrackedSections = TrackedSections.findAll(TrackedSections.class); allTrackedSections.hasNext(); ) {
             TrackedSections ts = allTrackedSections.next();
             final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
 
             getCourse(allTrackedSections, r);
         }
-        Mint.transactionStop("startRequestService");
         AlarmWakefulReceiver.completeWakefulIntent(intent);
         return START_NOT_STICKY;
     }
@@ -79,12 +75,10 @@ public class RequestService extends Service {
                                 }
                             }
                         } else {
-                            Mint.transactionCancel("startRequestService", (e != null ? e.getMessage() : null));
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("Request", r.toString());
                             map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
                             Mint.logExceptionMap(map, e);
-                            if(e != null && e.getMessage() != null) Toast.makeText(RequestService.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -115,7 +109,6 @@ public class RequestService extends Service {
         PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this, 0, openInBrowser, 0);
         mBuilder.addAction(0, "Open WebReg", pOpenInBrowser);
 
-
         //Intent open tracked sections.
         Intent openTracked = new Intent(RequestService.this, MainActivity.class);
 
@@ -129,8 +122,6 @@ public class RequestService extends Service {
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Builds the notification and issues it.
         mNotifyMgr.notify(Integer.valueOf(r.getIndex()), mBuilder.build());
-
-        Mint.logEvent("Courses Sniped", MintLogLevel.Info);
     }
 
     @Override

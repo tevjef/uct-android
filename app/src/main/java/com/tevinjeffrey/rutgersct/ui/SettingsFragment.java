@@ -134,19 +134,15 @@ public class SettingsFragment extends PreferenceFragment {
                                     content = response;
                                 } else {
                                     if (e instanceof UnknownHostException) {
-                                        content = "No internet connection.";
-                                    } else if (e instanceof CancellationException) {
-                                        //
-                                    } else if (e instanceof IllegalStateException) {
-                                        content = "The server is currently down. Try again later.";
+                                        content = getResources().getString(R.string.no_internet);
+                                    } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
+                                        content = getResources().getString(R.string.server_down);
                                     } else if (e instanceof TimeoutException) {
-                                        content = "Connection timed out. Check internet connection.";
+                                        content = getResources().getString(R.string.timed_out);
                                     } else {
                                         HashMap<String, Object> map = new HashMap<>();
                                         map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
                                         Mint.logExceptionMap(map, e);
-                                        if (e != null)
-                                            Toast.makeText(getParentActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 

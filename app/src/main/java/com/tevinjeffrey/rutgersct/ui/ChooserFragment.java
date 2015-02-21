@@ -174,10 +174,4 @@ public class ChooserFragment extends MainFragment {
     private Request createRequest() {
         return new Request(null, getSemester(), getLocations(), getLevels());
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
 }

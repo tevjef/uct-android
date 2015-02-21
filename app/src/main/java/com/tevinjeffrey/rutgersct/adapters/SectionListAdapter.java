@@ -7,11 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -158,18 +160,15 @@ public class SectionListAdapter {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Slide slide = new Slide(Gravity.RIGHT);
-            slide.setInterpolator(new EaseOutQuint());
-
-            sectionInfoFragment.setEnterTransition(slide);
-            sectionInfoFragment.setReturnTransition(slide);
-            //sectionInfoFragment.setEnterTransition(new AutoTransition());
-
-            sectionInfoFragment.setExitTransition(new Fade(Fade.OUT));
-
-            //sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            //sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-
+            sectionInfoFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            sectionInfoFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            sectionInfoFragment.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            sectionInfoFragment.setReturnTransition(new Fade(Fade.OUT ).excludeTarget(ImageView.class, true));
+            sectionInfoFragment.setAllowReturnTransitionOverlap(true);
+            sectionInfoFragment.setAllowEnterTransitionOverlap(true);
+            sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            
             if(mFab != null)
             ft.addSharedElement(mFab, "fab");
 

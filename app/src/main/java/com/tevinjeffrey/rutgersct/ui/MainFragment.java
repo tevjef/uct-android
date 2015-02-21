@@ -8,7 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.koushikdutta.ion.Ion;
+import com.nispok.snackbar.SnackbarManager;
 import com.tevinjeffrey.rutgersct.R;
+
+import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
 
@@ -44,5 +48,16 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
+    }
+
+    protected void cancelRequests() {
+        Ion.getDefault(getParentActivity()).cancelAll(getParentActivity());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cancelRequests();
+        ButterKnife.reset(this);
     }
 }

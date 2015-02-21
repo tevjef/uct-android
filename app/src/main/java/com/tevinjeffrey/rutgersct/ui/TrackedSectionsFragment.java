@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -123,10 +126,17 @@ public class TrackedSectionsFragment extends MainFragment {
 
     private void createFragment() {
         ChooserFragment chooserFragment = new ChooserFragment();
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            chooserFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            chooserFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
+            chooserFragment.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            chooserFragment.setReturnTransition(new Fade(Fade.OUT ).excludeTarget(ImageView.class, true));
+            chooserFragment.setAllowReturnTransitionOverlap(true);
+            chooserFragment.setAllowEnterTransitionOverlap(true);
+            chooserFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            chooserFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             ft.addSharedElement(mToolbar, mToolbar.getTransitionName());
             ft.addSharedElement(mFab, "snackbar");
         }
@@ -187,8 +197,7 @@ public class TrackedSectionsFragment extends MainFragment {
             });
         } else if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
             dismissProgress();
-            Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll(this);
-            //refresh();
+            cancelRequests();
         }
     }
 
@@ -229,10 +238,10 @@ public class TrackedSectionsFragment extends MainFragment {
                                 if (e instanceof UnknownHostException) {
                                     showSnackBar(getResources().getString(R.string.no_internet));
                                 } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
-                                    Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                    cancelRequests();
                                     showSnackBar(getResources().getString(R.string.server_down));
                                 } else if (e instanceof TimeoutException) {
-                                    Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
+                                    cancelRequests();
                                     showSnackBar(getResources().getString(R.string.timed_out));
                                 } else {
                                     HashMap<String, Object> map = new HashMap<>();
@@ -250,12 +259,11 @@ public class TrackedSectionsFragment extends MainFragment {
     }
 
     private void setEmptyLayout(List<TrackedSections> allTrackedSections) {
-        if (allTrackedSections.size() == 0 || ((ViewGroup)ButterKnife.findById(rootView, R.id.sectionsContainer)).getChildCount() == 0) {
+        if (allTrackedSections.size() == 0) {
             dismissProgress();
             addCoursesToTrack.setVisibility(View.VISIBLE);
         } else {
             addCoursesToTrack.setVisibility(View.GONE);
-            SnackbarManager.dismiss();
         }
     }
 
@@ -375,7 +383,5 @@ public class TrackedSectionsFragment extends MainFragment {
     public void onDestroyView() {
         super.onDestroyView();
         SnackbarManager.dismiss();
-        Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
-        ButterKnife.reset(this);
     }
 }
