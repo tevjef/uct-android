@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.koushikdutta.ion.Ion;
-import com.nispok.snackbar.SnackbarManager;
 import com.tevinjeffrey.rutgersct.R;
 
 import butterknife.ButterKnife;

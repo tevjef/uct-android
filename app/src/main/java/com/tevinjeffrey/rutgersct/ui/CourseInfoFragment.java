@@ -13,8 +13,6 @@ import com.tevinjeffrey.rutgersct.adapters.CourseInfoAdapter;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
-import butterknife.ButterKnife;
-
 public class CourseInfoFragment extends MainFragment {
 
     private Request request;
