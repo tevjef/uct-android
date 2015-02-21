@@ -9,10 +9,13 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.text.format.Time;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
@@ -25,27 +28,32 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class RequestService extends Service {
     public RequestService() {
-    }
-
-    @Override
-    public void onCreate() {
-
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Construct a list of requests by semester.
         //List<Request> requests = new ArrayList<>();
-        for (final Iterator<TrackedSections> allTrackedSections = TrackedSections.findAll(TrackedSections.class); allTrackedSections.hasNext(); ) {
+        Timber.i("Request Service started at %s", MyApplication.getTimeNow());
+        final List<TrackedSections> sectionList = TrackedSections.listAll(TrackedSections.class);
+        Timber.i("Request Service getting %s sections", sectionList.size());
+        for (final Iterator<TrackedSections> allTrackedSections = sectionList.iterator(); allTrackedSections.hasNext(); ) {
             TrackedSections ts = allTrackedSections.next();
             final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
-
             getCourse(allTrackedSections, r);
         }
         AlarmWakefulReceiver.completeWakefulIntent(intent);
         return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        Timber.i("Request Service ended at %s", MyApplication.getTimeNow());
+        super.onDestroy();
     }
 
     private void getCourse(final Iterator<TrackedSections> allTrackedSections, final Request r) {
@@ -74,10 +82,8 @@ public class RequestService extends Service {
                                 }
                             }
                         } else {
-                            HashMap<String, Object> map = new HashMap<>();
-                            map.put("Request", r.toString());
-                            map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
-
+                            Timber.e(e, "Crash while attempting to complete request in %s to %s"
+                                    ,RequestService.this.toString(), r.toString());
                         }
                     }
                 });
@@ -127,6 +133,4 @@ public class RequestService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-
 }

@@ -38,6 +38,7 @@ import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -122,9 +123,8 @@ public class SubjectFragment extends MainFragment {
                                 cancelRequests();
                                 showSnackBar(getResources().getString(R.string.timed_out));
                             } else {
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("Request", request.toString());
-                                map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
+                                Timber.e(e, "Crash while attempting to complete request in %s to %s"
+                                        , SubjectFragment.this.toString(), request.toString());
                             }
                         }
                         dismissProgress();

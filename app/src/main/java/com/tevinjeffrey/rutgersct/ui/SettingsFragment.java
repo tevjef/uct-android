@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
 
+import timber.log.Timber;
+
 public class SettingsFragment extends PreferenceFragment {
 
     SharedPreferences mPref;
@@ -120,14 +122,14 @@ public class SettingsFragment extends PreferenceFragment {
                         .progress(true, 0)
                         .show();
 
+                final String url = "http://tevinjeffrey.com/licenses.txt";
                 Ion.with(SettingsFragment.this)
-                        .load("http://tevinjeffrey.com/licenses.txt")
+                        .load(url)
                         .asString()
                         .setCallback(new FutureCallback<String>() {
                             @Override
                             public void onCompleted(Exception e, String response) {
                                 String content = null;
-
                                 if (e == null && response.length() > 0) {
                                     content = response;
                                 } else {
@@ -138,8 +140,8 @@ public class SettingsFragment extends PreferenceFragment {
                                     } else if (e instanceof TimeoutException) {
                                         content = getResources().getString(R.string.timed_out);
                                     } else {
-                                        HashMap<String, Object> map = new HashMap<>();
-                                        map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
+                                        Timber.e(e, "Crash while attempting to complete request in %s to %s"
+                                                , SettingsFragment.this.toString(), url);
                                     }
                                 }
 
@@ -151,7 +153,6 @@ public class SettingsFragment extends PreferenceFragment {
 
                                 if (progressDialog.isShowing()) {
                                     progressDialog.dismiss();
-
                                     new MaterialDialog.Builder(getParentActivity())
                                             .customView(tv, true)
                                             .show();
@@ -177,7 +178,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         root.removeView(bar);
+        super.onDestroyView();
     }
 }

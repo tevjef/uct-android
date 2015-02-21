@@ -3,24 +3,35 @@ package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.koushikdutta.ion.Ion;
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 
 import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
 
+    SharedPreferences mPref;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mPref = PreferenceManager.getDefaultSharedPreferences(getParentActivity());
+        Crashlytics.setInt(MyApplication.REFRESH_INTERVAL, getInterval());
     }
 
+    int getInterval() {
+        return mPref.getInt(getResources().getString(R.string.sync_interval), 1);
+    }
     public MainActivity getParentActivity() {
         return (MainActivity) getActivity();
     }
@@ -55,8 +66,8 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         cancelRequests();
         ButterKnife.reset(this);
+        super.onDestroyView();
     }
 }
