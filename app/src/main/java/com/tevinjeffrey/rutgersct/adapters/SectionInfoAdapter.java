@@ -20,8 +20,6 @@ import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
-import com.splunk.mint.Mint;
-import com.splunk.mint.MintLogLevel;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.animator.SectionInfoAnimator;
@@ -305,8 +303,6 @@ public class SectionInfoAdapter {
     }
 
     private void addSectionToDb(Request request) {
-        Mint.logEvent("Sections Tracked", MintLogLevel.Info);
-
         TrackedSections trackedSections = new TrackedSections(request.getSubject(),
                 request.getSemester(), Request.toStringList(request.getLocations()),
                 Request.toStringList(request.getLevels()), request.getIndex());

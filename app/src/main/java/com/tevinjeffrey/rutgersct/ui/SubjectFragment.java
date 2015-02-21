@@ -21,7 +21,6 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
-import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SubjectAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -39,6 +38,7 @@ import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -123,10 +123,8 @@ public class SubjectFragment extends MainFragment {
                                 cancelRequests();
                                 showSnackBar(getResources().getString(R.string.timed_out));
                             } else {
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("Request", request.toString());
-                                map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
-                                Mint.logExceptionMap(map, e);
+                                Timber.e(e, "Crash while attempting to complete request in %s to %s"
+                                        , SubjectFragment.this.toString(), request.toString());
                             }
                         }
                         dismissProgress();

@@ -77,6 +77,5 @@ public class CourseInfoFragment extends MainFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_info, menu);
-
     }
 }
