@@ -86,7 +86,7 @@ ADDED from AndroidManifest.xml:28:9
 		ADDED from AndroidManifest.xml:29:13
 	android:value
 		ADDED from AndroidManifest.xml:30:13
-activity#com.tevinjeffrey.rutgerssoc.ui.MainActivity
+activity#com.tevinjeffrey.rutgersct.ui.MainActivity
 ADDED from AndroidManifest.xml:31:9
 	android:label
 		ADDED from AndroidManifest.xml:33:13
@@ -102,7 +102,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:36:17
 	android:name
 		ADDED from AndroidManifest.xml:36:27
-receiver#com.tevinjeffrey.rutgerssoc.receivers.AlarmWakefulReceiver
+receiver#com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver
 ADDED from AndroidManifest.xml:39:9
 	android:exported
 		ADDED from AndroidManifest.xml:42:13
@@ -110,7 +110,7 @@ ADDED from AndroidManifest.xml:39:9
 		ADDED from AndroidManifest.xml:41:13
 	android:name
 		ADDED from AndroidManifest.xml:40:13
-receiver#com.tevinjeffrey.rutgerssoc.receivers.BootReceiver
+receiver#com.tevinjeffrey.rutgersct.receivers.BootReceiver
 ADDED from AndroidManifest.xml:44:9
 	android:exported
 		ADDED from AndroidManifest.xml:47:13
@@ -124,7 +124,7 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from AndroidManifest.xml:49:17
 	android:name
 		ADDED from AndroidManifest.xml:49:25
-service#com.tevinjeffrey.rutgerssoc.services.RequestService
+service#com.tevinjeffrey.rutgersct.services.RequestService
 ADDED from AndroidManifest.xml:52:9
 	android:exported
 		ADDED from AndroidManifest.xml:55:13

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tevinjeffrey.rutgerssoc" >
+    package="com.tevinjeffrey.rutgersct" >
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,8 +13,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:theme,android:label"
-        android:name=".MyApplication">
+        tools:replace="android:icon,android:label"
+        android:name="com.tevinjeffrey.rutgersct.MyApplication">
 
         <meta-data
             android:name="DATABASE"
@@ -29,7 +29,7 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.tevinjeffrey.rutgerssoc.model" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.tevinjeffrey.rutgersct.ui.MainActivity"
             android:label="@string/application_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,12 +37,12 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".receivers.AlarmWakefulReceiver"
+            android:name="com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver"
             android:enabled="true"
             android:exported="false" >
         </receiver>
         <receiver
-            android:name=".receivers.BootReceiver"
+            android:name="com.tevinjeffrey.rutgersct.receivers.BootReceiver"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -50,7 +50,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".services.RequestService"
+            android:name="com.tevinjeffrey.rutgersct.services.RequestService"
             android:enabled="true"
             android:exported="false" >
         </service>
