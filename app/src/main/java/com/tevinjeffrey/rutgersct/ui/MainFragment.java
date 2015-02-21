@@ -1,9 +1,9 @@
 package com.tevinjeffrey.rutgersct.ui;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

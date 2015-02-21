@@ -17,9 +17,9 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ImageView;
 
-import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
+import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 
 
 public class MainActivity extends ActionBarActivity {

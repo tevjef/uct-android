@@ -1,10 +1,10 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -49,11 +49,10 @@ import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
 
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
-
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class TrackedSectionsFragment extends MainFragment {
 

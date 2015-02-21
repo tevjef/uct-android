@@ -1,9 +1,9 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.AutoTransition;
