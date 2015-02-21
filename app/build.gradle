@@ -7,8 +7,8 @@ android {
         applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 1
-        versionName "0.4.2.0"
+        versionCode 2
+        versionName "0.4.3.0"
     }
     buildTypes {
         release {
