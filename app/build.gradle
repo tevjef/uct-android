@@ -3,23 +3,24 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
-        applicationId "com.tevinjeffrey.rutgerssoc"
+        applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
-        versionName "0.4.0.0"
+        versionName "0.4.2.0"
     }
     buildTypes {
         release {
-            debuggable false
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+    productFlavors {
     }
 }
 

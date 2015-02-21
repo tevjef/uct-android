@@ -106,10 +106,8 @@ public class TrackedSectionsFragment extends MainFragment {
 
     private void warnServerIssues() {
         Calendar c= Calendar.getInstance();
-            Log.i(TAG, String.valueOf(c.get(Calendar.HOUR_OF_DAY)));
-
         if(c.get(Calendar.HOUR_OF_DAY) == 3 || c.get(Calendar.HOUR_OF_DAY) == 4) {
-            showSnackBar("Expect intermittent server issues between the hours of 3:00am and 4:00am");
+            showSnackBar(getResources().getString(R.string.expect_server_issues));
         }
     }
 
@@ -229,21 +227,18 @@ public class TrackedSectionsFragment extends MainFragment {
                                 }
                             } else {
                                 if (e instanceof UnknownHostException) {
-                                    showSnackBar("No internet connection.");
-                                } else if (e instanceof CancellationException) {
-                                    //
-                                } else if (e instanceof IllegalStateException){
+                                    showSnackBar(getResources().getString(R.string.no_internet));
+                                } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
                                     Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
-                                    showSnackBar("The server is currently down. Try again later.");
+                                    showSnackBar(getResources().getString(R.string.server_down));
                                 } else if (e instanceof TimeoutException) {
                                     Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
-                                    showSnackBar("Connection timed out. Check internet connection.");
-                                }else {
+                                    showSnackBar(getResources().getString(R.string.timed_out));
+                                } else {
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("Request", r.toString());
                                     map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
                                     Mint.logExceptionMap(map, e);
-                                    if(e != null) Toast.makeText(getParentActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
                             dismissProgress();

@@ -80,7 +80,6 @@ public class RequestService extends Service {
                             }
                         } else {
                             Mint.transactionCancel("startRequestService", (e != null ? e.getMessage() : null));
-
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("Request", r.toString());
                             map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
@@ -119,8 +118,9 @@ public class RequestService extends Service {
 
         //Intent open tracked sections.
         Intent openTracked = new Intent(RequestService.this, MainActivity.class);
+
         PendingIntent pOpenTracked = PendingIntent.getActivity(RequestService.this, 0, openTracked, 0);
-        mBuilder.addAction(0, "Delete", pOpenTracked);
+        mBuilder.addAction(0, "Stop tracking", pOpenTracked);
 
 
         mBuilder.setContentIntent(pOpenInBrowser);

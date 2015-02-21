@@ -17,8 +17,6 @@ public class AlarmWakefulReceiver extends WakefulBroadcastReceiver {
         // This is the Intent to deliver to our service.
         Intent service = new Intent(context, RequestService.class);
 
-        // Start the service, keeping the device awake while it is launching.
-        Log.d("AlarmWakefulReceiver", "Starting service @ " + SystemClock.elapsedRealtime());
         startWakefulService(context, service);
     }
 }

@@ -75,7 +75,7 @@ public class SettingsFragment extends PreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
 
                 new MaterialDialog.Builder(getParentActivity())
-                        .title(getResources().getString(R.string.application_name) + " v0.4")
+                        .title(getResources().getString(R.string.application_name) + " v0.4.2")
                         .content(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br> " +
                                 "<a href=\"http://tevinjeffrey.com/\">Website</a> "))
                         .positiveText("Ok")

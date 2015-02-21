@@ -102,7 +102,6 @@ public class SubjectFragment extends MainFragment {
 
     private void getSubjects(final ListView listView) {
         String url = UrlUtils.getSubjectUrl(UrlUtils.buildParamUrl(request));
-        Log.d("URL", url);
         Ion.with(this)
                 .load(url)
                 .as(new TypeToken<List<Subject>>() {
@@ -118,21 +117,18 @@ public class SubjectFragment extends MainFragment {
                             listView.setAdapter(subjectAdapter);
                         } else {
                             if (e instanceof UnknownHostException) {
-                                showSnackBar("No internet connection.");
-                            } else if (e instanceof CancellationException) {
-                                //
-                            } else if (e instanceof IllegalStateException){
+                                showSnackBar(getResources().getString(R.string.no_internet));
+                            } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
                                 Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
-                                showSnackBar("The server is currently down. Try again later.");
+                                showSnackBar(getResources().getString(R.string.server_down));
                             } else if (e instanceof TimeoutException) {
                                 Ion.getDefault(getParentActivity().getApplicationContext()).cancelAll();
-                                showSnackBar("Connection timed out. Check internet connection.");
-                            }else {
+                                showSnackBar(getResources().getString(R.string.timed_out));
+                            } else {
                                 HashMap<String, Object> map = new HashMap<>();
                                 map.put("Request", request.toString());
                                 map.put("Error", (e != null ? e.getMessage() : "An error occurred"));
                                 Mint.logExceptionMap(map, e);
-                                if(e != null) Toast.makeText(getParentActivity(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                         dismissProgress();
