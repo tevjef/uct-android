@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.tevinjeffrey.rutgerssoc"
-        minSdkVersion 17
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "0.3.0.0"
@@ -17,9 +17,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    lintOptions {
-        disable 'InvalidPackage'
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'

@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
-
-
     package="com.tevinjeffrey.rutgerssoc" >
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-
+    
     <application
         xmlns:tools="http://schemas.android.com/tools"
-        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/application_name"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:theme">
+        tools:replace="android:icon,android:theme,android:label"
+        android:name=".MyApplication">
+
         <meta-data
             android:name="DATABASE"
             android:value="tracked_sections.db" />
@@ -26,27 +24,23 @@
             android:value="2" />
         <meta-data
             android:name="QUERY_LOG"
-            android:value="true" />
+            android:value="false" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.tevinjeffrey.rutgerssoc.model" />
-
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/application_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <receiver
             android:name=".receivers.AlarmWakefulReceiver"
             android:enabled="true"
             android:exported="false" >
         </receiver>
-
         <receiver
             android:name=".receivers.BootReceiver"
             android:enabled="true"
@@ -55,13 +49,10 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <service
             android:name=".services.RequestService"
             android:enabled="true"
             android:exported="false" >
         </service>
-
     </application>
-
 </manifest>

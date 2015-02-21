@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
@@ -71,7 +72,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     long getInterval() {
-        int index = PreferenceManager.getDefaultSharedPreferences(this)
+        int index = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .getInt(getApplicationContext().getResources().getString(R.string.sync_interval), 1);
         if(index == 0) {
             return 5 * 60 * 1000;
