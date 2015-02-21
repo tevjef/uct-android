@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.model.Course;
-import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 
 import org.apache.commons.lang3.text.WordUtils;
 

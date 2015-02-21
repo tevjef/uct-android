@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -88,10 +87,5 @@ public class CourseInfoFragment extends MainFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_info, menu);
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-                return super.onOptionsItemSelected(item);
     }
 }

@@ -101,7 +101,7 @@ public class RequestService extends Service {
                                 .bigText("Section " + sectionNumber + " of " + courseTitle
                                         + " has opened")
                                 .setBigContentTitle("A section has opened"))
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_track_changes_notify)
                         .setWhen(System.currentTimeMillis())
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_MAX)

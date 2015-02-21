@@ -73,7 +73,7 @@ public class SectionUtils {
             } else {
                 return "";
             }
-            return !time.isLecture() ? formattedDay : formattedDay;
+            return formattedDay;
         }
         return "";
     }

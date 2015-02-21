@@ -1,7 +1,5 @@
 package com.tevinjeffrey.rutgerssoc.utils;
 
-import com.tevinjeffrey.rutgerssoc.model.Course;
-
 public class CourseUtils {
 
     public CourseUtils() {

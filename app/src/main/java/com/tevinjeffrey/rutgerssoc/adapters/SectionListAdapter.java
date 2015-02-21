@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Slide;
 import android.view.Gravity;
@@ -20,13 +19,11 @@ import android.widget.TextView;
 import com.melnykov.fab.FloatingActionButton;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.animator.EaseOutQuint;
-import com.tevinjeffrey.rutgerssoc.animator.MaterialInterpolator;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
 import com.tevinjeffrey.rutgerssoc.ui.MainFragment;
 import com.tevinjeffrey.rutgerssoc.ui.SectionInfoFragment;
-import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 
 import java.util.ArrayList;
@@ -104,24 +101,16 @@ public class SectionListAdapter {
         setInstructors(s);
         setTimes(s);
         setOnClickSectionClickListener();
-        //setSectionBackground(s, mSectionRoot);
 
         sectionLayout.setTag(new Request(mRequest.getSubject(), mRequest.getSemester(),
                 mRequest.getLocations(), mRequest.getLevels(), s.getIndex()));
 
         mSectionsContainer.addView(sectionLayout);
     }
-/*
-        private void setSectionBackground(Course.Sections section, View sectionRoot) {
-            if (section.hasMetaData()) {
-                sectionRoot.setBackgroundColor(mContext.getResources()
-                        .getColor(R.color.section_meta_bg));
-            }
-        }*/
 
     private void setCourseTitle() {
         if (mCourseTitleText != null && mInflationType.equals(MainActivity.TRACKED_SECTION)) {
-            mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getCourseNumber() + ": " + mCourse.getTrueTitle());
+            mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getTrueTitle());
         }
     }
 

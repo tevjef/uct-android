@@ -75,16 +75,9 @@ public class SettingsFragment extends PreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
 
                 new MaterialDialog.Builder(getParentActivity())
-                        .title(R.string.app_name + "v0.3")
+                        .title(getResources().getString(R.string.app_name) + " v0.3")
                         .content(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br> " +
                                 "<a href=\"http://tevinjeffrey.com/\">Website</a> "))
-                        .items(R.array.intervals).alwaysCallSingleChoiceCallback()
-                        .itemsCallbackSingleChoice(getInterval(), new MaterialDialog.ListCallback() {
-                            @Override
-                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                setInterval(which);
-                            }
-                        })
                         .positiveText("Ok")
                         .show();
 
@@ -191,11 +184,6 @@ public class SettingsFragment extends PreferenceFragment {
     }
     int getInterval() {
         return mPref.getInt(getResources().getString(R.string.sync_interval), 1);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

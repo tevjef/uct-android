@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -90,10 +89,5 @@ public class SectionInfoFragment extends MainFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_info, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 }

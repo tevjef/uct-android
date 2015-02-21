@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
-import android.transition.ChangeClipBounds;
 import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,11 +54,6 @@ public class ChooserFragment extends MainFragment {
 
     Toolbar toolbar;
     public ChooserFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -188,10 +181,5 @@ public class ChooserFragment extends MainFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
     }
 }

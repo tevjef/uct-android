@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -29,7 +28,6 @@ import com.tevinjeffrey.rutgerssoc.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.model.TrackedSections;
-import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 import com.tevinjeffrey.rutgerssoc.utils.SectionUtils;
 import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 

@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -42,7 +41,6 @@ import com.tevinjeffrey.rutgerssoc.utils.UrlUtils;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;

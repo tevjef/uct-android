@@ -10,7 +10,7 @@
         android:text="Wednesday"
         android:id="@+id/day_text"
         android:textColor="@color/secondary_text"
-        android:textSize="11dp"
+        android:textSize="11sp"
         tools:ignore="HardcodedText" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:text="ENG-102  NWK"
         android:id="@+id/sectionLocation_text"
         android:textColor="@color/secondary_text"
-        android:textSize="11dp"
+        android:textSize="11sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="false"
         android:textIsSelectable="false"
@@ -32,7 +32,7 @@
         android:text="Tuesday 10:00 AM - 11:20 AM"
         android:id="@+id/time_text"
         android:textColor="@color/secondary_text"
-        android:textSize="11dp"
+        android:textSize="11sp"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/day_text"
         tools:ignore="HardcodedText" />
@@ -43,7 +43,7 @@
         android:text="STUDIO"
         android:id="@+id/meetingType"
         android:textColor="@color/secondary_text"
-        android:textSize="11dp"
+        android:textSize="11sp"
         android:textIsSelectable="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"

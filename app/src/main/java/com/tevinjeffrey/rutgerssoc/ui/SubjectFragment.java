@@ -1,15 +1,9 @@
 package com.tevinjeffrey.rutgerssoc.ui;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.transition.AutoTransition;
-import android.transition.ChangeBounds;
-import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,9 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,7 +23,6 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
-import com.nispok.snackbar.listeners.EventListener;
 import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgerssoc.R;
 import com.tevinjeffrey.rutgerssoc.adapters.SubjectAdapter;
@@ -50,8 +41,6 @@ import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 /**
  * A placeholder fragment containing a simple view.

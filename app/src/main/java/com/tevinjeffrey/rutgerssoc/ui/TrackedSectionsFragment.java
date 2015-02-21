@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.transition.AutoTransition;
-import android.transition.ChangeBounds;
-import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -83,11 +79,6 @@ public class TrackedSectionsFragment extends MainFragment {
     View rootView;
 
     String TAG = this.toString();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -261,6 +252,7 @@ public class TrackedSectionsFragment extends MainFragment {
                         }
                     });
         }
+        setEmptyLayout(allTrackedSections);
     }
 
     private void setEmptyLayout(List<TrackedSections> allTrackedSections) {

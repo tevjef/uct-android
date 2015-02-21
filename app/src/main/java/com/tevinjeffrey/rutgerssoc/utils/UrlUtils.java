@@ -4,8 +4,6 @@ package com.tevinjeffrey.rutgerssoc.utils;
 import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 
 public class UrlUtils {

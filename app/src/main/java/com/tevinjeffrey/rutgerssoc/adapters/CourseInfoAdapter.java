@@ -12,7 +12,6 @@ import com.tevinjeffrey.rutgerssoc.model.Course;
 import com.tevinjeffrey.rutgerssoc.model.Request;
 import com.tevinjeffrey.rutgerssoc.ui.MainActivity;
 import com.tevinjeffrey.rutgerssoc.ui.MainFragment;
-import com.tevinjeffrey.rutgerssoc.utils.CourseUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

@@ -4,14 +4,11 @@ package com.tevinjeffrey.rutgerssoc.ui;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.tevinjeffrey.rutgerssoc.R;
-
-import java.io.PrintWriter;
 
 public class MainFragment extends Fragment {
 
