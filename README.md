@@ -16,6 +16,7 @@ It was made using [Android Studio](http://developer.android.com/sdk/index.html) 
 Upcoming Features
 -----------------
 - Track courses for your friends through email or text.
+
 Screenshots
 -----------
 
