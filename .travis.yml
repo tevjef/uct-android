@@ -1,0 +1,22 @@
+language: android
+
+jdk:
+ - oraclejdk7
+ - oraclejdk8
+
+android:
+  components:
+    - build-tools-21.1.2
+    - android-21
+
+script:
+  - ./gradlew clean check -Dpre-dex=false
+
+notifications:
+  email: false
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle
