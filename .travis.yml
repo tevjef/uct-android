@@ -2,21 +2,23 @@ language: android
 
 jdk:
  - oraclejdk7
- - oraclejdk8
 
 android:
   components:
     - build-tools-21.1.2
     - android-21
 
-script:
-  - ./gradlew clean check -Dpre-dex=false
-
 notifications:
   email: false
 
-sudo: false
+script: "./gradlew build"
 
-cache:
-  directories:
-    - $HOME/.gradle
+# Emulator Management: Create, Start and Wait
+before_script:
+- echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+- emulator -avd test -no-skin -no-audio -no-window &
+- curl http://is.gd/android_wait_for_emulator > android-wait-for-emulator
+- chmod u+x android-wait-for-emulator
+- ./android-wait-for-emulator
+- adb shell input keyevent 82 &
+- chmod +x gradlew
