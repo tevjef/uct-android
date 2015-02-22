@@ -100,7 +100,8 @@ public class SettingsFragment extends PreferenceFragment {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 setInterval(which);
-                                setSummary(syncInterval, getResources().getStringArray(R.array.intervals)[getInterval()]);
+                                setSummary(syncInterval, String.format("Every %s",
+                                        getResources().getStringArray(R.array.intervals)[getInterval()]));
                                 getParentActivity().setAlarm();
                             }
                         })
