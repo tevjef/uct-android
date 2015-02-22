@@ -100,10 +100,13 @@ public class SectionListAdapter {
         setSectionNumber(s);
         setInstructors(s);
         setTimes(s);
-        setOnClickSectionClickListener();
 
         sectionLayout.setTag(new Request(mRequest.getSubject(), mRequest.getSemester(),
                 mRequest.getLocations(), mRequest.getLevels(), s.getIndex()));
+
+
+        setOnClickSectionClickListener();
+
 
         mSectionsContainer.addView(sectionLayout);
     }
