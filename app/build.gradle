@@ -14,6 +14,9 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+def isCi() {
+    return "true".equals(System.getenv('CI'))
+}
 
 android {
     compileSdkVersion 21
@@ -39,8 +42,19 @@ android {
     }
     lintOptions {
         abortOnError false
+        textOutput 'stdout'
+
     }
 }
+
+if (isCi()) {
+    println 'Running on CI. Adding task to start emulator.'
+
+    task startEmulator << {
+        "$rootDir/gradle/start-emulator.sh".execute().waitFor()
+    }
+}
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
