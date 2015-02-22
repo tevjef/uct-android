@@ -159,8 +159,10 @@ public class SectionInfoAdapter {
         ButterKnife.inject(this, rowView);
         for (Course c : courses) {
             for (Course.Sections s : c.getSections()) {
-                sectionData = s;
-                courseData = c;
+                if (s.getIndex().equals(request.getIndex())) {
+                    sectionData = s;
+                    courseData = c;
+                }
             }
         }
         setData();
@@ -196,9 +198,6 @@ public class SectionInfoAdapter {
                 if (isSectionTracked()) {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(0);
                     removeSectionFromDb();
-                    Toast.makeText(context, "Stopped tracking",
-                            Toast.LENGTH_SHORT).show();
-
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF455A64, /*Blue*/0xFF607D8B);
                     colorAnim.setDuration(250);
                     colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -213,8 +212,6 @@ public class SectionInfoAdapter {
                 } else {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(225);
                     addSectionToDb(request);
-                    Toast.makeText(context, "Started tracking",
-                            Toast.LENGTH_SHORT).show();
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF607D8B, /*Blue*/0xFF455A64);
                     colorAnim.setDuration(250);
                     colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

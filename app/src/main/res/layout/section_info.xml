@@ -48,7 +48,10 @@
                     tools:ignore="HardcodedText"
                     android:textAppearance="@style/toolbar_title"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:fadingEdge="horizontal"
+                    android:ellipsize="none"
+                    android:focusableInTouchMode="true"/>
 
                 <LinearLayout
                     android:orientation="horizontal"
