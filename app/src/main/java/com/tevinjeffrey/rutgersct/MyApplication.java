@@ -3,16 +3,16 @@ package com.tevinjeffrey.rutgersct;
 import android.content.Context;
 import android.text.format.Time;
 
-import com.crashlytics.android.Crashlytics;
 import com.orm.SugarApp;
+import com.splunk.mint.Mint;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.HashMap;
 import java.util.UUID;
 
-import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class MyApplication extends SugarApp {
@@ -27,12 +27,14 @@ public class MyApplication extends SugarApp {
         super.onCreate();
 
         //Initialize crash reporting
-
+        Mint.initAndStartSession(this, "2974ff7f");
         //Set unique user id
+        Mint.setUserIdentifier(getsID(getApplicationContext()));
 
         if (BuildConfig.DEBUG) {
             //Ion.getDefault(getApplicationContext()).configure().setLogging("Ion", Log.VERBOSE);
             Timber.plant(new Timber.DebugTree());
+            Mint.enableDebug();
         } else {
             Timber.plant(new CrashReportingTree());
         }
@@ -42,7 +44,7 @@ public class MyApplication extends SugarApp {
     private static class CrashReportingTree extends Timber.HollowTree {
         @Override
         public void i(String message, Object... args) {
-
+            Mint.leaveBreadcrumb(message);
         }
 
         @Override
@@ -58,6 +60,7 @@ public class MyApplication extends SugarApp {
         @Override
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
+            Mint.logExceptionMessage("INFO: ", message, new Exception(t));
         }
     }
 

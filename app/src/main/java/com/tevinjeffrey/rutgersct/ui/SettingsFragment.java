@@ -76,7 +76,7 @@ public class SettingsFragment extends PreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
 
                 new MaterialDialog.Builder(getParentActivity())
-                        .title(getResources().getString(R.string.application_name) + " v0.5.3")
+                        .title(getResources().getString(R.string.application_name) + " v0.5.4")
                         .content(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br> " +
                                 "<a href=\"http://tevinjeffrey.com/\">Website</a> "))
                         .positiveText("Ok")
@@ -142,7 +142,7 @@ public class SettingsFragment extends PreferenceFragment {
                                         content = getResources().getString(R.string.server_down);
                                     } else if (e instanceof TimeoutException) {
                                         content = getResources().getString(R.string.timed_out);
-                                    } else {
+                                    } else if (!(e instanceof CancellationException)) {
                                         Timber.e(e, "Crash while attempting to complete request in %s to %s"
                                                 , SettingsFragment.this.toString(), url);
                                     }

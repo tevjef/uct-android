@@ -123,7 +123,7 @@ public class CourseFragment extends MainFragment {
                             } else if (e instanceof TimeoutException) {
                                 cancelRequests();
                                 showSnackBar(getResources().getString(R.string.timed_out));
-                            } else {
+                            } else if (!(e instanceof CancellationException)) {
                                 Timber.e(e, "Crash while attempting to complete request in %s to %s"
                                         , CourseFragment.this.toString(), request.toString());
                             }

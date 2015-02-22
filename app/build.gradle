@@ -11,8 +11,8 @@ android {
         applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 3
-        versionName "0.5.1.0"
+        versionCode 4
+        versionName "0.5.4.0"
     }
     buildTypes {
         release {
@@ -61,4 +61,5 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
     compile 'com.nispok:snackbar:2.9.1'
     compile 'com.jakewharton.timber:timber:2.7.1'
+    compile 'com.splunk.mint:mint:4.0.8'
 }
