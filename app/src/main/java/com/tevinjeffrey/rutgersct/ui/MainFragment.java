@@ -10,12 +10,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.crashlytics.android.Crashlytics;
 import com.koushikdutta.ion.Ion;
+import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainFragment extends Fragment {
 
@@ -25,9 +26,11 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
+        Timber.i(String.format("%s started with savedIntanceState %s and arguments %s",
+                this.toString(), savedInstanceState == null ? "null" : savedInstanceState.toString()
+                , this.getArguments() == null? "null": this.getArguments().toString()));
         mPref = PreferenceManager.getDefaultSharedPreferences(getParentActivity());
-        Crashlytics.setInt(MyApplication.REFRESH_INTERVAL, getInterval());
+        Mint.addExtraData(MyApplication.REFRESH_INTERVAL, String.valueOf(getInterval()));
     }
 
     private int getInterval() {
@@ -65,6 +68,14 @@ public class MainFragment extends Fragment {
 
     void cancelRequests() {
         Ion.getDefault(getParentActivity()).cancelAll(getParentActivity());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Timber.i(String.format("%s paused with outState %s and arguments %s",
+                this.toString(), outState == null? "null": outState.toString()
+                ,this.getArguments() == null? "null": this.getArguments().toString()));
+        super.onSaveInstanceState(outState);
     }
 
     @Override

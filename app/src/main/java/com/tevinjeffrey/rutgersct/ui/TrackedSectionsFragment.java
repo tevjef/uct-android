@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -33,6 +32,7 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.EventListener;
+import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionListAdapter;
@@ -201,7 +201,9 @@ public class TrackedSectionsFragment extends MainFragment {
     private void getTrackedSections() {
         removeAllViews();
         final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
-        Crashlytics.setInt(MyApplication.ITEMS_IN_DATABASE, allTrackedSections.size());
+
+        Mint.addExtraData(MyApplication.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
+
         for (final Iterator<TrackedSections> trackedSectionsIterator = allTrackedSections.iterator(); trackedSectionsIterator.hasNext(); ) {
             TrackedSections ts = trackedSectionsIterator.next();
             final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
@@ -239,7 +241,7 @@ public class TrackedSectionsFragment extends MainFragment {
                                 } else if (e instanceof TimeoutException) {
                                     cancelRequests();
                                     showSnackBar(getResources().getString(R.string.timed_out));
-                                } else {
+                                } else if (!(e instanceof CancellationException)) {
                                     Timber.e(e, "Crash while attempting to complete request in %s to %s"
                                             , TrackedSectionsFragment.this.toString(), r.toString());
                                 }

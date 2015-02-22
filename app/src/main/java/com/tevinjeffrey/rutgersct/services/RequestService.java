@@ -24,6 +24,7 @@ import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 import timber.log.Timber;
 
@@ -78,7 +79,7 @@ public class RequestService extends Service {
                                     }
                                 }
                             }
-                        } else {
+                        } else if (!(e instanceof CancellationException)) {
                             Timber.e(e, "Crash while attempting to complete request in %s to %s"
                                     , RequestService.this.toString(), r.toString());
                         }
