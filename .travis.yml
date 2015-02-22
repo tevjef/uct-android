@@ -11,6 +11,9 @@ android:
 notifications:
   email: false
 
+before_script:
+  - chmod +x gradlew
+  
 cache:
   directories:
     - $HOME/.gradle
