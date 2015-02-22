@@ -8,9 +8,6 @@ android:
     - build-tools-21.1.2
     - android-21
 
-script:
-  - ./gradlew clean check -Dpre-dex=false
-
 notifications:
   email: false
 
