@@ -40,8 +40,6 @@ public class SectionListAdapter {
     private final Request mRequest;
     private final View rootView;
     private final MainFragment mCallingFragment;
-    private LinearLayout mSectionsContainer;
-    private Toolbar mToolbar;
     private final Course mCourse;
     private final List<Course.Sections> sectionData;
     @SuppressWarnings("WeakerAccess")
@@ -53,6 +51,8 @@ public class SectionListAdapter {
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.time_text)
     TextView mTimeText;
+    private LinearLayout mSectionsContainer;
+    private Toolbar mToolbar;
     private TextView mInstructors;
     private TextView mSectionNumber;
     private TextView mCourseTitleText;
@@ -126,7 +126,7 @@ public class SectionListAdapter {
 
         if (mInflationType.equals(MainActivity.TRACKED_SECTION)) {
             mCourseTitleText = ButterKnife.findById(sectionLayout, R.id.courseTitle_text);
-        } else{
+        } else {
             mCourseTitleText = ButterKnife.findById(rootView, R.id.courseTitle_text);
         }
     }
@@ -161,14 +161,14 @@ public class SectionListAdapter {
             sectionInfoFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             sectionInfoFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
             sectionInfoFragment.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            sectionInfoFragment.setReturnTransition(new Fade(Fade.OUT ).excludeTarget(ImageView.class, true));
+            sectionInfoFragment.setReturnTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
             sectionInfoFragment.setAllowReturnTransitionOverlap(true);
             sectionInfoFragment.setAllowEnterTransitionOverlap(true);
             sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            
-            if(mFab != null)
-            ft.addSharedElement(mFab, "fab");
+
+            if (mFab != null)
+                ft.addSharedElement(mFab, "fab");
 
             ft.addSharedElement(mToolbar, "toolbar_background");
             ft.addSharedElement(mCourseTitleText, "course_title");

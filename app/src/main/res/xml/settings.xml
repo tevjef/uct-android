@@ -10,7 +10,7 @@
 
 
     <com.jenzz.materialpreference.PreferenceCategory
-        android:title="Sync &amp; Data">
+        android:title="SYNC &amp; DATA">
 
         <com.jenzz.materialpreference.Preference
             android:title="Sync Interval"
@@ -20,7 +20,7 @@
     </com.jenzz.materialpreference.PreferenceCategory>
 
     <com.jenzz.materialpreference.PreferenceCategory
-        android:title="Developer">
+        android:title="DEVELOPER">
 
         <com.jenzz.materialpreference.Preference
             android:title="Open Source Licenses"

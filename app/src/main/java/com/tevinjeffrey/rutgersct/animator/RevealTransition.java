@@ -1,4 +1,3 @@
-
 package com.tevinjeffrey.rutgersct.animator;
 /*
  * Copyright (C) 2014 The Android Open Source Project
@@ -34,6 +33,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class RevealTransition extends Visibility {
     public RevealTransition() {
@@ -42,6 +42,13 @@ public class RevealTransition extends Visibility {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public RevealTransition(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    static float calculateMaxRadius(View view) {
+        float widthSquared = view.getWidth() * view.getWidth();
+        float heightSquared = view.getHeight() * view.getHeight();
+        float radius = FloatMath.sqrt(widthSquared + heightSquared) / 2;
+        return radius;
     }
 
     @Override
@@ -76,13 +83,6 @@ public class RevealTransition extends Visibility {
         Animator reveal = ViewAnimationUtils.createCircularReveal(view, centerX, centerY,
                 startRadius, endRadius);
         return new NoPauseAnimator(reveal);
-    }
-
-    static float calculateMaxRadius(View view) {
-        float widthSquared = view.getWidth() * view.getWidth();
-        float heightSquared = view.getHeight() * view.getHeight();
-        float radius = FloatMath.sqrt(widthSquared + heightSquared) / 2;
-        return radius;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -126,6 +126,11 @@ public class RevealTransition extends Visibility {
             return mAnimator.getInterpolator();
         }
 
+        @Override
+        public void setInterpolator(TimeInterpolator timeInterpolator) {
+            mAnimator.setInterpolator(timeInterpolator);
+        }
+
         @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public ArrayList<AnimatorListener> getListeners() {
@@ -135,6 +140,11 @@ public class RevealTransition extends Visibility {
         @Override
         public long getStartDelay() {
             return mAnimator.getStartDelay();
+        }
+
+        @Override
+        public void setStartDelay(long delayMS) {
+            mAnimator.setStartDelay(delayMS);
         }
 
         @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -153,6 +163,18 @@ public class RevealTransition extends Visibility {
             return mAnimator.isStarted();
         }
 
+
+/* We don't want to override pause or resume methods because we don't want them
+         * to affect mAnimator.
+        public void pause();
+
+        public void resume();
+
+        public void addPauseListener(AnimatorPauseListener listener);
+
+        public void removePauseListener(AnimatorPauseListener listener);
+        */
+
         @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public void removeAllListeners() {
@@ -170,33 +192,10 @@ public class RevealTransition extends Visibility {
             }
         }
 
-
-/* We don't want to override pause or resume methods because we don't want them
-         * to affect mAnimator.
-        public void pause();
-
-        public void resume();
-
-        public void addPauseListener(AnimatorPauseListener listener);
-
-        public void removePauseListener(AnimatorPauseListener listener);
-        */
-
-
         @Override
         public Animator setDuration(long durationMS) {
             mAnimator.setDuration(durationMS);
             return this;
-        }
-
-        @Override
-        public void setInterpolator(TimeInterpolator timeInterpolator) {
-            mAnimator.setInterpolator(timeInterpolator);
-        }
-
-        @Override
-        public void setStartDelay(long delayMS) {
-            mAnimator.setStartDelay(delayMS);
         }
 
         @Override

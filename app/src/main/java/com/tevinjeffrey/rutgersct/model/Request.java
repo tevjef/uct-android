@@ -11,6 +11,15 @@ import java.util.ArrayList;
 
 public class Request implements Parcelable {
 
+    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
+        public Request createFromParcel(Parcel source) {
+            return new Request(source);
+        }
+
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
     private String subject;
     private String semester;
     private ArrayList<String> locations;
@@ -30,6 +39,16 @@ public class Request implements Parcelable {
     public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels, String index) {
         this(subject, semester, locations, levels);
         this.index = index;
+    }
+
+    private Request(Parcel in) {
+        this.subject = in.readString();
+        this.semester = in.readString();
+        //noinspection unchecked
+        this.locations = (ArrayList<String>) in.readSerializable();
+        //noinspection unchecked
+        this.levels = (ArrayList<String>) in.readSerializable();
+        this.index = in.readString();
     }
 
     public static String toStringList(ArrayList<String> strings) {
@@ -96,7 +115,6 @@ public class Request implements Parcelable {
         return false;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -110,22 +128,4 @@ public class Request implements Parcelable {
         dest.writeSerializable(this.levels);
         dest.writeString(this.index);
     }
-
-    private Request(Parcel in) {
-        this.subject = in.readString();
-        this.semester = in.readString();
-        this.locations = (ArrayList<String>) in.readSerializable();
-        this.levels = (ArrayList<String>) in.readSerializable();
-        this.index = in.readString();
-    }
-
-    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
-        public Request createFromParcel(Parcel source) {
-            return new Request(source);
-        }
-
-        public Request[] newArray(int size) {
-            return new Request[size];
-        }
-    };
 }

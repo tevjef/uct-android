@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -36,7 +37,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import timber.log.Timber;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
@@ -72,7 +72,7 @@ public class SectionInfoAdapter {
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
 
-    Toolbar mToolbarHeaderInfo;
+    Toolbar mToolbar;
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionNotes_text)
 
@@ -167,15 +167,11 @@ public class SectionInfoAdapter {
     }
 
     private void setData() {
-
-        Timber.i("Request in adapter %s", request.toString());
-
         setToolBarColor(sectionData);
         setSectionNumber(sectionData);
         setSectionIndex(sectionData);
         setSectionCredits(courseData);
         setCourseTitle(courseData);
-        setSectionNotes(sectionData);
         setSectionNotes(sectionData);
         setSectionComments(sectionData);
         setSectionOpenTo(sectionData);
@@ -194,7 +190,6 @@ public class SectionInfoAdapter {
             @Override
             public void onClick(View v) {
                 toggleFab();
-
             }
 
             private void toggleFab() {
@@ -272,7 +267,6 @@ public class SectionInfoAdapter {
 
     private void setActionButton(final FloatingActionButton fab) {
         if (isSectionTracked()) {
-                /**/
             fab.post(new Runnable() {
                 @Override
                 public void run() {
@@ -314,10 +308,10 @@ public class SectionInfoAdapter {
 
     void setToolBarColor(Course.Sections section) {
         if (section.isOpenStatus()) {
-            mToolbarHeaderInfo.setBackgroundColor(context.getResources().getColor(R.color.green));
+            mToolbar.setBackgroundColor(context.getResources().getColor(R.color.green));
             setGreenWindow();
         } else {
-            mToolbarHeaderInfo.setBackgroundColor(context.getResources().getColor(R.color.red));
+            mToolbar.setBackgroundColor(context.getResources().getColor(R.color.red));
             setPrimaryWindow();
         }
     }
@@ -359,6 +353,7 @@ public class SectionInfoAdapter {
             mSectionNotesContainer.setVisibility(View.GONE);
         } else {
             mSectionNotesText.setText(Html.fromHtml(section.getSectionNotes()));
+            mSectionNotesText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -366,12 +361,8 @@ public class SectionInfoAdapter {
         if (!section.hasComments()) {
             mSectionCommentsContainer.setVisibility(View.GONE);
         } else {
-            StringBuilder sb = new StringBuilder();
-            for (Course.Sections.Comments i : section.getComments()) {
-                sb.append(i.getDescription());
-                sb.append(", ");
-            }
-            mSectionCommentsText.setText(Html.fromHtml(sb.toString()));
+            mSectionCommentsText.setText(Html.fromHtml(StringUtils.join(section.getComments(), ", ")));
+            mSectionCommentsText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -408,6 +399,7 @@ public class SectionInfoAdapter {
             mSectionPermisisionContainer.setVisibility(View.GONE);
         } else {
             mSectionPermissionText.setText(Html.fromHtml(section.getSpecialPermissionAddCodeDescription()));
+            mSectionPermissionText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -421,6 +413,7 @@ public class SectionInfoAdapter {
                 sb.append(", ");
             }
             mSectionCrossListText.setText(Html.fromHtml(sb.toString()));
+            mSectionCrossListText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -429,6 +422,7 @@ public class SectionInfoAdapter {
             mSectionSubtitleContainer.setVisibility(View.GONE);
         } else {
             mSectionSubtitleText.setText(Html.fromHtml(section.getSubtitle()));
+            mSectionSubtitleText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -446,10 +440,10 @@ public class SectionInfoAdapter {
 
             View timeLayout = inflater.inflate(R.layout.section_info_time, mSectionTimeContainer, false);
 
-            TextView dayText = (TextView) timeLayout.findViewById(R.id.day_text);
-            TextView timeText = (TextView) timeLayout.findViewById(R.id.time_text);
-            TextView locationText = (TextView) timeLayout.findViewById(R.id.sectionLocation_text);
-            TextView meetingTimeText = (TextView) timeLayout.findViewById(R.id.meetingType);
+            TextView dayText = ButterKnife.findById(timeLayout, R.id.day_text);
+            TextView timeText = ButterKnife.findById(timeLayout, R.id.time_text);
+            TextView locationText = ButterKnife.findById(timeLayout, R.id.sectionLocation_text);
+            TextView meetingTimeText = ButterKnife.findById(timeLayout, R.id.meetingType);
 
             dayText.setText(SectionUtils.getMeetingDayName(time));
             timeText.setText(SectionUtils.getMeetingHours(time));

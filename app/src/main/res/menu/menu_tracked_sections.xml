@@ -11,10 +11,10 @@
         android:titleCondensed="@string/action_webreg"
         app:showAsAction="never" />
     <item android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_refresh_white"
+        android:icon="@drawable/ic_refresh_white_24dp"
         android:title="@string/action_refresh"
         android:titleCondensed="@string/action_refresh"
-        app:showAsAction="withText|ifRoom" />
+        app:showAsAction="ifRoom" />
 
 
     <item android:id="@+id/action_settings"

@@ -21,7 +21,6 @@ import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgersct.R;
 
 import java.net.UnknownHostException;
-import java.util.HashMap;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
 
@@ -29,18 +28,18 @@ import timber.log.Timber;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    SharedPreferences mPref;
-    Preference syncInterval;
-    Preference licenses;
-    Preference about;
+    private SharedPreferences mPref;
+    private Preference syncInterval;
 
-    Toolbar bar;
-    LinearLayout root;
-    public MainActivity getParentActivity() {
+    private Toolbar mToolbar;
+    private LinearLayout root;
+
+    MainActivity getParentActivity() {
         return (MainActivity) getActivity();
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
@@ -50,12 +49,14 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = (LinearLayout) container.getParent().getParent();
-        bar = (Toolbar) inflater.inflate(R.layout.preference_toolbar, root, false);
-        root.addView(bar, 0); // insert at top
-        bar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar = (Toolbar) inflater.inflate(R.layout.preference_toolbar, root, false);
+        mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
+        mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
+        root.addView(mToolbar, 0); // insert at top
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                root.removeView(bar);
+                root.removeView(mToolbar);
                 getParentActivity().onBackPressed();
             }
         });
@@ -63,19 +64,19 @@ public class SettingsFragment extends PreferenceFragment {
         setupIntervalPref();
         setupAboutPref();
         setupLicensesPref();
-        bar.setTitle("Settings");
+        mToolbar.setTitle("Settings");
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private void setupAboutPref() {
-        about = findPreference("about");
+        Preference about = findPreference("about");
         about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
                 new MaterialDialog.Builder(getParentActivity())
-                        .title(getResources().getString(R.string.application_name) + " v0.4.3")
+                        .title(getResources().getString(R.string.application_name) + " v0.5")
                         .content(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br> " +
                                 "<a href=\"http://tevinjeffrey.com/\">Website</a> "))
                         .positiveText("Ok")
@@ -87,7 +88,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     private void setupIntervalPref() {
         syncInterval = findPreference("sync_interval");
-        setSummary();
+        setSummary(syncInterval, getResources().getStringArray(R.array.intervals)[getInterval()]);
         syncInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -99,6 +100,7 @@ public class SettingsFragment extends PreferenceFragment {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 setInterval(which);
+                                setSummary(syncInterval, getResources().getStringArray(R.array.intervals)[getInterval()]);
                                 getParentActivity().setAlarm();
                             }
                         })
@@ -111,7 +113,7 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void setupLicensesPref() {
-        licenses = findPreference("licenses");
+        Preference licenses = findPreference("licenses");
         licenses.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -135,7 +137,7 @@ public class SettingsFragment extends PreferenceFragment {
                                 } else {
                                     if (e instanceof UnknownHostException) {
                                         content = getResources().getString(R.string.no_internet);
-                                    } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
+                                    } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
                                         content = getResources().getString(R.string.server_down);
                                     } else if (e instanceof TimeoutException) {
                                         content = getResources().getString(R.string.timed_out);
@@ -164,21 +166,21 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
-    private void setSummary() {
-        syncInterval.setSummary(getResources().getStringArray(R.array.intervals)[getInterval()]);
+    private void setSummary(Preference preference, String summary) {
+        preference.setSummary(summary);
     }
 
-    void setInterval(int intervalIndex) {
-        mPref.edit().putInt(getResources().getString(R.string.sync_interval), intervalIndex).commit();
-        setSummary();
-    }
     int getInterval() {
         return mPref.getInt(getResources().getString(R.string.sync_interval), 1);
     }
 
+    void setInterval(int intervalIndex) {
+        mPref.edit().putInt(getResources().getString(R.string.sync_interval), intervalIndex).commit();
+    }
+
     @Override
     public void onDestroyView() {
-        root.removeView(bar);
+        root.removeView(mToolbar);
         super.onDestroyView();
     }
 }

@@ -9,23 +9,13 @@
     <string name="secondSemester">Spring 2015</string>
     <string name="firstSemester">Winter 2014</string>
 
-    <string name="thirdSemester_id">72015</string>
-    <string name="secondSemester_id">12015</string>
-    <string name="firstSemester_id">02015</string>
-
     <string name="firstLocation">New Brunswick</string>
     <string name="secondLocation">Newark</string>
     <string name="thirdLocation">Camden</string>
 
-    <string name="firstLocation_id">NB</string>
-    <string name="secondLocation_id">NK</string>
-    <string name="thirdLocation_id">CM</string>
-
     <string name="firstLevel">Undergraduate</string>
     <string name="secondLevel">Graduate</string>
 
-    <string name="firstLevel_id">U</string>
-    <string name="secondLevel_id">G</string>
     <string name="add_section">Add Section</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_webreg">Webreg</string>

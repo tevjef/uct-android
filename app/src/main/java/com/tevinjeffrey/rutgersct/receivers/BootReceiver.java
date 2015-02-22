@@ -37,13 +37,13 @@ public class BootReceiver extends BroadcastReceiver {
     long getInterval(Context context) {
         int index = PreferenceManager.getDefaultSharedPreferences(context)
                 .getInt(context.getResources().getString(R.string.sync_interval), 1);
-        if(index == 0) {
+        if (index == 0) {
             return 5 * 60 * 1000;
-        } else if(index == 1) {
+        } else if (index == 1) {
             return 15 * 60 * 1000;
-        } else if(index == 2) {
+        } else if (index == 2) {
             return 60 * 60 * 1000;
-        } else if(index == 3) {
+        } else if (index == 3) {
             return 3 * 60 * 60 * 1000;
         } else {
             return 6 * 60 * 60 * 1000;

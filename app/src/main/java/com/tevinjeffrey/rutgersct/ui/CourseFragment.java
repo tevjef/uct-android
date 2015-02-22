@@ -40,7 +40,6 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
@@ -51,6 +50,7 @@ import timber.log.Timber;
 
 public class CourseFragment extends MainFragment {
 
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
     @SuppressWarnings("WeakerAccess")
@@ -86,7 +86,7 @@ public class CourseFragment extends MainFragment {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
 
         request = getArguments().getParcelable(MainActivity.REQUEST);
-        setToolbar(rootView);
+        setToolbar();
 
         getCourses(mCoursesListView);
         setRefreshListener();
@@ -117,7 +117,7 @@ public class CourseFragment extends MainFragment {
                         } else {
                             if (e instanceof UnknownHostException) {
                                 showSnackBar(getResources().getString(R.string.no_internet));
-                            } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
+                            } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
                                 cancelRequests();
                                 showSnackBar(getResources().getString(R.string.server_down));
                             } else if (e instanceof TimeoutException) {
@@ -192,11 +192,12 @@ public class CourseFragment extends MainFragment {
         }
     }
 
-    private void setToolbar(View rootView) {
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        getParentActivity().setSupportActionBar(toolbar);
+    private void setToolbar() {
+        mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
+        mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
+        getParentActivity().setSupportActionBar(mToolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getParentActivity().onBackPressed();
@@ -205,7 +206,7 @@ public class CourseFragment extends MainFragment {
         getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setToolbarTitle(toolbar);
+        setToolbarTitle(mToolbar);
     }
 
     private void setToolbarTitle(Toolbar toolbar) {
@@ -232,7 +233,7 @@ public class CourseFragment extends MainFragment {
             ft.addSharedElement(mToolbar, "toolbar_background");
         }
         courseInfoFragment.setArguments(b);
-                ft.replace(R.id.container, courseInfoFragment).addToBackStack(this.toString())
+        ft.replace(R.id.container, courseInfoFragment).addToBackStack(this.toString())
                 .commit();
     }
 

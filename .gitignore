@@ -3,15 +3,11 @@
 ### Android ###
 # Built application files
 *.apk
-*.ap_
-
 # Files for the Dalvik VM
 *.dex
 *.db
 
 # Java class files
-*.class
-
 # Generated files
 bin/
 gen/
@@ -25,11 +21,6 @@ build/
 *.iml
 *.bat
 .idea/
-*.iml
-*.iws
-
-#working files
-.json
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -59,5 +50,4 @@ $RECYCLE.BIN/
 
 
 # Windows image file caches
-Thumbs.db
 ehthumbs.db

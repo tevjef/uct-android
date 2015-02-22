@@ -9,9 +9,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.text.format.Time;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -24,7 +22,6 @@ import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -83,7 +80,7 @@ public class RequestService extends Service {
                             }
                         } else {
                             Timber.e(e, "Crash while attempting to complete request in %s to %s"
-                                    ,RequestService.this.toString(), r.toString());
+                                    , RequestService.this.toString(), r.toString());
                         }
                     }
                 });
@@ -99,7 +96,7 @@ public class RequestService extends Service {
                                 .bigText("Section " + sectionNumber + " of " + courseTitle
                                         + " has opened")
                                 .setBigContentTitle("A section has opened"))
-                        .setSmallIcon(R.drawable.ic_track_changes_notify)
+                        .setSmallIcon(R.drawable.ic_notification)
                         .setWhen(System.currentTimeMillis())
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_MAX)

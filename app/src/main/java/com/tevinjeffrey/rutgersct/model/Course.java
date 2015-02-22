@@ -91,11 +91,11 @@ public class Course implements Parcelable {
         return getSections().size();
     }
 
-    public String getExpandedTitle() {
+    String getExpandedTitle() {
         return expandedTitle;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
@@ -539,13 +539,13 @@ public class Course implements Parcelable {
             public Comments() {
             }
 
+            private Comments(Parcel in) {
+                this.description = in.readString();
+            }
+
             @Override
             public String toString() {
                 return getDescription();
-            }
-
-            private Comments(Parcel in) {
-                this.description = in.readString();
             }
 
             public String getDescription() {

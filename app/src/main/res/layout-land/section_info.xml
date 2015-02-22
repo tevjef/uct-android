@@ -75,8 +75,7 @@
                             android:orientation="vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tCredits"
-                            android:layout_weight="1">
+                            android:id="@+id/tCredits">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -147,7 +146,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tSection"
-                        android:layout_weight="1"
                         android:layout_above="@+id/relativeLayout"
                         android:layout_alignParentStart="true">
 
@@ -184,7 +182,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tIndex"
-                        android:layout_weight="1"
                         android:layout_alignTop="@+id/tSection"
                         android:layout_toEndOf="@+id/tSection"
                         android:layout_marginLeft="20dp">
@@ -226,7 +223,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tSeats"
-                        android:layout_weight="1"
                         android:layout_below="@+id/tIndex"
                         android:layout_alignStart="@+id/tIndex">
 
@@ -314,7 +310,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_white"
+            android:src="@drawable/ic_add_white_24dp"
             fab:fab_colorNormal="@color/accent"
             fab:fab_colorPressed="@color/accent_dark"
             fab:fab_colorRipple="@color/blue_grey_light"
@@ -330,8 +326,7 @@
 
         <ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-        android:layout_weight="8">
+    android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

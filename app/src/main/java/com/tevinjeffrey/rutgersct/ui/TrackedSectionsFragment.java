@@ -9,7 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +45,6 @@ import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -79,9 +77,7 @@ public class TrackedSectionsFragment extends MainFragment {
     @InjectView(R.id.addCoursesTrack)
     RelativeLayout addCoursesToTrack;
 
-    View rootView;
-
-    String TAG = this.toString();
+    private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,8 +105,8 @@ public class TrackedSectionsFragment extends MainFragment {
     }
 
     private void warnServerIssues() {
-        Calendar c= Calendar.getInstance();
-        if(c.get(Calendar.HOUR_OF_DAY) == 3 || c.get(Calendar.HOUR_OF_DAY) == 4) {
+        Calendar c = Calendar.getInstance();
+        if (c.get(Calendar.HOUR_OF_DAY) == 3 || c.get(Calendar.HOUR_OF_DAY) == 4) {
             showSnackBar(getResources().getString(R.string.expect_server_issues));
         }
     }
@@ -129,11 +125,11 @@ public class TrackedSectionsFragment extends MainFragment {
         ChooserFragment chooserFragment = new ChooserFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             chooserFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             chooserFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
             chooserFragment.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            chooserFragment.setReturnTransition(new Fade(Fade.OUT ).excludeTarget(ImageView.class, true));
+            chooserFragment.setReturnTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
             chooserFragment.setAllowReturnTransitionOverlap(true);
             chooserFragment.setAllowEnterTransitionOverlap(true);
             chooserFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
@@ -141,7 +137,7 @@ public class TrackedSectionsFragment extends MainFragment {
             ft.addSharedElement(mToolbar, mToolbar.getTransitionName());
             ft.addSharedElement(mFab, "snackbar");
         }
-                ft.replace(R.id.container, chooserFragment).addToBackStack(this.toString())
+        ft.replace(R.id.container, chooserFragment).addToBackStack(this.toString())
                 .commit();
     }
 
@@ -196,7 +192,7 @@ public class TrackedSectionsFragment extends MainFragment {
                     }
                 }
             });
-        } else if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+        } else if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
             dismissProgress();
             cancelRequests();
         }
@@ -237,7 +233,7 @@ public class TrackedSectionsFragment extends MainFragment {
                             } else {
                                 if (e instanceof UnknownHostException) {
                                     showSnackBar(getResources().getString(R.string.no_internet));
-                                } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)){
+                                } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
                                     cancelRequests();
                                     showSnackBar(getResources().getString(R.string.server_down));
                                 } else if (e instanceof TimeoutException) {
@@ -293,9 +289,9 @@ public class TrackedSectionsFragment extends MainFragment {
                 Snackbar.with(getParentActivity())
                         .type(SnackbarType.MULTI_LINE)
                         .text(message)
-                         .actionLabel("DISMISS")// text to display
+                        .actionLabel("DISMISS")// text to display
                         .actionColor(getResources().getColor(R.color.white))
-                         .color(getResources().getColor(R.color.accent))// action button label color
+                        .color(getResources().getColor(R.color.accent))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
                         .eventListener(new EventListener() {
                             @Override
@@ -305,16 +301,10 @@ public class TrackedSectionsFragment extends MainFragment {
 
                             @Override
                             public void onShowByReplace(Snackbar snackbar) {
-                                Log.i(TAG, String.format("Snackbar will show by replace. Width: %d Height: %d Offset: %d",
-                                        snackbar.getWidth(), snackbar.getHeight(),
-                                        snackbar.getOffset()));
                             }
 
                             @Override
                             public void onShown(Snackbar snackbar) {
-                                Log.i(TAG, String.format("Snackbar shown. Width: %d Height: %d Offset: %d",
-                                        snackbar.getWidth(), snackbar.getHeight(),
-                                        snackbar.getOffset()));
                             }
 
                             @Override
@@ -324,17 +314,10 @@ public class TrackedSectionsFragment extends MainFragment {
 
                             @Override
                             public void onDismissByReplace(Snackbar snackbar) {
-                                Log.i(TAG, String.format(
-                                        "Snackbar will dismiss by replace. Width: %d Height: %d Offset: %d",
-                                        snackbar.getWidth(), snackbar.getHeight(),
-                                        snackbar.getOffset()));
                             }
 
                             @Override
                             public void onDismissed(Snackbar snackbar) {
-                                Log.i(TAG, String.format("Snackbar dismissed. Width: %d Height: %d Offset: %d",
-                                        snackbar.getWidth(), snackbar.getHeight(),
-                                        snackbar.getOffset()));
                             }
                         }) // Snackbar's EventListener
                 , getParentActivity()); // activity where it is displayed
@@ -342,8 +325,10 @@ public class TrackedSectionsFragment extends MainFragment {
 
     private void setToolbar() {
         setToolbarTitle(mToolbar);
+        mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
+        mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
         getParentActivity().setSupportActionBar(mToolbar);
-
+        getParentActivity().getSupportActionBar().setIcon(R.drawable.ic_track_changes_white);
     }
 
     private void setToolbarTitle(Toolbar toolbar) {

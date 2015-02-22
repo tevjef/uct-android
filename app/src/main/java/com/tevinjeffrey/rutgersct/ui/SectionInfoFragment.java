@@ -8,26 +8,21 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.crashlytics.android.Crashlytics;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionInfoAdapter;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import timber.log.Timber;
 
 
 public class SectionInfoFragment extends MainFragment {
 
+    private ArrayList<Course> c;
     private Request request;
 
     public SectionInfoFragment() {
     }
-
-    ArrayList<Course> c;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

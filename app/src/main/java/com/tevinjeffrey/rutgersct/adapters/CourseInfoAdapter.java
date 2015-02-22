@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgersct.adapters;
 
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,10 +93,9 @@ public class CourseInfoAdapter {
         this.request = request;
     }
 
-    public CourseInfoAdapter init() {
+    public void init() {
         ButterKnife.inject(this, rootView);
         setData();
-        return this;
     }
 
     private void setData() {
@@ -134,6 +134,7 @@ public class CourseInfoAdapter {
             mCourseNotesContainer.setVisibility(View.GONE);
         } else {
             mCourseNotesText.setText(Html.fromHtml(course.getCourseNotes()));
+            mCourseNotesText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -142,6 +143,7 @@ public class CourseInfoAdapter {
             mSubjectNotesContainer.setVisibility(View.GONE);
         } else {
             mSubjectNotesText.setText(Html.fromHtml(course.getSubjectNotes()));
+            mSubjectNotesText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -158,6 +160,7 @@ public class CourseInfoAdapter {
             mPrereqContainer.setVisibility(View.GONE);
         } else {
             mPrereqText.setText(Html.fromHtml(course.getPreReqNotes()));
+            mPrereqText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 

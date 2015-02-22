@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             TrackedSectionsFragment tsf = new TrackedSectionsFragment();
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 tsf.setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
                 tsf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
                 tsf.setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
@@ -74,13 +74,13 @@ public class MainActivity extends ActionBarActivity {
     long getInterval() {
         int index = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .getInt(getApplicationContext().getResources().getString(R.string.sync_interval), 1);
-        if(index == 0) {
+        if (index == 0) {
             return 5 * 60 * 1000;
-        } else if(index == 1) {
+        } else if (index == 1) {
             return 15 * 60 * 1000;
-        } else if(index == 2) {
+        } else if (index == 2) {
             return 60 * 60 * 1000;
-        } else if(index == 3) {
+        } else if (index == 3) {
             return 3 * 60 * 60 * 1000;
         } else {
             return 6 * 60 * 60 * 1000;
@@ -129,11 +129,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
         return super.onOptionsItemSelected(item);
     }
 

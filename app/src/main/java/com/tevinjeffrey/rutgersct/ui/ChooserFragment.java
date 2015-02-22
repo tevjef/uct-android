@@ -50,7 +50,8 @@ public class ChooserFragment extends MainFragment {
     @InjectView(R.id.search_button)
     TextView mSearchButton;
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
+
     public ChooserFragment() {
     }
 
@@ -120,14 +121,14 @@ public class ChooserFragment extends MainFragment {
             sf.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
             sf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
             sf.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            sf.setReturnTransition(new Fade(Fade.OUT ).excludeTarget(ImageView.class, true));
+            sf.setReturnTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
             sf.setAllowReturnTransitionOverlap(true);
             sf.setAllowEnterTransitionOverlap(true);
             sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             ft.addSharedElement(toolbar, "toolbar_background");
         }
-                ft.replace(R.id.container, sf).addToBackStack(this.toString())
+        ft.replace(R.id.container, sf).addToBackStack(this.toString())
                 .commit();
     }
 

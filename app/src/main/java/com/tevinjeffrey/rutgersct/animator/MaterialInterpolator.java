@@ -2,7 +2,7 @@ package com.tevinjeffrey.rutgersct.animator;
 
 import android.view.animation.Interpolator;
 
-public class MaterialInterpolator implements Interpolator {
+class MaterialInterpolator implements Interpolator {
 
     @Override
     public float getInterpolation(float x) {

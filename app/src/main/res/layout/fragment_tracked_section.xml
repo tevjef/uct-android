@@ -45,7 +45,7 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_white"
+        android:src="@drawable/ic_add_white_24dp"
         fab:fab_colorNormal="@color/accent"
         fab:fab_colorPressed="@color/accent_dark"
         fab:fab_colorRipple="@color/accent"

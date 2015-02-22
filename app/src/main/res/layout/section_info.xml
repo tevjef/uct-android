@@ -37,19 +37,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="54dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
                     android:id="@+id/courseTitle_text"
-                    android:textSize="14sp"
-                    android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/white"
-                    android:singleLine="false"
+                    android:singleLine="true"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true"
                     android:gravity="center_vertical"
-                    android:ellipsize="none"
                     android:transitionName="course_title"
-                    tools:ignore="HardcodedText" />
+                    tools:ignore="HardcodedText"
+                    android:textAppearance="@style/toolbar_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -524,7 +523,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_white"
+            android:src="@drawable/ic_add_white_24dp"
             fab:fab_colorNormal="@color/accent"
             fab:fab_colorPressed="@color/accent_dark"
             fab:fab_colorRipple="@color/blue_grey_light"

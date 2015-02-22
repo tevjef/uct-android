@@ -19,7 +19,8 @@ import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment {
 
-    SharedPreferences mPref;
+    private SharedPreferences mPref;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public String toString() {
-        return  this.getClass().getSimpleName();
+        return this.getClass().getSimpleName();
     }
 
     @Override
@@ -56,12 +57,13 @@ public class MainFragment extends Fragment {
         }
 
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
     }
 
-    protected void cancelRequests() {
+    void cancelRequests() {
         Ion.getDefault(getParentActivity()).cancelAll(getParentActivity());
     }
 
