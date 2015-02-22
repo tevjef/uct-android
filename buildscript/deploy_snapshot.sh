@@ -21,6 +21,6 @@ elif [ "$TRAVIS_BRANCH" != "$BRANCH" ]; then
   echo "Skipping build: wrong branch. Expected '$BRANCH' but was '$TRAVIS_BRANCH'."
 else
   echo "building..."
-  ./gradlew build
+  chmod +x ./gradlew build
   echo "built!"
 fi
