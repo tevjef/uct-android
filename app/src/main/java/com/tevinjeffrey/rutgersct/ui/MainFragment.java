@@ -29,9 +29,10 @@ public class MainFragment extends Fragment {
         Crashlytics.setInt(MyApplication.REFRESH_INTERVAL, getInterval());
     }
 
-    int getInterval() {
+    private int getInterval() {
         return mPref.getInt(getResources().getString(R.string.sync_interval), 1);
     }
+
     public MainActivity getParentActivity() {
         return (MainActivity) getActivity();
     }

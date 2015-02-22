@@ -32,7 +32,7 @@ public class MyApplication extends SugarApp {
         Crashlytics.setUserIdentifier(getsID(getApplicationContext()));
 
         if (BuildConfig.DEBUG) {
-            Ion.getDefault(getApplicationContext()).configure().setLogging("Ion", Log.VERBOSE);
+            //Ion.getDefault(getApplicationContext()).configure().setLogging("Ion", Log.VERBOSE);
             Timber.plant(new Timber.DebugTree());
         } else {
             Timber.plant(new CrashReportingTree());

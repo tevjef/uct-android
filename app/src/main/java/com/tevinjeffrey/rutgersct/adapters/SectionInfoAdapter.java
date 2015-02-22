@@ -36,6 +36,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
@@ -156,18 +157,19 @@ public class SectionInfoAdapter {
 
     public void init() {
         ButterKnife.inject(this, rowView);
-
         for (Course c : courses) {
-            for (Course.Sections s : c.getSections())
-                if (s.getIndex().equals(request.getIndex())) {
-                    sectionData = s;
-                    courseData = c;
-                }
+            for (Course.Sections s : c.getSections()) {
+                sectionData = s;
+                courseData = c;
+            }
         }
         setData();
     }
 
     private void setData() {
+
+        Timber.i("Request in adapter %s", request.toString());
+
         setToolBarColor(sectionData);
         setSectionNumber(sectionData);
         setSectionIndex(sectionData);
