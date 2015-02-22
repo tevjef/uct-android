@@ -19,8 +19,8 @@ Upcoming Features
 Screenshots
 -----------
 
-![Homescreen](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/screenshots/resize/device-2015-02-22-005526.png)
-![Course](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/screenshots/resize/device-2015-02-09-200316.png)
-![Section](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/screenshots/resize/device-2015-02-22-005836.png)
+![Homescreen](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/assets/resize/device-2015-02-22-005526.png)
+![Course](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/assets/resize/device-2015-02-09-200316.png)
+![Section](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/assets/resize/device-2015-02-22-005836.png)
 
 [1]: https://play.google.com/store/apps/details?id=com.tevinjeffrey.rutgersct
