@@ -13,8 +13,6 @@ bin/
 gen/
 
 # Gradle files
-.gradle/
-gradle/
 build/
 
 #intelliJ files 
