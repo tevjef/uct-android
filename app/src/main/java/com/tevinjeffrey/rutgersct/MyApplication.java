@@ -27,17 +27,15 @@ public class MyApplication extends SugarApp {
     public void onCreate() {
         super.onCreate();
 
-
         Fabric.with(this, new Crashlytics());
+        Mint.enableDebug();
+        Mint.initAndStartSession(this, "2974ff7f");
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         } else {
             String s = getsID(getApplicationContext());
-            //Initialize crash reporting
-            Mint.enableDebug();
 
-            //Mint.initAndStartSession(this, "2974ff7f");
             //Set unique user id
             Mint.setUserIdentifier(s);
             Crashlytics.setUserIdentifier(s);
@@ -50,8 +48,8 @@ public class MyApplication extends SugarApp {
     private static class CrashReportingTree extends Timber.HollowTree {
         @Override
         public void i(String message, Object... args) {
-            //Mint.leaveBreadcrumb(message);
-            //Crashlytics.log(message);
+            Mint.leaveBreadcrumb(message);
+            Crashlytics.log(message);
         }
 
         @Override
@@ -67,8 +65,8 @@ public class MyApplication extends SugarApp {
         @Override
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
-            //Mint.logExceptionMessage("INFO: ", message, new Exception(t));
-            //Crashlytics.logException(t);
+            Mint.logExceptionMessage("INFO: ", message, new Exception(t));
+            Crashlytics.logException(t);
 
         }
     }
