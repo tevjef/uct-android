@@ -61,13 +61,13 @@ android {
     }
 }
 
-if (isCi()) {
+/*if (isCi()) {
     println 'Running on CI. Adding task to start emulator.'
 
     task startEmulator << {
         "$rootDir/gradle/start-emulator.sh".execute().waitFor()
     }
-}
+}*/
 
 
 dependencies {
