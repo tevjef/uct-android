@@ -231,7 +231,10 @@ public class CourseFragment extends MainFragment {
             courseInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             courseInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             ft.addSharedElement(mToolbar, "toolbar_background");
+        } else {
+            ft.setCustomAnimations(R.anim.enter, R.anim.exit, 0, R.anim.pop_exit);
         }
+
         courseInfoFragment.setArguments(b);
         ft.replace(R.id.container, courseInfoFragment).addToBackStack(this.toString())
                 .commit();

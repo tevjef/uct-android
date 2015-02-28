@@ -24,7 +24,7 @@
             android:textSize="11sp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
             android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/sectionTimeContainer"
             android:layout_marginTop="5dp"
             tools:ignore="HardcodedText,SmallSp" />
@@ -63,7 +63,7 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
             android:minWidth="100dp"
             android:orientation="vertical"
-            android:layout_toEndOf="@+id/sectionNumberBackground"
+            android:layout_toRightOf="@+id/sectionNumberBackground"
             android:transitionName="instructor_name"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="8dp"

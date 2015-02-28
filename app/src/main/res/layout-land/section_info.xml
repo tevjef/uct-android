@@ -28,7 +28,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="1dp"
             android:transitionName="toolbar_background"
-            android:layout_alignParentStart="false"
+            android:layout_alignParentRight="true"
             android:layout_above="@+id/linearLayout4"
             android:layout_alignParentTop="true">
 
@@ -50,6 +50,7 @@
                     android:singleLine="false"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:gravity="center_vertical"
                     android:ellipsize="none"
                     android:transitionName="course_title"
@@ -66,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/instructors_container"
                         android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                         android:weightSum="4"
                         android:baselineAligned="false"
                         android:transitionGroup="true"
@@ -109,7 +111,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/instructors_container"
-                        android:layout_alignParentStart="false"
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="5dp">
 
@@ -147,7 +148,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/tSection"
                         android:layout_above="@+id/relativeLayout"
-                        android:layout_alignParentStart="true">
+                        android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -183,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/tIndex"
                         android:layout_alignTop="@+id/tSection"
-                        android:layout_toEndOf="@+id/tSection"
+                        android:layout_toRightOf="@+id/tSection"
                         android:layout_marginLeft="20dp">
 
                         <TextView
@@ -224,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/tSeats"
                         android:layout_below="@+id/tIndex"
-                        android:layout_alignStart="@+id/tIndex">
+                        android:layout_alignLeft="@+id/tIndex">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -261,7 +263,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="false"
             android:background="@color/accent"
             android:transitionGroup="true"
             android:orientation="vertical"
@@ -313,10 +314,10 @@
             android:src="@drawable/ic_add_white_24dp"
             fab:fab_colorNormal="@color/accent"
             fab:fab_colorPressed="@color/accent_dark"
-            fab:fab_colorRipple="@color/blue_grey_light"
+            fab:fab_colorRipple="@color/accent_light"
             android:background="@color/black"
             android:layout_alignParentTop="false"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
             android:gravity="center_vertical|center_horizontal"
             android:transitionName="fab"
@@ -343,6 +344,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                 android:id="@+id/course_metadata"
                 android:layout_marginTop="12dp">
 
@@ -350,7 +352,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/courseNotesContainer"
-                    android:layout_alignParentStart="true">
+                    android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true">
 
                     <TextView
                         android:layout_width="88dp"
@@ -359,6 +362,7 @@
                         android:id="@+id/sectionNotes_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
@@ -372,7 +376,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionNotes_title"
+                        android:layout_toRightOf="@+id/sectionNotes_title"
                         android:focusableInTouchMode="false"
                         android:maxLines="5"
                         android:scrollbars="vertical"
@@ -386,6 +390,7 @@
                     android:id="@+id/subjectNotesContainer"
                     android:layout_below="@+id/courseNotesContainer"
                     android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                     android:layout_marginTop="10dp">
 
                     <TextView
@@ -395,6 +400,7 @@
                         android:id="@+id/sectionComments_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
@@ -408,7 +414,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionComments_title"
+                        android:layout_toRightOf="@+id/sectionComments_title"
                         android:maxLines="5"
                         android:scrollbars="vertical"
                         tools:ignore="HardcodedText" />
@@ -428,6 +434,7 @@
                         android:id="@+id/sectionCrossList_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
@@ -441,7 +448,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionCrossList_title"
+                        android:layout_toRightOf="@+id/sectionCrossList_title"
                         android:maxLines="5"
                         android:scrollbars="vertical"
                         tools:ignore="HardcodedText" />
@@ -461,6 +468,7 @@
                         android:id="@+id/sectionSubtitle_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
@@ -474,7 +482,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionSubtitle_title"
+                        android:layout_toRightOf="@+id/sectionSubtitle_title"
                         android:maxLines="5"
                         android:scrollbars="vertical"
                         tools:ignore="HardcodedText" />
@@ -494,6 +502,7 @@
                         android:id="@+id/sectionPermission_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
@@ -507,7 +516,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionPermission_title"
+                        android:layout_toRightOf="@+id/sectionPermission_title"
                         android:maxLines="5"
                         android:scrollbars="vertical"
                         tools:ignore="HardcodedText" />
@@ -527,6 +536,7 @@
                         android:id="@+id/sectionOpenTo_title"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
@@ -540,7 +550,7 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="12sp"
                         android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/sectionOpenTo_title"
+                        android:layout_toRightOf="@+id/sectionOpenTo_title"
                         android:maxLines="5"
                         android:scrollbars="vertical"
                         tools:ignore="HardcodedText" />
@@ -553,7 +563,7 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/sections_container"
                 android:layout_below="@+id/course_metadata"
-                android:layout_alignStart="@+id/course_metadata"
+                android:layout_alignLeft="@+id/course_metadata"
                 android:layout_marginTop="5dp">
 
 
@@ -577,6 +587,7 @@
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                             android:gravity="center_vertical|center_horizontal"
                             android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
@@ -594,6 +605,7 @@
                             android:orientation="vertical"
                             android:layout_alignParentBottom="false"
                             android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                             android:layout_below="@+id/sectionNumber"
                             tools:ignore="HardcodedText">
 

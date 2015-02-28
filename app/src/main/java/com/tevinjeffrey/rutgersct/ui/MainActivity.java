@@ -96,14 +96,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void setCyanWindow() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.setStatusBarColor(getResources().getColor(R.color.cyan_dark));
-            window.setNavigationBarColor(getResources().getColor(R.color.cyan_dark));
-        }
-    }
-
     public void setGreenWindow() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -125,11 +117,6 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

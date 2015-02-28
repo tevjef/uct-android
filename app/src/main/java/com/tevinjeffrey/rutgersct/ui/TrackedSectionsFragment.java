@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -106,7 +107,7 @@ public class TrackedSectionsFragment extends MainFragment {
 
     private void warnServerIssues() {
         Calendar c = Calendar.getInstance();
-        if (c.get(Calendar.HOUR_OF_DAY) == 3 || c.get(Calendar.HOUR_OF_DAY) == 4) {
+        if (c.get(Calendar.HOUR_OF_DAY) == 3) {
             showSnackBar(getResources().getString(R.string.expect_server_issues));
         }
     }
@@ -136,6 +137,8 @@ public class TrackedSectionsFragment extends MainFragment {
             chooserFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             ft.addSharedElement(mToolbar, mToolbar.getTransitionName());
             ft.addSharedElement(mFab, "snackbar");
+        } else {
+            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         }
         ft.replace(R.id.container, chooserFragment).addToBackStack(this.toString())
                 .commit();
@@ -192,7 +195,7 @@ public class TrackedSectionsFragment extends MainFragment {
                     }
                 }
             });
-        } else if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+        } else if (mSwipeRefreshLayout != null) {
             dismissProgress();
             cancelRequests();
         }
@@ -203,6 +206,7 @@ public class TrackedSectionsFragment extends MainFragment {
         final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
 
         Mint.addExtraData(MyApplication.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
+        Crashlytics.setString(MyApplication.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
 
         for (final Iterator<TrackedSections> trackedSectionsIterator = allTrackedSections.iterator(); trackedSectionsIterator.hasNext(); ) {
             TrackedSections ts = trackedSectionsIterator.next();
@@ -362,11 +366,5 @@ public class TrackedSectionsFragment extends MainFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        SnackbarManager.dismiss();
-        super.onDestroyView();
     }
 }

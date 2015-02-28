@@ -13,8 +13,13 @@ import com.tevinjeffrey.rutgersct.adapters.CourseInfoAdapter;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class CourseInfoFragment extends MainFragment {
 
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     private Request request;
 
     public CourseInfoFragment() {
@@ -36,21 +41,22 @@ public class CourseInfoFragment extends MainFragment {
         setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.course_info, container, false);
+        ButterKnife.inject(this, rootView);
+        setUp(rootView);
 
-        setToolbar(rootView);
-
-        Bundle bundle = getArguments();
-
-        Course selectedCourse = bundle.getParcelable(MainActivity.SELECTED_COURSE);
-        request = bundle.getParcelable(MainActivity.REQUEST);
-
-        inflateViews(selectedCourse, rootView);
 
         return rootView;
     }
 
-    private void setToolbar(View rootView) {
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+    private void setUp(View rootView) {
+        setToolbar();
+        Bundle bundle = getArguments();
+        Course selectedCourse = bundle.getParcelable(MainActivity.SELECTED_COURSE);
+        request = bundle.getParcelable(MainActivity.REQUEST);
+        inflateViews(selectedCourse, rootView);
+    }
+
+    private void setToolbar() {
         getParentActivity().setSupportActionBar(toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -79,5 +85,11 @@ public class CourseInfoFragment extends MainFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_fragment_info, menu);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 }

@@ -149,12 +149,12 @@ public class SectionListAdapter {
         sectionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createFragment(createArgs((Parcelable) v.getTag()), v);
+                createFragment(createArgs((Parcelable) v.getTag()));
             }
         });
     }
 
-    private void createFragment(Bundle b, View v) {
+    private void createFragment(Bundle b) {
         SectionInfoFragment sectionInfoFragment = new SectionInfoFragment();
         @SuppressLint("CommitTransaction") FragmentTransaction ft =
                 mContext.getFragmentManager().beginTransaction();
@@ -179,6 +179,8 @@ public class SectionListAdapter {
 //            ft.addSharedElement(mInstructors, "instructor_name");
             //ft.addSharedElement(credits, "credit_number");
 
+        } else {
+            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter,  R.anim.pop_exit);
         }
         sectionInfoFragment.setArguments(b);
         ft.replace(R.id.container, sectionInfoFragment).addToBackStack(mCallingFragment.toString())

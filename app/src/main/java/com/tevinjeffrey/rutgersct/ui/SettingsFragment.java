@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
 
 import java.net.UnknownHostException;
@@ -70,16 +71,26 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void setupAboutPref() {
-        Preference about = findPreference("about");
+        final Preference about = findPreference("about");
+        about.setSummary("v" + BuildConfig.VERSION_NAME);
         about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
+                TextView tv = new TextView(getParentActivity());
+                tv.setMovementMethod(new LinkMovementMethod());
+                tv.setLinkTextColor(getResources().getColor(R.color.accent));
+                tv.setTextSize(18);
+                tv.setTextColor(getResources().getColor(R.color.primary_text));
+                tv.setText(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br><br>" +
+                        "<a href=\"http://tevinjeffrey.com/\">Website</a> "));
+
                 new MaterialDialog.Builder(getParentActivity())
-                        .title(getResources().getString(R.string.application_name) + " v0.5.4")
-                        .content(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br> " +
-                                "<a href=\"http://tevinjeffrey.com/\">Website</a> "))
-                        .positiveText("Ok")
+                        .title(getResources().getString(R.string.application_name))
+                        .iconRes(R.mipmap.ic_launcher)
+                        .positiveColorRes(R.color.accent)
+                        .customView(tv, true)
+                        .positiveText("OK")
                         .show();
                 return true;
             }
@@ -105,7 +116,8 @@ public class SettingsFragment extends PreferenceFragment {
                                 getParentActivity().setAlarm();
                             }
                         })
-                        .positiveText("Done")
+                        .positiveColorRes(R.color.accent)
+                        .positiveText("DONE")
                         .show();
 
                 return true;
@@ -153,7 +165,7 @@ public class SettingsFragment extends PreferenceFragment {
                                 tv.setTextColor(getResources().getColor(R.color.primary_text));
                                 tv.setText(Html.fromHtml(content));
                                 tv.setMovementMethod(LinkMovementMethod.getInstance());
-
+                                tv.setLinkTextColor(getResources().getColor(R.color.accent));
                                 if (progressDialog.isShowing()) {
                                     progressDialog.dismiss();
                                     new MaterialDialog.Builder(getParentActivity())

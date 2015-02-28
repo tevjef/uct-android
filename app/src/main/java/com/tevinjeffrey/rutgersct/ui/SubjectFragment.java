@@ -1,5 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -44,6 +46,7 @@ import timber.log.Timber;
  */
 public class SubjectFragment extends MainFragment {
 
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
     @SuppressWarnings("WeakerAccess")
@@ -225,8 +228,12 @@ public class SubjectFragment extends MainFragment {
     private void createFragment(Bundle b) {
         CourseFragment courseFragment = new CourseFragment();
         courseFragment.setArguments(b);
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, courseFragment).addToBackStack(this.toString())
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ft.addSharedElement(mToolbar, mToolbar.getTransitionName());
+        }
+        ft.replace(R.id.container, courseFragment).addToBackStack(this.toString())
                 .commit();
     }
 

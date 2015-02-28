@@ -665,7 +665,7 @@ public class Course implements Parcelable {
 
             @Override
             public String toString() {
-                return getCode() + "MajorCode: " + isMajorCode() + "UnitCode" + isUnitCode();
+                return getCode();
             }
 
             @Override

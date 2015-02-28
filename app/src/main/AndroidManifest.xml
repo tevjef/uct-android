@@ -25,7 +25,7 @@
             android:value="false" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.tevinjeffrey.rutgerssoc.model" />
+            android:value="com.tevinjeffrey.rutgersct.model" />
         <activity
             android:name="com.tevinjeffrey.rutgersct.ui.MainActivity"
             android:label="@string/application_name" >
@@ -52,5 +52,8 @@
             android:enabled="true"
             android:exported="false" >
         </service>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="833534bcb0efa4959e3a72cd803a7e3251d6bc65" />
     </application>
 </manifest>

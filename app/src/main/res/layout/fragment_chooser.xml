@@ -15,7 +15,8 @@
         android:alpha="0.1"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/content_description_webreg_image" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -44,7 +45,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/white"
                 android:layout_above="@+id/subtitle"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 tools:ignore="HardcodedText" />
             <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +57,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/black"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_marginBottom="16dp"
                 android:alpha="0.5"
                 tools:ignore="HardcodedText" />
@@ -80,7 +81,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout2"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentLeft="true">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -128,7 +129,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout3"
             android:layout_below="@+id/linearLayout2"
-            android:layout_alignStart="@+id/linearLayout2">
+            android:layout_alignLeft="@+id/linearLayout2">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -163,8 +164,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/linearLayout3"
-            android:layout_marginStart="21dp">
+            android:layout_toRightOf="@+id/linearLayout3"
+            android:layout_marginLeft="21dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -207,7 +208,7 @@
         android:layout_width="fill_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:background="@color/accent">
 
         <Button
@@ -216,7 +217,7 @@
             android:text="NEXT"
             android:id="@+id/search_button"
             android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:textStyle="italic"
             android:background="@drawable/btn_toggle_selector"
             android:elevation="0dp"

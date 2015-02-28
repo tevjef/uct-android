@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.animation.ArgbEvaluator;
@@ -187,7 +186,6 @@ public class SectionInfoAdapter {
         setSearch(rmpSearch, googleSearch);
 
         new SectionInfoAnimator(rowView).init();
-
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +196,9 @@ public class SectionInfoAdapter {
                 if (isSectionTracked()) {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(0);
                     removeSectionFromDb();
-                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF455A64, /*Blue*/0xFF607D8B);
+                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
+                            context.getResources().getColor(R.color.accent_dark),
+                            context.getResources().getColor(R.color.accent));
                     colorAnim.setDuration(250);
                     colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
@@ -212,7 +212,9 @@ public class SectionInfoAdapter {
                 } else {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(225);
                     addSectionToDb(request);
-                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor", /*Red*/0xFF607D8B, /*Blue*/0xFF455A64);
+                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
+                            context.getResources().getColor(R.color.accent),
+                            context.getResources().getColor(R.color.accent_dark));
                     colorAnim.setDuration(250);
                     colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override

@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgersct.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -101,8 +102,9 @@ public class RequestService extends Service {
                         .setWhen(System.currentTimeMillis())
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setColor(getResources().getColor(R.color.green))
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setContentTitle("A section has opened")
+                        .setContentTitle("A section has opened!")
                         .setContentText("Section " + sectionNumber + " of " + courseTitle
                                 + " has opened");
 
@@ -115,7 +117,7 @@ public class RequestService extends Service {
         //Intent open tracked sections.
         Intent openTracked = new Intent(RequestService.this, MainActivity.class);
 
-        PendingIntent pOpenTracked = PendingIntent.getActivity(RequestService.this, 0, openTracked, 0);
+        PendingIntent pOpenTracked = PendingIntent.getActivity(RequestService.this, 0, openTracked, FLAG_ONE_SHOT);
         mBuilder.addAction(0, "Stop tracking", pOpenTracked);
 
 

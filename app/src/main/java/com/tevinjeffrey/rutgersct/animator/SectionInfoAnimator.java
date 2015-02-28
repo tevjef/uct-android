@@ -110,9 +110,6 @@ public class SectionInfoAnimator {
     public void init() {
 
         ButterKnife.inject(this, rootView);
-
-        long base = 50;
-
         animate(mCreditsTitle).translationY(mCourseTitleText.getY()).setDuration(600).setStartDelay(1000).start();
 
         AnimatorSet setCTT = new AnimatorSet();

@@ -21,7 +21,7 @@
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/small_text"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
         android:textIsSelectable="false"
         android:layout_toLeftOf="@+id/meetingType"
         tools:ignore="HardcodedText" />
@@ -34,7 +34,7 @@
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/small_text"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/day_text"
+        android:layout_toRightOf="@+id/day_text"
         tools:ignore="HardcodedText" />
 
     <TextView
@@ -46,7 +46,7 @@
         android:textSize="@dimen/small_text"
         android:textIsSelectable="false"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginLeft="6dp"
         android:gravity="right"
         android:singleLine="true"

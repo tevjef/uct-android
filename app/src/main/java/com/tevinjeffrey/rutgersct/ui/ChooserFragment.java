@@ -127,6 +127,8 @@ public class ChooserFragment extends MainFragment {
             sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             ft.addSharedElement(toolbar, "toolbar_background");
+        } else {
+            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         }
         ft.replace(R.id.container, sf).addToBackStack(this.toString())
                 .commit();
@@ -135,14 +137,13 @@ public class ChooserFragment extends MainFragment {
     private Bundle createArgs(Parcelable p) {
         Bundle args = new Bundle();
         args.putParcelable(MainActivity.REQUEST, p);
-
         return args;
     }
 
     private String getSemester() {
         int checkedButton = mSemesterRadiogroup.getCheckedRadioButtonId();
         RadioButton selectedButton = (RadioButton) getParentActivity().findViewById(checkedButton);
-        return (String) selectedButton.getText();
+        return selectedButton.getText().toString();
     }
 
     private ArrayList<String> getLocations() {

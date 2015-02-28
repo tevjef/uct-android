@@ -21,7 +21,7 @@
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/small_text"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:textIsSelectable="false"
         tools:ignore="HardcodedText" />
 
@@ -33,7 +33,7 @@
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/small_text"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/day_text"
+        android:layout_toRightOf="@+id/day_text"
         tools:ignore="HardcodedText" />
 
 </RelativeLayout>

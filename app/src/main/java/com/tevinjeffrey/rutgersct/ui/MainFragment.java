@@ -3,14 +3,18 @@ package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.koushikdutta.ion.Ion;
+import com.nispok.snackbar.SnackbarManager;
 import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
@@ -28,9 +32,11 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
         Timber.i(String.format("%s started with savedIntanceState %s and arguments %s",
                 this.toString(), savedInstanceState == null ? "null" : savedInstanceState.toString()
-                , this.getArguments() == null? "null": this.getArguments().toString()));
+                , this.getArguments() == null ? "null" : this.getArguments().toString()));
         mPref = PreferenceManager.getDefaultSharedPreferences(getParentActivity());
         Mint.addExtraData(MyApplication.REFRESH_INTERVAL, String.valueOf(getInterval()));
+        Crashlytics.setString(MyApplication.REFRESH_INTERVAL, String.valueOf(getInterval()));
+
     }
 
     private int getInterval() {
@@ -53,7 +59,12 @@ public class MainFragment extends Fragment {
                 getFragmentManager().popBackStack("TrackedSectionsFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 return true;
             case R.id.action_settings:
-                getFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).addToBackStack("SettingsFragment").commit();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                } else {
+                    ft.setCustomAnimations(R.anim.enter, R.anim.exit, 0, R.anim.pop_exit);
+                }
+                ft.replace(R.id.container, new SettingsFragment()).addToBackStack("SettingsFragment").commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -73,14 +84,15 @@ public class MainFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Timber.i(String.format("%s paused with outState %s and arguments %s",
-                this.toString(), outState == null? "null": outState.toString()
-                ,this.getArguments() == null? "null": this.getArguments().toString()));
+                this.toString(), outState == null ? "null" : outState.toString()
+                , this.getArguments() == null ? "null" : this.getArguments().toString()));
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroyView() {
         cancelRequests();
+        SnackbarManager.dismiss();
         ButterKnife.reset(this);
         super.onDestroyView();
     }

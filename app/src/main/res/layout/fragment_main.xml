@@ -12,6 +12,7 @@
         android:id="@+id/toolbar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:elevation="1dp"
         android:transitionName="toolbar_background">
 
     </android.support.v7.widget.Toolbar>
@@ -27,7 +28,9 @@
         android:layout_height="fill_parent"
         android:id="@+id/courses"
         android:layout_below="@+id/toolbar"
-        android:layout_alignParentStart="true" />
+        android:listSelector="?android:attr/selectableItemBackground"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>
