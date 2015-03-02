@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class is a bit complicated. It's a POJO for the GSON library to quickly serialize json data
+// into java objects. It is also a parcelable object which means it allows the android system to serialize this object.
+// Which in turn allows me to pss this object between Activities and Fragments.
 public class Course implements Parcelable {
 
     public static final Creator<Course> CREATOR = new Creator<Course>() {

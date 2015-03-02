@@ -11,15 +11,6 @@ import java.util.ArrayList;
 
 public class Request implements Parcelable {
 
-    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
-        public Request createFromParcel(Parcel source) {
-            return new Request(source);
-        }
-
-        public Request[] newArray(int size) {
-            return new Request[size];
-        }
-    };
     private String subject;
     private String semester;
     private ArrayList<String> locations;
@@ -39,20 +30,6 @@ public class Request implements Parcelable {
     public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels, String index) {
         this(subject, semester, locations, levels);
         this.index = index;
-    }
-
-    private Request(Parcel in) {
-        this.subject = in.readString();
-        this.semester = in.readString();
-        //noinspection unchecked
-        this.locations = (ArrayList<String>) in.readSerializable();
-        //noinspection unchecked
-        this.levels = (ArrayList<String>) in.readSerializable();
-        this.index = in.readString();
-    }
-
-    public static String toStringList(ArrayList<String> strings) {
-        return StringUtils.join(strings, ", ");
     }
 
     public String getIndex() {
@@ -104,6 +81,10 @@ public class Request implements Parcelable {
         return UrlUtils.buildParamUrl(this) + " index: " + getIndex();
     }
 
+    public static String toStringList(ArrayList<String> strings) {
+        return StringUtils.join(strings, ", ");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof Request) {
@@ -114,6 +95,29 @@ public class Request implements Parcelable {
         }
         return false;
     }
+
+    //All code below allows the android system to serialize this object.
+    // It's actually quite faster than serialization.
+    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
+        public Request createFromParcel(Parcel source) {
+            return new Request(source);
+        }
+
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
+
+    private Request(Parcel in) {
+        this.subject = in.readString();
+        this.semester = in.readString();
+        //noinspection unchecked
+        this.locations = (ArrayList<String>) in.readSerializable();
+        //noinspection unchecked
+        this.levels = (ArrayList<String>) in.readSerializable();
+        this.index = in.readString();
+    }
+
 
     @Override
     public int describeContents() {

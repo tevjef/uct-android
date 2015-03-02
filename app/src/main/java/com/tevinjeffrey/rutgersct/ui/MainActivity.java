@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.ColorRes;
 import android.support.v7.app.ActionBarActivity;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
+import com.tevinjeffrey.rutgersct.services.Alarm;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -32,14 +35,13 @@ public class MainActivity extends ActionBarActivity {
     public final static String TRACKED_SECTION = "TRACKED_SECTION";
     public final static String COURSE_INFO_SECTION = "COURSE_INFO_SECTION";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             TrackedSectionsFragment tsf = new TrackedSectionsFragment();
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 tsf.setEnterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
                 tsf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
@@ -54,61 +56,29 @@ public class MainActivity extends ActionBarActivity {
                     .replace(R.id.container, tsf)
                     .commit();
         }
-        setPrimaryWindow();
+        setPrimaryWindow(this);
 
-        setAlarm();
+        new Alarm(getApplicationContext()).setAlarm();
     }
 
-    void setAlarm() {
-        AlarmManager alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent wakefulBroadcastReceiverIntent = new Intent(this,
-                AlarmWakefulReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 1234, wakefulBroadcastReceiverIntent,
-                0);
 
-        alarmMgr.cancel(alarmIntent);
-        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000,
-                getInterval(), alarmIntent);
+    public static void setGreenWindow(Activity context) {
+        setWindowColor(context.getResources().getColor(R.color.green_dark), context);
     }
 
-    long getInterval() {
-        int index = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .getInt(getApplicationContext().getResources().getString(R.string.sync_interval), 1);
-        if (index == 0) {
-            return 5 * 60 * 1000;
-        } else if (index == 1) {
-            return 15 * 60 * 1000;
-        } else if (index == 2) {
-            return 60 * 60 * 1000;
-        } else if (index == 3) {
-            return 3 * 60 * 60 * 1000;
-        } else {
-            return 6 * 60 * 60 * 1000;
-        }
+    public static void setAccentWindow(Activity context) {
+        setWindowColor(context.getResources().getColor(R.color.accent_dark), context);
     }
 
-    public void setAccentWindow() {
+    public static void setPrimaryWindow(Activity context) {
+        setWindowColor(context.getResources().getColor(R.color.primary_dark), context);
+    }
+
+    private static void setWindowColor(@ColorRes int color, Activity context) {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.setStatusBarColor(getResources().getColor(R.color.accent_dark));
-            window.setNavigationBarColor(getResources().getColor(R.color.accent_dark));
-
-        }
-    }
-
-    public void setGreenWindow() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.setStatusBarColor(getResources().getColor(R.color.green_dark));
-            window.setNavigationBarColor(getResources().getColor(R.color.green_dark));
-        }
-    }
-
-    public void setPrimaryWindow() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.setStatusBarColor(getResources().getColor(R.color.primary_dark));
-            window.setNavigationBarColor(getResources().getColor(R.color.primary_dark));
+            Window window = context.getWindow();
+            window.setStatusBarColor(color);
+            window.setNavigationBarColor(color);
         }
     }
 
@@ -119,17 +89,12 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
+    //Allows the up button to call the back button. This pops the fragment off the back stack.
+    @Override public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 }

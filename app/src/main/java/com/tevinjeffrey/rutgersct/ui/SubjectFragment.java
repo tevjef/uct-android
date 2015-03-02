@@ -73,7 +73,7 @@ public class SubjectFragment extends MainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getParentActivity().setPrimaryWindow();
+        MainActivity.setPrimaryWindow(getParentActivity());
         setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);

@@ -20,6 +20,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.services.Alarm;
 
 import java.net.UnknownHostException;
 import java.util.concurrent.CancellationException;
@@ -113,7 +114,7 @@ public class SettingsFragment extends PreferenceFragment {
                                 setInterval(which);
                                 setSummary(syncInterval, String.format("Every %s",
                                         getResources().getStringArray(R.array.intervals)[getInterval()]));
-                                getParentActivity().setAlarm();
+                                new Alarm(getParentActivity().getApplicationContext()).setAlarm();
                             }
                         })
                         .positiveColorRes(R.color.accent)

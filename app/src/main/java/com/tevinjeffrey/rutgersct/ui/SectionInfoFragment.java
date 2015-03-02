@@ -27,7 +27,7 @@ public class SectionInfoFragment extends MainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getParentActivity().setPrimaryWindow();
+        MainActivity.setPrimaryWindow(getParentActivity());
         setRetainInstance(true);
 
         c = getArguments().getParcelableArrayList(MainActivity.COURSE_LIST);

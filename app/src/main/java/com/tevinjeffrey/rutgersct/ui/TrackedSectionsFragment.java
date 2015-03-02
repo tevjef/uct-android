@@ -83,7 +83,7 @@ public class TrackedSectionsFragment extends MainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getParentActivity().setPrimaryWindow();
+        MainActivity.setPrimaryWindow(getParentActivity());
         setRetainInstance(true);
 
         rootView = inflater.inflate(R.layout.fragment_tracked_section, container, false);

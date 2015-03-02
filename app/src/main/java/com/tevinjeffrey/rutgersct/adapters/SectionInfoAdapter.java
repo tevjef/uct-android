@@ -26,6 +26,7 @@ import com.tevinjeffrey.rutgersct.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 import com.tevinjeffrey.rutgersct.model.TrackedSections;
+import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.utils.SectionUtils;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
@@ -151,13 +152,13 @@ public class SectionInfoAdapter {
     public SectionInfoAdapter(Activity context, Request item, View rowView, List<Course> courses) {
         this(context, item, rowView);
         this.courses = courses;
-
     }
 
     public void init() {
         ButterKnife.inject(this, rowView);
         for (Course c : courses) {
             for (Course.Sections s : c.getSections()) {
+                //Get the correct section from the list.
                 if (s.getIndex().equals(request.getIndex())) {
                     sectionData = s;
                     courseData = c;
@@ -304,30 +305,13 @@ public class SectionInfoAdapter {
         trackedSections.save();
     }
 
-
     void setToolBarColor(Course.Sections section) {
         if (section.isOpenStatus()) {
             mToolbar.setBackgroundColor(context.getResources().getColor(R.color.green));
-            setGreenWindow();
+            MainActivity.setGreenWindow(context);
         } else {
             mToolbar.setBackgroundColor(context.getResources().getColor(R.color.red));
-            setPrimaryWindow();
-        }
-    }
-
-    void setGreenWindow() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Window window = context.getWindow();
-            window.setStatusBarColor(context.getResources().getColor(R.color.green_dark));
-            window.setNavigationBarColor(context.getResources().getColor(R.color.green_dark));
-        }
-    }
-
-    void setPrimaryWindow() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Window window = context.getWindow();
-            window.setStatusBarColor(context.getResources().getColor(R.color.red_dark));
-            window.setNavigationBarColor(context.getResources().getColor(R.color.red_dark));
+            MainActivity.setPrimaryWindow(context);
         }
     }
 

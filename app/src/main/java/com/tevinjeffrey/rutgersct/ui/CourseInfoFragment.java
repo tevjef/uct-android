@@ -37,7 +37,7 @@ public class CourseInfoFragment extends MainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getParentActivity().setAccentWindow();
+        MainActivity.setAccentWindow(getParentActivity());
         setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.course_info, container, false);
