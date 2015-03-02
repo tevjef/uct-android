@@ -44,9 +44,10 @@
                 android:typeface="normal"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/white"
+                tools:ignore="HardcodedText"
                 android:layout_above="@+id/subtitle"
-                android:layout_alignParentEnd="true"
-                tools:ignore="HardcodedText" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/black"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentEnd="false"
                 android:layout_marginBottom="16dp"
                 android:alpha="0.5"
                 tools:ignore="HardcodedText" />
@@ -81,7 +82,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout2"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:layout_width="wrap_content"

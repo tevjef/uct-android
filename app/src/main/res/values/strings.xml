@@ -31,6 +31,9 @@
     <string name="server_down">The server is currently down. Try again later.</string>
     <string name="timed_out">Connection timed out. Check internet connection.</string>
 
+    <string name="content_description_webreg_image">large webreg icon</string>
+    <string name="content_description_large_tracking_icon">Large tracking icon</string>
+
     <string-array name="intervals">
         <item>5 minutes</item>
         <item>15 minutes</item>
