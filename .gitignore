@@ -26,3 +26,4 @@ proguard-rules.pro
 *.properties
 
 .gradle/2.2.1/taskArtifacts/cache.properties.lock
+app/crashlytics.properties

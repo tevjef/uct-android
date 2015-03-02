@@ -20,7 +20,7 @@ def isCi() {
 }
 
 def isProguarded = true;
-def vName = '0.6.1.' + (isProguarded? '1':'0')
+def vName = '0.6.2.' + (isProguarded? '1':'0')
 
 android {
     signingConfigs {
@@ -43,7 +43,7 @@ android {
     }
     buildTypes {
         release {
-            debuggable true
+            debuggable false
             minifyEnabled isProguarded
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release_config
