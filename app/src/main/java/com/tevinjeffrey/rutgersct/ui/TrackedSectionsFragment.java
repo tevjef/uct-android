@@ -206,7 +206,7 @@ public class TrackedSectionsFragment extends MainFragment {
         final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
 
         Mint.addExtraData(MyApplication.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
-        Crashlytics.setString(MyApplication.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
+        Crashlytics.setInt(MyApplication.ITEMS_IN_DATABASE, allTrackedSections.size());
 
         for (final Iterator<TrackedSections> trackedSectionsIterator = allTrackedSections.iterator(); trackedSectionsIterator.hasNext(); ) {
             TrackedSections ts = trackedSectionsIterator.next();

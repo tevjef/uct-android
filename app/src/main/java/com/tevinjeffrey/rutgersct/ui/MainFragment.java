@@ -30,9 +30,9 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Timber.i(String.format("%s started with savedIntanceState %s and arguments %s",
+        Timber.i("%s started with savedIntanceState %s and arguments %s",
                 this.toString(), savedInstanceState == null ? "null" : savedInstanceState.toString()
-                , this.getArguments() == null ? "null" : this.getArguments().toString()));
+                , this.getArguments() == null ? "null" : this.getArguments().toString());
         mPref = PreferenceManager.getDefaultSharedPreferences(getParentActivity());
         Mint.addExtraData(MyApplication.REFRESH_INTERVAL, String.valueOf(getInterval()));
         Crashlytics.setString(MyApplication.REFRESH_INTERVAL, String.valueOf(getInterval()));
@@ -83,9 +83,9 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Timber.i(String.format("%s paused with outState %s and arguments %s",
+        Timber.i("%s paused with outState %s and arguments %s",
                 this.toString(), outState == null ? "null" : outState.toString()
-                , this.getArguments() == null ? "null" : this.getArguments().toString()));
+                , this.getArguments() == null ? "null" : this.getArguments().toString());
         super.onSaveInstanceState(outState);
     }
 

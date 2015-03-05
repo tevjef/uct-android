@@ -186,7 +186,10 @@ public class SectionInfoAdapter {
         setActionButton(mFab);
         setSearch(rmpSearch, googleSearch);
 
-        new SectionInfoAnimator(rowView).init();
+
+        if(context.getFragmentManager().getBackStackEntryCount() > 1) {
+            new SectionInfoAnimator(rowView).init();
+        }
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

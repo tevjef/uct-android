@@ -20,7 +20,7 @@ def isCi() {
 }
 
 def isProguarded = true;
-def vName = '0.6.2.' + (isProguarded? '1':'0')
+def vName = '0.6.3.' + (isProguarded? '1':'0')
 
 android {
     signingConfigs {
@@ -38,7 +38,7 @@ android {
         applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 6
+        versionCode 7
         versionName vName
     }
     buildTypes {

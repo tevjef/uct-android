@@ -556,8 +556,6 @@
                 android:layout_marginRight="16dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:transitionName="fab"
-                android:alpha="0"
-                android:translationZ="30dp"
                 android:elevation="3dp"/>
         </RelativeLayout>
 

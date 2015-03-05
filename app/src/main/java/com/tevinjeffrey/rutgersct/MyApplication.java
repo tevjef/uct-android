@@ -7,6 +7,8 @@ import com.crashlytics.android.Crashlytics;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import io.fabric.sdk.android.Fabric;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,8 +56,8 @@ public class MyApplication extends SugarApp {
     private static class CrashReportingTree extends Timber.HollowTree {
         @Override
         public void i(String message, Object... args) {
-            Mint.leaveBreadcrumb(message);
-            Crashlytics.log(message);
+            Mint.leaveBreadcrumb(String.format(message, args));
+            Crashlytics.log(String.format(message, args));
         }
 
         @Override
@@ -71,9 +73,8 @@ public class MyApplication extends SugarApp {
         @Override
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
-            Mint.logExceptionMessage("INFO: ", message, new Exception(t));
             Crashlytics.logException(t);
-
+            Mint.logExceptionMessage("INFO: ", String.format(message, args), (Exception) t);
         }
     }
 

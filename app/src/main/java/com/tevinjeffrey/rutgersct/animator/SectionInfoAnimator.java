@@ -111,8 +111,10 @@ public class SectionInfoAnimator {
 
         ButterKnife.inject(this, rootView);
 
+        mFab.setVisibility(View.VISIBLE);
         AnimatorSet set7 = new AnimatorSet();
         set7.playTogether(
+                //ObjectAnimator.ofFloat(mFab, "translationX", mFab.getX() + 200, mFab.getX()),
                 ObjectAnimator.ofFloat(mFab, "scaleX", 0, 1),
                 ObjectAnimator.ofFloat(mFab, "scaleY", 0, 1),
                 ObjectAnimator.ofFloat(mFab, "alpha", 0, 1)

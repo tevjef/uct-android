@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionInfoAdapter;
+import com.tevinjeffrey.rutgersct.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
 import java.util.ArrayList;
+
+import butterknife.ButterKnife;
 
 
 public class SectionInfoFragment extends MainFragment {
@@ -34,6 +37,11 @@ public class SectionInfoFragment extends MainFragment {
         request = getArguments().getParcelable(MainActivity.REQUEST);
         final View rootView = inflater.inflate(R.layout.section_info, container, false);
         setToolbar(rootView);
+        if(getFragmentManager().getBackStackEntryCount() > 2) {
+            ButterKnife.findById(rootView, R.id.fab).setAlpha(0);
+            ButterKnife.findById(rootView, R.id.fab).setVisibility(View.GONE);
+        }
+
         inflateViews(rootView);
         return rootView;
     }

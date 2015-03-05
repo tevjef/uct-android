@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -43,6 +44,7 @@ public class RequestService extends Service {
         //Gets a list of all tracked sections from the database.
         final List<TrackedSections> sectionList = TrackedSections.listAll(TrackedSections.class);
         Timber.i("Request Service getting %s sections", sectionList.size());
+        Crashlytics.setInt(MyApplication.ITEMS_IN_DATABASE, sectionList.size());
 
         //Iterate through the list to create a request object which is then passed to getCourses() method.
         for (final Iterator<TrackedSections> allTrackedSections = sectionList.iterator(); allTrackedSections.hasNext();) {

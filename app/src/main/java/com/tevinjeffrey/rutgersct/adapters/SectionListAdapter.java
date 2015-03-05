@@ -170,17 +170,18 @@ public class SectionListAdapter {
             sectionInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sectionInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
 
-            if (mFab != null)
+            if (mFab != null) {
                 ft.addSharedElement(mFab, "fab");
+            }
 
             ft.addSharedElement(mToolbar, "toolbar_background");
             ft.addSharedElement(mCourseTitleText, "course_title");
             ft.addSharedElement(mSectionNumberBackground, "section_background");
-//            ft.addSharedElement(mInstructors, "instructor_name");
+            ft.addSharedElement(mInstructors, "instructor_name");
             //ft.addSharedElement(credits, "credit_number");
 
         } else {
-            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter,  R.anim.pop_exit);
+            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         }
         sectionInfoFragment.setArguments(b);
         ft.replace(R.id.container, sectionInfoFragment).addToBackStack(mCallingFragment.toString())
