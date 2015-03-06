@@ -303,7 +303,7 @@ public class SectionInfoAdapter {
 
     private void addSectionToDb(Request request) {
         TrackedSections trackedSections = new TrackedSections(request.getSubject(),
-                request.getSemester(), Request.toStringList(request.getLocations()),
+                request.getSemester().toString(), Request.toStringList(request.getLocations()),
                 Request.toStringList(request.getLevels()), request.getIndex());
         trackedSections.save();
     }

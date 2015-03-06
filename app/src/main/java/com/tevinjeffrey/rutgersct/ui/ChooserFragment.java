@@ -1,27 +1,37 @@
 package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.model.Request;
+import com.tevinjeffrey.rutgersct.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.utils.UrlUtils;
+import com.tevinjeffrey.stringpicker.StringPicker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,6 +59,12 @@ public class ChooserFragment extends MainFragment {
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.search_button)
     TextView mSearchButton;
+    @InjectView(R.id.primarySemester)
+    RadioButton mPrimarySemester;
+    @InjectView(R.id.secondarySemester)
+    RadioButton mSecondarySemester;
+    @InjectView(R.id.otherSemester)
+    RadioButton mOtherSemester;
 
     private Toolbar toolbar;
 
@@ -65,16 +81,98 @@ public class ChooserFragment extends MainFragment {
         ButterKnife.inject(this, rootView);
         setToolbar(rootView);
 
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
+        final SemesterUtils su = new SemesterUtils(Calendar.getInstance());
+
+        mPrimarySemester.setText(su.getPrimarySemester());
+        mPrimarySemester.setTag(su.resolvePrimarySemester());
+
+        mSecondarySemester.setText(su.getSecondarySemester());
+        mSecondarySemester.setTag(su.resolveSecondarySemester());
+
+        mOtherSemester.setOnClickListener(new View.OnClickListener() {
+
+            String currentYear = su.resolveCurrentSemester().getYear();
+            String currentSeason = su.resolveCurrentSemester().getSeason().toString();
+
+            View pickerRoot;
             @Override
             public void onClick(View v) {
-                if (isValidInputs()) {
-                    changeFragment(createArgs(createRequest()));
-                }
+                pickerRoot = createPicker(su);
+                new MaterialDialog.Builder(getParentActivity())
+                        .title("Choose a semester")
+                        .customView(pickerRoot, false)
+                        .positiveText("Done")
+                        .negativeText("Cancel")
+                        .dismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                if (mOtherSemester.getTag() == null) mSemesterRadiogroup.clearCheck();
+                            }
+                        })
+                        .showListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialog) {
+                                SemesterUtils.Semester sm =
+                                        mOtherSemester.getTag() == null ? su.resolveCurrentSemester() :
+                                                (SemesterUtils.Semester) mOtherSemester.getTag();
+
+                                currentSeason = sm.getSeason().toString();
+                                currentYear = sm.getYear();
+
+                                StringPicker yearPicker = (StringPicker) pickerRoot.findViewById(R.id.yearPicker);
+                                StringPicker seasonPicker = (StringPicker) pickerRoot.findViewById(R.id.seasonPicker);
+
+                                yearPicker.setCurrent(su.getListOfYears().indexOf(currentYear));
+                                seasonPicker.setCurrent(sm.getSeason().ordinal());
+
+                            }
+
+                        })
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                StringPicker yearPicker = (StringPicker) pickerRoot.findViewById(R.id.yearPicker);
+                                StringPicker seasonPicker = (StringPicker) pickerRoot.findViewById(R.id.seasonPicker);
+                                currentYear = yearPicker.getCurrentValue();
+                                currentSeason = seasonPicker.getCurrentValue();
+                                SemesterUtils.Semester semester = new SemesterUtils.Semester(currentSeason, currentYear);
+                                mOtherSemester.setText(semester.toString());
+                                mOtherSemester.setTag(semester);
+
+                                super.onPositive(dialog);
+                            }
+                        })
+                        .show();
+            }
+
+            private View createPicker(SemesterUtils su) {
+                final LinearLayout pickerRoot = (LinearLayout)getParentActivity().getLayoutInflater().inflate(R.layout.picker, null);
+
+                final StringPicker seasonPicker = (StringPicker)pickerRoot.findViewById(R.id.seasonPicker);
+                seasonPicker.setValues(su.getListOfSeasons());
+
+                final StringPicker yearPicker = (StringPicker)pickerRoot.findViewById(R.id.yearPicker);
+                yearPicker.setValues(su.getListOfYears());
+
+                return pickerRoot;
             }
         });
+                mSearchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (isValidInputs()) {
+                            changeFragment(createArgs(createRequest()));
+                        }
+                    }
+                });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        mSemesterRadiogroup.clearCheck();
+        super.onResume();
     }
 
     private void setToolbar(View rootView) {
@@ -108,11 +206,11 @@ public class ChooserFragment extends MainFragment {
         }
     }
 
-    private void makeToast(String s) {
+    private void makeToast(CharSequence s) {
         Toast.makeText(getParentActivity(), s, Toast.LENGTH_LONG).show();
     }
 
-    private void changeFragment(Bundle b) {
+    void changeFragment(Bundle b) {
         SubjectFragment sf = new SubjectFragment();
         sf.setArguments(b);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -134,16 +232,16 @@ public class ChooserFragment extends MainFragment {
                 .commit();
     }
 
-    private Bundle createArgs(Parcelable p) {
+    Bundle createArgs(Parcelable p) {
         Bundle args = new Bundle();
         args.putParcelable(MainActivity.REQUEST, p);
         return args;
     }
 
-    private String getSemester() {
+    private SemesterUtils.Semester getSemester() {
         int checkedButton = mSemesterRadiogroup.getCheckedRadioButtonId();
         RadioButton selectedButton = (RadioButton) getParentActivity().findViewById(checkedButton);
-        return selectedButton.getText().toString();
+        return (SemesterUtils.Semester) selectedButton.getTag();
     }
 
     private ArrayList<String> getLocations() {
@@ -175,5 +273,11 @@ public class ChooserFragment extends MainFragment {
 
     private Request createRequest() {
         return new Request(null, getSemester(), getLocations(), getLevels());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 }

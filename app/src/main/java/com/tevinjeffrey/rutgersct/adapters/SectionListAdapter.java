@@ -176,9 +176,6 @@ public class SectionListAdapter {
 
             ft.addSharedElement(mToolbar, "toolbar_background");
             ft.addSharedElement(mCourseTitleText, "course_title");
-            ft.addSharedElement(mSectionNumberBackground, "section_background");
-            ft.addSharedElement(mInstructors, "instructor_name");
-            //ft.addSharedElement(credits, "credit_number");
 
         } else {
             ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);

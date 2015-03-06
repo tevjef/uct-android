@@ -5,6 +5,9 @@ import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import timber.log.Timber;
 
 public class UrlUtils {
 
@@ -12,12 +15,6 @@ public class UrlUtils {
     private final static String SECOND_LEVEL = "Graduate";
     private final static String FIRST_LEVEL_ID = "U";
     private final static String SECOND_LEVEL_ID = "G";
-    private final static String FIRST_SEMESTER = "Winter 2014";
-    private final static String SECOND_SEMESTER = "Spring 2015";
-    private final static String THIRD_SEMESTER = "Summer 2015";
-    private final static String FIRST_SEMESTER_ID = "02015";
-    private final static String SECOND_SEMESTER_ID = "12015";
-    private final static String THIRD_SEMESTER_ID = "72015";
     private final static String FIRST_LOCATION = "New Brunswick";
     private final static String SECOND_LOCATION = "Newark";
     private final static String THIRD_LOCATION = "Camden";
@@ -28,24 +25,8 @@ public class UrlUtils {
     public UrlUtils() {
     }
 
-    private static String parseSemester(CharSequence rb) {
-        //Abstracted list of semesters with a limit of 3 selections
-        //TODO: Abstract this class to handle an unlimited number of selections
-
-        String semesterId;
-
-
-        if (FIRST_SEMESTER.equals(rb)) {
-            semesterId = FIRST_SEMESTER_ID;
-        } else if (SECOND_SEMESTER.equals(rb)) {
-            semesterId = SECOND_SEMESTER_ID;
-        } else if (THIRD_SEMESTER.equals(rb)) {
-            semesterId = THIRD_SEMESTER_ID;
-        } else {
-            semesterId = FIRST_SEMESTER_ID;
-        }
-
-        return semesterId;
+    private static String parseSemester(SemesterUtils.Semester semester) {
+        return semester.getSeason().getCode()+semester.getYear();
     }
 
     private static String getSemester(Request request) {
@@ -203,4 +184,5 @@ public class UrlUtils {
         String query = "+rutgers";
         return createSearchUrl(query, s);
     }
+
 }
