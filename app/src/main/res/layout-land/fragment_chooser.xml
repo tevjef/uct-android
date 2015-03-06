@@ -102,7 +102,7 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Summer 2015"
+                    android:text="@string/firstSemester"
                     android:id="@+id/semester1"
                     android:checked="false"
 
@@ -110,14 +110,14 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Spring 2015"
+                    android:text="@string/secondSemester"
                     android:id="@+id/semester2"
                     android:checked="false"
                     android:textColor="@color/primary_text" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Other"
+                    android:text="@string/thirdSemester"
                     android:id="@+id/semester3"
                     android:checked="false"
                     android:textColor="@color/primary_text" />

@@ -209,7 +209,7 @@ public class SubjectFragment extends MainFragment {
     }
 
     private void setToolbarTitle(Toolbar toolbar) {
-        toolbar.setTitle(request.getSemester().toString());
+        toolbar.setTitle(request.getSemester());
 
         ArrayList<String> al = new ArrayList<>();
         for (String s : request.getLocations()) {

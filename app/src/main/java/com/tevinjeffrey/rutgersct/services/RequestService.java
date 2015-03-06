@@ -22,10 +22,7 @@ import com.tevinjeffrey.rutgersct.model.Request;
 import com.tevinjeffrey.rutgersct.model.TrackedSections;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.utils.SemesterUtils.Semester;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -48,13 +45,11 @@ public class RequestService extends Service {
         final List<TrackedSections> sectionList = TrackedSections.listAll(TrackedSections.class);
         Timber.i("Request Service getting %s sections", sectionList.size());
         Crashlytics.setInt(MyApplication.ITEMS_IN_DATABASE, sectionList.size());
-        Crashlytics.setLong(MyApplication.REFRESH_INTERVAL, new Alarm(RequestService.this).getInterval());
-
 
         //Iterate through the list to create a request object which is then passed to getCourses() method.
         for (final Iterator<TrackedSections> allTrackedSections = sectionList.iterator(); allTrackedSections.hasNext();) {
             TrackedSections ts = allTrackedSections.next();
-            final Request r = new Request(ts.getSubject(), new Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
+            final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
             getCourse(allTrackedSections, r);
         }
         return START_NOT_STICKY;
@@ -91,7 +86,7 @@ public class RequestService extends Service {
                                     }
                                 }
                             }
-                        } else if (e != null &&  !(e instanceof CancellationException)) {
+                        } else if (!(e instanceof CancellationException)) {
                             //If an error occured while completing the request. Send it to crash reporting.
                             Timber.e(e, "Crash while attempting to complete request in %s to %s"
                                     , RequestService.this.toString(), r.toString());
