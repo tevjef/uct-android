@@ -41,6 +41,7 @@ import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 import com.tevinjeffrey.rutgersct.model.TrackedSections;
+import com.tevinjeffrey.rutgersct.utils.SemesterUtils;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
 import java.net.UnknownHostException;
@@ -210,7 +211,7 @@ public class TrackedSectionsFragment extends MainFragment {
 
         for (final Iterator<TrackedSections> trackedSectionsIterator = allTrackedSections.iterator(); trackedSectionsIterator.hasNext(); ) {
             TrackedSections ts = trackedSectionsIterator.next();
-            final Request r = new Request(ts.getSubject(), ts.getSemester(), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
+            final Request r = new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
             String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
             Ion.with(this)
                     .load(url)

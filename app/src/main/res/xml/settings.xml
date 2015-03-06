@@ -20,6 +20,20 @@
     </com.jenzz.materialpreference.PreferenceCategory>
 
     <com.jenzz.materialpreference.PreferenceCategory
+        android:title="Notifications">
+
+        <CheckBoxPreference
+            android:title="Vibrate"
+            android:key="vibrate"/>
+
+        <CheckBoxPreference
+            android:title="Sound"
+            android:key="vibrate"/>
+
+
+    </com.jenzz.materialpreference.PreferenceCategory>
+
+    <com.jenzz.materialpreference.PreferenceCategory
         android:title="DEVELOPER">
 
         <com.jenzz.materialpreference.Preference

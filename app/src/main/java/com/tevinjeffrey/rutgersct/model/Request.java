@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgersct.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.tevinjeffrey.rutgersct.utils.SemesterUtils.Semester;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class Request implements Parcelable {
 
     private String subject;
-    private String semester;
+    private Semester semester;
     private ArrayList<String> locations;
     private ArrayList<String> levels;
     private String index;
@@ -20,14 +21,14 @@ public class Request implements Parcelable {
     public Request() {
     }
 
-    public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels) {
+    public Request(String subject, Semester semester, ArrayList<String> locations, ArrayList<String> levels) {
         this.subject = subject;
         this.semester = semester;
         this.locations = locations;
         this.levels = levels;
     }
 
-    public Request(String subject, String semester, ArrayList<String> locations, ArrayList<String> levels, String index) {
+    public Request(String subject, Semester semester, ArrayList<String> locations, ArrayList<String> levels, String index) {
         this(subject, semester, locations, levels);
         this.index = index;
     }
@@ -48,11 +49,11 @@ public class Request implements Parcelable {
         this.subject = subject;
     }
 
-    public String getSemester() {
+    public Semester getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(Semester semester) {
         this.semester = semester;
     }
 
@@ -98,25 +99,6 @@ public class Request implements Parcelable {
 
     //All code below allows the android system to serialize this object.
     // It's actually quite faster than serialization.
-    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
-        public Request createFromParcel(Parcel source) {
-            return new Request(source);
-        }
-
-        public Request[] newArray(int size) {
-            return new Request[size];
-        }
-    };
-
-    private Request(Parcel in) {
-        this.subject = in.readString();
-        this.semester = in.readString();
-        //noinspection unchecked
-        this.locations = (ArrayList<String>) in.readSerializable();
-        //noinspection unchecked
-        this.levels = (ArrayList<String>) in.readSerializable();
-        this.index = in.readString();
-    }
 
 
     @Override
@@ -127,9 +109,27 @@ public class Request implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.subject);
-        dest.writeString(this.semester);
+        dest.writeParcelable(this.semester, 0);
         dest.writeSerializable(this.locations);
         dest.writeSerializable(this.levels);
         dest.writeString(this.index);
     }
+
+    private Request(Parcel in) {
+        this.subject = in.readString();
+        this.semester = in.readParcelable(Semester.class.getClassLoader());
+        this.locations = (ArrayList<String>) in.readSerializable();
+        this.levels = (ArrayList<String>) in.readSerializable();
+        this.index = in.readString();
+    }
+
+    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
+        public Request createFromParcel(Parcel source) {
+            return new Request(source);
+        }
+
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
 }
