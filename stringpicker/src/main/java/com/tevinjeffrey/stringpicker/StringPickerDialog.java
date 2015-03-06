@@ -9,8 +9,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.tevinjeffrey.stringpicker.R;
-
 public class StringPickerDialog extends DialogFragment {
 
     private OnClickListener mListener;

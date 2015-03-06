@@ -2,12 +2,10 @@ package com.tevinjeffrey.rutgersct.services;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
@@ -25,18 +23,20 @@ import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.utils.SemesterUtils.Semester;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import timber.log.Timber;
+
+import static android.app.PendingIntent.FLAG_ONE_SHOT;
 
 public class RequestService extends Service {
     public RequestService() {
     }
     Intent mIntent;
+    final AtomicInteger numOfRequestedCourses = new AtomicInteger();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -52,15 +52,14 @@ public class RequestService extends Service {
 
 
         //Iterate through the list to create a request object which is then passed to getCourses() method.
-        for (final Iterator<TrackedSections> allTrackedSections = sectionList.iterator(); allTrackedSections.hasNext();) {
-            TrackedSections ts = allTrackedSections.next();
+        for (TrackedSections ts : sectionList) {
             final Request r = new Request(ts.getSubject(), new Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
-            getCourse(allTrackedSections, r);
+            getCourse(sectionList, r);
         }
         return START_NOT_STICKY;
     }
 
-    private void getCourse(final Iterator<TrackedSections> allTrackedSections, final Request r) {
+    private void getCourse(final Collection<TrackedSections> sectionsList, final Request r) {
         //Get Url based on the request
         String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
 
@@ -68,36 +67,7 @@ public class RequestService extends Service {
                 .load(url)
                 .as(new TypeToken<List<Course>>() {
                 })
-                .setCallback(new FutureCallback<List<Course>>() {
-                    @Override
-                    public void onCompleted(Exception e, List<Course> courses) {
-                        //If e is null, notghing catastophic occur while completeing the request.
-                        // If course size is 0, we can't do anthing.
-                        if (e == null && courses.size() > 0) {
-                            //For courses in the list.
-                            for (final Course c : courses) {
-                                //For sections in the course
-                                for (final Course.Sections s : c.getSections()) {
-                                    //If the index number of the current section is the same as the
-                                    //one we are looking for and the section is open
-                                    if (s.getIndex().equals(r.getIndex()) && s.isOpenStatus()) {
-                                        //Create a notification.
-                                        makeNotification(c, s, r);
-                                        //If the interator does not have anymore sections,
-                                        //stop the service.
-                                        if (!allTrackedSections.hasNext()) {
-                                            stopSelf();
-                                        }
-                                    }
-                                }
-                            }
-                        } else if (e != null &&  !(e instanceof CancellationException)) {
-                            //If an error occured while completing the request. Send it to crash reporting.
-                            Timber.e(e, "Crash while attempting to complete request in %s to %s"
-                                    , RequestService.this.toString(), r.toString());
-                        }
-                    }
-                });
+                .setCallback(new ListFutureCallback(r, sectionsList));
     }
 
     //Creates a notfication of the Android system.
@@ -126,12 +96,12 @@ public class RequestService extends Service {
         Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
         openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
         PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this, 0, openInBrowser, 0);
-        mBuilder.addAction(0, "OPEN WEBREG", pOpenInBrowser);
+        mBuilder.addAction(0, "Open Webreg", pOpenInBrowser);
 
         //Intent open the app.
         Intent openTracked = new Intent(RequestService.this, MainActivity.class);
         PendingIntent pOpenTracked = PendingIntent.getActivity(RequestService.this, 0, openTracked, FLAG_ONE_SHOT);
-        mBuilder.addAction(0, "STOP TRACKING", pOpenTracked);
+        mBuilder.addAction(0, "Stop Tracking", pOpenTracked);
 
         //When you click on the notification itself.
         mBuilder.setContentIntent(pOpenInBrowser);
@@ -158,4 +128,43 @@ public class RequestService extends Service {
         super.onDestroy();
     }
 
+    private class ListFutureCallback implements FutureCallback<List<Course>> {
+        private final Request r;
+        private final Collection<TrackedSections> sectionsList;
+
+        public ListFutureCallback(Request r, Collection<TrackedSections> sectionsList) {
+            this.r = r;
+            this.sectionsList = sectionsList;
+        }
+
+        @Override
+        public void onCompleted(Exception e, List<Course> courses) {
+            numOfRequestedCourses.incrementAndGet();
+            //If e is null, notghing catastophic occur while completeing the request.
+            // If course size is 0, we can't do anthing.
+            if (e == null && courses.size() > 0) {
+                //For courses in the list.
+                for (final Course c : courses) {
+                    //For sections in the course
+                    for (final Course.Sections s : c.getSections()) {
+                        //If the index number of the current section is the same as the
+                        //one we are looking for and the section is open
+                        if (s.getIndex().equals(r.getIndex()) && s.isOpenStatus()) {
+                            //Create a notification.
+                            makeNotification(c, s, r);
+                            //If the interator does not have anymore sections,
+                            //stop the service.
+                            if (sectionsList.size() == numOfRequestedCourses.get()) {
+                                stopSelf();
+                            }
+                        }
+                    }
+                }
+            } else if (e != null &&  !(e instanceof CancellationException)) {
+                //If an error occured while completing the request. Send it to crash reporting.
+                Timber.e(e, "Crash while attempting to complete request in %s to %s"
+                        , RequestService.this.toString(), r.toString());
+            }
+        }
+    }
 }

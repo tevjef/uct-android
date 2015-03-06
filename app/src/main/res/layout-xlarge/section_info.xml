@@ -254,6 +254,43 @@
                             android:typeface="normal"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/semesterContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/instructors_container"
+                        android:layout_alignLeft="@+id/instructors_container"
+                        android:layout_alignStart="@+id/instructors_container"
+                        android:layout_marginTop="2dp">
+
+                        <TextView
+                            tools:ignore="HardcodedText"
+                            android:id="@+id/semesterTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.5"
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
+                            android:text="Term:"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:typeface="normal" />
+
+                        <TextView
+                            tools:ignore="HardcodedText"
+                            android:id="@+id/semesterText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
+                            android:text="Winter 2012"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:transitionName="instructor_name" />
+                    </LinearLayout>
                 </RelativeLayout>
 
 

@@ -94,7 +94,6 @@ public class SectionListAdapter {
         sections.removeAll(toRemove);*/
         sectionLayout = inflateSectionLayout();
         initValues();
-
         setCourseTitle();
         setOpenStatus(s);
         setSectionNumber(s);
@@ -113,7 +112,7 @@ public class SectionListAdapter {
 
     private void setCourseTitle() {
         if (mCourseTitleText != null && mInflationType.equals(MainActivity.TRACKED_SECTION)) {
-            mCourseTitleText.setText(mCourse.getSubject() + ":" + mCourse.getTrueTitle());
+            mCourseTitleText.setText(mCourse.getSubject() + " | " + mCourse.getTrueTitle());
         }
     }
 
@@ -149,12 +148,12 @@ public class SectionListAdapter {
         sectionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createFragment(createArgs((Parcelable) v.getTag()));
+                createFragment(createArgs((Parcelable) v.getTag()), v);
             }
         });
     }
 
-    private void createFragment(Bundle b) {
+    private void createFragment(Bundle b, View v) {
         SectionInfoFragment sectionInfoFragment = new SectionInfoFragment();
         @SuppressLint("CommitTransaction") FragmentTransaction ft =
                 mContext.getFragmentManager().beginTransaction();
@@ -175,7 +174,7 @@ public class SectionListAdapter {
             }
 
             ft.addSharedElement(mToolbar, "toolbar_background");
-            ft.addSharedElement(mCourseTitleText, "course_title");
+            ft.addSharedElement(mCourseTitleText, mCourseTitleText.getTransitionName());
 
         } else {
             ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);

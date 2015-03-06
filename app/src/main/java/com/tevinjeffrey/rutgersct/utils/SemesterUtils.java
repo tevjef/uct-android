@@ -3,14 +3,9 @@ package com.tevinjeffrey.rutgersct.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class SemesterUtils implements Parcelable {
 

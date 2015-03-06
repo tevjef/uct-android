@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,9 +21,9 @@ import com.nineoldandroids.animation.ValueAnimator;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.animator.SectionInfoAnimator;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.TrackedSections;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.utils.SectionUtils;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
@@ -45,100 +43,107 @@ public class SectionInfoAdapter {
     private final Activity context;
     private final Request request;
     private final View rowView;
+
+    @SuppressWarnings("WeakerAccess")
+    @InjectView(R.id.semesterText)
+    TextView mSemesterText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseTitle_text)
-
     TextView mCourseTitleText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionNumber_text)
-
     TextView mSectionNumberText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.indexNumber_text)
-
     TextView mIndexNumberText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.subtitle)
-
     TextView mCreditsText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.instructors_text)
-
     TextView mInstructorsText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.classSize_text)
-
     TextView mClassSizeText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
-
     Toolbar mToolbar;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionNotes_text)
-
     TextView mSectionNotesText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseNotesContainer)
-
     RelativeLayout mSectionNotesContainer;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionComments_text)
-
     TextView mSectionCommentsText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.subjectNotesContainer)
-
     RelativeLayout mSectionCommentsContainer;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionCrossList_text)
-
     TextView mSectionCrossListText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionCrossList_container)
-
     RelativeLayout mSectionCrossListContainer;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionSubtitle_text)
-
     TextView mSectionSubtitleText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionSubtitle_container)
-
     RelativeLayout mSectionSubtitleContainer;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionPermission_text)
-
     TextView mSectionPermissionText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionPermisision_container)
-
     RelativeLayout mSectionPermisisionContainer;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionOpenTo_text)
-
     TextView mSectionOpenToText;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionOpenTo_container)
-
     RelativeLayout mSectionOpenToContainer;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionTimeContainer)
-
     LinearLayout mSectionTimeContainer;
+
+    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionRoot)
     RelativeLayout mSectionRoot;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.fab)
-
     FloatingActionButton mFab;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prof_rmp_search)
-
     Button rmpSearch;
+
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prof_google_search)
-
     Button googleSearch;
+
     private List<Course> courses;
     private Course courseData;
     private Course.Sections sectionData;
@@ -185,7 +190,7 @@ public class SectionInfoAdapter {
         setInstructors(sectionData);
         setActionButton(mFab);
         setSearch(rmpSearch, googleSearch);
-
+        setSemester(request);
 
         if(context.getFragmentManager().getBackStackEntryCount() > 1) {
             new SectionInfoAnimator(rowView).init();
@@ -197,9 +202,9 @@ public class SectionInfoAdapter {
             }
 
             private void toggleFab() {
-                if (isSectionTracked()) {
+                if (DatabaseHandler.isSectionTracked(request)) {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(0);
-                    removeSectionFromDb();
+                    DatabaseHandler.removeSectionFromDb(request);
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
                             context.getResources().getColor(R.color.accent_dark),
                             context.getResources().getColor(R.color.accent));
@@ -215,7 +220,7 @@ public class SectionInfoAdapter {
 
                 } else {
                     animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(225);
-                    addSectionToDb(request);
+                    DatabaseHandler.addSectionToDb(request);
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
                             context.getResources().getColor(R.color.accent),
                             context.getResources().getColor(R.color.accent_dark));
@@ -231,6 +236,10 @@ public class SectionInfoAdapter {
                 }
             }
         });
+    }
+
+    private void setSemester(Request request) {
+        mSemesterText.setText(request.getSemester().toString());
     }
 
     private void setSearch(TextView rmpSearch, TextView googleSearch) {
@@ -269,7 +278,7 @@ public class SectionInfoAdapter {
     }
 
     private void setActionButton(final FloatingActionButton fab) {
-        if (isSectionTracked()) {
+        if (DatabaseHandler.isSectionTracked(request)) {
             fab.post(new Runnable() {
                 @Override
                 public void run() {
@@ -281,32 +290,6 @@ public class SectionInfoAdapter {
         }
     }
 
-    private void removeSectionFromDb() {
-        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
-                "INDEX_NUMBER = ?", sectionData.getIndex());
-        for (TrackedSections ts : trackedSections) {
-            ts.delete();
-        }
-    }
-
-    private boolean isSectionTracked() {
-        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
-                "INDEX_NUMBER = ?", sectionData.getIndex());
-
-        for (TrackedSections ts : trackedSections) {
-            if (request.getIndex().equals(ts.getIndexNumber())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void addSectionToDb(Request request) {
-        TrackedSections trackedSections = new TrackedSections(request.getSubject(),
-                request.getSemester().toString(), Request.toStringList(request.getLocations()),
-                Request.toStringList(request.getLevels()), request.getIndex());
-        trackedSections.save();
-    }
 
     void setToolBarColor(Course.Sections section) {
         if (section.isOpenStatus()) {

@@ -90,7 +90,8 @@
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-condensed"
             tools:ignore="HardcodedText"
-            android:transitionName="course_title" />
+            android:transitionName="course_title"
+            android:gravity="center" />
 
     </RelativeLayout>
 

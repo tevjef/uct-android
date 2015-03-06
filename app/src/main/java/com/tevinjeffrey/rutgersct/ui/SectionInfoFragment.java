@@ -10,16 +10,19 @@ import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionInfoAdapter;
-import com.tevinjeffrey.rutgersct.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class SectionInfoFragment extends MainFragment {
+
+    @InjectView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private ArrayList<Course> c;
     private Request request;
@@ -36,8 +39,10 @@ public class SectionInfoFragment extends MainFragment {
         c = getArguments().getParcelableArrayList(MainActivity.COURSE_LIST);
         request = getArguments().getParcelable(MainActivity.REQUEST);
         final View rootView = inflater.inflate(R.layout.section_info, container, false);
-        setToolbar(rootView);
-        if(getFragmentManager().getBackStackEntryCount() > 2) {
+        ButterKnife.inject(this, rootView);
+
+        setToolbar();
+        if (getFragmentManager().getBackStackEntryCount() > 2) {
             ButterKnife.findById(rootView, R.id.fab).setAlpha(0);
             ButterKnife.findById(rootView, R.id.fab).setVisibility(View.GONE);
         }
@@ -46,11 +51,12 @@ public class SectionInfoFragment extends MainFragment {
         return rootView;
     }
 
-    private void setToolbar(View rootView) {
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        getParentActivity().setSupportActionBar(toolbar);
-        //IMPORTANT-must be after setting the actionbar
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+    private void setToolbar() {
+        mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
+        mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
+        getParentActivity().setSupportActionBar(mToolbar);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getParentActivity().onBackPressed();
@@ -58,6 +64,7 @@ public class SectionInfoFragment extends MainFragment {
         });
         getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
 
     private void inflateViews(View rootView) {
@@ -75,5 +82,11 @@ public class SectionInfoFragment extends MainFragment {
         super.onSaveInstanceState(outState);
         outState.putParcelable(MainActivity.REQUEST, getArguments().getParcelable(MainActivity.REQUEST));
         outState.putParcelableArrayList(MainActivity.COURSE_LIST, getArguments().getParcelableArrayList(MainActivity.COURSE_LIST));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 }

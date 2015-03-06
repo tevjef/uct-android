@@ -5,9 +5,6 @@ import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import timber.log.Timber;
 
 public class UrlUtils {
 

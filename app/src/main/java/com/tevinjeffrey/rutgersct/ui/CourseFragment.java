@@ -107,30 +107,7 @@ public class CourseFragment extends MainFragment {
                 .load(url)
                 .as(new TypeToken<List<Course>>() {
                 })
-                .setCallback(new FutureCallback<List<Course>>() {
-                    @Override
-                    public void onCompleted(Exception e, List<Course> courseList) {
-                        if (e == null && courseList.size() > 0) {
-                            courses = (ArrayList<Course>) courseList;
-                            final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), courseList);
-                            listView.setAdapter(subjectAdapter);
-                        } else {
-                            if (e instanceof UnknownHostException) {
-                                showSnackBar(getResources().getString(R.string.no_internet));
-                            } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
-                                cancelRequests();
-                                showSnackBar(getResources().getString(R.string.server_down));
-                            } else if (e instanceof TimeoutException) {
-                                cancelRequests();
-                                showSnackBar(getResources().getString(R.string.timed_out));
-                            } else if (!(e instanceof CancellationException)) {
-                                Timber.e(e, "Crash while attempting to complete request in %s to %s"
-                                        , CourseFragment.this.toString(), request.toString());
-                            }
-                        }
-                        dismissProgress();
-                    }
-                });
+                .setCallback(new ListFutureCallback(listView));
     }
 
     void showSnackBar(String message) {
@@ -210,7 +187,7 @@ public class CourseFragment extends MainFragment {
     }
 
     private void setToolbarTitle(Toolbar toolbar) {
-        ArrayList<Subject> al = getArguments().getParcelableArrayList(MainActivity.SUBJECTS_LIST);
+        Iterable<Subject> al = getArguments().getParcelableArrayList(MainActivity.SUBJECTS_LIST);
         for (Subject s : al) {
             if (CourseUtils.formatNumber(s.getCode()).equals(request.getSubject())) {
                 toolbar.setTitle(WordUtils.capitalize(s.getDescription().toLowerCase()));
@@ -271,5 +248,36 @@ public class CourseFragment extends MainFragment {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private class ListFutureCallback implements FutureCallback<List<Course>> {
+        private final ListView listView;
+
+        public ListFutureCallback(ListView listView) {
+            this.listView = listView;
+        }
+
+        @Override
+        public void onCompleted(Exception e, List<Course> courseList) {
+            if (e == null && courseList.size() > 0) {
+                courses = (ArrayList<Course>) courseList;
+                final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), courseList);
+                listView.setAdapter(subjectAdapter);
+            } else {
+                if (e instanceof UnknownHostException) {
+                    showSnackBar(getResources().getString(R.string.no_internet));
+                } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
+                    cancelRequests();
+                    showSnackBar(getResources().getString(R.string.server_down));
+                } else if (e instanceof TimeoutException) {
+                    cancelRequests();
+                    showSnackBar(getResources().getString(R.string.timed_out));
+                } else if (!(e instanceof CancellationException)) {
+                    Timber.e(e, "Crash while attempting to complete request in %s to %s"
+                            , CourseFragment.this.toString(), request.toString());
+                }
+            }
+            dismissProgress();
+        }
     }
 }

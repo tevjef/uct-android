@@ -231,16 +231,54 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="MAELLO | CAROLLA"
+                            android:text="MAELLO | CAROLLA "
                             android:id="@+id/instructors_text"
+                            android:textSize="12sp"
+                            android:fontFamily="sans-serif-condensed"
+                            android:textColor="@color/white"
+                            android:singleLine="false"
+                            android:layout_marginLeft="5dp"
+                            android:transitionName="instructor_name"
+                            tools:ignore="HardcodedText"
+                            android:maxWidth="120dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/termContainer"
+                        android:layout_alignTop="@+id/instructors_container"
+                        android:layout_toRightOf="@+id/instructors_container"
+                        android:layout_toEndOf="@+id/instructors_container">
+
+                        <TextView
+                            tools:ignore="HardcodedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Term:"
+                            android:id="@+id/semesterTitle"
+                            android:textSize="12sp"
+                            android:typeface="normal"
+                            android:fontFamily="sans-serif-condensed"
+                            android:textColor="@color/black"
+                            android:alpha="0.5"
+                            android:singleLine="true"
+                            android:layout_marginLeft="8dp" />
+
+                        <TextView
+                            tools:ignore="HardcodedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Winter 2012"
+                            android:id="@+id/semesterText"
                             android:textSize="12sp"
                             android:fontFamily="sans-serif-condensed"
                             android:textColor="@color/white"
                             android:singleLine="true"
                             android:layout_marginLeft="5dp"
-                            android:transitionName="instructor_name"
-                            tools:ignore="HardcodedText" />
-
+                            android:transitionName="instructor_name" />
                     </LinearLayout>
 
 

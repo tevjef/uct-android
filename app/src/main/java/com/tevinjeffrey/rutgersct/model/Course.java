@@ -14,7 +14,7 @@ import java.util.List;
 //This class is a bit complicated. It's a POJO for the GSON library to quickly serialize json data
 // into java objects. It is also a parcelable object which means it allows the android system to serialize this object.
 // Which in turn allows me to pss this object between Activities and Fragments.
-public class Course implements Parcelable {
+public class Course implements Comparable, Parcelable {
 
     public static final Creator<Course> CREATOR = new Creator<Course>() {
         public Course createFromParcel(Parcel source) {
@@ -138,6 +138,26 @@ public class Course implements Parcelable {
         dest.writeString(this.title);
         dest.writeTypedList(sections);
         dest.writeString(this.expandedTitle);
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        Course b = (Course) another;
+        if(Integer.valueOf(this.getSubject()) > Integer.valueOf(b.getSubject())) {
+            return 1;
+        } else if(Integer.valueOf(this.getSubject()) < Integer.valueOf(b.getSubject())) {
+            return -1;
+        } else if (Integer.valueOf(this.getSubject()).equals(Integer.valueOf(b.getSubject()))) {
+            if(Integer.valueOf(this.getCourseNumber()) > Integer.valueOf(b.getCourseNumber())) {
+                return 1;
+            } else if(Integer.valueOf(this.getCourseNumber()) < Integer.valueOf(b.getCourseNumber())) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 
     public static class Sections implements Parcelable {

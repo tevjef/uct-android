@@ -14,8 +14,6 @@ import com.tevinjeffrey.rutgersct.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
-
 public class SectionInfoAnimator {
 
     private final View rootView;

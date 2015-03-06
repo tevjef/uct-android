@@ -7,15 +7,13 @@ import com.crashlytics.android.Crashlytics;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
-import io.fabric.sdk.android.Fabric;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class MyApplication extends SugarApp {
