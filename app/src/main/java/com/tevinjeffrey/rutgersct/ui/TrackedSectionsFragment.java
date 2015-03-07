@@ -356,7 +356,6 @@ public class TrackedSectionsFragment extends MainFragment {
         @Override
         public void onCompleted(Exception e, List<Course> courses) {
             numOfRequestedCourses.incrementAndGet();
-
             if (e == null && courses.size() > 0) {
                 for (final Course c : courses) {
                     for (final Course.Sections s : c.getSections()) {
@@ -387,7 +386,6 @@ public class TrackedSectionsFragment extends MainFragment {
                             , TrackedSectionsFragment.this.toString(), r.toString());
                 }
             }
-            dismissProgress();
             setEmptyLayout(allTrackedSections);
         }
 

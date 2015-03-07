@@ -7,9 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     tools:context=".ui/SectionInfoFragment">
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
         <RelativeLayout
             android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="wrap_content">

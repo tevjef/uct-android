@@ -261,6 +261,7 @@ public class CourseFragment extends MainFragment {
         public void onCompleted(Exception e, List<Course> courseList) {
             if (e == null && courseList.size() > 0) {
                 courses = (ArrayList<Course>) courseList;
+                CourseUtils.scrubCourseList(courseList);
                 final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), courseList);
                 listView.setAdapter(subjectAdapter);
             } else {

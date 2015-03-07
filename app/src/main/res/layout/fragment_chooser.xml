@@ -72,7 +72,8 @@
         android:layout_below="@+id/toolbar"
 
         android:transitionGroup="true"
-        android:paddingLeft="25dp">
+        android:paddingLeft="25dp"
+        android:layout_above="@+id/relativeLayout2">
 
 
         <LinearLayout
@@ -203,6 +204,19 @@
                 android:checked="false" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/systemMessage"
+            android:layout_marginBottom="28dp"
+            android:textColor="@color/accent"
+            android:textSize="12sp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="16dp"
+            android:textStyle="italic" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -210,7 +224,8 @@
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/accent">
+        android:background="@color/accent"
+        android:id="@+id/relativeLayout2">
 
         <Button
             android:layout_width="100dp"

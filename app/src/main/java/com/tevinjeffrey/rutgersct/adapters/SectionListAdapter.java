@@ -74,6 +74,7 @@ public class SectionListAdapter {
 
     public void init() {
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        SectionUtils.scrubSectionList(sectionData);
         for (Course.Sections s : sectionData) {
             setData(s);
         }

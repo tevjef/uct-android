@@ -72,8 +72,8 @@ public class CourseAdapter extends ArrayAdapter {
 
         Course course = item.get(position);
 
-        viewHolder.courseTitle.setText(WordUtils.capitalize(course.getTrueTitle().toLowerCase()));
-        viewHolder.courseSectionsOpen.setText(course.getOpenSections() + " open sections of " + course.getSections().size());
+        viewHolder.courseTitle.setText(course.getTrueTitle());
+        viewHolder.courseSectionsOpen.setText(course.getOpenSections() + " open sections of " + course.getSectionsTotal());
 
         return rowView;
 

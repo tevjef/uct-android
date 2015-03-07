@@ -87,11 +87,11 @@ public class Course implements Comparable, Parcelable {
     }
 
     public int getOpenSections() {
-        return openSections;
+        return openSections - getNumberOfOpenNoPrintSections();
     }
 
     public int getSectionsTotal() {
-        return getSections().size();
+        return getSections().size() - getNumberOfNoPrintSections();
     }
 
     String getExpandedTitle() {
@@ -105,6 +105,22 @@ public class Course implements Comparable, Parcelable {
     public String getTrueTitle() {
         return getExpandedTitle() == null ? getTitle() :
                 getExpandedTitle();
+    }
+
+    public int getNumberOfNoPrintSections() {
+        int num = 0;
+        for(Sections s :getSections()) {
+            if(!s.isPrinted()) ++num ;
+        }
+        return num;
+    }
+
+    public int getNumberOfOpenNoPrintSections() {
+        int num = 0;
+        for(Sections s :getSections()) {
+            if(!s.isPrinted() && s.openStatus) ++num ;
+        }
+        return num;
     }
 
     public List<Sections> getSections() {
@@ -187,6 +203,7 @@ public class Course implements Comparable, Parcelable {
         String sectionNotes;
         String number;
         String campusCode;
+        String printed;
         int stopPoint;
         boolean openStatus;
 
@@ -210,6 +227,7 @@ public class Course implements Comparable, Parcelable {
             this.sectionNotes = in.readString();
             this.number = in.readString();
             this.campusCode = in.readString();
+            this.printed = in.readString();
             this.stopPoint = in.readInt();
             this.openStatus = in.readByte() != 0;
         }
@@ -334,6 +352,13 @@ public class Course implements Comparable, Parcelable {
             return getCrossListedSections().size() > 0;
         }
 
+        public String getPrinted() {
+            return printed;
+        }
+
+        public boolean isPrinted() {
+            return getPrinted().equals("Y");
+        }
         public boolean hasMetaData() {
             return hasCrossListed() ||
                     hasSpecialPermission() ||
@@ -368,6 +393,7 @@ public class Course implements Comparable, Parcelable {
             dest.writeString(this.offeringUnitCode);
             dest.writeString(this.synopsisUrl);
             dest.writeString(this.examCode);
+            dest.writeString(this.printed);
             dest.writeString(this.sectionNotes);
             dest.writeString(this.number);
             dest.writeString(this.campusCode);

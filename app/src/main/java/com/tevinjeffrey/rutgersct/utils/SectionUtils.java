@@ -3,6 +3,8 @@ package com.tevinjeffrey.rutgersct.utils;
 import com.tevinjeffrey.rutgersct.model.Course;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class SectionUtils {
 
@@ -139,5 +141,15 @@ public class SectionUtils {
             al.add(i.getName().replace(';', ' '));
         }
         return al;
+    }
+
+    public static void scrubSectionList(List<Course.Sections> sectionData) {
+        Collection<Course.Sections> toRemove = new ArrayList<>();
+        for(Course.Sections s: sectionData) {
+            if(!s.isPrinted()) {
+                toRemove.add(s);
+            }
+        }
+        sectionData.removeAll(toRemove);
     }
 }
