@@ -82,18 +82,6 @@ public class SectionListAdapter {
     }
 
     void setData(Course.Sections s) {
-        // remove classes with a stopPint of 0. These represent some kind of hidden class taught
-        // by STAFF. Though the obvious solution is to loop through the list and on some condition,
-        // remove the class, this results in a ConcurrentModificationException.
-        // Update: Uncommented because it produced unexpected behaviour in the types of classes.
-        // Some classes are real classes even though the stopPoint is 0
-        /*List<Course.Sections> toRemove = new ArrayList<>();
-        for(Course.Sections s: sections) {
-            if(s.getStopPoint() == 0) {
-                toRemove.add(s);
-            }
-        }
-        sections.removeAll(toRemove);*/
         sectionLayout = inflateSectionLayout();
         initValues();
         setCourseTitle();
