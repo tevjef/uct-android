@@ -1,56 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/day_text"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:text="Wednesday"
-        android:id="@+id/day_text"
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/small_text"
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ENG-102  NWK"
         android:id="@+id/sectionLocation_text"
-        android:textColor="@color/secondary_text"
-        android:textSize="@dimen/small_text"
-        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="false"
-        android:textIsSelectable="false"
+        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/meetingType"
+        android:text="ENG-102  NWK"
+        android:textColor="@color/secondary_text"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/small_text"
         tools:ignore="HardcodedText" />
 
     <TextView
+        android:id="@+id/time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tuesday 10:00 AM - 11:20 AM"
-        android:id="@+id/time_text"
-        android:textColor="@color/secondary_text"
-        android:textSize="@dimen/small_text"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/day_text"
+        android:text="Tuesday 10:00 AM - 11:20 AM"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/small_text"
         tools:ignore="HardcodedText" />
 
     <TextView
+        android:id="@+id/meetingType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="STUDIO"
-        android:id="@+id/meetingType"
-        android:textColor="@color/secondary_text"
-        android:textSize="@dimen/small_text"
-        android:textIsSelectable="false"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="6dp"
         android:gravity="right"
+        android:minWidth="39dp"
         android:singleLine="true"
-        tools:ignore="HardcodedText"
-        android:minWidth="39dp" />
+        android:text="STUDIO"
+        android:textColor="@color/secondary_text"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/small_text"
+        tools:ignore="HardcodedText" />
 
 </RelativeLayout>

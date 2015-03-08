@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item
-        type="id"
-        name="trackable_course_data" />
+    <item name="trackable_course_data" type="id" />
 </resources>

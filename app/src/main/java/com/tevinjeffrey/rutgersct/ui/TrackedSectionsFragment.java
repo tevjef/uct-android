@@ -20,10 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.nineoldandroids.animation.Animator;
@@ -33,26 +29,20 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.EventListener;
-import com.splunk.mint.Mint;
 import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionListAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
+import com.tevinjeffrey.rutgersct.database.Updater;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.TrackedSections;
-import com.tevinjeffrey.rutgersct.utils.SemesterUtils;
-import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -92,20 +82,23 @@ public class TrackedSectionsFragment extends MainFragment {
         rootView = inflater.inflate(R.layout.fragment_tracked_section, container, false);
 
         ButterKnife.inject(this, rootView);
+
+        DatabaseHandler.setDatabaseListener(new MyDatabaseListener());
+
         setToolbar();
-
-        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
-
-/*       progress = ProgressDialog.show(getParentActivity(), "",
-                "Checking classes", true);*/
-
-        setRefreshListener();
+        setupSwipeLayout();
         refresh();
         setFabListener();
 
         warnServerIssues();
         return rootView;
+    }
+
+    private void setupSwipeLayout() {
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
+
+        setRefreshListener();
     }
 
     private void warnServerIssues() {
@@ -206,32 +199,44 @@ public class TrackedSectionsFragment extends MainFragment {
 
     private void getTrackedSections() {
         removeAllViews();
-        final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
-        Mint.addExtraData(MyApplication.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
-        Crashlytics.setInt(MyApplication.ITEMS_IN_DATABASE, allTrackedSections.size());
-        Timber.d("getting %s items from dataase", allTrackedSections.size());
 
-        final List<Course> updatedTrackedSections = new ArrayList<>();
-        final AtomicInteger numOfRequestedCourses = new AtomicInteger();
-        for (TrackedSections ts : allTrackedSections) {
-            final Request r = new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
-            getCourses(allTrackedSections, updatedTrackedSections, numOfRequestedCourses, r);
-        }
-        setEmptyLayout(allTrackedSections);
+        Updater.with(getParentActivity()).setOnCompleteListener(new Updater.OnCompleteListener() {
+            @Override
+            public void onSuccess(Request request, Course course) {
+                new SectionListAdapter(TrackedSectionsFragment.this,
+                        course,
+                        rootView,
+                        request,
+                        MyApplication.TRACKED_SECTION).init();
+            }
+
+            @Override
+            public void onDone(Map<Course, Request> map) {
+                dismissProgress();
+                setEmptyLayout(map.entrySet().size() == 0);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                dismissProgress();
+                if (t instanceof UnknownHostException) {
+                    showSnackBar(getResources().getString(R.string.no_internet));
+                } else if (t instanceof IllegalStateException && !(t instanceof CancellationException)) {
+                    cancelRequests();
+                    showSnackBar(getResources().getString(R.string.server_down));
+                } else if (t instanceof TimeoutException) {
+                    cancelRequests();
+                    showSnackBar(getResources().getString(R.string.timed_out));
+                } else if (!(t instanceof CancellationException)) {
+                    Timber.e(t, "Crash while attempting to complete request in %s to %s"
+                            , TrackedSectionsFragment.this.toString(), t.toString());
+                }
+            }
+        }).start();
     }
 
-    private void getCourses(final List<TrackedSections> allTrackedSections, final List<Course> updatedTrackedSections, final AtomicInteger numOfRequestedCourses, final Request r) {
-        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
-        Ion.with(this)
-                .load(url)
-                .as(new TypeToken<List<Course>>() {
-                })
-                .setCallback(new ListFutureCallback(numOfRequestedCourses, r, updatedTrackedSections, allTrackedSections));
-    }
-
-
-    private void setEmptyLayout(Collection<TrackedSections> allTrackedSections) {
-        if (allTrackedSections.size() == 0) {
+    private void setEmptyLayout(boolean setEmpty) {
+        if (setEmpty) {
             dismissProgress();
             addCoursesToTrack.setVisibility(View.VISIBLE);
         } else {
@@ -340,70 +345,16 @@ public class TrackedSectionsFragment extends MainFragment {
         }
     }
 
-    private class ListFutureCallback implements FutureCallback<List<Course>> {
-        private final AtomicInteger numOfRequestedCourses;
-        private final Request r;
-        private final List<Course> updatedTrackedSections;
-        private final List<TrackedSections> allTrackedSections;
 
-        public ListFutureCallback(AtomicInteger numOfRequestedCourses, Request r, List<Course> updatedTrackedSections, List<TrackedSections> allTrackedSections) {
-            this.numOfRequestedCourses = numOfRequestedCourses;
-            this.r = r;
-            this.updatedTrackedSections = updatedTrackedSections;
-            this.allTrackedSections = allTrackedSections;
+    private class MyDatabaseListener implements DatabaseHandler.DatabaseListener {
+        @Override
+        public void onAdd(Request addedSection) {
+            refresh();
         }
 
         @Override
-        public void onCompleted(Exception e, List<Course> courses) {
-            numOfRequestedCourses.incrementAndGet();
-            if (e == null && courses.size() > 0) {
-                for (final Course c : courses) {
-                    for (final Course.Sections s : c.getSections()) {
-                        if (s.getIndex().equals(r.getIndex())) {
-                            List<Course.Sections> currentSection = new ArrayList<>();
-                            currentSection.add(s);
-                            c.setSections(currentSection);
-                            updatedTrackedSections.add(c);
-
-                            if (allTrackedSections.size() == numOfRequestedCourses.get()) {
-                                dismissProgress();
-                                insertCoursesInRootView(updatedTrackedSections, r);
-                            }
-                        }
-                    }
-                }
-            } else {
-                if (e instanceof UnknownHostException) {
-                    showSnackBar(getResources().getString(R.string.no_internet));
-                } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.server_down));
-                } else if (e instanceof TimeoutException) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.timed_out));
-                } else if (!(e instanceof CancellationException)) {
-                    Timber.e(e, "Crash while attempting to complete request in %s to %s"
-                            , TrackedSectionsFragment.this.toString(), r.toString());
-                }
-            }
-            setEmptyLayout(allTrackedSections);
-        }
-
-        private void insertCoursesInRootView(List<Course> updatedTrackedSections, Request r) {
-            Collections.sort(updatedTrackedSections);
-            for(Course c : updatedTrackedSections)
-                new SectionListAdapter(TrackedSectionsFragment.this, c, rootView, r, MainActivity.TRACKED_SECTION).init();
-        }
-
-        @Override
-        public String toString() {
-            return "ListFutureCallback{" +
-                    "numOfRequestedCourses=" + numOfRequestedCourses +
-                    ", r=" + r +
-                    ", updatedTrackedSections=" + updatedTrackedSections +
-                    ", allTrackedSections=" + allTrackedSections +
-                    '}';
+        public void onRemove(Request removedSection) {
+            refresh();
         }
     }
-
 }

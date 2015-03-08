@@ -1,296 +1,295 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui/SectionInfoFragment"
-    android:orientation="horizontal"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
     android:weightSum="20"
-    android:baselineAligned="false">
+    tools:context=".ui/SectionInfoFragment">
 
     <RelativeLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="12">
+        android:layout_weight="12"
+        android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?android:attr/actionBarSize"
-            android:background="@color/primary"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="1dp"
-            android:transitionName="toolbar_background"
-            android:layout_alignParentRight="true"
             android:layout_above="@+id/linearLayout4"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/primary"
+            android:elevation="1dp"
+            android:minHeight="?android:attr/actionBarSize"
+            android:transitionName="toolbar_background"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 
             <RelativeLayout
+                android:id="@+id/course_header_container"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:id="@+id/course_header_container">
+                android:layout_height="fill_parent">
 
                 <TextView
+                    android:id="@+id/courseTitle_text"
                     android:layout_width="wrap_content"
                     android:layout_height="54dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
-                    android:id="@+id/courseTitle_text"
-                    android:textSize="14sp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textColor="@color/white"
-                    android:singleLine="false"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
-                    android:gravity="center_vertical"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:ellipsize="none"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center_vertical"
+                    android:singleLine="false"
+                    android:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
                     android:transitionName="course_title"
                     tools:ignore="HardcodedText" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true">
+                    android:gravity="center">
 
                     <RelativeLayout
-                        android:orientation="vertical"
+                        android:id="@+id/relativeLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/instructors_container"
+                        android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                        android:weightSum="4"
                         android:baselineAligned="false"
+                        android:orientation="vertical"
                         android:transitionGroup="true"
-                        android:id="@+id/relativeLayout">
+                        android:weightSum="4">
 
                         <LinearLayout
-                            android:orientation="vertical"
+                            android:id="@+id/tCredits"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tCredits">
+                            android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/credits_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:alpha="0.5"
+                                android:fontFamily="sans-serif-condensed"
                                 android:text="Credits"
-                                android:id="@+id/credits_title"
+                                android:textColor="@color/black"
                                 android:textSize="12sp"
                                 android:typeface="normal"
-                                android:fontFamily="sans-serif-condensed"
-                                android:textColor="@color/black"
-                                android:alpha="0.5"
                                 tools:ignore="HardcodedText" />
 
                             <TextView
+                                android:id="@+id/subtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:fontFamily="sans-serif-condensed"
                                 android:text="4"
-                                android:id="@+id/subtitle"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="@color/white"
                                 android:textSize="24sp"
                                 android:typeface="normal"
-                                android:fontFamily="sans-serif-condensed"
-                                android:textColor="@color/white"
                                 tools:ignore="HardcodedText" />
                         </LinearLayout>
 
                     </RelativeLayout>
 
                     <LinearLayout
-                        android:orientation="horizontal"
+                        android:id="@+id/instructors_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/instructors_container"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginTop="5dp">
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/instructors_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:alpha="0.5"
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
                             android:text="Instructors:"
-                            android:id="@+id/instructors_title"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/black"
-                            android:alpha="0.5"
-                            android:singleLine="true"
                             tools:ignore="HardcodedText" />
 
                         <TextView
+                            android:id="@+id/instructors_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="MAELLO | CAROLLA"
-                            android:id="@+id/instructors_text"
-                            android:textSize="12sp"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/white"
-                            android:singleLine="true"
                             android:layout_marginLeft="5dp"
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
+                            android:text="MAELLO | CAROLLA"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
                             android:transitionName="instructor_name"
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/tSection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_above="@+id/relativeLayout"
-                        android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Section"
-                            android:id="@+id/shortenedCourseInfo"
-                            android:textSize="12sp"
-                            android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/black"
-                            android:alpha="0.5"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="Q2"
-                            android:id="@+id/sectionNumber_text"
-                            android:textSize="24sp"
-                            android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/white"
-                            android:maxLines="3"
-                            android:transitionName="section_number"
-                            tools:ignore="HardcodedText" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tIndex"
-                        android:layout_alignTop="@+id/tSection"
-                        android:layout_toRightOf="@+id/tSection"
-                        android:layout_marginLeft="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Index"
-                            android:id="@+id/indexNumber_title"
-                            android:textSize="12sp"
-                            android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/black"
-                            android:alpha="0.5"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="34562"
-                            android:id="@+id/indexNumber_text"
-                            android:textSize="24sp"
-                            android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/white"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:freezesText="false"
-                            android:marqueeRepeatLimit="marquee_forever"
-                            android:scrollHorizontally="true"
-                            android:maxLines="1"
-                            android:textIsSelectable="false"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tSeats"
-                        android:layout_below="@+id/tIndex"
-                        android:layout_alignLeft="@+id/tIndex">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Seats"
-                            android:id="@+id/classSize_title"
-                            android:textSize="12sp"
-                            android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/black"
-                            android:alpha="0.5"
-                            android:singleLine="true"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="230"
-                            android:id="@+id/classSize_text"
-                            android:textSize="24sp"
-                            android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/white"
-                            android:singleLine="true"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/semesterContainer"
-                        android:measureWithLargestChild="false"
-                        android:layout_below="@+id/instructors_container"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_marginTop="3dp">
+                        android:orientation="vertical">
 
                         <TextView
-                            tools:ignore="HardcodedText"
+                            android:id="@+id/shortenedCourseInfo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Term:"
-                            android:id="@+id/semesterTitle"
+                            android:alpha="0.5"
+                            android:fontFamily="sans-serif-condensed"
+                            android:text="Section"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             android:typeface="normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/black"
-                            android:alpha="0.5"
-                            android:singleLine="true" />
+                            tools:ignore="HardcodedText" />
 
                         <TextView
-                            tools:ignore="HardcodedText"
+                            android:id="@+id/sectionNumber_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Winter 2013"
-                            android:id="@+id/semesterText"
-                            android:textSize="12sp"
                             android:fontFamily="sans-serif-condensed"
+                            android:maxLines="3"
+                            android:text="Q2"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:transitionName="section_number"
+                            android:typeface="normal"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tIndex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tSection"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/tSection"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/indexNumber_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.5"
+                            android:fontFamily="sans-serif-condensed"
+                            android:text="Index"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:typeface="normal"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/indexNumber_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="sans-serif-condensed"
+                            android:freezesText="false"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:maxLines="1"
+                            android:scrollHorizontally="true"
+                            android:text="34562"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/white"
+                            android:textIsSelectable="false"
+                            android:textSize="24sp"
+                            android:typeface="normal"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tSeats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tIndex"
+                        android:layout_below="@+id/tIndex"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/classSize_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.5"
+                            android:fontFamily="sans-serif-condensed"
                             android:singleLine="true"
+                            android:text="Seats"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:typeface="normal"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/classSize_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
+                            android:text="230"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:typeface="normal"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/semesterContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/instructors_container"
+                        android:layout_marginTop="3dp"
+                        android:measureWithLargestChild="false">
+
+                        <TextView
+                            android:id="@+id/semesterTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.5"
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
+                            android:text="Term:"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:typeface="normal"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/semesterText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:transitionName="instructor_name" />
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
+                            android:text="Winter 2013"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:transitionName="instructor_name"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -299,370 +298,373 @@
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/accent"
-            android:transitionGroup="true"
-            android:orientation="vertical"
             android:measureWithLargestChild="false"
-            android:id="@+id/linearLayout4">
+            android:orientation="vertical"
+            android:transitionGroup="true">
 
             <Button
+                android:id="@+id/prof_rmp_search"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="RateMyProfessors"
+                android:background="@drawable/btn_toggle_selector"
 
                 android:drawableLeft="@drawable/rmp"
                 android:gravity="center_vertical"
-                android:id="@+id/prof_rmp_search"
-                android:textColor="@color/white"
-                android:background="@drawable/btn_toggle_selector"
                 android:paddingLeft="12dp"
+                android:text="RateMyProfessors"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/white"
                 tools:ignore="HardcodedText" />
 
             <Button
+                android:id="@+id/prof_google_search"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Google"
-                android:id="@+id/prof_google_search"
-                android:drawableLeft="@drawable/ic_search_white"
-                android:gravity="center_vertical"
-                android:drawablePadding="10dp"
-                android:paddingLeft="21dp"
-                android:textColor="@color/white"
                 android:background="@drawable/btn_toggle_selector"
+                android:drawableLeft="@drawable/ic_search_white"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="21dp"
+                android:text="Google"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/white"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
 
 
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/rightSide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rightSide"
         android:layout_weight="8">
 
         <com.melnykov.fab.FloatingActionButton
-            android:alpha="0"
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="false"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:alpha="0"
+            android:background="@color/black"
+            android:gravity="center_vertical|center_horizontal"
             android:src="@drawable/ic_add_white_24dp"
+            android:transitionName="fab"
             fab:fab_colorNormal="@color/accent"
             fab:fab_colorPressed="@color/accent_dark"
-            fab:fab_colorRipple="@color/accent_light"
-            android:background="@color/black"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:transitionName="fab"
-            android:layout_gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp" />
+            fab:fab_colorRipple="@color/accent_light" />
 
         <ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rightSide_con">
-
-        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:padding="16dp"
-            android:id="@+id/bottomHalf"
-            android:transitionGroup="true">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                android:id="@+id/course_metadata"
-                android:layout_marginTop="12dp">
+                android:id="@+id/rightSide_con"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/courseNotesContainer"
-                    android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true">
-
-                    <TextView
-                        android:layout_width="88dp"
-                        android:layout_height="wrap_content"
-                        android:text="Section Notes:"
-                        android:id="@+id/sectionNotes_title"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                        android:textColor="@color/primary_text"
-                        android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                        tools:ignore="HardcodedText" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="COURSE MEETS: CKB-220"
-                        android:id="@+id/sectionNotes_text"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/sectionNotes_title"
-                        android:focusableInTouchMode="false"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"
-                        tools:ignore="HardcodedText" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/subjectNotesContainer"
-                    android:layout_below="@+id/courseNotesContainer"
-                    android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="88dp"
-                        android:layout_height="wrap_content"
-                        android:text="Comments:"
-                        android:id="@+id/sectionComments_title"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                        android:textColor="@color/primary_text"
-                        android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                        tools:ignore="HardcodedText" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="COURSE MEETS: CKB-220"
-                        android:id="@+id/sectionComments_text"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/sectionComments_title"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"
-                        tools:ignore="HardcodedText" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sectionCrossList_container"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/sectionSubtitle_container" >
-
-                    <TextView
-                        android:layout_width="88dp"
-                        android:layout_height="wrap_content"
-                        android:text="Cross-Listed:"
-                        android:id="@+id/sectionCrossList_title"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                        android:textColor="@color/primary_text"
-                        android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                        tools:ignore="HardcodedText" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="01:214:1244:01"
-                        android:id="@+id/sectionCrossList_text"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/sectionCrossList_title"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"
-                        tools:ignore="HardcodedText" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sectionSubtitle_container"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/sectionPermisision_container" >
-
-                    <TextView
-                        android:layout_width="88dp"
-                        android:layout_height="wrap_content"
-                        android:text="Subtitle:"
-                        android:id="@+id/sectionSubtitle_title"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                        android:textColor="@color/primary_text"
-                        android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                        tools:ignore="HardcodedText" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Subtitle"
-                        android:id="@+id/sectionSubtitle_text"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/sectionSubtitle_title"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"
-                        tools:ignore="HardcodedText" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sectionPermisision_container"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/sectionOpenTo_container" >
-
-                    <TextView
-                        android:layout_width="88dp"
-                        android:layout_height="wrap_content"
-                        android:text="S Permission:"
-                        android:id="@+id/sectionPermission_title"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                        android:textColor="@color/primary_text"
-                        android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                        tools:ignore="HardcodedText" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DEPARTMENT"
-                        android:id="@+id/sectionPermission_text"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/sectionPermission_title"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"
-                        tools:ignore="HardcodedText" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sectionOpenTo_container"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/subjectNotesContainer">
-
-                    <TextView
-                        android:layout_width="88dp"
-                        android:layout_height="wrap_content"
-                        android:text="Open to:"
-                        android:id="@+id/sectionOpenTo_title"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                        android:textColor="@color/primary_text"
-                        android:textSize="12sp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                        tools:ignore="HardcodedText" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="640:327, 640:211, 220:231, 830:301"
-                        android:id="@+id/sectionOpenTo_text"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/sectionOpenTo_title"
-                        android:maxLines="5"
-                        android:scrollbars="vertical"
-                        tools:ignore="HardcodedText" />
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/sections_container"
-                android:layout_below="@+id/course_metadata"
-                android:layout_alignLeft="@+id/course_metadata"
-                android:layout_marginTop="5dp">
-
-
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:id="@+id/sectionRoot">
+                    android:id="@+id/bottomHalf"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:padding="16dp"
+                    android:transitionGroup="true">
 
                     <RelativeLayout
+                        android:id="@+id/course_metadata"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/section_details"
-                        android:layout_marginBottom="8dp">
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="12dp">
 
-                        <TextView
+                        <RelativeLayout
+                            android:id="@+id/courseNotesContainer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time/Location"
-                            android:id="@+id/sectionNumber"
-                            android:textColor="@color/primary_text"
-                            android:textSize="12sp"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:layout_marginRight="8dp"
-                            android:layout_marginBottom="8dp"
-                            tools:ignore="HardcodedText" />
+                            android:layout_alignParentStart="true">
 
-                        <LinearLayout
-                            android:layout_width="fill_parent"
+                            <TextView
+                                android:id="@+id/sectionNotes_title"
+                                android:layout_width="88dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:text="Section Notes:"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                android:textColor="@color/primary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/sectionNotes_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toRightOf="@+id/sectionNotes_title"
+                                android:focusableInTouchMode="false"
+                                android:maxLines="5"
+                                android:scrollbars="vertical"
+                                android:text="COURSE MEETS: CKB-220"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/subjectNotesContainer"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tuesday 10:00 AM - 11:20 AM"
-                            android:id="@+id/sectionTimeContainer"
-                            android:textColor="@color/secondary_text"
-                            android:textSize="14sp"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                            android:minWidth="100dp"
-                            android:orientation="vertical"
-                            android:layout_alignParentBottom="false"
-                            android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_below="@+id/sectionNumber"
-                            tools:ignore="HardcodedText">
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/courseNotesContainer"
+                            android:layout_marginTop="10dp">
 
+                            <TextView
+                                android:id="@+id/sectionComments_title"
+                                android:layout_width="88dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:text="Comments:"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                android:textColor="@color/primary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
 
-                        </LinearLayout>
+                            <TextView
+                                android:id="@+id/sectionComments_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toRightOf="@+id/sectionComments_title"
+                                android:maxLines="5"
+                                android:scrollbars="vertical"
+                                android:text="COURSE MEETS: CKB-220"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+                        </RelativeLayout>
 
+                        <RelativeLayout
+                            android:id="@+id/sectionCrossList_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/sectionSubtitle_container"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:id="@+id/sectionCrossList_title"
+                                android:layout_width="88dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:text="Cross-Listed:"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                android:textColor="@color/primary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/sectionCrossList_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toRightOf="@+id/sectionCrossList_title"
+                                android:maxLines="5"
+                                android:scrollbars="vertical"
+                                android:text="01:214:1244:01"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/sectionSubtitle_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/sectionPermisision_container"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:id="@+id/sectionSubtitle_title"
+                                android:layout_width="88dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:text="Subtitle:"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                android:textColor="@color/primary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/sectionSubtitle_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toRightOf="@+id/sectionSubtitle_title"
+                                android:maxLines="5"
+                                android:scrollbars="vertical"
+                                android:text="Subtitle"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/sectionPermisision_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/sectionOpenTo_container"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:id="@+id/sectionPermission_title"
+                                android:layout_width="88dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:text="S Permission:"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                android:textColor="@color/primary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/sectionPermission_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toRightOf="@+id/sectionPermission_title"
+                                android:maxLines="5"
+                                android:scrollbars="vertical"
+                                android:text="DEPARTMENT"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/sectionOpenTo_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/subjectNotesContainer"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                android:id="@+id/sectionOpenTo_title"
+                                android:layout_width="88dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:text="Open to:"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                android:textColor="@color/primary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/sectionOpenTo_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toRightOf="@+id/sectionOpenTo_title"
+                                android:maxLines="5"
+                                android:scrollbars="vertical"
+                                android:text="640:327, 640:211, 220:231, 830:301"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="12sp"
+                                tools:ignore="HardcodedText" />
+                        </RelativeLayout>
                     </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sections_container"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_alignLeft="@+id/course_metadata"
+                        android:layout_below="@+id/course_metadata"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+
+                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/sectionRoot"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RelativeLayout
+                                android:id="@+id/section_details"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp">
+
+                                <TextView
+                                    android:id="@+id/sectionNumber"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:gravity="center_vertical|center_horizontal"
+                                    android:text="Time/Location"
+                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="12sp"
+                                    tools:ignore="HardcodedText" />
+
+                                <LinearLayout
+                                    android:id="@+id/sectionTimeContainer"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_below="@+id/sectionNumber"
+                                    android:minWidth="100dp"
+                                    android:orientation="vertical"
+                                    android:text="Tuesday 10:00 AM - 11:20 AM"
+                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="14sp"
+                                    tools:ignore="HardcodedText">
+
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
-                </LinearLayout>
+            </RelativeLayout>
 
-        </RelativeLayout>
+
+        </ScrollView>
 
     </RelativeLayout>
-
-
-</ScrollView>
-
-</RelativeLayout>
 </LinearLayout>

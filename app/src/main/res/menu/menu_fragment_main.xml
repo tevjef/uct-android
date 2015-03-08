@@ -1,32 +1,34 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Search, should appear as action button -->
-<!--    <item android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_white"
-        android:title="@string/add_section"
-        android:titleCondensed="@string/add_section"
-        app:showAsAction="withText|ifRoom" />-->
-    <item android:id="@+id/action_refresh"
+    <!--    <item android:id="@+id/action_add"
+            android:icon="@drawable/ic_add_white"
+            android:title="@string/add_section"
+            android:titleCondensed="@string/add_section"
+            app:showAsAction="withText|ifRoom" />-->
+    <item
+        android:id="@+id/action_refresh"
         android:icon="@drawable/ic_refresh_white_24dp"
         android:title="@string/action_refresh"
         android:titleCondensed="@string/action_refresh"
         app:showAsAction="ifRoom" />
-    <item android:id="@+id/action_track"
+    <item
+        android:id="@+id/action_track"
         android:icon="@drawable/ic_track_changes_white"
         android:title="@string/action_track"
         android:titleCondensed="@string/action_track"
         app:showAsAction="ifRoom" />
-<!--
-    <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_white"
-        android:title="@string/action_settings"
-        android:titleCondensed="@string/action_settings"
-        app:showAsAction="never" />
-    <item android:id="@+id/action_feedback"
-        android:title="@string/action_feedback"
-        android:titleCondensed="@string/action_feedback"
-        app:showAsAction="never" />
--->
+    <!--
+        <item android:id="@+id/action_settings"
+            android:icon="@drawable/ic_settings_white"
+            android:title="@string/action_settings"
+            android:titleCondensed="@string/action_settings"
+            app:showAsAction="never" />
+        <item android:id="@+id/action_feedback"
+            android:title="@string/action_feedback"
+            android:titleCondensed="@string/action_feedback"
+            app:showAsAction="never" />
+    -->
 
     <!-- Settings, should always be in the overflow -->
 

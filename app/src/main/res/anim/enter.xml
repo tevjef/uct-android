@@ -3,10 +3,11 @@
     android:ordering="together"
     android:zAdjustment="top">
     <objectAnimator
+        android:duration="@android:integer/config_mediumAnimTime"
         android:interpolator="@android:interpolator/decelerate_quint"
-        android:valueFrom="400dp" android:valueTo="0dp"
-        android:valueType="floatType"
         android:propertyName="translationX"
-        android:duration="@android:integer/config_mediumAnimTime" />
+        android:valueFrom="400dp"
+        android:valueTo="0dp"
+        android:valueType="floatType" />
 
 </set>

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.model.Course;
@@ -112,7 +113,7 @@ public class SectionListAdapter {
     }
 
     private void setCourseTitle() {
-        if (mCourseTitleText != null && mInflationType.equals(MainActivity.TRACKED_SECTION)) {
+        if (mCourseTitleText != null && mInflationType.equals(MyApplication.TRACKED_SECTION)) {
             mCourseTitleText.setText(mCourse.getSubject() + " | " + mCourse.getTrueTitle());
         }
     }
@@ -127,7 +128,7 @@ public class SectionListAdapter {
         mToolbar = ButterKnife.findById(rootView, R.id.toolbar);
         mFab = ButterKnife.findById(rootView, R.id.fab);
 
-        if (mInflationType.equals(MainActivity.TRACKED_SECTION)) {
+        if (mInflationType.equals(MyApplication.TRACKED_SECTION)) {
             mCourseTitleText = ButterKnife.findById(sectionLayout, R.id.courseTitle_text);
         } else {
             mCourseTitleText = ButterKnife.findById(rootView, R.id.courseTitle_text);
@@ -136,9 +137,9 @@ public class SectionListAdapter {
 
     private View inflateSectionLayout() {
         switch (mInflationType) {
-            case MainActivity.COURSE_INFO_SECTION:
+            case MyApplication.COURSE_INFO_SECTION:
                 return inflater.inflate(R.layout.section_layout, mSectionsContainer, false);
-            case MainActivity.TRACKED_SECTION:
+            case MyApplication.TRACKED_SECTION:
                 return inflater.inflate(R.layout.full_section_layout, mSectionsContainer, false);
             default:
                 return inflater.inflate(R.layout.section_layout, mSectionsContainer, false);
@@ -189,8 +190,8 @@ public class SectionListAdapter {
         Bundle bundle = new Bundle();
         ArrayList<Course> c = new ArrayList<>();
         c.add(mCourse);
-        bundle.putParcelableArrayList(MainActivity.COURSE_LIST, c);
-        bundle.putParcelable(MainActivity.REQUEST, parcelable);
+        bundle.putParcelableArrayList(MyApplication.COURSE_LIST, c);
+        bundle.putParcelable(MyApplication.REQUEST, parcelable);
         return bundle;
     }
 

@@ -10,6 +10,7 @@ import com.tevinjeffrey.rutgersct.services.RequestService;
 public class AlarmWakefulReceiver extends WakefulBroadcastReceiver {
     public AlarmWakefulReceiver() {
     }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         // This is the Intent to deliver to our service.

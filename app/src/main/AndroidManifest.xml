@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tevinjeffrey.rutgersct" >
+    package="com.tevinjeffrey.rutgersct">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <application
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <application xmlns:tools="http://schemas.android.com/tools"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:label"
-        android:name="com.tevinjeffrey.rutgersct.MyApplication">
-
+        tools:replace="android:icon,android:label">
         <meta-data
             android:name="DATABASE"
             android:value="tracked_sections.db" />
@@ -26,34 +25,44 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.tevinjeffrey.rutgersct.model" />
+
         <activity
-            android:name="com.tevinjeffrey.rutgersct.ui.MainActivity"
-            android:label="@string/application_name" >
+            android:name=".ui.MainActivity"
+            android:label="@string/application_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver
-            android:name="com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver"
+            android:name=".receivers.AlarmWakefulReceiver"
             android:enabled="true"
-            android:exported="false" >
-        </receiver>
+            android:exported="false"></receiver>
         <receiver
-            android:name="com.tevinjeffrey.rutgersct.receivers.BootReceiver"
+            android:name=".receivers.BootReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <service
-            android:name="com.tevinjeffrey.rutgersct.services.RequestService"
+            android:name=".services.RequestService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
+
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="833534bcb0efa4959e3a72cd803a7e3251d6bc65" />
+
+        <receiver
+            android:name=".receivers.DatabaseReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
+
 </manifest>

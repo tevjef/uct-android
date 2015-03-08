@@ -12,7 +12,6 @@ import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,7 +29,7 @@ import com.koushikdutta.ion.Ion;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
-import com.nispok.snackbar.listeners.EventListener;
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.model.Request;
@@ -40,12 +39,9 @@ import com.tevinjeffrey.stringpicker.StringPicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class ChooserFragment extends MainFragment {
 
@@ -155,7 +151,7 @@ public class ChooserFragment extends MainFragment {
                         .text(message)
                         .color(getResources().getColor(R.color.primary))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
-                         // Snackbar's EventListener
+                // Snackbar's EventListener
                 , getParentActivity());// activity where it is displayed
     }
 
@@ -225,7 +221,7 @@ public class ChooserFragment extends MainFragment {
 
     Bundle createArgs(Parcelable p) {
         Bundle args = new Bundle();
-        args.putParcelable(MainActivity.REQUEST, p);
+        args.putParcelable(MyApplication.REQUEST, p);
         return args;
     }
 
@@ -337,12 +333,12 @@ public class ChooserFragment extends MainFragment {
         }
 
         private View createPicker(SemesterUtils su) {
-            final LinearLayout pickerRoot = (LinearLayout)getParentActivity().getLayoutInflater().inflate(R.layout.picker, null);
+            final LinearLayout pickerRoot = (LinearLayout) getParentActivity().getLayoutInflater().inflate(R.layout.picker, null);
 
-            final StringPicker seasonPicker = (StringPicker)pickerRoot.findViewById(R.id.seasonPicker);
+            final StringPicker seasonPicker = (StringPicker) pickerRoot.findViewById(R.id.seasonPicker);
             seasonPicker.setValues(su.getListOfSeasons());
 
-            final StringPicker yearPicker = (StringPicker)pickerRoot.findViewById(R.id.yearPicker);
+            final StringPicker yearPicker = (StringPicker) pickerRoot.findViewById(R.id.yearPicker);
             yearPicker.setValues(su.getListOfYears());
 
             return pickerRoot;

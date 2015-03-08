@@ -27,6 +27,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.CourseAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -69,7 +70,7 @@ public class CourseFragment extends MainFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(MainActivity.REQUEST);
+            request = savedInstanceState.getParcelable(MyApplication.REQUEST);
         }
     }
 
@@ -85,7 +86,7 @@ public class CourseFragment extends MainFragment {
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
 
-        request = getArguments().getParcelable(MainActivity.REQUEST);
+        request = getArguments().getParcelable(MyApplication.REQUEST);
         setToolbar();
 
         getCourses(mCoursesListView);
@@ -187,7 +188,7 @@ public class CourseFragment extends MainFragment {
     }
 
     private void setToolbarTitle(Toolbar toolbar) {
-        Iterable<Subject> al = getArguments().getParcelableArrayList(MainActivity.SUBJECTS_LIST);
+        Iterable<Subject> al = getArguments().getParcelableArrayList(MyApplication.SUBJECTS_LIST);
         for (Subject s : al) {
             if (CourseUtils.formatNumber(s.getCode()).equals(request.getSubject())) {
                 toolbar.setTitle(WordUtils.capitalize(s.getDescription().toLowerCase()));
@@ -219,17 +220,17 @@ public class CourseFragment extends MainFragment {
 
     private Bundle createArgs(Parcelable parcelable, Course selectedCourse) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(MainActivity.REQUEST, parcelable);
-        bundle.putParcelableArrayList(MainActivity.SUBJECTS_LIST, getArguments().getParcelableArrayList(MainActivity.SUBJECTS_LIST));
-        bundle.putParcelableArrayList(MainActivity.COURSE_LIST, courses);
-        bundle.putParcelable(MainActivity.SELECTED_COURSE, selectedCourse);
+        bundle.putParcelable(MyApplication.REQUEST, parcelable);
+        bundle.putParcelableArrayList(MyApplication.SUBJECTS_LIST, getArguments().getParcelableArrayList(MyApplication.SUBJECTS_LIST));
+        bundle.putParcelableArrayList(MyApplication.COURSE_LIST, courses);
+        bundle.putParcelable(MyApplication.SELECTED_COURSE, selectedCourse);
         return bundle;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MainActivity.REQUEST, request);
+        outState.putParcelable(MyApplication.REQUEST, request);
     }
 
     @Override

@@ -2,21 +2,24 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:ordering="together">
     <objectAnimator
+        android:duration="@android:integer/config_mediumAnimTime"
         android:interpolator="@android:interpolator/decelerate_quint"
-        android:valueFrom="0.9" android:valueTo="1"
-        android:valueType="floatType"
         android:propertyName="scaleX"
-        android:duration="@android:integer/config_mediumAnimTime" />
+        android:valueFrom="0.9"
+        android:valueTo="1"
+        android:valueType="floatType" />
     <objectAnimator
+        android:duration="@android:integer/config_mediumAnimTime"
         android:interpolator="@android:interpolator/decelerate_quint"
-        android:valueFrom="0.9" android:valueTo="1"
-        android:valueType="floatType"
         android:propertyName="scaleY"
-        android:duration="@android:integer/config_mediumAnimTime" />
+        android:valueFrom="0.9"
+        android:valueTo="1"
+        android:valueType="floatType" />
     <objectAnimator
+        android:duration="@android:integer/config_mediumAnimTime"
         android:interpolator="@android:interpolator/decelerate_quint"
-        android:valueFrom="0" android:valueTo="1.0"
-        android:valueType="floatType"
         android:propertyName="alpha"
-        android:duration="@android:integer/config_mediumAnimTime" />
+        android:valueFrom="0"
+        android:valueTo="1.0"
+        android:valueType="floatType" />
 </set>

@@ -23,7 +23,7 @@ public class UrlUtils {
     }
 
     private static String parseSemester(SemesterUtils.Semester semester) {
-        return semester.getSeason().getCode()+semester.getYear();
+        return semester.getSeason().getCode() + semester.getYear();
     }
 
     private static String getSemester(Request request) {

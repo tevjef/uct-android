@@ -2,6 +2,7 @@
 
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="mp_colorAccent">@color/primary</item>
 

@@ -51,6 +51,16 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = (LinearLayout) container.getParent().getParent();
+        setupToolbar(inflater);
+        setupIntervalPref();
+        setupAboutPref();
+        setupLicensesPref();
+        mToolbar.setTitle("Settings");
+
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void setupToolbar(LayoutInflater inflater) {
         mToolbar = (Toolbar) inflater.inflate(R.layout.preference_toolbar, root, false);
         mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
         mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
@@ -62,13 +72,6 @@ public class SettingsFragment extends PreferenceFragment {
                 getParentActivity().onBackPressed();
             }
         });
-
-        setupIntervalPref();
-        setupAboutPref();
-        setupLicensesPref();
-        mToolbar.setTitle("Settings");
-
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private void setupAboutPref() {
@@ -84,7 +87,7 @@ public class SettingsFragment extends PreferenceFragment {
                 tv.setTextSize(18);
                 tv.setTextColor(getResources().getColor(R.color.primary_text));
                 tv.setText(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br><br>" +
-                        "<a href=\"http://tevinjeffrey.com/\">Website</a> "));
+                        "<a href=\"http://tevinjeffrey.com/\">Website</a>" + "       <a href=\"mailto:tev.jeffrey@gmail.com\">Email</a>"));
 
                 new MaterialDialog.Builder(getParentActivity())
                         .title(getResources().getString(R.string.application_name))
@@ -112,7 +115,7 @@ public class SettingsFragment extends PreferenceFragment {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 setInterval(which);
-                                setSummary(syncInterval, String.format("Every %s",
+                                setSummary(syncInterval, String.format("%s",
                                         getResources().getStringArray(R.array.intervals)[getInterval()]));
                                 new Alarm(getParentActivity().getApplicationContext()).setAlarm();
                             }

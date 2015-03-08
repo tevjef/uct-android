@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress ALL -->
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
@@ -9,25 +8,23 @@
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
 
 
-    <com.jenzz.materialpreference.PreferenceCategory
-        android:title="SYNC &amp; DATA">
+    <com.jenzz.materialpreference.PreferenceCategory android:title="SYNC &amp; DATA">
 
         <com.jenzz.materialpreference.Preference
-            android:title="Sync Interval"
+            android:key="sync_interval"
             android:summary="Material Summary"
-            android:key="sync_interval"/>
+            android:title="Sync Interval" />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 
-    <com.jenzz.materialpreference.PreferenceCategory
-        android:title="DEVELOPER">
+    <com.jenzz.materialpreference.PreferenceCategory android:title="DEVELOPER">
 
         <com.jenzz.materialpreference.Preference
-            android:title="Open Source Licenses"
-            android:key="licenses"/>
+            android:key="licenses"
+            android:title="Open Source Licenses" />
         <com.jenzz.materialpreference.Preference
-            android:title="About"
-            android:key="about"/>
+            android:key="about"
+            android:title="About" />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 

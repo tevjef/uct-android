@@ -23,6 +23,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SubjectAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -65,7 +66,7 @@ public class SubjectFragment extends MainFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(MainActivity.REQUEST);
+            request = savedInstanceState.getParcelable(MyApplication.REQUEST);
         }
 
     }
@@ -79,10 +80,8 @@ public class SubjectFragment extends MainFragment {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
 
-        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
-
-        request = getArguments().getParcelable(MainActivity.REQUEST);
+        setupSwipeLayout();
+        request = getArguments().getParcelable(MyApplication.REQUEST);
         setToolbar();
 
         getSubjects(mCourses);
@@ -98,6 +97,11 @@ public class SubjectFragment extends MainFragment {
             }
         });
         return rootView;
+    }
+
+    private void setupSwipeLayout() {
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
     }
 
     private void getSubjects(final ListView listView) {
@@ -214,15 +218,15 @@ public class SubjectFragment extends MainFragment {
 
     private Bundle createArgs(Parcelable parcelable) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(MainActivity.REQUEST, parcelable);
-        bundle.putParcelableArrayList(MainActivity.SUBJECTS_LIST, subjects);
+        bundle.putParcelable(MyApplication.REQUEST, parcelable);
+        bundle.putParcelableArrayList(MyApplication.SUBJECTS_LIST, subjects);
         return bundle;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MainActivity.REQUEST, request);
+        outState.putParcelable(MyApplication.REQUEST, request);
     }
 
     @Override

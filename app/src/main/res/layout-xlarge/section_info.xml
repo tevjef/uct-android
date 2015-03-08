@@ -22,8 +22,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/linearLayout4"
-            android:layout_alignParentStart="false"
             android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
             android:layout_alignParentTop="true"
             android:background="@color/primary"
             android:elevation="1dp"
@@ -259,14 +259,13 @@
                         android:id="@+id/semesterContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_below="@+id/instructors_container"
                         android:layout_alignLeft="@+id/instructors_container"
                         android:layout_alignStart="@+id/instructors_container"
-                        android:layout_marginTop="2dp">
+                        android:layout_below="@+id/instructors_container"
+                        android:layout_marginTop="2dp"
+                        android:orientation="horizontal">
 
                         <TextView
-                            tools:ignore="HardcodedText"
                             android:id="@+id/semesterTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -276,10 +275,10 @@
                             android:text="Term:"
                             android:textColor="@color/black"
                             android:textSize="18sp"
-                            android:typeface="normal" />
+                            android:typeface="normal"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
-                            tools:ignore="HardcodedText"
                             android:id="@+id/semesterText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -289,7 +288,8 @@
                             android:text="Winter 2012"
                             android:textColor="@color/white"
                             android:textSize="18sp"
-                            android:transitionName="instructor_name" />
+                            android:transitionName="instructor_name"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -601,8 +601,8 @@
                         android:id="@+id/sections_container"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_alignStart="@+id/course_metadata"
                         android:layout_alignLeft="@+id/course_metadata"
+                        android:layout_alignStart="@+id/course_metadata"
                         android:layout_below="@+id/course_metadata"
                         android:layout_marginTop="5dp"
                         android:orientation="vertical">

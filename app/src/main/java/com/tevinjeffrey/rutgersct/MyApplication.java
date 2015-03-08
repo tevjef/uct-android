@@ -19,9 +19,50 @@ import timber.log.Timber;
 public class MyApplication extends SugarApp {
     public static final String REFRESH_INTERVAL = "Sync Interval";
     public static final String ITEMS_IN_DATABASE = "Items in database";
+    public final static String SUBJECTS_LIST = "SUBJECTS_LIST";
+    public final static String COURSE_LIST = "COURSE_LIST";
+    public final static String SELECTED_COURSE = "SELECTED_COURSE";
+    public final static String REQUEST = "REQUEST";
+    public final static String TRACKED_SECTION = "TRACKED_SECTION";
+    public final static String COURSE_INFO_SECTION = "COURSE_INFO_SECTION";
     private static final String INSTALLATION = "INSTALLATION";
+    public static String REMOVE_SECTION = "REMOVE_SECTION";
     private static String sID = null;
 
+    private synchronized static String getsID(Context context) {
+        if (sID == null) {
+            File installation = new File(context.getFilesDir(), INSTALLATION);
+            try {
+                if (!installation.exists())
+                    writeInstallationFile(installation);
+                sID = readInstallationFile(installation);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return sID;
+    }
+
+    private static String readInstallationFile(File installation) throws IOException {
+        RandomAccessFile f = new RandomAccessFile(installation, "r");
+        byte[] bytes = new byte[(int) f.length()];
+        f.readFully(bytes);
+        f.close();
+        return new String(bytes);
+    }
+
+    private static void writeInstallationFile(File installation) throws IOException {
+        FileOutputStream out = new FileOutputStream(installation);
+        String id = UUID.randomUUID().toString();
+        out.write(id.getBytes());
+        out.close();
+    }
+
+    public static String getTimeNow() {
+        Time t = new Time();
+        t.setToNow();
+        return t.toString();
+    }
 
     @Override
     public void onCreate() {
@@ -72,43 +113,8 @@ public class MyApplication extends SugarApp {
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
             Crashlytics.logException(t);
-            Mint.logExceptionMessage("INFO: ", String.format(message, args), new Exception(t.getMessage(),t));
+            Mint.logExceptionMessage("INFO: ", String.format(message, args), new Exception(t.getMessage(), t));
         }
-    }
-
-    private synchronized static String getsID(Context context) {
-        if (sID == null) {
-            File installation = new File(context.getFilesDir(), INSTALLATION);
-            try {
-                if (!installation.exists())
-                    writeInstallationFile(installation);
-                sID = readInstallationFile(installation);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return sID;
-    }
-
-    private static String readInstallationFile(File installation) throws IOException {
-        RandomAccessFile f = new RandomAccessFile(installation, "r");
-        byte[] bytes = new byte[(int) f.length()];
-        f.readFully(bytes);
-        f.close();
-        return new String(bytes);
-    }
-
-    private static void writeInstallationFile(File installation) throws IOException {
-        FileOutputStream out = new FileOutputStream(installation);
-        String id = UUID.randomUUID().toString();
-        out.write(id.getBytes());
-        out.close();
-    }
-
-    public static String getTimeNow() {
-        Time t = new Time();
-        t.setToNow();
-        return t.toString();
     }
 
 }

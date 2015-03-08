@@ -145,8 +145,8 @@ public class SectionUtils {
 
     public static void scrubSectionList(List<Course.Sections> sectionData) {
         Collection<Course.Sections> toRemove = new ArrayList<>();
-        for(Course.Sections s: sectionData) {
-            if(!s.isPrinted()) {
+        for (Course.Sections s : sectionData) {
+            if (!s.isPrinted()) {
                 toRemove.add(s);
             }
         }

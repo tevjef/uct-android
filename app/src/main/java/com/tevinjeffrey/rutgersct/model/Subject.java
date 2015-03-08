@@ -7,6 +7,17 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Subject implements Parcelable {
 
+    //All code below allows the android system to serialize this object.
+    // It's actually quite faster than serialization.
+    public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {
+        public Subject createFromParcel(Parcel source) {
+            return new Subject(source);
+        }
+
+        public Subject[] newArray(int size) {
+            return new Subject[size];
+        }
+    };
     private String description;
     private int code;
     private String modifiedDescription;
@@ -49,18 +60,6 @@ public class Subject implements Parcelable {
     public String toString() {
         return getCode() + " : " + getDescription();
     }
-
-    //All code below allows the android system to serialize this object.
-    // It's actually quite faster than serialization.
-    public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {
-        public Subject createFromParcel(Parcel source) {
-            return new Subject(source);
-        }
-
-        public Subject[] newArray(int size) {
-            return new Subject[size];
-        }
-    };
 
     @Override
     public int describeContents() {

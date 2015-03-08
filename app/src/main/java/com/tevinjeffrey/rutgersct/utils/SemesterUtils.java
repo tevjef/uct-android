@@ -9,10 +9,18 @@ import java.util.List;
 
 public class SemesterUtils implements Parcelable {
 
+    public static final Parcelable.Creator<SemesterUtils> CREATOR = new Parcelable.Creator<SemesterUtils>() {
+        public SemesterUtils createFromParcel(Parcel source) {
+            return new SemesterUtils(source);
+        }
+
+        public SemesterUtils[] newArray(int size) {
+            return new SemesterUtils[size];
+        }
+    };
+    private final Calendar calendar;
     public int UPPER_LIMIT;
     public int LOWER_LIMIT = 2011;
-    private final Calendar calendar;
-
 
     public SemesterUtils(Calendar calendar) {
         this.calendar = calendar;
@@ -20,8 +28,14 @@ public class SemesterUtils implements Parcelable {
         LOWER_LIMIT = UPPER_LIMIT - 4;
     }
 
+    private SemesterUtils(Parcel in) {
+        this.UPPER_LIMIT = in.readInt();
+        this.LOWER_LIMIT = in.readInt();
+        this.calendar = (Calendar) in.readSerializable();
+    }
+
     public String[] getListOfSeasons() {
-        return new String[]{Season.WINTER.getName(),Season.SPRING.getName(),Season.SUMMER.getName(),Season.FALL.getName()};
+        return new String[]{Season.WINTER.getName(), Season.SPRING.getName(), Season.SUMMER.getName(), Season.FALL.getName()};
     }
 
     public List<String> getListOfYears() {
@@ -30,130 +44,11 @@ public class SemesterUtils implements Parcelable {
 
     private List<String> addYear(List<String> list, int limit) {
         int lowerLimit = LOWER_LIMIT;
-        if(lowerLimit != limit) {
+        if (lowerLimit != limit) {
             list.add(String.valueOf(limit));
-            addYear(list , --limit);
+            addYear(list, --limit);
         }
         return list;
-    }
-
-    public static class Semester implements Parcelable {
-        Season mSeason;
-        String mYear;
-
-        public Semester(Season season, String year) {
-            this.mSeason = season;
-            this.mYear = year;
-        }
-
-        public Semester(String season, String year) {
-            this.mYear = year;
-            switch(season) {
-                case "Winter":
-                    this.mSeason = Season.WINTER;
-                    break;
-                case "Spring":
-                    this.mSeason = Season.SPRING;
-                    break;
-                case "Summer":
-                    this.mSeason = Season.SUMMER;
-                    break;
-                case "Fall":
-                    this.mSeason = Season.FALL;
-                    break;
-                default:
-                    throw new IllegalArgumentException("error while getting Season enum");
-
-            }
-        }
-
-        public Semester(String yearAndSeason) {
-            this(yearAndSeason.split(" ")[0], yearAndSeason.split(" ")[1]);
-        }
-
-        public Season getSeason() {
-            return mSeason;
-        }
-
-        public String getYear() {
-            return mYear;
-        }
-
-        @Override
-        public String toString() {
-            return mSeason.getName() + " " + mYear;
-        }
-
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(this.mSeason == null ? -1 : this.mSeason.ordinal());
-            dest.writeString(this.mYear);
-        }
-
-        private Semester(Parcel in) {
-            int tmpMSeason = in.readInt();
-            this.mSeason = tmpMSeason == -1 ? null : Season.values()[tmpMSeason];
-            this.mYear = in.readString();
-        }
-
-        public static final Parcelable.Creator<Semester> CREATOR = new Parcelable.Creator<Semester>() {
-            public Semester createFromParcel(Parcel source) {
-                return new Semester(source);
-            }
-
-            public Semester[] newArray(int size) {
-                return new Semester[size];
-            }
-        };
-    }
-
-    public enum Season {
-        WINTER (0, "Winter"),
-        SPRING(1, "Spring"),
-        SUMMER(7, "Summer"),
-        FALL(9, "Fall");
-
-        private final int code;
-        private final String name;
-
-        Season(int code, String simpleName) {
-            this.code = code;
-            this.name = simpleName;
-        }
-        int getCode() {
-            return this.code;
-        }
-        int getMappedValue() {
-            if(this == WINTER) {
-                return 0;
-            } else if(this == SPRING) {
-                return 1;
-            } else if(this == SUMMER) {
-                return 2;
-            } else if(this == FALL) {
-                return 3;
-            } else {
-                return -1;
-            }
-        }
-        String getName() {
-            return this.name;
-        }
-
-        @Override
-        public String toString() {
-            return "Season{" +
-                    "code=" + code +
-                    ", name='" + name + '\'' +
-                    '}';
-        }
-
     }
 
     public String resolveCurrentYear(Calendar c) {
@@ -166,26 +61,26 @@ public class SemesterUtils implements Parcelable {
         String currentYear = resolveCurrentYear(calendar);
 
         //Dec 15 <-> Jan 15 = Winter
-        if((month == 11 && dayOfMonth > 15) ||
+        if ((month == 11 && dayOfMonth > 15) ||
                 //The first day of the year is 0 for some fucking reason.
                 (month == 0 && dayOfMonth < 15)) {
-            return new Semester(Season.WINTER, month != 0? nextYear(currentYear): currentYear);
+            return new Semester(Season.WINTER, month != 0 ? nextYear(currentYear) : currentYear);
 
         }
         //Jan 15 <-> May 20 = Spring
-        else if((month >= 0 && dayOfMonth >= 15) ||
+        else if ((month >= 0 && dayOfMonth >= 15) ||
                 (month <= 4 && dayOfMonth < 20)) {
-            return  new Semester(Season.SPRING, currentYear);
+            return new Semester(Season.SPRING, currentYear);
         }
         //May 20 <-> August 20 = Summer
-        else if((month >= 4 && dayOfMonth >= 20) ||
+        else if ((month >= 4 && dayOfMonth >= 20) ||
                 (month <= 7 && dayOfMonth < 20)) {
-            return  new Semester(Season.SUMMER, currentYear);
+            return new Semester(Season.SUMMER, currentYear);
         }
         //August 20 <-> December 15 = Fall
-        else if((month >= 7 && dayOfMonth >= 20) ||
+        else if ((month >= 7 && dayOfMonth >= 20) ||
                 (month <= 11 && dayOfMonth <= 15)) {
-            return  new Semester(Season.FALL, currentYear);
+            return new Semester(Season.FALL, currentYear);
         } else {
             throw new IllegalStateException("could not resolveCurrentSemester");
         }
@@ -200,28 +95,27 @@ public class SemesterUtils implements Parcelable {
         int month = c.get(Calendar.MONTH);
         int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
         String currentYear = resolveCurrentYear(c);
-        
+
         //Oct 1 <-> Jan 15
-        if((month >= 9 && dayOfMonth > 1) ||
+        if ((month >= 9 && dayOfMonth > 1) ||
                 //The first day of the year is 0 for some fucking reason.
                 (month == 0 && dayOfMonth < 15)) {
-            return new Semester[]{new Semester(Season.WINTER, month != 0? nextYear(currentYear): currentYear)
-                    , new Semester(Season.SPRING, month != 0? nextYear(currentYear): currentYear)};
+            return new Semester[]{new Semester(Season.WINTER, month != 0 ? nextYear(currentYear) : currentYear)
+                    , new Semester(Season.SPRING, month != 0 ? nextYear(currentYear) : currentYear)};
 
         }
         //Jan 15 <-> March 15
-        else if((month == 0 && dayOfMonth >= 15) ||
-                (month <=2 && dayOfMonth < 15)) {
+        else if ((month == 0 && dayOfMonth >= 15) ||
+                (month <= 2 && dayOfMonth < 15)) {
             return new Semester[]{new Semester(Season.SPRING, currentYear)
                     , new Semester(Season.SUMMER, currentYear)};
         }
         //March 15 <-> September 1
-        else if((month >= 2 && dayOfMonth >= 15) ||
+        else if ((month >= 2 && dayOfMonth >= 15) ||
                 (month <= 9 && dayOfMonth <= 31)) {
-            return  new Semester[]{new Semester(Season.SUMMER, currentYear)
+            return new Semester[]{new Semester(Season.SUMMER, currentYear)
                     , new Semester(Season.FALL, currentYear)};
-        }
-        else {
+        } else {
             throw new IllegalStateException("could not resolveSemesterChoices");
         }
     }
@@ -265,19 +159,123 @@ public class SemesterUtils implements Parcelable {
         dest.writeSerializable(this.calendar);
     }
 
-    private SemesterUtils(Parcel in) {
-        this.UPPER_LIMIT = in.readInt();
-        this.LOWER_LIMIT = in.readInt();
-        this.calendar = (Calendar) in.readSerializable();
+    public enum Season {
+        WINTER(0, "Winter"),
+        SPRING(1, "Spring"),
+        SUMMER(7, "Summer"),
+        FALL(9, "Fall");
+
+        private final int code;
+        private final String name;
+
+        Season(int code, String simpleName) {
+            this.code = code;
+            this.name = simpleName;
+        }
+
+        int getCode() {
+            return this.code;
+        }
+
+        int getMappedValue() {
+            if (this == WINTER) {
+                return 0;
+            } else if (this == SPRING) {
+                return 1;
+            } else if (this == SUMMER) {
+                return 2;
+            } else if (this == FALL) {
+                return 3;
+            } else {
+                return -1;
+            }
+        }
+
+        String getName() {
+            return this.name;
+        }
+
+        @Override
+        public String toString() {
+            return "Season{" +
+                    "code=" + code +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
+
     }
 
-    public static final Parcelable.Creator<SemesterUtils> CREATOR = new Parcelable.Creator<SemesterUtils>() {
-        public SemesterUtils createFromParcel(Parcel source) {
-            return new SemesterUtils(source);
+    public static class Semester implements Parcelable {
+        public static final Parcelable.Creator<Semester> CREATOR = new Parcelable.Creator<Semester>() {
+            public Semester createFromParcel(Parcel source) {
+                return new Semester(source);
+            }
+
+            public Semester[] newArray(int size) {
+                return new Semester[size];
+            }
+        };
+        Season mSeason;
+        String mYear;
+
+        public Semester(Season season, String year) {
+            this.mSeason = season;
+            this.mYear = year;
         }
 
-        public SemesterUtils[] newArray(int size) {
-            return new SemesterUtils[size];
+        public Semester(String season, String year) {
+            this.mYear = year;
+            switch (season) {
+                case "Winter":
+                    this.mSeason = Season.WINTER;
+                    break;
+                case "Spring":
+                    this.mSeason = Season.SPRING;
+                    break;
+                case "Summer":
+                    this.mSeason = Season.SUMMER;
+                    break;
+                case "Fall":
+                    this.mSeason = Season.FALL;
+                    break;
+                default:
+                    throw new IllegalArgumentException("error while getting Season enum");
+
+            }
         }
-    };
+
+        public Semester(String yearAndSeason) {
+            this(yearAndSeason.split(" ")[0], yearAndSeason.split(" ")[1]);
+        }
+
+        private Semester(Parcel in) {
+            int tmpMSeason = in.readInt();
+            this.mSeason = tmpMSeason == -1 ? null : Season.values()[tmpMSeason];
+            this.mYear = in.readString();
+        }
+
+        public Season getSeason() {
+            return mSeason;
+        }
+
+        public String getYear() {
+            return mYear;
+        }
+
+        @Override
+        public String toString() {
+            return mSeason.getName() + " " + mYear;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.mSeason == null ? -1 : this.mSeason.ordinal());
+            dest.writeString(this.mYear);
+        }
+    }
 }

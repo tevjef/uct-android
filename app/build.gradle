@@ -20,25 +20,19 @@ def isCi() {
 }
 
 def isProguarded = true;
-def vName = '0.6.5.' + (isProguarded? '1':'0')
+def vName = '0.8.0.' + (isProguarded ? '1' : '0')
 
 android {
     signingConfigs {
-        release_config {
-            keyAlias System.getenv("ANDROID_ALIAS")
-            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
-            storeFile file(System.getenv("ANDROID_KEYSTORE"))
-            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-        }
     }
 
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId 'com.tevinjeffrey.rutgersct'
-        minSdkVersion 11
+        minSdkVersion 13
         targetSdkVersion 21
-        versionCode 9
+        versionCode 10
         versionName vName
     }
     buildTypes {
@@ -46,7 +40,6 @@ android {
             debuggable false
             minifyEnabled isProguarded
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release_config
             versionNameSuffix 'R'
         }
         debug {

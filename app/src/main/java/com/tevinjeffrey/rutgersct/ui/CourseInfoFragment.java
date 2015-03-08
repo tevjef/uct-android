@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.CourseInfoAdapter;
 import com.tevinjeffrey.rutgersct.model.Course;
@@ -30,7 +31,7 @@ public class CourseInfoFragment extends MainFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(MainActivity.REQUEST);
+            request = savedInstanceState.getParcelable(MyApplication.REQUEST);
         }
     }
 
@@ -51,8 +52,8 @@ public class CourseInfoFragment extends MainFragment {
     private void setUp(View rootView) {
         setToolbar();
         Bundle bundle = getArguments();
-        Course selectedCourse = bundle.getParcelable(MainActivity.SELECTED_COURSE);
-        request = bundle.getParcelable(MainActivity.REQUEST);
+        Course selectedCourse = bundle.getParcelable(MyApplication.SELECTED_COURSE);
+        request = bundle.getParcelable(MyApplication.REQUEST);
         inflateViews(selectedCourse, rootView);
     }
 
@@ -76,9 +77,9 @@ public class CourseInfoFragment extends MainFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MainActivity.REQUEST, request);
-        outState.putParcelableArrayList(MainActivity.COURSE_LIST, getArguments().getParcelableArrayList(MainActivity.COURSE_LIST));
-        outState.putParcelableArrayList(MainActivity.SUBJECTS_LIST, getArguments().getParcelableArrayList(MainActivity.SUBJECTS_LIST));
+        outState.putParcelable(MyApplication.REQUEST, request);
+        outState.putParcelableArrayList(MyApplication.COURSE_LIST, getArguments().getParcelableArrayList(MyApplication.COURSE_LIST));
+        outState.putParcelableArrayList(MyApplication.SUBJECTS_LIST, getArguments().getParcelableArrayList(MyApplication.SUBJECTS_LIST));
     }
 
     @Override

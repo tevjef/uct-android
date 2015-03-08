@@ -24,8 +24,8 @@ public class CourseUtils {
 
     public static void scrubCourseList(List<Course> courseList) {
         Collection<Course> toRemove = new ArrayList<>();
-        for(Course course: courseList) {
-            if(course.getSectionsTotal() == 0) {
+        for (Course course : courseList) {
+            if (course.getSectionsTotal() == 0) {
                 toRemove.add(course);
             }
         }

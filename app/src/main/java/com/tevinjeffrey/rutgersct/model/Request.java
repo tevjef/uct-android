@@ -12,6 +12,15 @@ import java.util.ArrayList;
 
 public class Request implements Parcelable {
 
+    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
+        public Request createFromParcel(Parcel source) {
+            return new Request(source);
+        }
+
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
     private String subject;
     private Semester semester;
     private ArrayList<String> locations;
@@ -31,6 +40,18 @@ public class Request implements Parcelable {
     public Request(String subject, Semester semester, ArrayList<String> locations, ArrayList<String> levels, String index) {
         this(subject, semester, locations, levels);
         this.index = index;
+    }
+
+    private Request(Parcel in) {
+        this.subject = in.readString();
+        this.semester = in.readParcelable(Semester.class.getClassLoader());
+        this.locations = (ArrayList<String>) in.readSerializable();
+        this.levels = (ArrayList<String>) in.readSerializable();
+        this.index = in.readString();
+    }
+
+    public static String toStringList(ArrayList<String> strings) {
+        return StringUtils.join(strings, ", ");
     }
 
     public String getIndex() {
@@ -77,13 +98,12 @@ public class Request implements Parcelable {
         return getSubject() != null;
     }
 
+    //All code below allows the android system to serialize this object.
+    // It's actually quite faster than serialization.
+
     @Override
     public String toString() {
         return UrlUtils.buildParamUrl(this) + " index: " + getIndex();
-    }
-
-    public static String toStringList(ArrayList<String> strings) {
-        return StringUtils.join(strings, ", ");
     }
 
     @Override
@@ -96,10 +116,6 @@ public class Request implements Parcelable {
         }
         return false;
     }
-
-    //All code below allows the android system to serialize this object.
-    // It's actually quite faster than serialization.
-
 
     @Override
     public int describeContents() {
@@ -114,22 +130,4 @@ public class Request implements Parcelable {
         dest.writeSerializable(this.levels);
         dest.writeString(this.index);
     }
-
-    private Request(Parcel in) {
-        this.subject = in.readString();
-        this.semester = in.readParcelable(Semester.class.getClassLoader());
-        this.locations = (ArrayList<String>) in.readSerializable();
-        this.levels = (ArrayList<String>) in.readSerializable();
-        this.index = in.readString();
-    }
-
-    public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
-        public Request createFromParcel(Parcel source) {
-            return new Request(source);
-        }
-
-        public Request[] newArray(int size) {
-            return new Request[size];
-        }
-    };
 }

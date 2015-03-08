@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
@@ -165,6 +166,6 @@ public class CourseInfoAdapter {
     }
 
     void setSections(Course course) {
-        new SectionListAdapter(callingFragment, course, rootView, request, MainActivity.COURSE_INFO_SECTION).init();
+        new SectionListAdapter(callingFragment, course, rootView, request, MyApplication.COURSE_INFO_SECTION).init();
     }
 }

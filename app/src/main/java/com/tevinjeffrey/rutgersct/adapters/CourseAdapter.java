@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.model.Course;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 import java.util.List;
 
 public class CourseAdapter extends ArrayAdapter {

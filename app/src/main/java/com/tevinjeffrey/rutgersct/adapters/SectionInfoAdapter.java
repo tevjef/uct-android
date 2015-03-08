@@ -192,7 +192,7 @@ public class SectionInfoAdapter {
         setSearch(rmpSearch, googleSearch);
         setSemester(request);
 
-        if(context.getFragmentManager().getBackStackEntryCount() > 1) {
+        if (context.getFragmentManager().getBackStackEntryCount() > 1) {
             new SectionInfoAnimator(rowView).init();
         }
         mFab.setOnClickListener(new View.OnClickListener() {

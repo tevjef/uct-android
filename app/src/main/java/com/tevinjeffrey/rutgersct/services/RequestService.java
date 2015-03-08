@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,34 +10,24 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgersct.MyApplication;
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.database.Updater;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.TrackedSections;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
-import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.utils.SemesterUtils.Semester;
-import com.tevinjeffrey.rutgersct.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import timber.log.Timber;
 
-import static android.app.PendingIntent.FLAG_ONE_SHOT;
-
 public class RequestService extends Service {
+    Intent mIntent;
+
     public RequestService() {
     }
-    Intent mIntent;
-    final AtomicInteger numOfRequestedCourses = new AtomicInteger();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -44,36 +35,37 @@ public class RequestService extends Service {
         mIntent = intent;
         Timber.i("Request Service started at %s", MyApplication.getTimeNow());
 
-        //Gets a list of all tracked sections from the database.
-        final List<TrackedSections> sectionList = TrackedSections.listAll(TrackedSections.class);
-        Timber.i("Request Service getting %s sections", sectionList.size());
-        Crashlytics.setInt(MyApplication.ITEMS_IN_DATABASE, sectionList.size());
-        Crashlytics.setLong(MyApplication.REFRESH_INTERVAL, new Alarm(RequestService.this).getInterval());
+        Updater.with(this).setOnCompleteListener(new Updater.OnCompleteListener() {
+            @Override
+            public void onSuccess(Request request, Course course) {
+                if (course.getSections().get(0).isOpenStatus())
+                    makeNotification(course, request);
+            }
 
+            @Override
+            public void onError(Throwable t) {
+                if (t != null && !(t instanceof CancellationException)) {
+                    //If an error occured while completing the request. Send it to crash reporting.
+                    Timber.e(t, "Crash while attempting to complete request in %s to %s"
+                            , RequestService.this.toString(), t.toString());
+                }
 
-        //Iterate through the list to create a request object which is then passed to getCourses() method.
-        for (TrackedSections ts : sectionList) {
-            final Request r = new Request(ts.getSubject(), new Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
-            getCourse(sectionList, r);
-        }
+            }
+
+            @Override
+            public void onDone(Map<Course, Request> mappedValues) {
+                stopSelf();
+            }
+        }).start();
         return START_NOT_STICKY;
     }
 
-    private void getCourse(final Collection<TrackedSections> sectionsList, final Request r) {
-        //Get Url based on the request
-        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
-
-        Ion.with(this)
-                .load(url)
-                .as(new TypeToken<List<Course>>() {
-                })
-                .setCallback(new ListFutureCallback(r, sectionsList));
-    }
-
     //Creates a notfication of the Android system.
-    private void makeNotification(Course c, Course.Sections s, Request r) {
+
+    private void makeNotification(Course c, Request r) {
         String courseTitle = c.getTrueTitle();
-        String sectionNumber = s.getNumber();
+        Course.Sections sections = c.getSections().get(0);
+        String sectionNumber = sections.getNumber();
 
         //Builds a notification
         NotificationCompat.Builder mBuilder =
@@ -81,12 +73,13 @@ public class RequestService extends Service {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText("Section " + sectionNumber + " of " + courseTitle
                                         + " has opened")
-                                .setBigContentTitle("A section has opened"))
+                                .setBigContentTitle(r.getSemester().toString() + " - " + courseTitle))
                         .setSmallIcon(R.drawable.ic_notification)
                         .setWhen(System.currentTimeMillis())
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setColor(getResources().getColor(R.color.green))
+                        .setAutoCancel(true)
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentTitle("A section has opened!")
                         .setContentText("Section " + sectionNumber + " of " + courseTitle
@@ -99,8 +92,10 @@ public class RequestService extends Service {
         mBuilder.addAction(0, "Open Webreg", pOpenInBrowser);
 
         //Intent open the app.
-        Intent openTracked = new Intent(RequestService.this, MainActivity.class);
-        PendingIntent pOpenTracked = PendingIntent.getActivity(RequestService.this, 0, openTracked, FLAG_ONE_SHOT);
+        Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
+        openTracked.putExtra(MyApplication.REQUEST, r);
+        openTracked.putExtra(MyApplication.SELECTED_COURSE, c);
+        PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this, Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.addAction(0, "Stop Tracking", pOpenTracked);
 
         //When you click on the notification itself.
@@ -112,12 +107,16 @@ public class RequestService extends Service {
         //Builds the intent and sends it to notification manager with a unique ID.
         // The id is the index number of the section since those are also unique.
         // It also allows me to easily update the notication in the future.
-        mNotifyMgr.notify(Integer.valueOf(r.getIndex()), mBuilder.build());
+        Notification n = mBuilder.build();
+        mNotifyMgr.notify(Integer.valueOf(r.getIndex()), n);
     }
 
 
     //Androd boilerplate code
-    @Override public IBinder onBind(Intent intent) {return null;}
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
     @Override
     public void onDestroy() {
@@ -128,43 +127,8 @@ public class RequestService extends Service {
         super.onDestroy();
     }
 
-    private class ListFutureCallback implements FutureCallback<List<Course>> {
-        private final Request r;
-        private final Collection<TrackedSections> sectionsList;
-
-        public ListFutureCallback(Request r, Collection<TrackedSections> sectionsList) {
-            this.r = r;
-            this.sectionsList = sectionsList;
-        }
-
-        @Override
-        public void onCompleted(Exception e, List<Course> courses) {
-            numOfRequestedCourses.incrementAndGet();
-            //If e is null, notghing catastophic occur while completeing the request.
-            // If course size is 0, we can't do anthing.
-            if (e == null && courses.size() > 0) {
-                //For courses in the list.
-                for (final Course c : courses) {
-                    //For sections in the course
-                    for (final Course.Sections s : c.getSections()) {
-                        //If the index number of the current section is the same as the
-                        //one we are looking for and the section is open
-                        if (s.getIndex().equals(r.getIndex()) && s.isOpenStatus()) {
-                            //Create a notification.
-                            makeNotification(c, s, r);
-                            //If the interator does not have anymore sections,
-                            //stop the service.
-                            if (sectionsList.size() == numOfRequestedCourses.get()) {
-                                stopSelf();
-                            }
-                        }
-                    }
-                }
-            } else if (e != null &&  !(e instanceof CancellationException)) {
-                //If an error occured while completing the request. Send it to crash reporting.
-                Timber.e(e, "Crash while attempting to complete request in %s to %s"
-                        , RequestService.this.toString(), r.toString());
-            }
-        }
+    @Override
+    public String toString() {
+        return "RequestService";
     }
 }

@@ -103,22 +103,22 @@ public class Course implements Comparable, Parcelable {
     }
 
     public String getTrueTitle() {
-        return getExpandedTitle() == null ? getTitle() :
+        return (getExpandedTitle() == null || getExpandedTitle().trim().length() <= 0) ? getTitle() :
                 getExpandedTitle();
     }
 
     public int getNumberOfNoPrintSections() {
         int num = 0;
-        for(Sections s :getSections()) {
-            if(!s.isPrinted()) ++num ;
+        for (Sections s : getSections()) {
+            if (!s.isPrinted()) ++num;
         }
         return num;
     }
 
     public int getNumberOfOpenNoPrintSections() {
         int num = 0;
-        for(Sections s :getSections()) {
-            if(!s.isPrinted() && s.openStatus) ++num ;
+        for (Sections s : getSections()) {
+            if (!s.isPrinted() && s.openStatus) ++num;
         }
         return num;
     }
@@ -159,14 +159,14 @@ public class Course implements Comparable, Parcelable {
     @Override
     public int compareTo(@NonNull Object another) {
         Course b = (Course) another;
-        if(Integer.valueOf(this.getSubject()) > Integer.valueOf(b.getSubject())) {
+        if (Integer.valueOf(this.getSubject()) > Integer.valueOf(b.getSubject())) {
             return 1;
-        } else if(Integer.valueOf(this.getSubject()) < Integer.valueOf(b.getSubject())) {
+        } else if (Integer.valueOf(this.getSubject()) < Integer.valueOf(b.getSubject())) {
             return -1;
         } else if (Integer.valueOf(this.getSubject()).equals(Integer.valueOf(b.getSubject()))) {
-            if(Integer.valueOf(this.getCourseNumber()) > Integer.valueOf(b.getCourseNumber())) {
+            if (Integer.valueOf(this.getCourseNumber()) > Integer.valueOf(b.getCourseNumber())) {
                 return 1;
-            } else if(Integer.valueOf(this.getCourseNumber()) < Integer.valueOf(b.getCourseNumber())) {
+            } else if (Integer.valueOf(this.getCourseNumber()) < Integer.valueOf(b.getCourseNumber())) {
                 return -1;
             } else {
                 return 0;
@@ -359,6 +359,7 @@ public class Course implements Comparable, Parcelable {
         public boolean isPrinted() {
             return getPrinted().equals("Y");
         }
+
         public boolean hasMetaData() {
             return hasCrossListed() ||
                     hasSpecialPermission() ||
