@@ -195,6 +195,8 @@ public class SectionInfoAdapter {
         if (context.getFragmentManager().getBackStackEntryCount() > 1) {
             new SectionInfoAnimator(rowView).init();
         }
+
+        mFab.setColorNormalResId(R.color.accent);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

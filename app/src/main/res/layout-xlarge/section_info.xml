@@ -355,7 +355,7 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
-            android:alpha="0"
+            android:alpha="1"
             android:background="@color/black"
             android:gravity="center_vertical|center_horizontal"
             android:src="@drawable/ic_add_white_24dp"

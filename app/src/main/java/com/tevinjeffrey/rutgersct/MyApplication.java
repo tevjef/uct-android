@@ -113,7 +113,8 @@ public class MyApplication extends SugarApp {
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
             Crashlytics.logException(t);
-            Mint.logExceptionMessage("INFO: ", String.format(message, args), new Exception(t.getMessage(), t));
+            Mint.logExceptionMessage("INFO: ", String.format(message, args),
+                    new Exception(t));
         }
     }
 
