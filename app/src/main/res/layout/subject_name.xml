@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="54dp"
     android:minHeight="64dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:orientation="vertical">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
 
     <TextView
         android:id="@+id/course_list_title"
@@ -21,5 +20,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/primary_text"
         android:textSize="16sp"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+/>
 </RelativeLayout>

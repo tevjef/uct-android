@@ -71,7 +71,6 @@ public class MyApplication extends SugarApp {
         //Initalize crash reporting apis
         Fabric.with(this, new Crashlytics());
 
-
         if (BuildConfig.DEBUG) {
             //When debugging logs will go through the Android logger
             Timber.plant(new Timber.DebugTree());

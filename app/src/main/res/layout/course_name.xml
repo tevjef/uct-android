@@ -25,6 +25,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/primary_text"
             android:textSize="14sp"
+            android:ellipsize="none"
             tools:ignore="HardcodedText" />
 
         <TextView
