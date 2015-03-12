@@ -221,6 +221,19 @@
             android:textStyle="italic"
             android:transitionName="snackbar"
             tools:ignore="HardcodedText" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/systemMessage"
+            android:maxLines="2"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/search_button"
+            android:layout_toStartOf="@+id/search_button"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp" />
     </RelativeLayout>
 
 </RelativeLayout>
