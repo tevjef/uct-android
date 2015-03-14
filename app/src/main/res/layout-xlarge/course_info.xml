@@ -49,7 +49,7 @@
 
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white"
-                android:textSize="60sp"
+                android:textSize="45sp"
                 android:transitionName="course_title"
                 android:typeface="normal"
                 tools:ignore="HardcodedText" />

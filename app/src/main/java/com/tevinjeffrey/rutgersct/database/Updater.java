@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.reflect.TypeToken;
@@ -63,6 +64,10 @@ public class Updater {
             //Get course
             getCourse(allTrackedSections, updatedTrackedSections, numOfRequestedCourses, r);
         }
+
+        if(allTrackedSections.size() == 0) {
+            mBuilder.onCompleteListener.onDone(null);
+        }
     }
 
     private void getCourse(final List<TrackedSections> allTrackedSections, final List<Course> updatedTrackedSections, final AtomicInteger numOfRequestedCourses, final Request r) {
@@ -92,16 +97,14 @@ public class Updater {
 
             mBuilder.onCompleteListener.onSuccess(value, key);
         }
-
-        mBuilder.onCompleteListener.onDone(mappedValues);
     }
 
     public interface OnCompleteListener {
         void onSuccess(Request request, Course course);
 
-        void onError(Throwable t);
+        void onError(Throwable t, Request r);
 
-        void onDone(Map<Course, Request> mappedValues);
+        void onDone(List<Course> mappedValues);
     }
 
     public static class Builder {
@@ -150,23 +153,24 @@ public class Updater {
                     for (final Course.Sections s : c.getSections()) {
                         //If the index of the section equals the index of the request.
                         if (s.getIndex().equals(r.getIndex())) {
-                            //Replace the sections in c with the section we are looking for.
+                            //Replace the sections in the course with the section we are looking for.
                             List<Course.Sections> currentSection = new ArrayList<>();
                             currentSection.add(s);
                             c.setSections(currentSection);
 
-                            //The course to the list of the updated sections.
+                            //Add the course to the list of the updated sections.
                             updatedTrackedSections.add(c);
 
-                            //Logic to determine when the series of the asyncrous takes have been completed.
+                            //Logic to determine when the series of the asyncronous network requests have been completed.
                             if (allTrackedSections.size() == numOfRequestedCourses.get()) {
                                 completeOperation(updatedTrackedSections, listOfRequests);
                             }
+                            mBuilder.onCompleteListener.onDone(updatedTrackedSections);
                         }
                     }
                 }
             } else {
-                mBuilder.onCompleteListener.onError(e);
+                mBuilder.onCompleteListener.onError(e, r);
             }
         }
     }

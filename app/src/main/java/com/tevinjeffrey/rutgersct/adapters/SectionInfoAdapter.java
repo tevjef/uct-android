@@ -69,8 +69,8 @@ public class SectionInfoAdapter {
     TextView mInstructorsText;
 
     @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.classSize_text)
-    TextView mClassSizeText;
+    @InjectView(R.id.exam_code_text)
+    TextView mExamCodeText;
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
@@ -185,7 +185,7 @@ public class SectionInfoAdapter {
         setSectionPermission(sectionData);
         setSectionCrossList(sectionData);
         setSectionSubtitle(sectionData);
-        setSectionSize(sectionData);
+        setExamCode(sectionData);
         setTimes(sectionData);
         setInstructors(sectionData);
         setActionButton(mFab);
@@ -397,8 +397,8 @@ public class SectionInfoAdapter {
         }
     }
 
-    void setSectionSize(Course.Sections section) {
-        mClassSizeText.setText(String.valueOf(section.getStopPoint()));
+    void setExamCode(Course.Sections section) {
+        mExamCodeText.setText(String.valueOf(section.getExamCode()));
     }
 
     void setTimes(Course.Sections s) {

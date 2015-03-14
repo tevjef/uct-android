@@ -37,10 +37,11 @@ import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.Updater;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
+import com.tevinjeffrey.rutgersct.model.TrackedSections;
 
 import java.net.UnknownHostException;
 import java.util.Calendar;
-import java.util.Map;
+import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
 
@@ -211,13 +212,13 @@ public class TrackedSectionsFragment extends MainFragment {
             }
 
             @Override
-            public void onDone(Map<Course, Request> map) {
+            public void onDone(List<Course> map) {
                 dismissProgress();
-                setEmptyLayout(map.entrySet().size() == 0);
+                setEmptyLayout();
             }
 
             @Override
-            public void onError(Throwable t) {
+            public void onError(Throwable t, Request r) {
                 dismissProgress();
                 if (t instanceof UnknownHostException) {
                     showSnackBar(getResources().getString(R.string.no_internet));
@@ -235,8 +236,8 @@ public class TrackedSectionsFragment extends MainFragment {
         }).start();
     }
 
-    private void setEmptyLayout(boolean setEmpty) {
-        if (setEmpty) {
+    private void setEmptyLayout() {
+        if (TrackedSections.count(TrackedSections.class, null, null) == 0) {
             dismissProgress();
             addCoursesToTrack.setVisibility(View.VISIBLE);
         } else {

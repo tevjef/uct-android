@@ -13,8 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -256,12 +259,17 @@ public class SubjectFragment extends MainFragment {
 
         @Override
         public void onCompleted(Exception e, List<Subject> subjectList) {
-            if (e == null && subjectList.size() > 0) {
-
-                subjects = (ArrayList<Subject>) subjectList;
-                final SubjectAdapter subjectAdapter = new SubjectAdapter(getActivity(),
-                        subjectList);
-                listView.setAdapter(subjectAdapter);
+            if (e == null) {
+                if(subjectList.size() > 0) {
+                    subjects = (ArrayList<Subject>) subjectList;
+                    final ListAdapter subjectAdapter = new SubjectAdapter(getActivity(),
+                            subjectList);
+                    listView.setAdapter(subjectAdapter);
+                } else {
+                    Toast.makeText(getParentActivity(), request.getSemester().toString() + " has not opened.",
+                            Toast.LENGTH_LONG).show();
+                    getParentActivity().onBackPressed();
+                }
             } else {
                 if (e instanceof UnknownHostException) {
                     showSnackBar(getResources().getString(R.string.no_internet));

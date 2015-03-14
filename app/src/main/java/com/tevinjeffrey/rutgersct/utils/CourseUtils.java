@@ -22,7 +22,7 @@ public class CourseUtils {
         }
     }
 
-    public static void scrubCourseList(List<Course> courseList) {
+    public static void scrubCourseList(Collection<Course> courseList) {
         Collection<Course> toRemove = new ArrayList<>();
         for (Course course : courseList) {
             if (course.getSectionsTotal() == 0) {

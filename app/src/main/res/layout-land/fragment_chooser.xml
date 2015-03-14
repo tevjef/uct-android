@@ -60,9 +60,10 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/toolbar"
-
         android:paddingLeft="25dp"
-        android:transitionGroup="true">
+        android:transitionGroup="true"
+        android:layout_above="@+id/relativeLayout3"
+        android:gravity="center">
 
 
         <LinearLayout
@@ -90,7 +91,7 @@
                 android:layout_height="wrap_content">
 
                 <RadioButton
-                    android:id="@+id/semester1"
+                    android:id="@+id/primarySemester"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
@@ -99,7 +100,7 @@
                     android:textColor="@color/primary_text" />
 
                 <RadioButton
-                    android:id="@+id/semester2"
+                    android:id="@+id/secondarySemester"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
@@ -107,12 +108,13 @@
                     android:textColor="@color/primary_text" />
 
                 <RadioButton
-                    android:id="@+id/semester3"
+                    android:id="@+id/otherSemester"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="Other"
-                    android:textColor="@color/primary_text" />
+                    android:text="Choose other"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="italic" />
 
             </RadioGroup>
         </LinearLayout>
@@ -204,7 +206,8 @@
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:background="@color/accent">
+        android:background="@color/accent"
+        android:id="@+id/relativeLayout3">
 
         <Button
             android:id="@+id/search_button"

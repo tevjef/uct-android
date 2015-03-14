@@ -18,7 +18,7 @@ import com.tevinjeffrey.rutgersct.model.Request;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 
-import java.util.Map;
+import java.util.List;
 import java.util.concurrent.CancellationException;
 
 import timber.log.Timber;
@@ -43,17 +43,17 @@ public class RequestService extends Service {
             }
 
             @Override
-            public void onError(Throwable t) {
+            public void onError(Throwable t, Request r) {
                 if (t != null && !(t instanceof CancellationException)) {
                     //If an error occured while completing the request. Send it to crash reporting.
                     Timber.e(t, "Crash while attempting to complete request in %s to %s"
-                            , RequestService.this.toString(), t.toString());
+                            , RequestService.this.toString(), r.toString());
                 }
 
             }
 
             @Override
-            public void onDone(Map<Course, Request> mappedValues) {
+            public void onDone(List<Course> mappedValues) {
                 stopSelf();
             }
         }).start();

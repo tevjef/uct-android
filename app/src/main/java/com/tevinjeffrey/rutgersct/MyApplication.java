@@ -2,8 +2,10 @@ package com.tevinjeffrey.rutgersct;
 
 import android.content.Context;
 import android.text.format.Time;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
 
@@ -70,7 +72,6 @@ public class MyApplication extends SugarApp {
 
         //Initalize crash reporting apis
         Fabric.with(this, new Crashlytics());
-
         if (BuildConfig.DEBUG) {
             //When debugging logs will go through the Android logger
             Timber.plant(new Timber.DebugTree());

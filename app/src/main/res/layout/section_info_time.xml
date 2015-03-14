@@ -52,6 +52,7 @@
         android:textColor="@color/secondary_text"
         android:textIsSelectable="false"
         android:textSize="@dimen/small_text"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:maxWidth="50dp" />
 
 </RelativeLayout>
