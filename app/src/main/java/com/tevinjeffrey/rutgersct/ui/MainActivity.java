@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.services.Alarm;
+
+import im.delight.apprater.AppRater;
 
 
 public class MainActivity extends ActionBarActivity {

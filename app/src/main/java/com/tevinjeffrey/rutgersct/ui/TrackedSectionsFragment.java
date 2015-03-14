@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
@@ -47,6 +48,7 @@ import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import im.delight.apprater.AppRater;
 import timber.log.Timber;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
@@ -341,8 +343,20 @@ public class TrackedSectionsFragment extends MainFragment {
             case R.id.action_webreg:
                 launchWebReg();
                 return true;
+            case R.id.action_rate:
+                lauchMarket();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void lauchMarket() {
+        final Uri uri = Uri.parse("market://details?id=" + getParentActivity().getApplicationContext().getPackageName());
+        final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+        if (getParentActivity().getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0)
+        {
+            startActivity(rateAppIntent);
         }
     }
 

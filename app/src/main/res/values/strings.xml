@@ -29,6 +29,12 @@
 
     <string name="content_description_webreg_image">large webreg icon</string>
     <string name="content_description_large_tracking_icon">Large tracking icon</string>
+    <string name="rate_title">Rate this app</string>
+    <string name="rate_explanation">Do you like Rutgers Course Tracker? Rate it on Google Play!</string>
+    <string name="rate_now">Sure!</string>
+    <string name="rate_later">Later</string>
+    <string name="rate_never">No Thanks!</string>
+    <string name="action_rate">Rate this app!</string>
 
     <string-array name="intervals">
         <item>Every 5 minutes</item>

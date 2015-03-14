@@ -19,7 +19,7 @@ def isCi() {
     return "true".equals(System.getenv('CI'))
 }
 
-def isProguarded = true;
+def isProguarded = false;
 def vName = '0.8.5.' + (isProguarded ? '1' : '0')
 
 android {
@@ -94,4 +94,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
         transitive = true;
     }
+    compile files('libs/AppRater.jar')
 }
