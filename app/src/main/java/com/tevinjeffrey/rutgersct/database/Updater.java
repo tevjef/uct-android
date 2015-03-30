@@ -84,7 +84,7 @@ public class Updater {
         //Match the request back with course. The Request object hold valuable information about the course/section.
         for (Course c : updatedTrackedSections) {
             for (Request request : listOfRequests) {
-                //Match index of the section witht e index of the request then insert them into the rootview.
+                //Match index of the section with the index of the request then insert them into the rootview.
                 if (request.getIndex().equals(c.getSections().get(0).getIndex())) {
                     mappedValues.put(c, request);
                 }
@@ -164,8 +164,8 @@ public class Updater {
                             //Logic to determine when the series of the asyncronous network requests have been completed.
                             if (allTrackedSections.size() == numOfRequestedCourses.get()) {
                                 completeOperation(updatedTrackedSections, listOfRequests);
+                                mBuilder.onCompleteListener.onDone(updatedTrackedSections);
                             }
-                            mBuilder.onCompleteListener.onDone(updatedTrackedSections);
                         }
                     }
                 }

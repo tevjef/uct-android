@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class SectionInfoFragment extends MainFragment {
+public class SectionInfoFragment extends BaseFragment {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;

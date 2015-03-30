@@ -17,7 +17,7 @@ import com.tevinjeffrey.rutgersct.model.Request;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class CourseInfoFragment extends MainFragment {
+public class CourseInfoFragment extends BaseFragment {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;

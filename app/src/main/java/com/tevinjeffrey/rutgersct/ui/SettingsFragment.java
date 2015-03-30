@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -34,10 +35,9 @@ public class SettingsFragment extends PreferenceFragment {
     private Preference syncInterval;
 
     private Toolbar mToolbar;
-    private LinearLayout root;
 
-    MainActivity getParentActivity() {
-        return (MainActivity) getActivity();
+    BasePreferenceActivity getParentActivity() {
+        return (BasePreferenceActivity) getActivity();
     }
 
     @Override
@@ -50,28 +50,11 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = (LinearLayout) container.getParent().getParent();
-        setupToolbar(inflater);
         setupIntervalPref();
         setupAboutPref();
         setupLicensesPref();
-        mToolbar.setTitle("Settings");
 
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private void setupToolbar(LayoutInflater inflater) {
-        mToolbar = (Toolbar) inflater.inflate(R.layout.preference_toolbar, root, false);
-        mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
-        mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
-        root.addView(mToolbar, 0); // insert at top
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                root.removeView(mToolbar);
-                getParentActivity().onBackPressed();
-            }
-        });
     }
 
     private void setupAboutPref() {
@@ -197,7 +180,6 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onDestroyView() {
-        root.removeView(mToolbar);
         super.onDestroyView();
     }
 }

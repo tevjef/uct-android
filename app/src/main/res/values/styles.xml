@@ -25,8 +25,9 @@
 
     </style>
 
-    <style name="Toolbar" parent="AppTheme">
-
+    <style name="Toolbar_Popup" parent="Base.ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:background">@color/window_background</item>
     </style>
 
 </resources>

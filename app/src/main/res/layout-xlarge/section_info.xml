@@ -236,7 +236,7 @@
                             android:alpha="0.5"
                             android:fontFamily="sans-serif-condensed"
                             android:singleLine="true"
-                            android:text="Seats"
+                            android:text="Exam Code"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             android:typeface="normal"
@@ -312,10 +312,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:background="@drawable/btn_toggle_selector"
-
-                android:drawableLeft="@drawable/rmp"
+                android:drawableLeft="@drawable/ic_rmp"
                 android:gravity="center_vertical"
-                android:paddingLeft="12dp"
+                android:paddingLeft="21dp"
+                android:drawablePadding="10dp"
                 android:text="RateMyProfessors"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
@@ -343,7 +343,8 @@
         android:id="@+id/rightSide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="8">
+        android:layout_weight="8"
+        android:background="@color/white">
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/fab"

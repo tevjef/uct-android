@@ -170,7 +170,8 @@
         android:layout_height="fill_parent"
         android:layout_weight="8"
         android:scrollbarSize="2dip"
-        android:scrollbarThumbVertical="@drawable/course_scrollbar">
+        android:scrollbarThumbVertical="@drawable/course_scrollbar"
+        android:background="@color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"

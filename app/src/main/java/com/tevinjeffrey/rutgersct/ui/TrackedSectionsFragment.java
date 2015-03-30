@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui;
 
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
@@ -48,12 +47,11 @@ import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import im.delight.apprater.AppRater;
 import timber.log.Timber;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
-public class TrackedSectionsFragment extends MainFragment {
+public class TrackedSectionsFragment extends BaseFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.swipeRefreshLayout)

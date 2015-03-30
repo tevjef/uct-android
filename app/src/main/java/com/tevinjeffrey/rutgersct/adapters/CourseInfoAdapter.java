@@ -13,7 +13,7 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.ui.MainFragment;
+import com.tevinjeffrey.rutgersct.ui.BaseFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,7 +23,7 @@ public class CourseInfoAdapter {
     private final MainActivity mContext;
     private final Course course;
     private final View rootView;
-    private final MainFragment callingFragment;
+    private final BaseFragment callingFragment;
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.courseTitle_text)
     TextView mCourseTitleText;
@@ -82,14 +82,14 @@ public class CourseInfoAdapter {
     LinearLayout mSectionsContainer;
     private Request request;
 
-    private CourseInfoAdapter(MainFragment callingFragment, Course item, View rootView) {
+    private CourseInfoAdapter(BaseFragment callingFragment, Course item, View rootView) {
         this.callingFragment = callingFragment;
         this.course = item;
         this.rootView = rootView;
         this.mContext = callingFragment.getParentActivity();
     }
 
-    public CourseInfoAdapter(MainFragment callingFragment, Course course, View rootView, Request request) {
+    public CourseInfoAdapter(BaseFragment callingFragment, Course course, View rootView, Request request) {
         this(callingFragment, course, rootView);
         this.request = request;
     }

@@ -17,7 +17,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -48,7 +47,7 @@ import timber.log.Timber;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SubjectFragment extends MainFragment {
+public class SubjectFragment extends BaseFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
@@ -266,7 +265,7 @@ public class SubjectFragment extends MainFragment {
                             subjectList);
                     listView.setAdapter(subjectAdapter);
                 } else {
-                    Toast.makeText(getParentActivity(), request.getSemester().toString() + " has not opened.",
+                    Toast.makeText(getParentActivity().getApplicationContext(), request.getSemester().toString() + " has not opened.",
                             Toast.LENGTH_LONG).show();
                     getParentActivity().onBackPressed();
                 }

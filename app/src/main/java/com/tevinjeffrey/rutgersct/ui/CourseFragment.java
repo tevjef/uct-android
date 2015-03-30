@@ -49,7 +49,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import timber.log.Timber;
 
-public class CourseFragment extends MainFragment {
+public class CourseFragment extends BaseFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)

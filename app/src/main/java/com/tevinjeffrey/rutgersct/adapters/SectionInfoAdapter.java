@@ -3,7 +3,10 @@ package com.tevinjeffrey.rutgersct.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -295,10 +298,18 @@ public class SectionInfoAdapter {
 
     void setToolBarColor(Course.Sections section) {
         if (section.isOpenStatus()) {
-            mToolbar.setBackgroundColor(context.getResources().getColor(R.color.green));
+            if (Build.VERSION.SDK_INT != Build.VERSION_CODES.KITKAT) {
+                mToolbar.setBackgroundColor(context.getResources().getColor(R.color.green));
+            } else {
+                mToolbar.setBackgroundResource(android.R.color.transparent);
+            }
             MainActivity.setGreenWindow(context);
         } else {
-            mToolbar.setBackgroundColor(context.getResources().getColor(R.color.red));
+            if (Build.VERSION.SDK_INT != Build.VERSION_CODES.KITKAT) {
+                mToolbar.setBackgroundColor(context.getResources().getColor(R.color.red));
+            } else {
+                mToolbar.setBackgroundResource(android.R.color.transparent);
+            }
             MainActivity.setPrimaryWindow(context);
         }
     }

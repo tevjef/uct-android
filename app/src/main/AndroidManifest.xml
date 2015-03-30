@@ -37,10 +37,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.BasePreferenceActivity"
+            android:label="@string/application_name"
+            android:launchMode="singleTop">
+        </activity>
+
         <receiver
             android:name=".receivers.AlarmWakefulReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false"/>
         <receiver
             android:name=".receivers.BootReceiver"
             android:enabled="true"
@@ -53,7 +59,7 @@
         <service
             android:name=".services.RequestService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false"/>
 
         <meta-data
             android:name="com.crashlytics.ApiKey"
@@ -62,7 +68,7 @@
         <receiver
             android:name=".receivers.DatabaseReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true"/>
     </application>
 
 </manifest>

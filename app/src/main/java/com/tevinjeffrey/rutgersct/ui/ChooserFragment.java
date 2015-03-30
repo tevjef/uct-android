@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ import java.util.Calendar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ChooserFragment extends MainFragment {
+public class ChooserFragment extends BaseFragment {
 
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.systemMessage)
@@ -144,18 +145,6 @@ public class ChooserFragment extends MainFragment {
                 });
     }
 
-    void showSnackBar(CharSequence message) {
-        SnackbarManager.show(
-                Snackbar.with(getParentActivity())
-                        .type(SnackbarType.MULTI_LINE)
-                        .text(message)
-                        .color(getResources().getColor(R.color.primary))// action button label color
-                        .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
-                // Snackbar's EventListener
-                , getParentActivity());// activity where it is displayed
-    }
-
-
     @Override
     public void onResume() {
         mSemesterRadiogroup.clearCheck();
@@ -194,7 +183,7 @@ public class ChooserFragment extends MainFragment {
     }
 
     private void makeToast(CharSequence s) {
-        Toast.makeText(getParentActivity(), s, Toast.LENGTH_LONG).show();
+        Toast.makeText(getParentActivity().getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
     void changeFragment(Bundle b) {

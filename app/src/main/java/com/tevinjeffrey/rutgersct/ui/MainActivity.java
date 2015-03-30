@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -17,28 +18,29 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.services.Alarm;
 
-import im.delight.apprater.AppRater;
-
-
 public class MainActivity extends ActionBarActivity {
 
     public static void setGreenWindow(Activity context) {
-        setWindowColor(context.getResources().getColor(R.color.green_dark), context);
+        setWindowColor(context.getResources().getColor(R.color.green), context.getResources().getColor(R.color.green_dark), context);
     }
 
     public static void setAccentWindow(Activity context) {
-        setWindowColor(context.getResources().getColor(R.color.accent_dark), context);
+        setWindowColor(context.getResources().getColor(R.color.accent), context.getResources().getColor(R.color.accent_dark), context);
     }
 
     public static void setPrimaryWindow(Activity context) {
-        setWindowColor(context.getResources().getColor(R.color.primary_dark), context);
+        setWindowColor(context.getResources().getColor(R.color.primary), context.getResources().getColor(R.color.primary_dark), context);
     }
 
-    private static void setWindowColor(@ColorRes int color, Activity context) {
+    private static void setWindowColor(@ColorRes int color, @ColorRes int colorDark, Activity context) {
+        Window window = context.getWindow();
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Window window = context.getWindow();
-            window.setStatusBarColor(color);
-            window.setNavigationBarColor(color);
+            window.setStatusBarColor(colorDark);
+            window.setNavigationBarColor(colorDark);
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            /*tintManager.setNavigationBarTintColor(color);
+            tintManager.setStatusBarTintColor(color);*/
+            window.setBackgroundDrawable(new ColorDrawable(color));
         }
     }
 
@@ -63,6 +65,13 @@ public class MainActivity extends ActionBarActivity {
                     .replace(R.id.container, tsf)
                     .commit();
         }
+
+        //tintManager = new SystemBarTintManager(this);
+        // enable status bar tint
+        //tintManager.setStatusBarTintEnabled(true);
+        // enable navigation bar tint
+        //tintManager.setNavigationBarTintEnabled(true);
+
         setPrimaryWindow(this);
 
         new Alarm(getApplicationContext()).setAlarm();

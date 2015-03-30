@@ -23,7 +23,7 @@ import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.ui.MainFragment;
+import com.tevinjeffrey.rutgersct.ui.BaseFragment;
 import com.tevinjeffrey.rutgersct.ui.SectionInfoFragment;
 import com.tevinjeffrey.rutgersct.utils.SectionUtils;
 
@@ -40,7 +40,7 @@ public class SectionListAdapter {
     private final String mInflationType;
     private final Request mRequest;
     private final View rootView;
-    private final MainFragment mCallingFragment;
+    private final BaseFragment mCallingFragment;
     private final Course mCourse;
     private final List<Course.Sections> sectionData;
     @SuppressWarnings("WeakerAccess")
@@ -63,7 +63,7 @@ public class SectionListAdapter {
     private View sectionLayout;
     private FloatingActionButton mFab;
 
-    public SectionListAdapter(MainFragment callingFragment, Course course, View rootView, Request request, String inflationType) {
+    public SectionListAdapter(BaseFragment callingFragment, Course course, View rootView, Request request, String inflationType) {
         this.sectionData = course.getSections();
         this.mCallingFragment = callingFragment;
         this.mCourse = course;
