@@ -1,6 +1,8 @@
 package com.tevinjeffrey.rutgersct.ui;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -33,8 +36,6 @@ public class SettingsFragment extends PreferenceFragment {
 
     private SharedPreferences mPref;
     private Preference syncInterval;
-
-    private Toolbar mToolbar;
 
     BasePreferenceActivity getParentActivity() {
         return (BasePreferenceActivity) getActivity();
@@ -57,6 +58,16 @@ public class SettingsFragment extends PreferenceFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+
+        ListView list = (ListView) getView().findViewById(android.R.id.list);
+        list.setDivider(new ColorDrawable(Color.parseColor("#f5f5f5")));
+        list.setDividerHeight((int) getParentActivity().getResources().getDisplayMetrics().density);
+
+        super.onActivityCreated(savedInstanceState);
+    }
+
     private void setupAboutPref() {
         final Preference about = findPreference("about");
         about.setSummary("v" + BuildConfig.VERSION_NAME);
@@ -68,7 +79,7 @@ public class SettingsFragment extends PreferenceFragment {
                 tv.setMovementMethod(new LinkMovementMethod());
                 tv.setLinkTextColor(getResources().getColor(R.color.accent));
                 tv.setTextSize(18);
-                tv.setTextColor(getResources().getColor(R.color.primary_text));
+                tv.setTextColor(getResources().getColor(R.color.secondary_text));
                 tv.setText(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br><br>" +
                         "<a href=\"http://tevinjeffrey.com/\">Website</a>" + "       <a href=\"mailto:tev.jeffrey@gmail.com\">Email</a>"));
 

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.tevinjeffrey.rutgersct.MyApplication;
@@ -63,52 +64,61 @@ public class RequestService extends Service {
     //Creates a notfication of the Android system.
 
     private void makeNotification(Course c, Request r) {
-        String courseTitle = c.getTrueTitle();
-        Course.Sections sections = c.getSections().get(0);
-        String sectionNumber = sections.getNumber();
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("app_notification", true)) {
+            String courseTitle = c.getTrueTitle();
+            Course.Sections sections = c.getSections().get(0);
+            String sectionNumber = sections.getNumber();
 
-        //Builds a notification
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText("Section " + sectionNumber + " of " + courseTitle
-                                        + " has opened")
-                                .setBigContentTitle(r.getSemester().toString() + " - " + courseTitle))
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setWhen(System.currentTimeMillis())
-                        .setDefaults(NotificationCompat.DEFAULT_ALL)
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setColor(getResources().getColor(R.color.green))
-                        .setAutoCancel(true)
-                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setContentTitle("A section has opened!")
-                        .setContentText("Section " + sectionNumber + " of " + courseTitle
-                                + " has opened");
+            //Builds a notification
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("Section " + sectionNumber + " of " + courseTitle
+                                            + " has opened")
+                                    .setBigContentTitle(r.getSemester().toString() + " - " + courseTitle))
+                            .setSmallIcon(R.drawable.ic_notification)
+                            .setWhen(System.currentTimeMillis())
+                            .setPriority(NotificationCompat.PRIORITY_MAX)
+                            .setColor(getResources().getColor(R.color.green))
+                            .setAutoCancel(true)
+                            .setSound(getSound())
+                            .setContentTitle("A section has opened!")
+                            .setContentText("Section " + sectionNumber + " of " + courseTitle
+                                    + " has opened");
 
-        //Intent to start web browser
-        Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
-        openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
-        PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this, 0, openInBrowser, 0);
-        mBuilder.addAction(0, "Open Webreg", pOpenInBrowser);
+            //Intent to start web browser
+            Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
+            openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
+            PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this, 0, openInBrowser, 0);
+            mBuilder.addAction(0, "Open Webreg", pOpenInBrowser);
 
-        //Intent open the app.
-        Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
-        openTracked.putExtra(MyApplication.REQUEST, r);
-        openTracked.putExtra(MyApplication.SELECTED_COURSE, c);
-        PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this, Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.addAction(0, "Stop Tracking", pOpenTracked);
+            //Intent open the app.
+            Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
+            openTracked.putExtra(MyApplication.REQUEST, r);
+            openTracked.putExtra(MyApplication.SELECTED_COURSE, c);
+            PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this, Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.addAction(0, "Stop Tracking", pOpenTracked);
 
-        //When you click on the notification itself.
-        mBuilder.setContentIntent(pOpenInBrowser);
+            //When you click on the notification itself.
+            mBuilder.setContentIntent(pOpenInBrowser);
 
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        //Builds the intent and sends it to notification manager with a unique ID.
-        // The id is the index number of the section since those are also unique.
-        // It also allows me to easily update the notication in the future.
-        Notification n = mBuilder.build();
-        mNotifyMgr.notify(Integer.valueOf(r.getIndex()), n);
+            //Builds the intent and sends it to notification manager with a unique ID.
+            // The id is the index number of the section since those are also unique.
+            // It also allows me to easily update the notication in the future.
+            Notification n = mBuilder.build();
+            mNotifyMgr.notify(Integer.valueOf(r.getIndex()), n);
+        }
+    }
+
+    private Uri getSound() {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sound", true)) {
+            return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        } else {
+            return null;
+        }
     }
 
 
