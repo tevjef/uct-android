@@ -2,7 +2,7 @@
 
 Rutgers Course Tracker [![Build Status](https://travis-ci.org/tevjef/Rutgers-Course-Tracker.svg?branch=master)](https://travis-ci.org/tevjef/Rutgers-Course-Tracker)
 ======================
-An application to view courses and subscribe to their openings. An idea born out of severe procrastination. Inspired by Abe Stanway's [Schedule Sniper](http://abe.is/a/sniper/) and Vaibhav Verma's python [Sniper](https://github.com/v/sniper). 
+An application to view courses and subscribe to their openings.  Inspired by Abe Stanway's [Schedule Sniper](http://abe.is/a/sniper/) and Vaibhav Verma's python [Sniper](https://github.com/v/sniper). 
 <br>
 [![Get on Google Play](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/assets/en_g_play.png)][1]
 What does it do?
