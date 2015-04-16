@@ -70,7 +70,7 @@ public class CourseAdapter extends ArrayAdapter {
 
         Course course = item.get(position);
 
-        viewHolder.courseTitle.setText(course.getTrueTitle());
+        viewHolder.courseTitle.setText(course.getCourseNumber() + " | " + course.getTrueTitle());
         viewHolder.courseSectionsOpen.setText(course.getOpenSections() + " open sections of " + course.getSectionsTotal());
 
         return rowView;
