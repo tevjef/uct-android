@@ -23,13 +23,14 @@
             android:key="app_notification"
             android:title="Notifications"
             android:defaultValue="true"
-            android:summary="Notify you when a section opens"/>
+            android:summary="Notify me when a section opens"/>
         <com.jenzz.materialpreference.CheckBoxPreference
             android:key="sound"
             android:title="Sound"
             android:summary="Play sound on notification"
             android:defaultValue="true"
-            android:dependency="app_notification"/>
+            android:dependency="app_notification"
+            />
 
     </com.jenzz.materialpreference.PreferenceCategory>
 

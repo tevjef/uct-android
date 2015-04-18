@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
@@ -17,8 +17,8 @@ public class DatabaseReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Request request = intent.getParcelableExtra(MyApplication.REQUEST);
-        Course course = intent.getParcelableExtra(MyApplication.SELECTED_COURSE);
+        Request request = intent.getParcelableExtra(RutgersCTApp.REQUEST);
+        Course course = intent.getParcelableExtra(RutgersCTApp.SELECTED_COURSE);
         if (request != null && course != null) {
             //Removes section from databse
             if (DatabaseHandler.removeSectionFromDb(request) == 1) {

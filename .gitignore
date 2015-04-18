@@ -9,7 +9,8 @@
 # Java class files
 # Generated files
 gen/
-
+*.bin
+*.lock
 # Gradle files
 build/
 

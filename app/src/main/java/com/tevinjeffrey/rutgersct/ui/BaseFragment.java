@@ -3,10 +3,8 @@ package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -17,7 +15,7 @@ import com.crashlytics.android.Crashlytics;
 import com.koushikdutta.ion.Ion;
 import com.nispok.snackbar.SnackbarManager;
 import com.splunk.mint.Mint;
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
 
 import butterknife.ButterKnife;
@@ -35,8 +33,8 @@ public class BaseFragment extends Fragment {
                 this.toString(), savedInstanceState == null ? "null" : savedInstanceState.toString()
                 , this.getArguments() == null ? "null" : this.getArguments().toString());
         mPref = PreferenceManager.getDefaultSharedPreferences(getParentActivity());
-        Mint.addExtraData(MyApplication.REFRESH_INTERVAL, String.valueOf(getInterval()));
-        Crashlytics.setString(MyApplication.REFRESH_INTERVAL, String.valueOf(getInterval()));
+        Mint.addExtraData(RutgersCTApp.REFRESH_INTERVAL, String.valueOf(getInterval()));
+        Crashlytics.setString(RutgersCTApp.REFRESH_INTERVAL, String.valueOf(getInterval()));
 
     }
 

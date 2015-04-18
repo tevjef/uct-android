@@ -1,20 +1,23 @@
 package com.tevinjeffrey.rutgersct.database;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.splunk.mint.Mint;
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
 import com.tevinjeffrey.rutgersct.model.TrackedSections;
 import com.tevinjeffrey.rutgersct.utils.SemesterUtils;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,8 +45,8 @@ public class Updater {
         final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
 
         //Log data about request to get valable data in event of a crash.
-        Mint.addExtraData(MyApplication.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
-        Crashlytics.setInt(MyApplication.ITEMS_IN_DATABASE, allTrackedSections.size());
+        Mint.addExtraData(RutgersCTApp.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
+        Crashlytics.setInt(RutgersCTApp.ITEMS_IN_DATABASE, allTrackedSections.size());
         Timber.d("Getting %s items from dataase", allTrackedSections.size());
 
         //Temp list of the sections retrieved from the server
@@ -74,30 +77,11 @@ public class Updater {
         String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
         Ion.with(mBuilder.context)
                 .load(url)
-                .as(new TypeToken<List<Course>>() {
-                })
+                .asString()
                 .setCallback(new ListFutureCallback(numOfRequestedCourses, r, updatedTrackedSections, allTrackedSections));
     }
 
-    private void completeOperation(List<Course> updatedTrackedSections, Collection<Request> listOfRequests) {
-        Map<Course, Request> mappedValues = new TreeMap<>();
-        //Match the request back with course. The Request object hold valuable information about the course/section.
-        for (Course c : updatedTrackedSections) {
-            for (Request request : listOfRequests) {
-                //Match index of the section with the index of the request then insert them into the rootview.
-                if (request.getIndex().equals(c.getSections().get(0).getIndex())) {
-                    mappedValues.put(c, request);
-                }
-            }
-        }
 
-        for (Map.Entry<Course, Request> entry : mappedValues.entrySet()) {
-            Request value = entry.getValue();
-            Course key = entry.getKey();
-
-            mBuilder.onCompleteListener.onSuccess(value, key);
-        }
-    }
 
     public interface OnCompleteListener {
         void onSuccess(Request request, Course course);
@@ -125,14 +109,25 @@ public class Updater {
         public Updater start() {
             return new Updater(this);
         }
+
+        @Override
+        public String toString() {
+            return "Builder{" +
+                    "context=" + context + '}';
+        }
     }
 
     //Quite difficult to get this right.
-    private class ListFutureCallback implements FutureCallback<List<Course>> {
+    private class ListFutureCallback implements FutureCallback<String> {
         private final AtomicInteger numOfRequestedCourses;
         private final Request r;
         private final List<Course> updatedTrackedSections;
         private final List<TrackedSections> allTrackedSections;
+
+        Gson gson = new GsonBuilder()
+                .serializeNulls()
+                .setPrettyPrinting()
+                .create();
 
         public ListFutureCallback(AtomicInteger numOfRequestedCourses, Request r, List<Course> updatedTrackedSections, List<TrackedSections> allTrackedSections) {
             this.numOfRequestedCourses = numOfRequestedCourses;
@@ -142,14 +137,28 @@ public class Updater {
         }
 
         @Override
-        public void onCompleted(Exception e, List<Course> courses) {
+        public void onCompleted(Exception e, String response) {
+
+            List<Course> courses = new ArrayList<>();
+
+            if (e == null) {
+                Type listType = new TypeToken<List<Course>>() {
+                }.getType();
+
+                try {
+                    courses = gson.fromJson(response, listType);
+                } catch (JsonSyntaxException j) {
+                    e = j;
+                }
+            }
+
             //Increment no matter if the request fails or not.
             numOfRequestedCourses.incrementAndGet();
             //If no error and the list of courses is > 0
             if (e == null && courses.size() > 0) {
                 //For courses in the list
                 for (final Course c : courses) {
-                    //For section in the the course
+                    //For sections in the the course
                     for (final Course.Sections s : c.getSections()) {
                         //If the index of the section equals the index of the request.
                         if (s.getIndex().equals(r.getIndex())) {
@@ -170,8 +179,48 @@ public class Updater {
                     }
                 }
             } else {
+                Mint.addExtraData(RutgersCTApp.RESPONSE, response);
+                Crashlytics.setString(RutgersCTApp.RESPONSE, response);
                 mBuilder.onCompleteListener.onError(e, r);
             }
         }
+
+        private void completeOperation(Iterable<Course> updatedTrackedSections, Iterable<Request> listOfRequests) {
+            Map<Course, Request> mappedValues = new TreeMap<>();
+            //Match the request back with course. The Request object hold valuable information about the course/section.
+            for (Course c : updatedTrackedSections) {
+                for (Request request : listOfRequests) {
+                    //Match index of the section with the index of the request then insert them into the rootview.
+                    if (request.getIndex().equals(c.getSections().get(0).getIndex())) {
+                        mappedValues.put(c, request);
+                    }
+                }
+            }
+
+            for (Map.Entry<Course, Request> entry : mappedValues.entrySet()) {
+                Request value = entry.getValue();
+                Course key = entry.getKey();
+
+                mBuilder.onCompleteListener.onSuccess(value, key);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "ListFutureCallback{" +
+                    "numOfRequestedCourses=" + numOfRequestedCourses +
+                    ", r=" + r +
+                    ", updatedTrackedSections=" + updatedTrackedSections +
+                    ", allTrackedSections=" + allTrackedSections +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Updater{" +
+                "mBuilder=" + mBuilder +
+                ", listOfRequests=" + listOfRequests +
+                '}';
     }
 }

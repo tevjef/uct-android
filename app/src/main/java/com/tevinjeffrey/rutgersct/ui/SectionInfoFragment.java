@@ -8,7 +8,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionInfoAdapter;
 import com.tevinjeffrey.rutgersct.model.Course;
@@ -37,8 +37,8 @@ public class SectionInfoFragment extends BaseFragment {
         MainActivity.setPrimaryWindow(getParentActivity());
         setRetainInstance(true);
 
-        c = getArguments().getParcelableArrayList(MyApplication.COURSE_LIST);
-        request = getArguments().getParcelable(MyApplication.REQUEST);
+        c = getArguments().getParcelableArrayList(RutgersCTApp.COURSE_LIST);
+        request = getArguments().getParcelable(RutgersCTApp.REQUEST);
         final View rootView = inflater.inflate(R.layout.section_info, container, false);
         ButterKnife.inject(this, rootView);
 
@@ -81,8 +81,8 @@ public class SectionInfoFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MyApplication.REQUEST, getArguments().getParcelable(MyApplication.REQUEST));
-        outState.putParcelableArrayList(MyApplication.COURSE_LIST, getArguments().getParcelableArrayList(MyApplication.COURSE_LIST));
+        outState.putParcelable(RutgersCTApp.REQUEST, getArguments().getParcelable(RutgersCTApp.REQUEST));
+        outState.putParcelableArrayList(RutgersCTApp.COURSE_LIST, getArguments().getParcelableArrayList(RutgersCTApp.COURSE_LIST));
     }
 
     @Override
