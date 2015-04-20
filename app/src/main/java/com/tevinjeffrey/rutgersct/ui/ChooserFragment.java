@@ -219,13 +219,13 @@ public class ChooserFragment extends BaseFragment {
     private ArrayList<String> getLocations() {
         ArrayList<String> locations = new ArrayList<>();
         if (mLocation1.isChecked()) {
-            locations.add((String) mLocation1.getText());
+            locations.add(mLocation1.getText().toString());
         }
         if (mLocation2.isChecked()) {
-            locations.add((String) mLocation2.getText());
+            locations.add(mLocation2.getText().toString());
         }
         if (mLocation3.isChecked()) {
-            locations.add((String) mLocation3.getText());
+            locations.add(mLocation3.getText().toString());
         }
 
         return locations;
@@ -234,10 +234,10 @@ public class ChooserFragment extends BaseFragment {
     private ArrayList<String> getLevels() {
         ArrayList<String> levels = new ArrayList<>();
         if (mLevel1.isChecked()) {
-            levels.add((String) mLevel1.getText());
+            levels.add(mLevel1.getText().toString());
         }
         if (mLevel2.isChecked()) {
-            levels.add((String) mLevel2.getText());
+            levels.add(mLevel2.getText().toString());
         }
 
         return levels;
