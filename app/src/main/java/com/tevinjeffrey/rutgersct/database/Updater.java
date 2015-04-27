@@ -155,7 +155,7 @@ public class Updater {
             //Increment no matter if the request fails or not.
             numOfRequestedCourses.incrementAndGet();
             //If no error and the list of courses is > 0
-            if (e == null && courses.size() > 0) {
+            if (e == null && courses != null && courses.size() > 0) {
                 //For courses in the list
                 for (final Course c : courses) {
                     //For sections in the the course
