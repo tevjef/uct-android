@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -144,18 +145,21 @@ public class Updater {
             if (e == null) {
                 Type listType = new TypeToken<List<Course>>() {
                 }.getType();
-
                 try {
                     courses = gson.fromJson(response, listType);
                 } catch (JsonSyntaxException j) {
                     e = j;
+                }
+                //It should have responded with a 400 or 500 error, but nope :/
+                if (response == null || response.equals("") || courses == null || courses.size() < 1) {
+                    e = new IllegalStateException("No content response from server");
                 }
             }
 
             //Increment no matter if the request fails or not.
             numOfRequestedCourses.incrementAndGet();
             //If no error and the list of courses is > 0
-            if (e == null && courses != null && courses.size() > 0) {
+            if (e == null) {
                 //For courses in the list
                 for (final Course c : courses) {
                     //For sections in the the course
