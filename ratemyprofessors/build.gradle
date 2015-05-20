@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+sourceSets {
+    test {
+        java {
+            srcDir 'test'
+        }
+    }
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile "junit:junit:4.11"
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'com.squareup.okhttp:okhttp:2.4.0-RC1'
+
+}

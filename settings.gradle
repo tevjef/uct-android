@@ -1,1 +1,1 @@
-include ':app', ':stringpicker'
+include ':app', ':stringpicker', ':ratemyprofessors'
