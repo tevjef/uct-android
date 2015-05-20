@@ -11,7 +11,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.database.Updater;
 import com.tevinjeffrey.rutgersct.model.Course;
@@ -34,7 +34,7 @@ public class RequestService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Hold the refence to the intent so that I can use it outside the scope of this method.
         mIntent = intent;
-        Timber.i("Request Service started at %s", MyApplication.getTimeNow());
+        Timber.i("Request Service started at %s", RutgersCTApp.getTimeNow());
 
         Updater.with(this).setOnCompleteListener(new Updater.OnCompleteListener() {
             @Override
@@ -94,8 +94,8 @@ public class RequestService extends Service {
 
             //Intent open the app.
             Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
-            openTracked.putExtra(MyApplication.REQUEST, r);
-            openTracked.putExtra(MyApplication.SELECTED_COURSE, c);
+            openTracked.putExtra(RutgersCTApp.REQUEST, r);
+            openTracked.putExtra(RutgersCTApp.SELECTED_COURSE, c);
             PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this, Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.addAction(0, "Stop Tracking", pOpenTracked);
 
@@ -130,7 +130,7 @@ public class RequestService extends Service {
 
     @Override
     public void onDestroy() {
-        Timber.i("Request Service ended at %s", MyApplication.getTimeNow());
+        Timber.i("Request Service ended at %s", RutgersCTApp.getTimeNow());
 
         //Tells wakeful reciever to release wakelock and allow the the CPU to goto sleep.
         AlarmWakefulReceiver.completeWakefulIntent(mIntent);

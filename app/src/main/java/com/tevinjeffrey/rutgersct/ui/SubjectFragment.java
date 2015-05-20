@@ -25,7 +25,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SubjectAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -68,7 +68,7 @@ public class SubjectFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(MyApplication.REQUEST);
+            request = savedInstanceState.getParcelable(RutgersCTApp.REQUEST);
         }
 
     }
@@ -83,7 +83,7 @@ public class SubjectFragment extends BaseFragment {
         ButterKnife.inject(this, rootView);
 
         setupSwipeLayout();
-        request = getArguments().getParcelable(MyApplication.REQUEST);
+        request = getArguments().getParcelable(RutgersCTApp.REQUEST);
         setToolbar();
 
         getSubjects(mCourses);
@@ -220,15 +220,15 @@ public class SubjectFragment extends BaseFragment {
 
     private Bundle createArgs(Parcelable parcelable) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(MyApplication.REQUEST, parcelable);
-        bundle.putParcelableArrayList(MyApplication.SUBJECTS_LIST, subjects);
+        bundle.putParcelable(RutgersCTApp.REQUEST, parcelable);
+        bundle.putParcelableArrayList(RutgersCTApp.SUBJECTS_LIST, subjects);
         return bundle;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MyApplication.REQUEST, request);
+        outState.putParcelable(RutgersCTApp.REQUEST, request);
     }
 
     @Override

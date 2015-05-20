@@ -24,7 +24,7 @@
     <string name="gettingData">Fetching data</string>
     <string name="expect_server_issues">Expect intermittent server issues from 3:00am to 4:00am</string>
     <string name="no_internet">Check internet connection.</string>
-    <string name="server_down">The server is currently down. Try again later.</string>
+    <string name="server_down">Rutgers servers are currently down. Try again later.</string>
     <string name="timed_out">Connection timed out. Check internet connection.</string>
 
     <string name="content_description_webreg_image">large webreg icon</string>

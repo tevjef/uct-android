@@ -27,7 +27,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.CourseAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -70,7 +70,7 @@ public class CourseFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(MyApplication.REQUEST);
+            request = savedInstanceState.getParcelable(RutgersCTApp.REQUEST);
         }
     }
 
@@ -86,7 +86,7 @@ public class CourseFragment extends BaseFragment {
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
 
-        request = getArguments().getParcelable(MyApplication.REQUEST);
+        request = getArguments().getParcelable(RutgersCTApp.REQUEST);
         setToolbar();
 
         getCourses(mCoursesListView);
@@ -188,10 +188,10 @@ public class CourseFragment extends BaseFragment {
     }
 
     private void setToolbarTitle(Toolbar toolbar) {
-        Iterable<Subject> al = getArguments().getParcelableArrayList(MyApplication.SUBJECTS_LIST);
+        Iterable<Subject> al = getArguments().getParcelableArrayList(RutgersCTApp.SUBJECTS_LIST);
         for (Subject s : al) {
             if (CourseUtils.formatNumber(s.getCode()).equals(request.getSubject())) {
-                toolbar.setTitle(WordUtils.capitalize(s.getDescription().toLowerCase()));
+                toolbar.setTitle(s.getCode() + " | " + WordUtils.capitalize(s.getDescription().toLowerCase()));
             }
         }
     }
@@ -220,17 +220,17 @@ public class CourseFragment extends BaseFragment {
 
     private Bundle createArgs(Parcelable parcelable, Course selectedCourse) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(MyApplication.REQUEST, parcelable);
-        bundle.putParcelableArrayList(MyApplication.SUBJECTS_LIST, getArguments().getParcelableArrayList(MyApplication.SUBJECTS_LIST));
-        bundle.putParcelableArrayList(MyApplication.COURSE_LIST, courses);
-        bundle.putParcelable(MyApplication.SELECTED_COURSE, selectedCourse);
+        bundle.putParcelable(RutgersCTApp.REQUEST, parcelable);
+        bundle.putParcelableArrayList(RutgersCTApp.SUBJECTS_LIST, getArguments().getParcelableArrayList(RutgersCTApp.SUBJECTS_LIST));
+        bundle.putParcelableArrayList(RutgersCTApp.COURSE_LIST, courses);
+        bundle.putParcelable(RutgersCTApp.SELECTED_COURSE, selectedCourse);
         return bundle;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MyApplication.REQUEST, request);
+        outState.putParcelable(RutgersCTApp.REQUEST, request);
     }
 
     @Override

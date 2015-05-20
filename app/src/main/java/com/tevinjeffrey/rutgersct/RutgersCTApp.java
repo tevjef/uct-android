@@ -2,10 +2,8 @@ package com.tevinjeffrey.rutgersct;
 
 import android.content.Context;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
 
@@ -18,9 +16,10 @@ import java.util.UUID;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
-public class MyApplication extends SugarApp {
+public class RutgersCTApp extends SugarApp {
     public static final String REFRESH_INTERVAL = "Sync Interval";
     public static final String ITEMS_IN_DATABASE = "Items in database";
+    public static final String RESPONSE = "Response from server";
     public final static String SUBJECTS_LIST = "SUBJECTS_LIST";
     public final static String COURSE_LIST = "COURSE_LIST";
     public final static String SELECTED_COURSE = "SELECTED_COURSE";
@@ -28,7 +27,6 @@ public class MyApplication extends SugarApp {
     public final static String TRACKED_SECTION = "TRACKED_SECTION";
     public final static String COURSE_INFO_SECTION = "COURSE_INFO_SECTION";
     private static final String INSTALLATION = "INSTALLATION";
-    public static String REMOVE_SECTION = "REMOVE_SECTION";
     private static String sID = null;
 
     private synchronized static String getsID(Context context) {

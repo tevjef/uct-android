@@ -8,7 +8,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.CourseInfoAdapter;
 import com.tevinjeffrey.rutgersct.model.Course;
@@ -31,7 +31,7 @@ public class CourseInfoFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(MyApplication.REQUEST);
+            request = savedInstanceState.getParcelable(RutgersCTApp.REQUEST);
         }
     }
 
@@ -52,8 +52,8 @@ public class CourseInfoFragment extends BaseFragment {
     private void setUp(View rootView) {
         setToolbar();
         Bundle bundle = getArguments();
-        Course selectedCourse = bundle.getParcelable(MyApplication.SELECTED_COURSE);
-        request = bundle.getParcelable(MyApplication.REQUEST);
+        Course selectedCourse = bundle.getParcelable(RutgersCTApp.SELECTED_COURSE);
+        request = bundle.getParcelable(RutgersCTApp.REQUEST);
         inflateViews(selectedCourse, rootView);
     }
 
@@ -77,9 +77,9 @@ public class CourseInfoFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(MyApplication.REQUEST, request);
-        outState.putParcelableArrayList(MyApplication.COURSE_LIST, getArguments().getParcelableArrayList(MyApplication.COURSE_LIST));
-        outState.putParcelableArrayList(MyApplication.SUBJECTS_LIST, getArguments().getParcelableArrayList(MyApplication.SUBJECTS_LIST));
+        outState.putParcelable(RutgersCTApp.REQUEST, request);
+        outState.putParcelableArrayList(RutgersCTApp.COURSE_LIST, getArguments().getParcelableArrayList(RutgersCTApp.COURSE_LIST));
+        outState.putParcelableArrayList(RutgersCTApp.SUBJECTS_LIST, getArguments().getParcelableArrayList(RutgersCTApp.SUBJECTS_LIST));
     }
 
     @Override

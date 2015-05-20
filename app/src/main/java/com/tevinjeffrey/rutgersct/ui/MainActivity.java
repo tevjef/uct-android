@@ -38,8 +38,6 @@ public class MainActivity extends ActionBarActivity {
             window.setStatusBarColor(colorDark);
             window.setNavigationBarColor(colorDark);
         } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            /*tintManager.setNavigationBarTintColor(color);
-            tintManager.setStatusBarTintColor(color);*/
             window.setBackgroundDrawable(new ColorDrawable(color));
         }
     }
@@ -65,12 +63,6 @@ public class MainActivity extends ActionBarActivity {
                     .replace(R.id.container, tsf)
                     .commit();
         }
-
-        //tintManager = new SystemBarTintManager(this);
-        // enable status bar tint
-        //tintManager.setStatusBarTintEnabled(true);
-        // enable navigation bar tint
-        //tintManager.setNavigationBarTintEnabled(true);
 
         setPrimaryWindow(this);
 

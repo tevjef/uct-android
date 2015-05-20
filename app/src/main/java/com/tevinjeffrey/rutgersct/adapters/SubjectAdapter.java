@@ -64,7 +64,7 @@ public class SubjectAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        String text = item.get(position).getCode() + ": " + item.get(position).getDescription();
+        String text = item.get(position).getCode() + " | " + item.get(position).getDescription();
         viewHolder.text.setText(WordUtils.capitalize(text.toLowerCase()));
 
         return rowView;

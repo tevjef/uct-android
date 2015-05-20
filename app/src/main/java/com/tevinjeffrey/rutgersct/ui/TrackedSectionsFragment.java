@@ -29,7 +29,7 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.EventListener;
-import com.tevinjeffrey.rutgersct.MyApplication;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.SectionListAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -208,7 +208,7 @@ public class TrackedSectionsFragment extends BaseFragment {
                         course,
                         rootView,
                         request,
-                        MyApplication.TRACKED_SECTION).init();
+                        RutgersCTApp.TRACKED_SECTION).init();
             }
 
             @Override

@@ -31,9 +31,7 @@ public class UrlUtils {
 
     }
 
-    private static String parseLocations(ArrayList<String> loc) {
-        //TODO: Abstract this class to support more location from a server
-
+    private static String parseLocations(Iterable<String> loc) {
         StringBuilder location = new StringBuilder();
 
         for (String s : loc) {
@@ -64,8 +62,6 @@ public class UrlUtils {
 
     private static String parseLevels(ArrayList<String> lvls) {
         StringBuilder level = new StringBuilder();
-
-        //TODO: Abstract this class to support more location from a server
 
         for (String s : lvls) {
             switch (s) {
