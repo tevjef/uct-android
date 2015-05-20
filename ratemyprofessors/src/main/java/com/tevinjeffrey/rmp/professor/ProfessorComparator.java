@@ -1,4 +1,6 @@
-package com.tevinjeffrey.rmp;
+package com.tevinjeffrey.rmp.professor;
+
+import com.tevinjeffrey.rmp.search.Decider;
 
 import org.apache.commons.lang3.StringUtils;
 import java.util.Comparator;

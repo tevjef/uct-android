@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rmp;
+package com.tevinjeffrey.rmp.ratings;
 
 public class Ratings {
 		final private Rating.Easiness easiness;

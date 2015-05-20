@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rmp;
+package com.tevinjeffrey.rmp.search;
 
 public class Listing {
     final private String name;

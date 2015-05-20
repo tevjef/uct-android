@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rmp;
+package com.tevinjeffrey.rmp.ratings;
 
 public class Rating {
     final String rating;

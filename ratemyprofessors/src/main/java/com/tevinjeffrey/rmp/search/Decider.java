@@ -1,4 +1,7 @@
-package com.tevinjeffrey.rmp;
+package com.tevinjeffrey.rmp.search;
+
+import com.tevinjeffrey.rmp.Professor;
+import com.tevinjeffrey.rmp.ProfessorComparator;
 
 import java.util.Collections;
 import java.util.Iterator;

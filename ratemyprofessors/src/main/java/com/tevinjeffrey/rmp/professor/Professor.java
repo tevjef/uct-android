@@ -1,9 +1,7 @@
-package com.tevinjeffrey.rmp;
+package com.tevinjeffrey.rmp.professor;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Comparator;
-import java.util.Locale;
+import com.tevinjeffrey.rmp.ratings.Ratings;
+import com.tevinjeffrey.rmp.search.Listing;
 
 public class Professor extends Listing implements Comparable<Professor> {
 	final private Ratings ratings;
@@ -33,10 +31,6 @@ public class Professor extends Listing implements Comparable<Professor> {
     @Override
     public int compareTo(Professor o) {
         return 0;
-    }
-
-    public CharSequence getWeightedString() {
-        return this.toString();
     }
 
     public static class Name {
