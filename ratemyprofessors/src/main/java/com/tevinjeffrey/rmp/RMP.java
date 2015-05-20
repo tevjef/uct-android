@@ -20,6 +20,20 @@ public class RMP {
         return response.body().string();
     }
 
+    public Professor findBestProfessor(String first, String last, String school, String department, String location) throws IOException {
+
+        String base = "http://www.ratemyprofessors.com";
+
+        //search for professors
+        String response = run(base + "/search.jsp?query=" + last + "+rutgers");
+
+        List<Professor> professors = getProfessors(base, response);
+
+        Decider.Parameter params = new Decider.Parameter(school, department, location, new Professor.Name(first, last));
+        professors = Decider.determineProfessor(professors, params);
+        return professors.get(0);
+    }
+
     public List<Professor> searchProfessors(String last) throws IOException{
         String base = "http://www.ratemyprofessors.com";
 

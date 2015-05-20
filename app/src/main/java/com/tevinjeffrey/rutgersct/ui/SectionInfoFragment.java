@@ -43,6 +43,8 @@ public class SectionInfoFragment extends BaseFragment {
         ButterKnife.inject(this, rootView);
 
         setToolbar();
+
+        //For animation purposes.
         if (getFragmentManager().getBackStackEntryCount() > 2) {
             ButterKnife.findById(rootView, R.id.fab).setAlpha(0);
             ButterKnife.findById(rootView, R.id.fab).setVisibility(View.GONE);
