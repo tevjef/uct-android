@@ -71,7 +71,7 @@ public class SectionInfoFragment extends BaseFragment {
     }
 
     private void inflateViews(View rootView) {
-        new SectionInfoAdapter(getParentActivity(), request, rootView, c).init();
+        new SectionInfoAdapter(getParentActivity(), rootView, request, c).init();
     }
 
     @Override

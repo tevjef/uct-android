@@ -21,7 +21,11 @@ import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
+import com.tevinjeffrey.rmp.RMP;
+import com.tevinjeffrey.rmp.professor.Professor;
+import com.tevinjeffrey.rmp.search.Decider;
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
@@ -33,11 +37,17 @@ import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
@@ -139,6 +149,7 @@ public class SectionInfoAdapter {
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
 
+/*
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prof_rmp_search)
     Button rmpSearch;
@@ -146,6 +157,19 @@ public class SectionInfoAdapter {
     @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.prof_google_search)
     Button googleSearch;
+*/
+
+    @SuppressWarnings("WeakerAccess")
+    @InjectView(R.id.rmp_prof1OverallScore)
+    TextView rmpOverallScore;
+
+    @SuppressWarnings("WeakerAccess")
+    @InjectView(R.id.rmp_prof1Department)
+    TextView rmpProf1Department;
+
+    @SuppressWarnings("WeakerAccess")
+    @InjectView(R.id.rmp_prof1Name)
+    TextView rmpProf1Name;
 
     private List<Course> courses;
     private Course courseData;
@@ -157,7 +181,7 @@ public class SectionInfoAdapter {
         this.rowView = rowView;
     }
 
-    public SectionInfoAdapter(Activity context, Request item, View rowView, List<Course> courses) {
+    public SectionInfoAdapter(Activity context, View rowView, Request item, List<Course> courses) {
         this(context, item, rowView);
         this.courses = courses;
     }
@@ -192,7 +216,9 @@ public class SectionInfoAdapter {
         setTimes(sectionData);
         setInstructors(sectionData);
         setActionButton(mFab);
-        setSearch(rmpSearch, googleSearch);
+        //setSearch(rmpSearch, googleSearch);
+
+        setRMP(courseData, sectionData);
         setSemester(request);
 
         if (context.getFragmentManager().getBackStackEntryCount() > 1) {
@@ -241,6 +267,42 @@ public class SectionInfoAdapter {
                 }
             }
         });
+    }
+
+    private void setRMP(Course courseData, Course.Sections sectionData) {
+        RMP rmp = new RMP(RutgersCTApp.getClient());
+
+        Course.Sections.Instructors i = sectionData.getInstructors().get(0);
+
+        if (i != null) {
+
+            String campus = sectionData.getMeetingTimes().get(0).getCampus();
+            if (campus == null) {
+                campus = request.getLocations().get(0);
+            }
+
+            Decider.Parameter params = new Decider.Parameter("rutgers", courseData.getSubject(),
+                    campus, new Professor.Name(i.getFirstName(), i.getLastName()));
+
+
+            rmp.findBestProfessor(params)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<List<Professor>>() {
+                        @Override
+                        public void call(List<Professor> professors) {
+                            final Professor p = professors.get(0);
+                            rmpProf1Name.setText(p.getName());
+                            rmpProf1Department.setText(p.getDepartment());
+                            rmpOverallScore.setText(p.getRatings().getOverallQuality().toString());
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            Timber.e(throwable, "Error getting professors from RMP");
+                        }
+                    });
+        }
     }
 
     private void setSemester(Request request) {

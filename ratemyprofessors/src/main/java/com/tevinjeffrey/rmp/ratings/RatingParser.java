@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rmp.ratings;
 
-import com.tevinjeffrey.rmp.Listing;
-import com.tevinjeffrey.rmp.Professor;
+import com.tevinjeffrey.rmp.search.Listing;
+import com.tevinjeffrey.rmp.professor.Professor;
 
 import org.apache.commons.lang3.StringUtils;
 

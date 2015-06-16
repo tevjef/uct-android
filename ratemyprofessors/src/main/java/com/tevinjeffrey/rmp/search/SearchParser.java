@@ -1,7 +1,5 @@
 package com.tevinjeffrey.rmp.search;
 
-import com.tevinjeffrey.rmp.Listing;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;

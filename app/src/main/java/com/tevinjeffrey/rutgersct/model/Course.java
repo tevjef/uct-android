@@ -480,6 +480,26 @@ public class Course implements Comparable, Parcelable {
                 return campusAbbrev;
             }
 
+            public String getCampus() {
+                String campus;
+
+                if (getCampusAbbrev() != null) {
+                    switch (getCampusAbbrev()) {
+                        case "NWK":
+                            campus = "Newark";
+                            break;
+                        case "CAM":
+                            campus = "Camden";
+                            break;
+                        default:
+                            campus = "New Brunswick";
+                    }
+                    return campus;
+                }
+                return null;
+            }
+
+
             public String getBaClassHours() {
                 return baClassHours;
             }
@@ -556,6 +576,20 @@ public class Course implements Comparable, Parcelable {
 
             public String getName() {
                 return name;
+            }
+
+            public String getFirstName() {
+                String firstName = StringUtils.substringAfter(name, ",");
+                if (name.equals(firstName)) {
+                    return "";
+                } else {
+                    return firstName.trim();
+                }
+            }
+
+            public String getLastName() {
+                String lastName = StringUtils.substringBefore(name, ",");
+                return lastName;
             }
 
             @Override

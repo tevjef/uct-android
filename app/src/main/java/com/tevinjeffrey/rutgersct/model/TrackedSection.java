@@ -5,17 +5,17 @@ import com.orm.SugarRecord;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TrackedSections extends SugarRecord<TrackedSections> {
+public class TrackedSection extends SugarRecord<TrackedSection> {
     private String subject;
     private String semester;
     private String locations;
     private String levels;
     private String indexNumber;
 
-    public TrackedSections() {
+    public TrackedSection() {
     }
 
-    public TrackedSections(String subject, String semester, String locations, String levels, String indexNumber) {
+    public TrackedSection(String subject, String semester, String locations, String levels, String indexNumber) {
         this.subject = subject;
         this.semester = semester;
         this.locations = locations;
@@ -41,5 +41,16 @@ public class TrackedSections extends SugarRecord<TrackedSections> {
 
     public String getIndexNumber() {
         return indexNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "TrackedSection{" +
+                "subject='" + subject + '\'' +
+                ", semester='" + semester + '\'' +
+                ", locations='" + locations + '\'' +
+                ", levels='" + levels + '\'' +
+                ", indexNumber='" + indexNumber + '\'' +
+                '}';
     }
 }

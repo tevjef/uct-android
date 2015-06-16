@@ -4,8 +4,15 @@ import android.content.Context;
 import android.text.format.Time;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
+import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +35,94 @@ public class RutgersCTApp extends SugarApp {
     public final static String COURSE_INFO_SECTION = "COURSE_INFO_SECTION";
     private static final String INSTALLATION = "INSTALLATION";
     private static String sID = null;
+
+    public static OkHttpClient client = new OkHttpClient();
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        initStetho();
+
+        initOkHttp();
+
+        //Initalize crash reporting apis
+        Fabric.with(this, new Crashlytics());
+        if (BuildConfig.DEBUG) {
+            //When debugging logs will go through the Android logger
+            Timber.plant(new Timber.DebugTree());
+        } else {
+
+            Mint.enableDebug();
+            Mint.initAndStartSession(this, "2974ff7f");
+            //Gets a unique id for for every installation
+            String s = getsID(getApplicationContext());
+
+            //Set unique user id
+            Mint.setUserIdentifier(s);
+            Crashlytics.setUserIdentifier(s);
+
+            //Diverts logs through crash roeporting APIs
+            Timber.plant(new CrashReportingTree());
+        }
+    }
+
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
+    }
+
+    private void initOkHttp() {
+        File httpCacheDir = new File(getApplicationContext().getCacheDir(), getString(R.string.app_name));
+        long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
+        Cache cache = new Cache(httpCacheDir, httpCacheSize);
+        client.setCache(cache);
+        client.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
+        client.networkInterceptors().add(LOGGING_INTERCEPTOR);
+        client.networkInterceptors().add(new StethoInterceptor());
+    }
+
+    private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
+        @Override public Response intercept(Interceptor.Chain chain) throws IOException {
+
+            Request originalRequest = chain.request();
+            Timber.d("Host: %s", originalRequest.httpUrl().host());
+
+            Response originalResponse = chain.proceed(chain.request());
+            return originalResponse.newBuilder()
+                    .header("Cache-Control", "max-age=10")
+                    .build();
+        }
+    };
+
+    private static final Interceptor LOGGING_INTERCEPTOR = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+
+            long t1 = System.nanoTime();
+            Timber.i("Sending request %s on %s%n%s",
+                    request.url(), chain.connection(), request.headers());
+
+            Timber.d("Host: %s", request.httpUrl().host());
+            Timber.d("Query: %s", request.httpUrl().encodedQuery());
+
+
+            Response response = chain.proceed(request);
+
+            long t2 = System.nanoTime();
+            Timber.i("Received response for %s in %.1fms%n%s",
+                    response.request().url(), (t2 - t1) / 1e6d, response.headers());
+
+            return response;
+        }
+    };
 
     private synchronized static String getsID(Context context) {
         if (sID == null) {
@@ -64,31 +159,6 @@ public class RutgersCTApp extends SugarApp {
         return t.toString();
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        //Initalize crash reporting apis
-        Fabric.with(this, new Crashlytics());
-        if (BuildConfig.DEBUG) {
-            //When debugging logs will go through the Android logger
-            Timber.plant(new Timber.DebugTree());
-        } else {
-
-            Mint.enableDebug();
-            Mint.initAndStartSession(this, "2974ff7f");
-            //Gets a unique id for for every installation
-            String s = getsID(getApplicationContext());
-
-            //Set unique user id
-            Mint.setUserIdentifier(s);
-            Crashlytics.setUserIdentifier(s);
-
-            //Diverts logs through crash roeporting APIs
-            Timber.plant(new CrashReportingTree());
-        }
-    }
-
     // A tree which logs important information for crash reporting.
     private static class CrashReportingTree extends Timber.HollowTree {
         @Override
@@ -114,6 +184,10 @@ public class RutgersCTApp extends SugarApp {
             Mint.logExceptionMessage("INFO: ", String.format(message, args),
                     new Exception(t));
         }
+    }
+
+    public static OkHttpClient getClient() {
+        return client;
     }
 
 }

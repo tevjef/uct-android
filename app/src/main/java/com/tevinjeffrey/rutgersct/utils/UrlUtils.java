@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgersct.utils;
 
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
+import com.tevinjeffrey.rutgersct.model.TrackedSection;
 
 import java.util.ArrayList;
 
@@ -112,6 +113,10 @@ public class UrlUtils {
         return sb.toString();
     }
 
+    public static Request getRequestFromTrackedSections(TrackedSection ts) {
+        return new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
+    }
+
     public static String getSubjectUrl(String params) {
         String baseUrl = "http://sis.rutgers.edu/soc/";
         String subjectJson = "subjects.json";
@@ -123,32 +128,6 @@ public class UrlUtils {
         String courseJson = "courses.json";
         return baseUrl + courseJson + "?" + params;
     }
-
-/*    public static String trimTrailingChar(String s) {
-        if (s != null && s.length() != 0) {
-            s = s.trim();
-            return s.substring(0, s.length() - 1);
-        } else return s;
-    }*/
-
-/*    public static String trimTrailingChar(String s, char c) {
-        if (s != null && s.length() != 0) {
-            s = s.trim();
-            if (s.charAt(s.length() - 1) == c) {
-                return s.substring(0, s.length() - 1);
-            } else {
-                return s;
-            }
-        } else return s;
-    }*/
-
-/*    private static String trimTrailingOR(String s) {
-        if (s != null && s.length() != 0) {
-            s = s.trim();
-            return s.substring(0, s.length() - 4);
-        } else return s;
-    }*/
-
 
     public static String getAbbreviatedLocationName(String s) {
         switch (s) {

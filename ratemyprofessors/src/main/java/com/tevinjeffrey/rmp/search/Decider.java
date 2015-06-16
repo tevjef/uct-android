@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rmp.search;
 
-import com.tevinjeffrey.rmp.Professor;
-import com.tevinjeffrey.rmp.ProfessorComparator;
+import com.tevinjeffrey.rmp.professor.Professor;
+import com.tevinjeffrey.rmp.professor.ProfessorComparator;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -34,10 +34,10 @@ public class Decider {
     }
 
     public static class Parameter {
-        String university;
-        String department;
-        String location;
-        Professor.Name name;
+        final public String university;
+        final public String department;
+        final public String location;
+        final public Professor.Name name;
 
         public Parameter(String university, String department, String location, Professor.Name name) {
             this.university = university;

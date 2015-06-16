@@ -14,7 +14,7 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-def isProguarded = true;
+def isProguarded = false;
 def vName = '0.8.10.' + (isProguarded ? '1' : '0')
 
 android {
@@ -34,6 +34,7 @@ android {
         release {
             debuggable false
             minifyEnabled isProguarded
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             versionNameSuffix 'R'
         }
@@ -46,6 +47,9 @@ android {
         }
     }
     packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
@@ -61,6 +65,9 @@ android {
 dependencies {
     fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':stringpicker')
+    compile project(':ratemyprofessors')
+    androidTestCompile "org.mockito:mockito-core:1.10.19"
+    androidTestCompile "junit:junit:4.11"
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.easing:library:1.0.1@aar'
     compile 'com.daimajia.androidanimations:library:1.1.3@aar'
@@ -78,6 +85,9 @@ dependencies {
     compile 'com.jakewharton.timber:timber:2.7.1'
     compile 'com.splunk.mint:mint:4.0.8'
     compile 'io.reactivex:rxjava:1.0.10'
+    compile 'io.reactivex:rxandroid:0.24.0'
+    compile 'com.facebook.stetho:stetho:1.1.1'
+    compile 'com.facebook.stetho:stetho-okhttp:1.1.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
         transitive = true;
     }

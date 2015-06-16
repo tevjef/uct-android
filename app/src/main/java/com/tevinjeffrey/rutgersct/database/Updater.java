@@ -1,230 +1,168 @@
 package com.tevinjeffrey.rutgersct.database;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.common.StringUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.splunk.mint.Mint;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Response;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.TrackedSections;
+import com.tevinjeffrey.rutgersct.model.TrackedSection;
 import com.tevinjeffrey.rutgersct.utils.SemesterUtils;
 import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 public class Updater {
-    private final Builder mBuilder;
-    private final Collection<Request> listOfRequests = new ArrayList<>();
 
-    protected Updater(Builder builder) {
-        mBuilder = builder;
-        getTrackedSections();
-    }
+    static OkHttpClient client = RutgersCTApp.getClient();
 
-    public static Builder with(Context context) {
-        return new Builder(context);
-    }
+    static Gson gson = new GsonBuilder()
+            .serializeNulls()
+            .setPrettyPrinting()
+            .create();
 
-    private void getTrackedSections() {
+    public static Observable<Course> getTrackedSections() {
         //Get all tracked sections from the database
-        final List<TrackedSections> allTrackedSections = TrackedSections.listAll(TrackedSections.class);
+        final List<TrackedSection> allTrackedSections = TrackedSection.listAll(TrackedSection.class);
+
 
         //Log data about request to get valable data in event of a crash.
         Mint.addExtraData(RutgersCTApp.ITEMS_IN_DATABASE, String.valueOf(allTrackedSections.size()));
         Crashlytics.setInt(RutgersCTApp.ITEMS_IN_DATABASE, allTrackedSections.size());
-        Timber.d("Getting %s items from dataase", allTrackedSections.size());
+        Timber.d("Getting %s items from database", allTrackedSections.size());
+        Timber.d("Items: %s\n", StringUtils.join(allTrackedSections, "\n"));
 
-        //Temp list of the sections retrieved from the server
-        final List<Course> updatedTrackedSections = new ArrayList<>();
 
-        //Atomic integer to increment after every asyncronous network call is completed, failed on not.
-        final AtomicInteger numOfRequestedCourses = new AtomicInteger();
+        return Observable.from(allTrackedSections)
+                .flatMap(new Func1<TrackedSection, Observable<Request>>() {
+                    @Override
+                    public Observable<Request> call(TrackedSection trackedSection) {
+                        return createRequest(trackedSection);
+                    }
+                })
+                .flatMap(new Func1<Request, Observable<Course>>() {
+                    @Override
+                    public Observable<Course> call(final Request request) {
+                        return getCourses(request);
+                    }
+                });
 
-        //For all tracked sections
-        for (TrackedSections ts : allTrackedSections) {
-
-            //Create a request object form the tracked section list.
-            final Request r = new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
-
-            //Add the request to a list the list for later use.
-            listOfRequests.add(r);
-
-            //Get course
-            getCourse(allTrackedSections, updatedTrackedSections, numOfRequestedCourses, r);
-        }
-
-        if(allTrackedSections.size() == 0) {
-            mBuilder.onCompleteListener.onDone(null);
-        }
     }
 
-    private void getCourse(final List<TrackedSections> allTrackedSections, final List<Course> updatedTrackedSections, final AtomicInteger numOfRequestedCourses, final Request r) {
-        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
-        Ion.with(mBuilder.context)
-                .load(url)
-                .asString()
-                .setCallback(new ListFutureCallback(numOfRequestedCourses, r, updatedTrackedSections, allTrackedSections));
+    private static Observable<Request> createRequest(TrackedSection trackedSection) {
+        return Observable.just(UrlUtils.getRequestFromTrackedSections(trackedSection));
     }
 
-
-
-    public interface OnCompleteListener {
-        void onSuccess(Request request, Course course);
-
-        void onError(Throwable t, Request r);
-
-        void onDone(List<Course> mappedValues);
+    @NonNull
+    private static Observable<Course> getCourses(final Request request) {
+        return getCoursesFromServer(request).retry(5)
+                .flatMap(new Func1<String, Observable<Course>>() {
+                    @Override
+                    public Observable<Course> call(final String response) {
+                        return createCourses(response)
+                                .flatMap(new Func1<List<Course>, Observable<Course>>() {
+                                    @Override
+                                    public Observable<Course> call(List<Course> courses) {
+                                        return Observable.from(courses);
+                                    }
+                                });
+                    }
+                })
+                .map(new Func1<Course, Course>() {
+                    @Override
+                    public Course call(Course course) {
+                        boolean foundMatchFlag = false;
+                        for (Course.Sections section : course.getSections()) {
+                            if (section.getIndex().equals(request.getIndex())) {
+                                foundMatchFlag = true;
+                                //Replace the sections in the course with the section we are looking for.
+                                List<Course.Sections> currentSection = new ArrayList<>();
+                                currentSection.add(section);
+                                course.setSections(currentSection);
+                            }
+                        }
+                        if (foundMatchFlag) {
+                            return course;
+                        } else {
+                            return null;
+                        }
+                    }
+                }).filter(new Func1<Course, Boolean>() {
+                    @Override
+                    public Boolean call(Course course) {
+                        return course != null;
+                    }
+                });
     }
 
-    public static class Builder {
-        protected Context context;
-        protected OnCompleteListener onCompleteListener;
-
-        public Builder(Context context) {
-            this.context = context;
-        }
-
-        public Builder setOnCompleteListener(OnCompleteListener onCompleteListener) {
-            if (onCompleteListener != null) {
-                this.onCompleteListener = onCompleteListener;
-            }
-            return this;
-        }
-
-        public Updater start() {
-            return new Updater(this);
-        }
-
-        @Override
-        public String toString() {
-            return "Builder{" +
-                    "context=" + context + '}';
-        }
-    }
-
-    //Quite difficult to get this right.
-    private class ListFutureCallback implements FutureCallback<String> {
-        private final AtomicInteger numOfRequestedCourses;
-        private final Request r;
-        private final List<Course> updatedTrackedSections;
-        private final List<TrackedSections> allTrackedSections;
-
-        Gson gson = new GsonBuilder()
-                .serializeNulls()
-                .setPrettyPrinting()
-                .create();
-
-        public ListFutureCallback(AtomicInteger numOfRequestedCourses, Request r, List<Course> updatedTrackedSections, List<TrackedSections> allTrackedSections) {
-            this.numOfRequestedCourses = numOfRequestedCourses;
-            this.r = r;
-            this.updatedTrackedSections = updatedTrackedSections;
-            this.allTrackedSections = allTrackedSections;
-        }
-
-        @Override
-        public void onCompleted(Exception e, String response) {
-
-            List<Course> courses = new ArrayList<>();
-
-            if (e == null) {
+    @NonNull
+    private static Observable<List<Course>> createCourses( final String response){
+        return Observable.create(new Observable.OnSubscribe<List<Course>>() {
+            @Override
+            public void call(Subscriber<? super List<Course>> sub) {
+                List<Course> courses = new ArrayList<>();
                 Type listType = new TypeToken<List<Course>>() {
                 }.getType();
                 try {
                     courses = gson.fromJson(response, listType);
-                } catch (JsonSyntaxException j) {
-                    e = j;
+                } catch (JsonSyntaxException e) {
+                    sub.onError(e);
                 }
                 //It should have responded with a 400 or 500 error, but nope :/
                 if (response == null || response.equals("") || courses == null || courses.size() < 1) {
-                    e = new IllegalStateException("No content response from server");
+                    sub.onError(new IllegalStateException("No content response from server"));
                 }
+                sub.onNext(courses);
+                sub.onCompleted();
             }
-
-            //Increment no matter if the request fails or not.
-            numOfRequestedCourses.incrementAndGet();
-            //If no error and the list of courses is > 0
-            if (e == null) {
-                //For courses in the list
-                for (final Course c : courses) {
-                    //For sections in the the course
-                    for (final Course.Sections s : c.getSections()) {
-                        //If the index of the section equals the index of the request.
-                        if (s.getIndex().equals(r.getIndex())) {
-                            //Replace the sections in the course with the section we are looking for.
-                            List<Course.Sections> currentSection = new ArrayList<>();
-                            currentSection.add(s);
-                            c.setSections(currentSection);
-
-                            //Add the course to the list of the updated sections.
-                            updatedTrackedSections.add(c);
-
-                            //Logic to determine when the series of the asyncronous network requests have been completed.
-                            if (allTrackedSections.size() == numOfRequestedCourses.get()) {
-                                completeOperation(updatedTrackedSections, listOfRequests);
-                                mBuilder.onCompleteListener.onDone(updatedTrackedSections);
-                            }
-                        }
-                    }
-                }
-            } else {
-                Mint.addExtraData(RutgersCTApp.RESPONSE, response);
-                Crashlytics.setString(RutgersCTApp.RESPONSE, response);
-                mBuilder.onCompleteListener.onError(e, r);
-            }
-        }
-
-        private void completeOperation(Iterable<Course> updatedTrackedSections, Iterable<Request> listOfRequests) {
-            Map<Course, Request> mappedValues = new TreeMap<>();
-            //Match the request back with course. The Request object hold valuable information about the course/section.
-            for (Course c : updatedTrackedSections) {
-                for (Request request : listOfRequests) {
-                    //Match index of the section with the index of the request then insert them into the rootview.
-                    if (request.getIndex().equals(c.getSections().get(0).getIndex())) {
-                        mappedValues.put(c, request);
-                    }
-                }
-            }
-
-            for (Map.Entry<Course, Request> entry : mappedValues.entrySet()) {
-                Request value = entry.getValue();
-                Course key = entry.getKey();
-
-                mBuilder.onCompleteListener.onSuccess(value, key);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "ListFutureCallback{" +
-                    "numOfRequestedCourses=" + numOfRequestedCourses +
-                    ", r=" + r +
-                    ", updatedTrackedSections=" + updatedTrackedSections +
-                    ", allTrackedSections=" + allTrackedSections +
-                    '}';
-        }
+        });
     }
 
-    @Override
-    public String toString() {
-        return "Updater{" +
-                "mBuilder=" + mBuilder +
-                ", listOfRequests=" + listOfRequests +
-                '}';
+    private static Observable<String> getCoursesFromServer(final Request r) {
+        final String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
+
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> sub) {
+                com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+                        .url(url)
+                        .build();
+
+                Response response = null;
+                try {
+                    response = client.newCall(request).execute();
+                } catch (IOException e) {
+                    sub.onError(new IOException("Error while attempting to execute request."));
+                }
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        sub.onNext(response.body().string());
+                    } catch (IOException e) {
+                        sub.onError(e);                    }
+                    sub.onCompleted();
+                } else {
+                    sub.onError(new IOException("Request failed."));
+                }
+            }
+        });
     }
 }

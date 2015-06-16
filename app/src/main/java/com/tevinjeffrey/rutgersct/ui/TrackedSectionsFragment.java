@@ -37,7 +37,9 @@ import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.Updater;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.TrackedSections;
+import com.tevinjeffrey.rutgersct.model.TrackedSection;
+import com.tevinjeffrey.rutgersct.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
 import java.net.UnknownHostException;
 import java.util.Calendar;
@@ -47,6 +49,10 @@ import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
@@ -201,43 +207,53 @@ public class TrackedSectionsFragment extends BaseFragment {
     private void getTrackedSections() {
         removeAllViews();
 
-        Updater.with(getParentActivity()).setOnCompleteListener(new Updater.OnCompleteListener() {
-            @Override
-            public void onSuccess(Request request, Course course) {
-                new SectionListAdapter(TrackedSectionsFragment.this,
-                        course,
-                        rootView,
-                        request,
-                        RutgersCTApp.TRACKED_SECTION).init();
-            }
+        Observable<Course> courseObservable = Updater.getTrackedSections();
+        courseObservable
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Course>() {
+                    @Override
+                    public void onCompleted() {
+                        dismissProgress();
+                        setEmptyLayout();
+                    }
 
-            @Override
-            public void onDone(List<Course> map) {
-                dismissProgress();
-                setEmptyLayout();
-            }
+                    @Override
+                    public void onError(Throwable t) {
+                        dismissProgress();
+                        showSnackBar(t.getClass().getSimpleName());
+                        if (t instanceof UnknownHostException) {
+                            showSnackBar(getResources().getString(R.string.no_internet));
+                        } else if (t instanceof IllegalStateException && !(t instanceof CancellationException)) {
+                            cancelRequests();
+                            showSnackBar(getResources().getString(R.string.server_down));
+                        } else if (t instanceof TimeoutException) {
+                            cancelRequests();
+                            showSnackBar(getResources().getString(R.string.timed_out));
+                        } else if (!(t instanceof CancellationException)) {
+                            Timber.e(t, "Crash while attempting to complete request in %s to %s"
+                                    , TrackedSectionsFragment.this.toString(), t.toString());
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable t, Request r) {
-                dismissProgress();
-                if (t instanceof UnknownHostException) {
-                    showSnackBar(getResources().getString(R.string.no_internet));
-                } else if (t instanceof IllegalStateException && !(t instanceof CancellationException)) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.server_down));
-                } else if (t instanceof TimeoutException) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.timed_out));
-                } else if (!(t instanceof CancellationException)) {
-                    Timber.e(t, "Crash while attempting to complete request in %s to %s"
-                            , TrackedSectionsFragment.this.toString(), t.toString());
-                }
-            }
-        }).start();
+                    @Override
+                    public void onNext(Course course) {
+                        String indexNumber = course.getSections().get(0).getIndex();
+                        TrackedSection ts = TrackedSection.find(TrackedSection.class, "index_number = ?", indexNumber).get(0);
+
+                        Request request = UrlUtils.getRequestFromTrackedSections(ts);
+
+                        new SectionListAdapter(TrackedSectionsFragment.this,
+                                course,
+                                rootView,
+                                request,
+                                RutgersCTApp.TRACKED_SECTION).init();
+                    }
+                });
     }
 
     private void setEmptyLayout() {
-        if (TrackedSections.count(TrackedSections.class, null, null) == 0) {
+        if (TrackedSection.count(TrackedSection.class, null, null) == 0) {
             dismissProgress();
             addCoursesToTrack.setVisibility(View.VISIBLE);
         } else {

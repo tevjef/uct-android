@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rutgersct.database;
 
 import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.TrackedSections;
+import com.tevinjeffrey.rutgersct.model.TrackedSection;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ public class DatabaseHandler {
     }
 
     public static int removeSectionFromDb(Request request) {
-        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
+        List<TrackedSection> trackedSections = TrackedSection.find(TrackedSection.class,
                 "INDEX_NUMBER = ?", request.getIndex());
-        for (TrackedSections ts : trackedSections) {
+        for (TrackedSection ts : trackedSections) {
             ts.delete();
             notifyOnRemoveListeners(request);
         }
@@ -44,14 +44,14 @@ public class DatabaseHandler {
     }
 
     public static boolean isSectionTracked(Request request) {
-        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
+        List<TrackedSection> trackedSections = TrackedSection.find(TrackedSection.class,
                 "INDEX_NUMBER = ?", request.getIndex());
 
         return trackedSections != null && trackedSections.size() != 0;
     }
 
     public static void addSectionToDb(Request request) {
-        TrackedSections trackedSections = new TrackedSections(request.getSubject(),
+        TrackedSection trackedSections = new TrackedSection(request.getSubject(),
                 request.getSemester().toString(), Request.toStringList(request.getLocations()),
                 Request.toStringList(request.getLevels()), request.getIndex());
         trackedSections.save();

@@ -29,6 +29,10 @@
     @butterknife.* <methods>;
 }
 
+-dontwarn okio.**
+-dontwarn org.mockito.**
+-dontwarn sun.reflect.**
+-dontwarn android.test.**
 -dontwarn javax.annotation.**
 -dontwarn javax.inject.**
 -dontwarn sun.misc.Unsafe

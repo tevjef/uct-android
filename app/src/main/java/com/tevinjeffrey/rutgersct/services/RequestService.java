@@ -16,12 +16,17 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.database.Updater;
 import com.tevinjeffrey.rutgersct.model.Course;
 import com.tevinjeffrey.rutgersct.model.Request;
+import com.tevinjeffrey.rutgersct.model.TrackedSection;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
+import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
-import java.util.List;
 import java.util.concurrent.CancellationException;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class RequestService extends Service {
@@ -36,33 +41,40 @@ public class RequestService extends Service {
         mIntent = intent;
         Timber.i("Request Service started at %s", RutgersCTApp.getTimeNow());
 
-        Updater.with(this).setOnCompleteListener(new Updater.OnCompleteListener() {
-            @Override
-            public void onSuccess(Request request, Course course) {
-                if (course.getSections().get(0).isOpenStatus())
-                    makeNotification(course, request);
-            }
+        Observable<Course> courseObservable = Updater.getTrackedSections();
+        courseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Course>() {
+                    @Override
+                    public void onCompleted() {
+                        stopSelf();
+                    }
 
-            @Override
-            public void onError(Throwable t, Request r) {
-                if (t != null && !(t instanceof CancellationException)) {
-                    //If an error occured while completing the request. Send it to crash reporting.
-                    Timber.e(t, "Crash while attempting to complete request in %s to %s"
-                            , RequestService.this.toString(), r.toString());
-                }
+                    @Override
+                    public void onError(Throwable t) {
+                        if (t != null && !(t instanceof CancellationException)) {
+                            //If an error occured while completing the request. Send it to crash reporting.
+                            Timber.e(t, "Crash while attempting to complete request in %s to %s"
+                                    , RequestService.this.toString());
+                        }
+                    }
 
-            }
+                    @Override
+                    public void onNext(Course course) {
+                        Course.Sections s = course.getSections().get(0);
+                        String indexNumber = s.getIndex();
+                        TrackedSection ts = TrackedSection.find(TrackedSection.class, "index_number = ?", indexNumber).get(0);
+                        Request request = UrlUtils.getRequestFromTrackedSections(ts);
 
-            @Override
-            public void onDone(List<Course> mappedValues) {
-                stopSelf();
-            }
-        }).start();
+                        if (s.isOpenStatus())
+                            makeNotification(course, request);
+                    }
+                });
         return START_NOT_STICKY;
     }
 
     //Creates a notfication of the Android system.
-
     private void makeNotification(Course c, Request r) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("app_notification", true)) {
             String courseTitle = c.getTrueTitle();

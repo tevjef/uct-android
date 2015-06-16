@@ -606,42 +606,70 @@
                 android:alpha="1" />
 
         </RelativeLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="120dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@color/accent"
         android:orientation="vertical"
-        android:transitionGroup="true">
+        android:transitionGroup="true"
+        android:paddingLeft="16dp"
+        android:paddingTop="5dp"
+        android:paddingRight="16dp">
 
-        <Button
-            android:id="@+id/prof_rmp_search"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/btn_toggle_selector"
-            android:drawableLeft="@drawable/ic_rmp"
-            android:gravity="center_vertical"
-            android:paddingLeft="21dp"
-            android:drawablePadding="10dp"
-            android:text="RateMyProfessors"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/white"
-            tools:ignore="HardcodedText" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_rmp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-        <Button
-            android:id="@+id/prof_google_search"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/btn_toggle_selector"
-            android:drawableLeft="@drawable/ic_search_white"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="21dp"
-            android:text="Google"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/white"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
+            android:text="Overall Score"
+            android:id="@+id/prof1ScoreText"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4.9"
+            android:id="@+id/rmp_prof1OverallScore"
+            android:textSize="26sp"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/prof1ScoreText"
+            android:layout_alignStart="@+id/prof1ScoreText"
+            android:layout_marginLeft="21dp"
+            android:layout_marginStart="21dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Joyce Carolla"
+            android:id="@+id/rmp_prof1Name"
+            android:layout_alignTop="@+id/prof1ScoreText"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Mathematics"
+            android:id="@+id/rmp_prof1Department"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignLeft="@+id/rmp_prof1Name"
+            android:layout_alignStart="@+id/rmp_prof1Name" />
+    </RelativeLayout>
+
 </RelativeLayout>

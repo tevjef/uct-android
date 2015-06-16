@@ -1,54 +1,34 @@
-package com.tevinjeffrey.rmp.test;
+package com.tevinjeffrey.rmp;
 
-import org.junit.Test;
-import org.junit.Before;
+import com.squareup.okhttp.OkHttpClient;
+import com.tevinjeffrey.rmp.RMP;
+import com.tevinjeffrey.rmp.professor.Professor;
+
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * RMP Tester.
- *
- * @author <Authors name>
- * @since <pre>May 19, 2015</pre>
- * @version 1.0
- */
 public class RMPTest {
+
+    RMP rmp;
 
     @Before
     public void before() throws Exception {
+        rmp = new RMP(new OkHttpClient());
     }
-
-    @After
-    public void after() throws Exception {
-    }
-
-    /**
-     *
-     * Method: run(String url)
-     *
-     */
-    @Test
-    public void testRun() throws Exception {
-
-    }
-
-    /**
-     *
-     * Method: main(String[] args)
-     *
-     */
 
     @Test
     public void testRateMyProfessor() throws Exception {
         String base = "http://www.ratemyprofessors.com";
-        RMP rmp = new RMP();
 
-        String response = rmp.run(base + "/search.jsp?query=GAWISER+rutgers");
+        String response = rmp.get(base + "/search.jsp?query=GAWISER+rutgers");
 
         assertNotNull(response);
         assertNotSame(response, "");
@@ -56,7 +36,6 @@ public class RMPTest {
 
     @Test
     public void testProfessorWithoutFirstName() throws Exception {
-        RMP rmp = new RMP();
 
         String lastName = "WANG";
 
@@ -68,7 +47,7 @@ public class RMPTest {
 
     @Test
     public void testProfessorWithFirstName() throws Exception {
-        RMP rmp = new RMP();
+        RMP rmp = new RMP(new OkHttpClient());
         String lastName = "WANG";
 
         List<Professor> results = rmp.searchProfessors(lastName);
@@ -80,7 +59,6 @@ public class RMPTest {
     @Test
     public void testMain() throws Exception {
         String base = "http://www.ratemyprofessors.com";
-        RMP rmp = new RMP();
 
         String lastName = "GAWISER";
 
