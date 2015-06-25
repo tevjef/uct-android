@@ -37,6 +37,7 @@ public class Course implements Comparable, Parcelable {
     private List<Sections> sections = new ArrayList<>();
     private String expandedTitle;
 
+
     public Course() {
     }
 
@@ -95,15 +96,20 @@ public class Course implements Comparable, Parcelable {
     }
 
     String getExpandedTitle() {
-        return expandedTitle;
+        if (expandedTitle != null) {
+            return expandedTitle.replaceAll("\\s+", " ").trim();
+        }
+        return null;
     }
 
     String getTitle() {
-        return title;
-    }
+        if (title != null) {
+            return title.replaceAll("\\s+", " ").trim();
+        }
+        return null;    }
 
     public String getTrueTitle() {
-        return (getExpandedTitle() == null || getExpandedTitle().trim().length() <= 0) ? getTitle() :
+        return (getExpandedTitle() == null || getExpandedTitle().length() <= 0) ? getTitle() :
                 getExpandedTitle();
     }
 
@@ -168,6 +174,14 @@ public class Course implements Comparable, Parcelable {
                 return 1;
             } else if (Integer.valueOf(this.getCourseNumber()) < Integer.valueOf(b.getCourseNumber())) {
                 return -1;
+            } else if (Integer.valueOf(this.getCourseNumber()).equals(Integer.valueOf(b.getCourseNumber()))) {
+                if (Integer.valueOf(getSections().get(0).getIndex()) > Integer.valueOf(b.getSections().get(0).getIndex())) {
+                    return 1;
+                } else if (Integer.valueOf(getSections().get(0).getIndex()) < Integer.valueOf(b.getSections().get(0).getIndex())) {
+                    return -1;
+                } else {
+                    return 0;
+                }
             } else {
                 return 0;
             }
@@ -522,17 +536,36 @@ public class Course implements Comparable, Parcelable {
                 if (b.isLecture() && this.isLecture()) {
                     if (SectionUtils.getTimeRank(this) < SectionUtils.getTimeRank(b)) {
                         return 1;
-                    } else {
+                    } else if (SectionUtils.getTimeRank(this) > SectionUtils.getTimeRank(b)) {
                         return -1;
+                    } else {
+                        return 0;
                     }
-                } else if (!b.isLecture()) {
+
+                } else if (b.isRecitation() && this.isRecitation()) {
+
+                    if (SectionUtils.getTimeRank(this) < SectionUtils.getTimeRank(b)) {
+                        return 1;
+                    } else if (SectionUtils.getTimeRank(this) > SectionUtils.getTimeRank(b)) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } else if (b.isByArrangement() && this.isByArrangement()) {
+                    if (SectionUtils.getTimeRank(this) < SectionUtils.getTimeRank(b)) {
+                        return 1;
+                    } else if (SectionUtils.getTimeRank(this) > SectionUtils.getTimeRank(b)) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } else {
                     if (SectionUtils.getClassRank(this) < SectionUtils.getClassRank(b)) {
                         return 1;
                     } else {
                         return -1;
                     }
                 }
-                return 0;
             }
 
             @Override
