@@ -22,7 +22,7 @@
     <string name="set">Set</string>
     <string name="please_wait">Please wait…</string>
     <string name="gettingData">Fetching data</string>
-    <string name="expect_server_issues">Expect intermittent server issues from 3:00am to 4:00am</string>
+    <string name="expect_server_issues">Expect intermittent server issues from 3:00am to 5:00am</string>
     <string name="no_internet">Check internet connection.</string>
     <string name="server_down">Rutgers servers are currently down. Try again later.</string>
     <string name="timed_out">Connection timed out. Check internet connection.</string>
@@ -35,6 +35,59 @@
     <string name="rate_later">Later</string>
     <string name="rate_never">No Thanks!</string>
     <string name="action_rate">Rate this app!</string>
+    <string name="next_text">NEXT</string>
+
+    <!--
+    System defaults
+    -->
+    <string name="default_font">sans-serif</string>
+
+    <!--
+    Transition
+    -->
+    <string name="transition_name_course_title">transition_name_course_title</string>
+    <string name="transition_name_tool_background">transition_name_tool_background</string>
+    <string name="transition_name_circle_view">transition_name_circle_view</string>
+    <string name="transition_name_fab">transition_name_fab</string>
+
+    <!--
+    Preferences
+    -->
+    <string name="pref_learned_server_issues_key">pref_learned_server_issues_key</string>
+    <string name="pref_learned_server_issues_default_value">false</string>
+
+    <string name="pref_sync_interval_key">pref_sync_interval_key</string>
+    <string name="pref_sync_interval_default_value">1</string>
+
+
+
+    <string name="time_and_location">Time and Location</string>
+    <string name="cross_listed_sections">Cross-Listed</string>
+    <string name="metadata_dummy_text">The prerequisite for this course is 640:114, 640:119,
+        640:135 or 640:155.MEETS PRE-2012
+        NEWARK CAMPUS GEN ED CURRICULUM NATURAL SCIENCES REQUIREMENT.</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="special_permission">Special Permission</string>
+    <string name="section_comments">Section Comments</string>
+    <string name="section_notes">Section Notes</string>
+    <string name="open_to">Open to</string>
+    <string name="section">Section</string>
+    <string name="index">Index</string>
+    <string name="credits">Credits</string>
+    <string name="exam_code">Exam Code</string>
+    <string name="instructor">Instructor</string>
+    <string name="term">Term</string>
+    <string name="empty_view">Could not find what you were looking for</string>
+    <string name="easiness">Easiness</string>
+    <string name="clarity">Clarity</string>
+    <string name="helpfullness">Helpfullness</string>
+    <string name="overall_rating">Overall Rating</string>
+    <string name="average_grade">Average Grade</string>
+    <string name="course_notes">Course Notes</string>
+    <string name="subject_notes">Subject Notes</string>
+    <string name="lowercase_credits">credits</string>
+    <string name="open_sections_of">open sections of</string>
+    <string name="tracked_sections">Tracked Sections</string>
 
     <string-array name="intervals">
         <item>Every 5 minutes</item>
@@ -42,6 +95,5 @@
         <item>Every 1 hour</item>
         <item>Every 3 hours</item>
     </string-array>
-
 
 </resources>

@@ -1,79 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sectionRoot"
+    android:id="@+id/section_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:minHeight="72dp"
     android:paddingBottom="8dp"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:paddingTop="8dp"
-    tools:ignore="Overdraw">
+    android:paddingRight="16dp"
+    tools:background="@android:color/white">
 
-    <RelativeLayout
-        android:id="@+id/section_details"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <include
+        layout="@layout/section_item_time_container"
+        android:id="@+id/section_item_time_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/section_number_background"
+        android:layout_toEndOf="@+id/section_number_background" />
 
-        <TextView
-            android:id="@+id/prof_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/sectionTimeContainer"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="5dp"
-            android:text="A EXAMPLE OF VERY LONG TEXT"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-            android:textColor="@color/secondary_text"
-            android:textSize="11sp"
-            tools:ignore="HardcodedText,SmallSp" />
+    <include layout="@layout/section_item_circle"
+        android:id="@+id/section_number_background" />
 
-        <RelativeLayout
-            android:id="@+id/sectionNumberBackground"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/green"
-            android:minHeight="40dp"
-            android:minWidth="40dp"
-
-            android:transitionName="section_background">
-
-            <TextView
-                android:id="@+id/sectionNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="01"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:ignore="HardcodedText" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/sectionTimeContainer"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/sectionNumberBackground"
-            android:minWidth="100dp"
-            android:orientation="vertical"
-            android:text="Tuesday 10:00 AM - 11:20 AM"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-            android:textColor="@color/secondary_text"
-            android:textSize="14sp"
-            android:transitionName="instructor_name"
-            tools:ignore="HardcodedText">
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/prof_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A EXAMPLE OF VERY LONG TEXT"
+        android:textColor="@color/secondary_text"
+        android:textSize="11sp"
+        tools:ignore="HardcodedText,SmallSp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/section_item_time_container"
+        android:textStyle="bold" />
 
 </RelativeLayout>

@@ -1,17 +1,15 @@
 package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.v7.app.ActionBarActivity;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.view.Menu;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgersct.R;
@@ -32,13 +30,12 @@ public class MainActivity extends ActionBarActivity {
         setWindowColor(context.getResources().getColor(R.color.primary), context.getResources().getColor(R.color.primary_dark), context);
     }
 
-    private static void setWindowColor(@ColorRes int color, @ColorRes int colorDark, Activity context) {
+    private static void setWindowColor(int color, int colorDark, Activity context) {
         Window window = context.getWindow();
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(colorDark);
             window.setNavigationBarColor(colorDark);
-        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            window.setBackgroundDrawable(new ColorDrawable(color));
         }
     }
 

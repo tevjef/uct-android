@@ -34,11 +34,16 @@ public class Professor extends Listing implements Comparable<Professor> {
     }
 
     public static class Name {
-        String first;
-        String last;
+        final String first;
+        final String last;
 
         public Name(String first, String last) {
-            this.first = first;
+            if (first.equals("")) {
+                this.first = " ";
+            } else {
+                this.first = first;
+            }
+
             this.last = last;
         }
 

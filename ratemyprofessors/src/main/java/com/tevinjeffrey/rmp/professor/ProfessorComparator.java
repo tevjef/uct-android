@@ -3,6 +3,7 @@ package com.tevinjeffrey.rmp.professor;
 import com.tevinjeffrey.rmp.search.Decider;
 
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.Comparator;
 import java.util.Locale;
 
@@ -122,9 +123,6 @@ public class ProfessorComparator {
 
         @Override
         public int compare(Professor prof1, Professor prof2) {
-            double score1 = StringUtils.getJaroWinklerDistance(prof1.getDepartment(), mDepartment);
-            double score2 = StringUtils.getJaroWinklerDistance(prof2.getDepartment(), mDepartment);
-
             if (StringUtils.getFuzzyDistance(prof1.getDepartment(), mDepartment, Locale.ENGLISH) >
                     StringUtils.getFuzzyDistance(prof2.getDepartment(), mDepartment, Locale.ENGLISH)) {
                 return -1;

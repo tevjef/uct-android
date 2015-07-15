@@ -11,15 +11,15 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.database.Updater;
-import com.tevinjeffrey.rutgersct.model.Course;
-import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.TrackedSection;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.database.TrackedSection;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
-import com.tevinjeffrey.rutgersct.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
 
 import java.util.concurrent.CancellationException;
 
@@ -41,7 +41,9 @@ public class RequestService extends Service {
         mIntent = intent;
         Timber.i("Request Service started at %s", RutgersCTApp.getTimeNow());
 
-        Observable<Course> courseObservable = Updater.getTrackedSections();
+        RutgersApiImpl api = new RutgersApiImpl(RutgersCTApp.getClient());
+
+        Observable<Course> courseObservable = api.getTrackedSections(TrackedSection.listAll(TrackedSection.class));
         courseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

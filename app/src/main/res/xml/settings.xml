@@ -11,7 +11,7 @@
     <com.jenzz.materialpreference.PreferenceCategory android:title="Sync &amp; Data">
 
         <com.jenzz.materialpreference.Preference
-            android:key="sync_interval"
+            android:key="@string/pref_sync_interval_key"
             android:summary="Material Summary"
             android:title="Sync Interval" />
 

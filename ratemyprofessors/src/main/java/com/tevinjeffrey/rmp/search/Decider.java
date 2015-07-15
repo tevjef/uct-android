@@ -22,7 +22,7 @@ public class Decider {
             }
         }
 
-        if (params.name.getFirst().length() > 0) {
+        if (!params.name.getFirst().equals(" ")) {
             for (final Iterator<Professor> iterator = listings.iterator(); iterator.hasNext(); ) {
                 if (!(iterator.next().getFullName().getFirst().charAt(0) == params.name.getFirst().charAt(0))) {
                     iterator.remove();
@@ -34,16 +34,26 @@ public class Decider {
     }
 
     public static class Parameter {
-        final public String university;
-        final public String department;
-        final public String location;
-        final public Professor.Name name;
+        public String university;
+        public String department;
+        public String location;
+        public Professor.Name name;
 
         public Parameter(String university, String department, String location, Professor.Name name) {
             this.university = university;
             this.department = department;
             this.location = location;
             this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "Parameter{" +
+                    "university='" + university + '\'' +
+                    ", department='" + department + '\'' +
+                    ", location='" + location + '\'' +
+                    ", name=" + name +
+                    '}';
         }
     }
 }

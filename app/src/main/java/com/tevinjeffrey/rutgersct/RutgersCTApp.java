@@ -8,11 +8,14 @@ import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,18 +37,38 @@ public class RutgersCTApp extends SugarApp {
     public final static String TRACKED_SECTION = "TRACKED_SECTION";
     public final static String COURSE_INFO_SECTION = "COURSE_INFO_SECTION";
     private static final String INSTALLATION = "INSTALLATION";
+
+    private static RutgersCTApp sInstance;
+
     private static String sID = null;
 
     public static OkHttpClient client = new OkHttpClient();
 
+    public static RutgersCTApp getInstance() {
+        return sInstance;
+    }
+
+    private RefWatcher refWatcher;
+
+    public static RefWatcher getRefWatcher(Context context) {
+        RutgersCTApp rutgersCTApp = (RutgersCTApp) context.getApplicationContext();
+        return rutgersCTApp.refWatcher;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        sInstance = this;
+
+        refWatcher = LeakCanary.install(this);
+
+        RutgersApiImpl.init();
+
         initStetho();
 
         initOkHttp();
+
 
         //Initalize crash reporting apis
         Fabric.with(this, new Crashlytics());
@@ -83,23 +106,33 @@ public class RutgersCTApp extends SugarApp {
         long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
         Cache cache = new Cache(httpCacheDir, httpCacheSize);
         client.setCache(cache);
-        client.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR);
         client.networkInterceptors().add(LOGGING_INTERCEPTOR);
         client.networkInterceptors().add(new StethoInterceptor());
+
+        if (BuildConfig.DEBUG) {
+            try {
+                cache.evictAll();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
-        @Override public Response intercept(Interceptor.Chain chain) throws IOException {
+    public static Interceptor getCacheControlInterceptor(final long age) {
+        return new Interceptor() {
+            @Override
+            public Response intercept(Interceptor.Chain chain) throws IOException {
 
-            Request originalRequest = chain.request();
-            Timber.d("Host: %s", originalRequest.httpUrl().host());
+                Request originalRequest = chain.request();
+                Timber.d("Host: %s", originalRequest.httpUrl().host());
 
-            Response originalResponse = chain.proceed(chain.request());
-            return originalResponse.newBuilder()
-                    .header("Cache-Control", "max-age=10")
-                    .build();
-        }
-    };
+                Response originalResponse = chain.proceed(chain.request());
+                return originalResponse.newBuilder()
+                        .header("Cache-Control", "max-age=" + age)
+                        .build();
+            }
+        };
+    }
 
     private static final Interceptor LOGGING_INTERCEPTOR = new Interceptor() {
         @Override

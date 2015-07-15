@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.transition.ChangeBounds;
@@ -26,12 +27,12 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
-import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.SystemMessage;
-import com.tevinjeffrey.rutgersct.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
+import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
 import com.tevinjeffrey.stringpicker.StringPicker;
 
 import java.util.ArrayList;
@@ -42,38 +43,42 @@ import butterknife.InjectView;
 
 public class ChooserFragment extends BaseFragment {
 
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.systemMessage)
     TextView mSystemMessage;
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.semester_radiogroup)
     RadioGroup mSemesterRadiogroup;
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.location1)
     CheckBox mLocation1;
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.location2)
     CheckBox mLocation2;
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.location3)
     CheckBox mLocation3;
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.level1)
     CheckBox mLevel1;
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.level2)
     CheckBox mLevel2;
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.search_button)
     TextView mSearchButton;
+
     @InjectView(R.id.primarySemester)
     RadioButton mPrimarySemester;
+
     @InjectView(R.id.secondarySemester)
     RadioButton mSecondarySemester;
+
     @InjectView(R.id.otherSemester)
     RadioButton mOtherSemester;
 
-    private Toolbar toolbar;
+    @InjectView(R.id.toolbar)
+    Toolbar mToolbar;
 
     public ChooserFragment() {
     }
@@ -82,18 +87,36 @@ public class ChooserFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MainActivity.setPrimaryWindow(getParentActivity());
+
         setRetainInstance(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_chooser, container, false);
+
         ButterKnife.inject(this, rootView);
-        setToolbar(rootView);
-        getSystemMessage();
-        setupPicker();
+
+        initViews();
 
         return rootView;
     }
 
-    private void setupPicker() {
+    public void initViews() {
+        setToolbar(mToolbar);
+        initPicker();
+        getSystemMessage();
+    }
+
+    @Override
+    void setToolbar(Toolbar toolbar) {
+        super.setToolbar(toolbar);
+
+        ActionBar actionBar = getParentActivity().getSupportActionBar();
+        if(actionBar != null) {
+            getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    private void initPicker() {
         final SemesterUtils su = new SemesterUtils(Calendar.getInstance());
 
         mPrimarySemester.setText(su.getPrimarySemester());
@@ -147,20 +170,6 @@ public class ChooserFragment extends BaseFragment {
         super.onResume();
     }
 
-    private void setToolbar(View rootView) {
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        getParentActivity().setSupportActionBar(toolbar);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentActivity().onBackPressed();
-            }
-        });
-        getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
-    }
-
     private boolean isValidInputs() {
         int checkedButton = mSemesterRadiogroup.getCheckedRadioButtonId();
         RadioButton selectedButton = (RadioButton) getParentActivity().findViewById(checkedButton);
@@ -196,7 +205,7 @@ public class ChooserFragment extends BaseFragment {
             sf.setAllowEnterTransitionOverlap(true);
             sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
             sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            ft.addSharedElement(toolbar, "toolbar_background");
+            ft.addSharedElement(mToolbar, getString(R.string.transition_name_tool_background));
         } else {
             ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         }

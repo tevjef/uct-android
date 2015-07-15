@@ -1,21 +1,16 @@
 package com.tevinjeffrey.rutgersct.ui;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +20,7 @@ import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.services.Alarm;
+import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.net.UnknownHostException;
 import java.util.concurrent.CancellationException;
@@ -34,7 +30,6 @@ import timber.log.Timber;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    private SharedPreferences mPref;
     private Preference syncInterval;
 
     BasePreferenceActivity getParentActivity() {
@@ -46,7 +41,6 @@ public class SettingsFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
-        mPref = PreferenceManager.getDefaultSharedPreferences(getParentActivity());
     }
 
     @Override
@@ -60,7 +54,6 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
         ListView list = (ListView) getView().findViewById(android.R.id.list);
         list.setDivider(new ColorDrawable(Color.parseColor("#f5f5f5")));
         list.setDividerHeight((int) getParentActivity().getResources().getDisplayMetrics().density);
@@ -96,7 +89,7 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void setupIntervalPref() {
-        syncInterval = findPreference("sync_interval");
+        syncInterval = findPreference(getString(R.string.pref_sync_interval_key));
         setSummary(syncInterval, getResources().getStringArray(R.array.intervals)[getInterval()]);
         syncInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -153,7 +146,7 @@ public class SettingsFragment extends PreferenceFragment {
                                     } else if (e instanceof TimeoutException) {
                                         content = getResources().getString(R.string.timed_out);
                                     } else if (!(e instanceof CancellationException)) {
-                                        Timber.e(e, "Crash while attempting to complete request in %s to %s"
+                                        Timber.e(e, "Crash while attempting to complete mRequest in %s to %s"
                                                 , SettingsFragment.this.toString(), url);
                                     }
                                 }
@@ -177,16 +170,16 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
-    private void setSummary(Preference preference, String summary) {
+    private void setSummary(Preference preference, CharSequence summary) {
         preference.setSummary(summary);
     }
 
     int getInterval() {
-        return mPref.getInt(getResources().getString(R.string.sync_interval), 1);
+        return PreferenceUtils.getSyncInterval();
     }
 
     void setInterval(int intervalIndex) {
-        mPref.edit().putInt(getResources().getString(R.string.sync_interval), intervalIndex).commit();
+        PreferenceUtils.setSyncInterval(intervalIndex);
     }
 
     @Override

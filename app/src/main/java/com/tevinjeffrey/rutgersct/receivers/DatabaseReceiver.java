@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.model.Course;
-import com.tevinjeffrey.rutgersct.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 
 public class DatabaseReceiver extends BroadcastReceiver {
     public DatabaseReceiver() {
@@ -21,12 +21,11 @@ public class DatabaseReceiver extends BroadcastReceiver {
         Course course = intent.getParcelableExtra(RutgersCTApp.SELECTED_COURSE);
         if (request != null && course != null) {
             //Removes section from databse
-            if (DatabaseHandler.removeSectionFromDb(request) == 1) {
-                //Notify user with a toast.
-                notifyUser(context, course);
-                //Remove notification from notification panel
-                removeNotification(context, request);
-            }
+            DatabaseHandler.getInstance().removeSectionFromDb(request);
+            //Notify user with a toast.
+            notifyUser(context, course);
+            //Remove notification from notification panel
+            removeNotification(context, request);
         }
     }
 

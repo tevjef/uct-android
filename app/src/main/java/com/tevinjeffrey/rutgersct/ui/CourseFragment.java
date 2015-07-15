@@ -5,8 +5,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.view.LayoutInflater;
@@ -15,53 +17,63 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.adapters.CourseAdapter;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.adapters.CourseFragmentAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
-import com.tevinjeffrey.rutgersct.model.Course;
-import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.Subject;
-import com.tevinjeffrey.rutgersct.utils.CourseUtils;
-import com.tevinjeffrey.rutgersct.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import icepick.Icicle;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.app.AppObservable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class CourseFragment extends BaseFragment {
+public class CourseFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, CourseFragmentAdapter.ItemClickListener{
 
-    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.courses)
-    ListView mCoursesListView;
-    @SuppressWarnings("WeakerAccess")
+
+    @InjectView(R.id.list_view)
+    RecyclerView mRecyclerView;
+
     @InjectView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    private Request request;
-    private ArrayList<Course> courses;
+
+    @InjectView(R.id.empty_view)
+    ViewGroup mEmptyView;
+
+    @Icicle
+    Request mRequest;
+
+    @Icicle
+    ArrayList<Course> mListDataset;
+
+    @Icicle
+    boolean hasDataFlag = true;
+
+    private RecyclerView.Adapter mListAdapter;
 
     public CourseFragment() {
     }
@@ -69,9 +81,8 @@ public class CourseFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(RutgersCTApp.REQUEST);
-        }
+        mRequest = getArguments().getParcelable(RutgersCTApp.REQUEST);
+
     }
 
     @Override
@@ -80,35 +91,123 @@ public class CourseFragment extends BaseFragment {
         MainActivity.setPrimaryWindow(getParentActivity());
         setRetainInstance(true);
 
-        final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        final View rootView = inflater.inflate(R.layout.subjects, container, false);
+
         ButterKnife.inject(this, rootView);
 
-        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
+        initViews();
 
-        request = getArguments().getParcelable(RutgersCTApp.REQUEST);
-        setToolbar();
-
-        getCourses(mCoursesListView);
-        setRefreshListener();
         refresh();
 
-        mCoursesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                createFragment(createArgs(request, courses.get(position)));
-            }
-        });
         return rootView;
     }
 
-    private void getCourses(final ListView listView) {
-        String url = UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(request));
-        Ion.with(this)
-                .load(url)
-                .as(new TypeToken<List<Course>>() {
-                })
-                .setCallback(new ListFutureCallback(listView));
+    public void initViews() {
+        setToolbarTitle();
+        setToolbar(mToolbar);
+        initRecyclerView();
+        setupSwipeRefreshLayout();
+    }
+
+    public void setupSwipeRefreshLayout() {
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    @Override
+    public void itemClicked(Course course, View view, int positon) {
+        startCourseInfoFragment(createArgs(mRequest, course));
+    }
+
+    private void shouldShowEmptyView() {
+        if (mEmptyView != null) {
+            if (isDatasetEmpty() && !hasDataFlag) {
+                mEmptyView.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else {
+                mEmptyView.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private boolean isDatasetEmpty() {
+        return mListDataset.size() == 0;
+    }
+
+    private void addToDataset(Collection<Course> data) {
+        mListDataset.clear();
+        mListDataset.addAll(data);
+        mListAdapter.notifyDataSetChanged();
+    }
+
+
+    public void initRecyclerView() {
+        if (mListDataset == null) {
+            mListDataset = new ArrayList<>();
+        }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getParentActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.supportsPredictiveItemAnimations();
+        layoutManager.setSmoothScrollbarEnabled(true);
+        layoutManager.scrollToPosition(0);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mListAdapter = new CourseFragmentAdapter(mListDataset,
+                this);
+        mRecyclerView.setAdapter(mListAdapter);
+
+        shouldShowEmptyView();
+    }
+
+    private void getCourses() {
+        RutgersApi api = new RutgersApiImpl(RutgersCTApp.getClient());
+
+        Observable<Course> mCourseObservable = AppObservable.bindFragment(this, api.getCourses(mRequest));
+
+        mCompositeSubscription.add(mCourseObservable
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Course>>() {
+                    @Override
+                    public void onCompleted() {
+                        shouldShowEmptyView();
+                        dismissProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof UnknownHostException) {
+                            showSnackBar(getResources().getString(R.string.no_internet));
+                        } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
+                            cancelRequests();
+                            showSnackBar(getResources().getString(R.string.server_down));
+                        } else if (e instanceof TimeoutException) {
+                            cancelRequests();
+                            showSnackBar(getResources().getString(R.string.timed_out));
+                        } else if (!(e instanceof CancellationException)) {
+                            Timber.e(e, "Crash while attempting to complete mRequest in %s to %s"
+                                    , CourseFragment.this.toString(), mRequest.toString());
+                        }
+                        //hasDataFlag = false;
+                        shouldShowEmptyView();
+                        dismissProgress();
+                    }
+
+                    @Override
+                    public void onNext(List<Course> courseList) {
+                        if(courseList.size() > 0) {
+                            hasDataFlag = true;
+                            addToDataset(courseList);
+                        } else {
+                            hasDataFlag = false;
+                            shouldShowEmptyView();
+                        }
+                    }
+                }));
     }
 
     void showSnackBar(String message) {
@@ -130,85 +229,66 @@ public class CourseFragment extends BaseFragment {
                 public void run() {
                     if (mSwipeRefreshLayout != null) {
                         mSwipeRefreshLayout.setRefreshing(true);
-                        getCourses(mCoursesListView);
+                        getCourses();
                     }
 
                 }
             });
+        } else if (mSwipeRefreshLayout != null) {
+            dismissProgress();
+            cancelRequests();
         }
     }
 
-    private void setRefreshListener() {
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                AnimatorSet set = new AnimatorSet();
-                set.playTogether(
-                        ObjectAnimator.ofFloat(mCoursesListView, "translationY", 50),
-                        ObjectAnimator.ofFloat(mCoursesListView, "alpha", 1, 0)
-                );
-                set.setInterpolator(new EaseOutQuint());
-                set.setDuration(500).start();
-
-                getCourses(mCoursesListView);
-
-            }
-        });
+    @Override
+    public void onRefresh() {
+        if (isAdded() && !isRemoving()) {
+            refresh();
+        }
     }
 
     private void dismissProgress() {
         if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(
-                    ObjectAnimator.ofFloat(mCoursesListView, "translationY", 50, 0),
-                    ObjectAnimator.ofFloat(mCoursesListView, "alpha", 0, 1)
-
-            );
-            set.setInterpolator(new EaseOutQuint());
-            set.setDuration(500).start();
         }
     }
 
-    private void setToolbar() {
-        mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
-        mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
-        getParentActivity().setSupportActionBar(mToolbar);
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentActivity().onBackPressed();
-            }
-        });
-        getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        setToolbarTitle(mToolbar);
+    public void setToolbar(Toolbar toolbar) {
+        super.setToolbar(toolbar);
+        ActionBar actionBar = getParentActivity().getSupportActionBar();
+        if(actionBar != null) {
+            getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
-    private void setToolbarTitle(Toolbar toolbar) {
+    private void setToolbarTitle() {
         Iterable<Subject> al = getArguments().getParcelableArrayList(RutgersCTApp.SUBJECTS_LIST);
         for (Subject s : al) {
-            if (CourseUtils.formatNumber(s.getCode()).equals(request.getSubject())) {
-                toolbar.setTitle(s.getCode() + " | " + WordUtils.capitalize(s.getDescription().toLowerCase()));
+            if (s.getCode().equals(mRequest.getSubject())) {
+                super.setToolbarTitle(mToolbar, s.getCode() + " | "
+                        + WordUtils.capitalize(s.getDescription().toLowerCase()));
             }
         }
     }
 
-    private void createFragment(Bundle b) {
+    private void startCourseInfoFragment(Bundle b) {
         CourseInfoFragment courseInfoFragment = new CourseInfoFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            courseInfoFragment.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            courseInfoFragment.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
-            courseInfoFragment.setReenterTransition(new AutoTransition().excludeTarget(ImageView.class, true));
-            courseInfoFragment.setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            ChangeBounds changeBoundsTransition = new ChangeBounds();
+            changeBoundsTransition.setInterpolator(new EaseOutQuint());
+
+            courseInfoFragment.setEnterTransition(new Fade(Fade.IN).setStartDelay(250));
+            courseInfoFragment.setReturnTransition(new Fade(Fade.OUT).setDuration(50));
+
             courseInfoFragment.setAllowReturnTransitionOverlap(false);
             courseInfoFragment.setAllowEnterTransitionOverlap(false);
-            courseInfoFragment.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            courseInfoFragment.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            ft.addSharedElement(mToolbar, "toolbar_background");
+
+            courseInfoFragment.setSharedElementEnterTransition(changeBoundsTransition);
+            courseInfoFragment.setSharedElementReturnTransition(changeBoundsTransition);
+
+            ft.addSharedElement(mToolbar, getString(R.string.transition_name_tool_background));
         } else {
             ft.setCustomAnimations(R.anim.enter, R.anim.exit, 0, R.anim.pop_exit);
         }
@@ -222,15 +302,9 @@ public class CourseFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putParcelable(RutgersCTApp.REQUEST, parcelable);
         bundle.putParcelableArrayList(RutgersCTApp.SUBJECTS_LIST, getArguments().getParcelableArrayList(RutgersCTApp.SUBJECTS_LIST));
-        bundle.putParcelableArrayList(RutgersCTApp.COURSE_LIST, courses);
+        bundle.putParcelableArrayList(RutgersCTApp.COURSE_LIST, mListDataset);
         bundle.putParcelable(RutgersCTApp.SELECTED_COURSE, selectedCourse);
         return bundle;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(RutgersCTApp.REQUEST, request);
     }
 
     @Override
@@ -249,37 +323,5 @@ public class CourseFragment extends BaseFragment {
                 return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    private class ListFutureCallback implements FutureCallback<List<Course>> {
-        private final ListView listView;
-
-        public ListFutureCallback(ListView listView) {
-            this.listView = listView;
-        }
-
-        @Override
-        public void onCompleted(Exception e, List<Course> courseList) {
-            if (e == null && courseList.size() > 0) {
-                courses = (ArrayList<Course>) courseList;
-                CourseUtils.scrubCourseList(courseList);
-                final CourseAdapter subjectAdapter = new CourseAdapter(getActivity(), courseList);
-                listView.setAdapter(subjectAdapter);
-            } else {
-                if (e instanceof UnknownHostException) {
-                    showSnackBar(getResources().getString(R.string.no_internet));
-                } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.server_down));
-                } else if (e instanceof TimeoutException) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.timed_out));
-                } else if (!(e instanceof CancellationException)) {
-                    Timber.e(e, "Crash while attempting to complete request in %s to %s"
-                            , CourseFragment.this.toString(), request.toString());
-                }
-            }
-            dismissProgress();
-        }
     }
 }

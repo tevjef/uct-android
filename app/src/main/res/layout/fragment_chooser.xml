@@ -8,58 +8,41 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:background="@color/primary"
-        android:elevation="1dp"
-        android:minHeight="?android:attr/actionBarSize"
-        android:transitionName="toolbar_background"
+        android:background="?attr/colorPrimary"
+        style="@style/ToolbarStyle.Big"
+        android:transitionName="@string/transition_name_tool_background"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/RutgersCT.ToolbarTheme">
 
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/header_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_above="@+id/subtitle"
                 android:layout_alignParentLeft="true"
-                android:fontFamily="sans-serif-condensed"
                 android:text="Rutgers Schedule of Classes"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white"
-                android:textSize="36sp"
-                android:typeface="normal"
-                tools:ignore="HardcodedText" />
+                style="@style/ToolbarDisplayStyle"
+                android:typeface="normal" />
 
             <TextView
                 android:id="@+id/subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="16dp"
-                android:alpha="0.5"
-                android:fontFamily="sans-serif-condensed"
                 android:text="Choose a term, location and level of study"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:typeface="normal"
-                tools:ignore="HardcodedText" />
+                style="@style/ToolbarSubtitleStyle"/>
 
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/relativeLayout2"
-
         android:layout_below="@+id/toolbar"
         android:transitionGroup="true"
         android:paddingLeft="24dp"
@@ -200,7 +183,7 @@
 
         <TextView
             android:id="@+id/systemMessage"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
@@ -215,7 +198,7 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout2"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -230,8 +213,8 @@
             android:background="@drawable/btn_toggle_selector"
             android:elevation="0dp"
             android:gravity="center_vertical|center_horizontal"
-            android:text="NEXT"
-            android:textColor="@color/white"
+            android:text="@string/next_text"
+            android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="italic"
             android:transitionName="snackbar"

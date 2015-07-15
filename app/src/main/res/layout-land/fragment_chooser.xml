@@ -10,17 +10,17 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:background="@color/primary"
+        android:background="?attr/colorPrimary"
         android:elevation="1dp"
         android:minHeight="?android:attr/actionBarSize"
-        android:transitionName="toolbar_background"
+        android:transitionName="@string/transition_name_tool_background"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/header_text"
@@ -32,7 +32,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:text="Rutgers Schedule of Classes"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="36sp"
                 android:typeface="normal"
                 tools:ignore="HardcodedText" />
@@ -57,8 +57,8 @@
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:paddingLeft="25dp"
         android:transitionGroup="true"
@@ -202,7 +202,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -219,15 +219,15 @@
             android:elevation="0dp"
             android:gravity="center_vertical|center_horizontal"
             android:text="NEXT"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="italic"
             android:transitionName="snackbar"
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/systemMessage"
             android:maxLines="2"

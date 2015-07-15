@@ -5,10 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 
-import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
+import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 
 public class Alarm {
@@ -42,8 +41,7 @@ public class Alarm {
     }
 
     public long getInterval() {
-        int index = PreferenceManager.getDefaultSharedPreferences(mContext)
-                .getInt(mContext.getResources().getString(R.string.sync_interval), 1);
+        int index = PreferenceUtils.getSyncInterval();
         if (index == 0) {
             return 5 * 60 * 1000;
         } else if (index == 1) {

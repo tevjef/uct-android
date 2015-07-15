@@ -5,114 +5,209 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.adapters.SubjectAdapter;
-import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
-import com.tevinjeffrey.rutgersct.model.Request;
-import com.tevinjeffrey.rutgersct.model.Subject;
-import com.tevinjeffrey.rutgersct.utils.CourseUtils;
-import com.tevinjeffrey.rutgersct.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.adapters.SubjectFragmentAdapter;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeoutException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import icepick.Icicle;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.app.AppObservable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class SubjectFragment extends BaseFragment {
+public class SubjectFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, SubjectFragmentAdapter.ItemClickListener {
 
-    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.courses)
-    ListView mCourses;
-    @SuppressWarnings("WeakerAccess")
+
+    @InjectView(R.id.list_view)
+    RecyclerView mRecyclerView;
+
     @InjectView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    private Request request;
-    private ArrayList<Subject> subjects;
+
+    @InjectView(R.id.empty_view)
+    ViewGroup mEmptyView;
+
+    @Icicle
+    Request mRequest;
+
+    @Icicle
+    ArrayList<Subject> mListDataset;
+
+    @Icicle
+    boolean hasDataFlag = true;
+
+    //Find a way to persist this across activities
+    Observable<Subject> mSubjectObservable;
+
+    private RecyclerView.Adapter mListAdapter;
 
     public SubjectFragment() {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            request = savedInstanceState.getParcelable(RutgersCTApp.REQUEST);
-        }
-
+        mRequest = getArguments().getParcelable(RutgersCTApp.REQUEST);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MainActivity.setPrimaryWindow(getParentActivity());
-        setRetainInstance(true);
 
-        final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        final View rootView = inflater.inflate(R.layout.subjects, container, false);
+
         ButterKnife.inject(this, rootView);
 
-        setupSwipeLayout();
-        request = getArguments().getParcelable(RutgersCTApp.REQUEST);
-        setToolbar();
+        initViews();
 
-        getSubjects(mCourses);
-
-        setRefreshListener();
         refresh();
 
-        mCourses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setSubjectInRequest(parent, position);
-                createFragment(createArgs(request));
-            }
-        });
         return rootView;
     }
 
-    private void setupSwipeLayout() {
-        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
+    public void initViews() {
+        initRecyclerView();
+        setupSwipeLayout();
+
+        setToolbarTitle();
+        setToolbar(mToolbar);
     }
 
-    private void getSubjects(final ListView listView) {
-        String url = UrlUtils.getSubjectUrl(UrlUtils.buildParamUrl(request));
-        Ion.with(this)
-                .load(url)
-                .as(new TypeToken<List<Subject>>() {
-                })
-                .setCallback(new ListFutureCallback(listView));
+    private void shouldShowEmptyView() {
+        if (mEmptyView != null) {
+            if (isDatasetEmpty() && !hasDataFlag) {
+                mEmptyView.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else {
+                mEmptyView.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private boolean isDatasetEmpty() {
+        return mListDataset.size() == 0;
+    }
+
+    private void addToDataset(Collection<Subject> data) {
+        mListDataset.clear();
+        mListDataset.addAll(data);
+        mListAdapter.notifyDataSetChanged();
+    }
+
+    public void initRecyclerView() {
+        if (mListDataset == null) {
+            mListDataset = new ArrayList<>();
+        }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getParentActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.supportsPredictiveItemAnimations();
+        layoutManager.setSmoothScrollbarEnabled(true);
+        layoutManager.scrollToPosition(0);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mListAdapter = new SubjectFragmentAdapter(mListDataset,
+                this);
+        mRecyclerView.setAdapter(mListAdapter);
+
+        shouldShowEmptyView();
+    }
+
+    @Override
+    public void itemClicked(Subject subject, View view, int positon) {
+        setSubjectInRequestObject(subject.getCode());
+        startCourseFragement(createArgs(mRequest));
+    }
+
+    private void setupSwipeLayout() {
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void getSubjects() {
+        RutgersApi api = new RutgersApiImpl(RutgersCTApp.getClient());
+
+        mSubjectObservable = AppObservable.bindFragment(this, api.getSubjects(mRequest));
+
+        mCompositeSubscription.add(mSubjectObservable
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Subject>>() {
+                    @Override
+                    public void onCompleted() {
+                        shouldShowEmptyView();
+                        dismissProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof UnknownHostException) {
+                            showSnackBar(getResources().getString(R.string.no_internet));
+                        } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
+                            cancelRequests();
+                            showSnackBar(getResources().getString(R.string.server_down));
+                        } else if (e instanceof TimeoutException) {
+                            cancelRequests();
+                            showSnackBar(getResources().getString(R.string.timed_out));
+                        } else if (!(e instanceof CancellationException)) {
+                            Timber.e(e, "Crash while attempting to complete mRequest in %s to %s"
+                                    , SubjectFragment.this.toString(), mRequest.toString());
+                        }
+                        shouldShowEmptyView();
+                        dismissProgress();
+                    }
+
+                    @Override
+                    public void onNext(List<Subject> subjectList) {
+                        hasDataFlag = true;
+                        if(subjectList.size() > 0) {
+                            addToDataset(subjectList);
+                        } else {
+                            Toast.makeText(getParentActivity().getApplicationContext(), mRequest.getSemester().toString() + " has not opened.",
+                                    Toast.LENGTH_LONG).show();
+                            getParentActivity().onBackPressed();
+                        }
+                    }
+                }));
     }
 
     void showSnackBar(String message) {
@@ -134,85 +229,56 @@ public class SubjectFragment extends BaseFragment {
                 public void run() {
                     if (mSwipeRefreshLayout != null) {
                         mSwipeRefreshLayout.setRefreshing(true);
-                        getSubjects(mCourses);
+                        getSubjects();
                     }
                 }
             });
+        } else if (mSwipeRefreshLayout != null) {
+            dismissProgress();
+            cancelRequests();
         }
     }
 
-    private void setRefreshListener() {
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                AnimatorSet set = new AnimatorSet();
-                set.playTogether(
-                        ObjectAnimator.ofFloat(mCourses, "translationY", 50),
-                        ObjectAnimator.ofFloat(mCourses, "alpha", 1, 0)
-                );
-                set.setInterpolator(new EaseOutQuint());
-                set.setDuration(500).start();
-
-                getSubjects(mCourses);
-            }
-        });
+    @Override
+    public void onRefresh() {
+        if (isAdded() && !isRemoving()) {
+            refresh();
+        }
     }
 
     private void dismissProgress() {
         if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(
-                    ObjectAnimator.ofFloat(mCourses, "translationY", 50, 0),
-                    ObjectAnimator.ofFloat(mCourses, "alpha", 0, 1)
-
-            );
-            set.setInterpolator(new EaseOutQuint());
-            set.setDuration(500).start();
         }
     }
 
-    private void setToolbar() {
-        mToolbar.setTitleTextAppearance(getParentActivity(), R.style.toolbar_title);
-        mToolbar.setSubtitleTextAppearance(getParentActivity(), R.style.toolbar_subtitle);
-        getParentActivity().setSupportActionBar(mToolbar);
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentActivity().onBackPressed();
-            }
-        });
-        getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        setToolbarTitle(mToolbar);
-    }
-
-    private void setToolbarTitle(Toolbar toolbar) {
-        toolbar.setTitle(request.getSemester().toString());
-
-        ArrayList<String> al = new ArrayList<>();
-        for (String s : request.getLocations()) {
-            al.add(UrlUtils.getAbbreviatedLocationName(s));
+    public void setToolbar(Toolbar toolbar) {
+        super.setToolbar(toolbar);
+        ActionBar actionBar = getParentActivity().getSupportActionBar();
+        if(actionBar != null) {
+            getParentActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getParentActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        toolbar.setSubtitle(Request.toStringList(al) + " - "
-                + Request.toStringList(request.getLevels()));
     }
 
-    private void setSubjectInRequest(AdapterView<?> parent, int position) {
-        request.setSubject(CourseUtils.formatNumber(((Subject) parent.getAdapter()
-                .getItem(position))
-                .getCode()));
+    private void setToolbarTitle() {
+        super.setToolbarTitle(mToolbar, mRequest.getSemester().toString());
+        super.setToolbarSubtitle(mToolbar, mRequest.getLocationsString() + " - "
+                + mRequest.getlevelsString());
     }
 
-    private void createFragment(Bundle b) {
+    private void setSubjectInRequestObject(String code) {
+        mRequest.setSubject(code);
+    }
+
+    private void startCourseFragement(Bundle b) {
         CourseFragment courseFragment = new CourseFragment();
         courseFragment.setArguments(b);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ft.addSharedElement(mToolbar, mToolbar.getTransitionName());
+            setExitTransition(new Slide(Gravity.LEFT).excludeTarget(Toolbar.class, true));
+            courseFragment.setAllowEnterTransitionOverlap(false);
         }
         ft.replace(R.id.container, courseFragment).addToBackStack(this.toString())
                 .commit();
@@ -221,14 +287,8 @@ public class SubjectFragment extends BaseFragment {
     private Bundle createArgs(Parcelable parcelable) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(RutgersCTApp.REQUEST, parcelable);
-        bundle.putParcelableArrayList(RutgersCTApp.SUBJECTS_LIST, subjects);
+        bundle.putParcelableArrayList(RutgersCTApp.SUBJECTS_LIST, mListDataset);
         return bundle;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(RutgersCTApp.REQUEST, request);
     }
 
     @Override
@@ -241,49 +301,11 @@ public class SubjectFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refresh();
+                this.onRefresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    private class ListFutureCallback implements FutureCallback<List<Subject>> {
-        private final ListView listView;
-
-        public ListFutureCallback(ListView listView) {
-            this.listView = listView;
-        }
-
-        @Override
-        public void onCompleted(Exception e, List<Subject> subjectList) {
-            if (e == null) {
-                if(subjectList.size() > 0) {
-                    subjects = (ArrayList<Subject>) subjectList;
-                    final ListAdapter subjectAdapter = new SubjectAdapter(getActivity(),
-                            subjectList);
-                    listView.setAdapter(subjectAdapter);
-                } else {
-                    Toast.makeText(getParentActivity().getApplicationContext(), request.getSemester().toString() + " has not opened.",
-                            Toast.LENGTH_LONG).show();
-                    getParentActivity().onBackPressed();
-                }
-            } else {
-                if (e instanceof UnknownHostException) {
-                    showSnackBar(getResources().getString(R.string.no_internet));
-                } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.server_down));
-                } else if (e instanceof TimeoutException) {
-                    cancelRequests();
-                    showSnackBar(getResources().getString(R.string.timed_out));
-                } else if (!(e instanceof CancellationException)) {
-                    Timber.e(e, "Crash while attempting to complete request in %s to %s"
-                            , SubjectFragment.this.toString(), request.toString());
-                }
-            }
-            dismissProgress();
-        }
     }
 }

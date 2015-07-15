@@ -3,16 +3,12 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="RutgersCT" parent="Theme.AppCompat.NoActionBar">
         <item name="mp_colorAccent">@color/primary</item>
-
         <item name="android:windowNoTitle">true</item>
         <!--We will be using the toolbar so no need to show ActionBar-->
         <item name="android:windowActionBar">false</item>
-        <item name="android:textColorPrimary">@color/primary_text</item>
-        <item name="android:textColorSecondary">@color/secondary_text</item>
 
-        <item name="android:windowBackground">@color/window_background</item>
         <!-- Main theme colors -->
         <!--   your app branding color for the app bar -->
         <item name="colorPrimary">@color/primary</item>
@@ -21,13 +17,177 @@
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/accent</item>
 
-        <item name="android:selectableItemBackground">@drawable/list_selector</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent_light</item>
+        <item name="colorControlNormal">@color/primary</item>
 
-    </style>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
 
-    <style name="Toolbar_Popup" parent="Base.ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/primary_text</item>
-        <item name="android:background">@color/window_background</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+
+        <item name="android:windowBackground">@color/window_background</item>
+
+
     </style>
+    <style name="RutgersCT.ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <!--        <item name="android:textColorPrimary">@color/primary_text</item>
+                <item name="actionMenuTextColor">@android:color/white</item>
+                <item name="android:background">@color/window_background</item>-->
+
+        <!-- android:textColorPrimary is the  color of the title text
+       in the Toolbar, in the Theme.AppCompat theme:  -->
+
+
+        <item name="android:textColorPrimary">@color/primary_text</item>
+
+
+
+        <!-- android:textColorPrimaryInverse is the  color of the title
+             text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
+<!--
+        <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item>
+-->
+
+        <!-- android:actionMenuTextColor is the color of the text of
+              action (menu) items in the Toolbar, at least in the
+              Theme.AppCompat theme.
+              For some reason, they already get the textColorPrimary
+              when running on API 21, but not on older versions of
+              Android, so this is only necessary to support older
+              Android versions.-->
+
+
+        <item name="actionMenuTextColor">@color/primary_text</item>
+
+
+        <!-- android:textColorSecondary is the color of the menu
+             overflow icon (three vertical dots) -->
+
+        <item name="android:textColorSecondary">@android:color/white</item>
+
+
+        <!-- This would set the toolbar's background color,
+              but setting this also changes the popup menu's background,
+              even if we define popupTheme for our <Toolbar> -->
+
+
+        <!--
+                 <item name="android:background">@color/green</item>
+        -->
+
+    </style>
+
+    <style name="ToolbarStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:elevation">1dp</item>
+    </style>
+
+    <style name="ToolbarStyle.Big">
+        <item name="android:layout_height">@dimen/big_toolbar</item>
+    </style>
+
+
+    <style name="RutgersCT.CourseInfo">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent_light</item>
+        <item name="colorControlNormal">@color/accent</item>
+    </style>
+
+    <style name="ToolbarTitleStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:fontFamily">@string/default_font</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ToolbarDisplayStyle" parent="ToolbarTitleStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:maxLines">3</item>
+    </style>
+
+    <style name="ToolbarSubtitleStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@string/default_font</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:alpha">0.5</item>
+    </style>
+
+    <style name="ToolbarSubtitleStyle.TextApperance">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ToolbarSubtitleStyle.Normal">
+        <item name="android:fontFamily">@string/default_font</item>
+    </style>
+
+
+    <style name="primary_metadata">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:fontFamily">@string/default_font</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+
+    <style name="SecondaryTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/SecondaryTextApperance</item>
+    </style>
+
+    <style name="SecondaryTextApperance">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColorLink">@color/accent</item>
+        <item name="android:textSize">@dimen/small_text</item>
+    </style>
+
+    <style name="SecondaryMetadataTextStyle" parent="SecondaryTextStyle">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:paddingTop">4dp</item>
+    </style>
+
+    <style name="divider.metadata" parent="divider">
+    </style>
+
+    <style name="metadata_wrapper">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:layout_marginLeft">72dp</item>
+    </style>
+
+    <style name="section_metadata_containers" parent="metadata_wrapper">
+        <item name="android:layout_marginLeft">0dp</item>
+    </style>
+
 
 </resources>

@@ -8,19 +8,19 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
-        tools:background="@color/primary"
+        tools:background="?attr/colorPrimary"
         android:elevation="1dp"
-        android:transitionName="toolbar_background"
+        android:transitionName="@string/transition_name_tool_background"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"/>
+        android:background="@android:color/white"/>
 
 </RelativeLayout>

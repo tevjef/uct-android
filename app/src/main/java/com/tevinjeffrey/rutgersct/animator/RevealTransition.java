@@ -27,6 +27,7 @@ import android.transition.Visibility;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.util.FloatMath;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -34,12 +35,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
-@TargetApi(Build.VERSION_CODES.KITKAT)
 public class RevealTransition extends Visibility {
     public RevealTransition() {
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public RevealTransition(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -58,7 +57,9 @@ public class RevealTransition extends Visibility {
         final float originalAlpha = view.getAlpha();
         view.setAlpha(0f);
 
-        Animator reveal = createAnimator(view, 0, radius);
+        float startRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, view.getContext().getResources().getDisplayMetrics());
+
+        Animator reveal = createAnimator(view, startRadius, radius);
         reveal.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -75,7 +76,6 @@ public class RevealTransition extends Visibility {
         return createAnimator(view, radius, 0);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private Animator createAnimator(View view, float startRadius, float endRadius) {
         int centerX = view.getWidth() / 2;
         int centerY = view.getHeight() / 2;
@@ -85,7 +85,6 @@ public class RevealTransition extends Visibility {
         return new NoPauseAnimator(reveal);
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private static class NoPauseAnimator extends Animator {
         private final Animator mAnimator;
         private final ArrayMap<AnimatorListener, AnimatorListener> mListeners =
@@ -95,7 +94,6 @@ public class RevealTransition extends Visibility {
             mAnimator = animator;
         }
 
-        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public void addListener(AnimatorListener listener) {
             AnimatorListener wrapper = new AnimatorListenerWrapper(this, listener);
@@ -131,7 +129,6 @@ public class RevealTransition extends Visibility {
             mAnimator.setInterpolator(timeInterpolator);
         }
 
-        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public ArrayList<AnimatorListener> getListeners() {
             return new ArrayList<AnimatorListener>(mListeners.keySet());
@@ -147,7 +144,6 @@ public class RevealTransition extends Visibility {
             mAnimator.setStartDelay(delayMS);
         }
 
-        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public boolean isPaused() {
             return mAnimator.isPaused();
@@ -170,19 +166,17 @@ public class RevealTransition extends Visibility {
 
         public void resume();
 
-        public void addPauseListener(AnimatorPauseListener listener);
+        public void addPauseListener(AnimatorPauseListener mListener);
 
-        public void removePauseListener(AnimatorPauseListener listener);
+        public void removePauseListener(AnimatorPauseListener mListener);
         */
 
-        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public void removeAllListeners() {
             mListeners.clear();
             mAnimator.removeAllListeners();
         }
 
-        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public void removeListener(AnimatorListener listener) {
             AnimatorListener wrapper = mListeners.get(listener);

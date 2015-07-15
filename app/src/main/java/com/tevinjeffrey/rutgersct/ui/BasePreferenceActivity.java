@@ -1,7 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -31,7 +30,7 @@ public class BasePreferenceActivity extends ActionBarActivity {
         getSupportActionBar().setTitle("Settings");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setTitleTextAppearance(this, R.style.toolbar_title);
-        toolbar.setSubtitleTextAppearance(this, R.style.toolbar_subtitle);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTitleStyle);
+        toolbar.setSubtitleTextAppearance(this, R.style.ToolbarSubtitleStyle_TextApperance);
     }
 }

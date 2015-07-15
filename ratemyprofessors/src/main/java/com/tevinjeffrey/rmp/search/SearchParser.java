@@ -2,7 +2,9 @@ package com.tevinjeffrey.rmp.search;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class SearchParser {
 
@@ -25,6 +27,20 @@ public class SearchParser {
 
         return listings;
 
+    }
+
+    public static int getNumberOfProfessors(String html) {
+        String d1 = StringUtils.substringAfter(html, "<div class=\"result-count\">");
+        String d2 = StringUtils.substringAfter(d1, "of ");
+        String d3 = StringUtils.substringBefore(d2, " results</div>");
+
+        int num = 0;
+        try {
+            num = Integer.parseInt(d3);
+        } catch (NumberFormatException e) {
+            //noop
+        }
+        return num;
     }
 
     private static String getListingUrl(String rawListing) {

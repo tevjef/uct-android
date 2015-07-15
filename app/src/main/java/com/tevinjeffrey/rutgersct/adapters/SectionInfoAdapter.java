@@ -2,25 +2,24 @@ package com.tevinjeffrey.rutgersct.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
-import android.os.Build;
+import android.content.res.ColorStateList;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.view.ViewHelper;
 import com.tevinjeffrey.rmp.RMP;
 import com.tevinjeffrey.rmp.professor.Professor;
 import com.tevinjeffrey.rmp.search.Decider;
@@ -29,27 +28,28 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.animator.SectionInfoAnimator;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.model.Course;
-import com.tevinjeffrey.rutgersct.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.utils.SectionUtils;
-import com.tevinjeffrey.rutgersct.utils.UrlUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
-
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class SectionInfoAdapter {
 
@@ -57,119 +57,97 @@ public class SectionInfoAdapter {
     private final Request request;
     private final View rowView;
 
-    @SuppressWarnings("WeakerAccess")
+    @InjectView(R.id.prof_ratings_root)
+    ViewGroup mRMPRoot;
+
+
     @InjectView(R.id.semesterText)
     TextView mSemesterText;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.courseTitle_text)
+    @InjectView(R.id.course_title_text)
     TextView mCourseTitleText;
 
-    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.sectionNumber_text)
     TextView mSectionNumberText;
 
-    @SuppressWarnings("WeakerAccess")
     @InjectView(R.id.indexNumber_text)
     TextView mIndexNumberText;
 
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.subtitle)
     TextView mCreditsText;
 
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.instructors_text)
     TextView mInstructorsText;
 
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.exam_code_text)
     TextView mExamCodeText;
 
-    @SuppressWarnings("WeakerAccess")
+
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionNotes_text)
+
+    @InjectView(R.id.section_notes_text)
     TextView mSectionNotesText;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.courseNotesContainer)
-    RelativeLayout mSectionNotesContainer;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionComments_text)
+    @InjectView(R.id.section_notes_layout)
+    RelativeLayout mSectionNotesLayout;
+
+
+    @InjectView(R.id.section_comments_text)
     TextView mSectionCommentsText;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.subjectNotesContainer)
-    RelativeLayout mSectionCommentsContainer;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionCrossList_text)
+    @InjectView(R.id.section_comments_layout)
+    RelativeLayout mSectionCommentsLayout;
+
+
+    @InjectView(R.id.section_crosslist_text)
     TextView mSectionCrossListText;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionCrossList_container)
-    RelativeLayout mSectionCrossListContainer;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionSubtitle_text)
+    @InjectView(R.id.section_crosslist_layout)
+    RelativeLayout mSectionCrossListLayout;
+
+
+    @InjectView(R.id.section_subtitle_text)
     TextView mSectionSubtitleText;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionSubtitle_container)
-    RelativeLayout mSectionSubtitleContainer;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionPermission_text)
+    @InjectView(R.id.section_subtitle_layout)
+    RelativeLayout mSectionSubtitleLayout;
+
+
+    @InjectView(R.id.section_permission_text)
     TextView mSectionPermissionText;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionPermisision_container)
-    RelativeLayout mSectionPermisisionContainer;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionOpenTo_text)
+    @InjectView(R.id.section_permission_layout)
+    RelativeLayout mSectionPermissionLayout;
+
+
+    @InjectView(R.id.section_open_to_text)
     TextView mSectionOpenToText;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionOpenTo_container)
-    RelativeLayout mSectionOpenToContainer;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionTimeContainer)
+    @InjectView(R.id.section_open_to_layout)
+    RelativeLayout mSectionOpenLayout;
+
+
+    @InjectView(R.id.section_times_container)
     LinearLayout mSectionTimeContainer;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.sectionRoot)
-    RelativeLayout mSectionRoot;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.fab)
+    @InjectView(R.id.add_courses_fab)
     FloatingActionButton mFab;
 
-/*
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.prof_rmp_search)
-    Button rmpSearch;
+    @InjectView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
 
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.prof_google_search)
-    Button googleSearch;
-*/
-
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.rmp_prof1OverallScore)
-    TextView rmpOverallScore;
-
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.rmp_prof1Department)
-    TextView rmpProf1Department;
-
-    @SuppressWarnings("WeakerAccess")
-    @InjectView(R.id.rmp_prof1Name)
-    TextView rmpProf1Name;
 
     private List<Course> courses;
     private Course courseData;
@@ -221,11 +199,9 @@ public class SectionInfoAdapter {
         setRMP(courseData, sectionData);
         setSemester(request);
 
-        if (context.getFragmentManager().getBackStackEntryCount() > 1) {
-            new SectionInfoAnimator(rowView).init();
-        }
+        new SectionInfoAnimator(rowView).init();
 
-        mFab.setColorNormalResId(R.color.accent);
+
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,114 +210,140 @@ public class SectionInfoAdapter {
 
             private void toggleFab() {
                 if (DatabaseHandler.isSectionTracked(request)) {
-                    animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(0);
-                    DatabaseHandler.removeSectionFromDb(request);
+                    ViewCompat.animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(0);
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
                             context.getResources().getColor(R.color.accent_dark),
                             context.getResources().getColor(R.color.accent));
-                    colorAnim.setDuration(250);
+                    colorAnim.setDuration(500);
                     colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
-                            mFab.setColorNormal((Integer) animation.getAnimatedValue());
+                            mFab.setBackgroundTintList(ColorStateList.valueOf((Integer)animation.getAnimatedValue()));
                         }
                     });
                     colorAnim.setEvaluator(new ArgbEvaluator());
                     colorAnim.start();
 
+                    DatabaseHandler.getInstance().removeSectionFromDb(request);
+
                 } else {
-                    animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(225);
-                    DatabaseHandler.addSectionToDb(request);
+                    ViewCompat.animate(mFab).setDuration(500).setInterpolator(new EaseOutQuint()).rotation(225);
+
                     ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
                             context.getResources().getColor(R.color.accent),
                             context.getResources().getColor(R.color.accent_dark));
-                    colorAnim.setDuration(250);
+                    colorAnim.setDuration(500);
                     colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
-                            mFab.setColorNormal((Integer) animation.getAnimatedValue());
+                            mFab.setBackgroundTintList(ColorStateList.valueOf((Integer) animation.getAnimatedValue()));
                         }
                     });
                     colorAnim.setEvaluator(new ArgbEvaluator());
                     colorAnim.start();
+
+                    DatabaseHandler.getInstance().addSectionToDb(request);
                 }
             }
         });
     }
 
-    private void setRMP(Course courseData, Course.Sections sectionData) {
-        RMP rmp = new RMP(RutgersCTApp.getClient());
+    private void setRMP(final Course courseData, final Course.Sections sectionData) {
+        final RMP rmp = new RMP(RutgersCTApp.getClient());
 
-        Course.Sections.Instructors i = sectionData.getInstructors().get(0);
+        final List<Course.Sections.Instructors> professorsNotFound = new ArrayList<>(sectionData.getInstructors());
 
-        if (i != null) {
+        Observable.from(sectionData.getInstructors())
+                .filter(new Func1<Course.Sections.Instructors, Boolean>() {
+                    @Override
+                    public Boolean call(Course.Sections.Instructors instructors) {
+                        return !instructors.getLastName().equals("STAFF");
+                    }
+                })
+                .flatMap(new Func1<Course.Sections.Instructors, Observable<Professor>>() {
+                    @Override
+                    public Observable<Professor> call(Course.Sections.Instructors instructor) {
+                        String campus = sectionData.getMeetingTimes().get(0).getCampus();
+                        if (campus == null) {
+                            campus = request.getLocations().get(0);
+                        }
 
-            String campus = sectionData.getMeetingTimes().get(0).getCampus();
-            if (campus == null) {
-                campus = request.getLocations().get(0);
+                        List<Subject> subjectsList = RutgersApiImpl.getSubjectsFromJson();
+                        Subject matchingSubject = null;
+                        for (Subject s : subjectsList) {
+                            if (s.getCode().equals(courseData.getSubject())) {
+                                matchingSubject = s;
+                            }
+                        }
+
+                        final Decider.Parameter params = new Decider.Parameter("rutgers", matchingSubject.getDescription(),
+                                campus, new Professor.Name(instructor.getFirstName(), instructor.getLastName()));
+
+
+                        return rmp.findBestProfessor(params);
+                    }
+                })
+                .doOnNext(new Action1<Professor>() {
+                    @Override
+                    public void call(Professor professor) {
+                        for(final Iterator<Course.Sections.Instructors> iterator = professorsNotFound.iterator(); iterator.hasNext();) {
+                            Course.Sections.Instructors i = iterator.next();
+                            if(StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getFullName().getLast()) > .70
+                                    || StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getFullName().getFirst()) > .70) {
+                                iterator.remove();
+                            }
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Professor>() {
+                    @Override
+                    public void onCompleted() {
+                        for (Course.Sections.Instructors i : professorsNotFound) {
+                            addRMPProfessor(RatingLayoutInflater.getErrorLayout(context, i.getName(), sectionData));
+                        }
+                        //mProgressBar.setVisibility(View.INVISIBLE);
+                        //set indeterminte progress
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Professor professor) {
+                        RatingLayoutInflater ratingLayoutInflater =
+                                new RatingLayoutInflater(context, professor);
+
+                        addRMPProfessor(ratingLayoutInflater.getLayout());
+                    }
+                });
+
+    }
+
+
+    private void addRMPProfessor(ViewGroup viewGroup) {
+        ViewGroup container = ButterKnife.findById(mRMPRoot, R.id.prof_ratings_container);
+
+        //Onclick intercepts vertical scroll
+        /*viewGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Object url =  v.getTag();
+                if (url != null) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse((String) url));
+                    context.startActivity(i);
+                }
             }
-
-            Decider.Parameter params = new Decider.Parameter("rutgers", courseData.getSubject(),
-                    campus, new Professor.Name(i.getFirstName(), i.getLastName()));
-
-
-            rmp.findBestProfessor(params)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<List<Professor>>() {
-                        @Override
-                        public void call(List<Professor> professors) {
-                            final Professor p = professors.get(0);
-                            rmpProf1Name.setText(p.getName());
-                            rmpProf1Department.setText(p.getDepartment());
-                            rmpOverallScore.setText(p.getRatings().getOverallQuality().toString());
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            Timber.e(throwable, "Error getting professors from RMP");
-                        }
-                    });
-        }
+        });*/
+        container.addView(viewGroup);
     }
 
     private void setSemester(Request request) {
         mSemesterText.setText(request.getSemester().toString());
-    }
-
-    private void setSearch(TextView rmpSearch, TextView googleSearch) {
-        String str = StringUtils.join(sectionData.getInstructors(), " and ");
-
-        googleSearch.setText(str);
-        rmpSearch.setText(str);
-
-        rmpSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchRmpSearch();
-            }
-        });
-
-        googleSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchGoogleSearch();
-            }
-        });
-    }
-
-    void launchRmpSearch() {
-        String url = "http://www.google.com/#q=" + UrlUtils.getRmpUrl(sectionData);
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        context.startActivity(i);
-    }
-
-    void launchGoogleSearch() {
-        String url = "http://www.google.com/#q=" + UrlUtils.getGoogleUrl(sectionData);
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        context.startActivity(i);
     }
 
     private void setActionButton(final FloatingActionButton fab) {
@@ -349,8 +351,8 @@ public class SectionInfoAdapter {
             fab.post(new Runnable() {
                 @Override
                 public void run() {
-                    fab.setRotation(225);
-                    fab.setColorNormalResId(R.color.accent_dark);
+                    ViewHelper.setRotation(fab, 225);
+                    fab.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.accent_dark)));
                 }
             });
 
@@ -360,18 +362,16 @@ public class SectionInfoAdapter {
 
     void setToolBarColor(Course.Sections section) {
         if (section.isOpenStatus()) {
-            if (Build.VERSION.SDK_INT != Build.VERSION_CODES.KITKAT) {
-                mToolbar.setBackgroundColor(context.getResources().getColor(R.color.green));
-            } else {
-                mToolbar.setBackgroundResource(android.R.color.transparent);
-            }
+            mCollapsingToolbar.setBackgroundColor(context.getResources().getColor(R.color.green));
+            mCollapsingToolbar.setContentScrimColor(context.getResources().getColor(R.color.green));
+
             MainActivity.setGreenWindow(context);
         } else {
-            if (Build.VERSION.SDK_INT != Build.VERSION_CODES.KITKAT) {
-                mToolbar.setBackgroundColor(context.getResources().getColor(R.color.red));
-            } else {
-                mToolbar.setBackgroundResource(android.R.color.transparent);
-            }
+                //mToolbar.setBackgroundColor(context.getResources().getColor(R.color.red));
+            mCollapsingToolbar.setBackgroundColor(context.getResources().getColor(R.color.red));
+            mCollapsingToolbar.setContentScrimColor(context.getResources().getColor(R.color.red));
+
+
             MainActivity.setPrimaryWindow(context);
         }
     }
@@ -389,13 +389,15 @@ public class SectionInfoAdapter {
     }
 
     void setCourseTitle(Course course) {
+        mToolbar.setTitle("");
         mCourseTitleText.setText(course.getTrueTitle());
     }
 
     void setSectionNotes(Course.Sections section) {
         if (!section.hasNotes()) {
-            mSectionNotesContainer.setVisibility(View.GONE);
+            mSectionNotesLayout.setVisibility(View.GONE);
         } else {
+            mSectionNotesLayout.setVisibility(View.VISIBLE);
             mSectionNotesText.setText(Html.fromHtml(section.getSectionNotes()));
             mSectionNotesText.setMovementMethod(LinkMovementMethod.getInstance());
         }
@@ -403,8 +405,9 @@ public class SectionInfoAdapter {
 
     void setSectionComments(Course.Sections section) {
         if (!section.hasComments()) {
-            mSectionCommentsContainer.setVisibility(View.GONE);
+            mSectionCommentsLayout.setVisibility(View.GONE);
         } else {
+            mSectionCommentsLayout.setVisibility(View.VISIBLE);
             mSectionCommentsText.setText(Html.fromHtml(StringUtils.join(section.getComments(), ", ")));
             mSectionCommentsText.setMovementMethod(LinkMovementMethod.getInstance());
         }
@@ -412,7 +415,7 @@ public class SectionInfoAdapter {
 
     void setSectionOpenTo(Course.Sections section) {
         if (!section.hasMajors()) {
-            mSectionOpenToContainer.setVisibility(View.GONE);
+            mSectionOpenLayout.setVisibility(View.GONE);
         } else {
             boolean isMajorHeaderSet = false;
             boolean isUnitHeaderSet = false;
@@ -434,14 +437,16 @@ public class SectionInfoAdapter {
                     sb.append(", ");
                 }
             }
+            mSectionOpenLayout.setVisibility(View.VISIBLE);
             mSectionOpenToText.setText(Html.fromHtml(sb.toString()));
         }
     }
 
     void setSectionPermission(Course.Sections section) {
         if (!section.hasSpecialPermission()) {
-            mSectionPermisisionContainer.setVisibility(View.GONE);
+            mSectionPermissionLayout.setVisibility(View.GONE);
         } else {
+            mSectionPermissionLayout.setVisibility(View.VISIBLE);
             mSectionPermissionText.setText(Html.fromHtml(section.getSpecialPermissionAddCodeDescription()));
             mSectionPermissionText.setMovementMethod(LinkMovementMethod.getInstance());
         }
@@ -449,13 +454,14 @@ public class SectionInfoAdapter {
 
     void setSectionCrossList(Course.Sections section) {
         if (!section.hasCrossListed()) {
-            mSectionCrossListContainer.setVisibility(View.GONE);
+            mSectionCrossListLayout.setVisibility(View.GONE);
         } else {
             StringBuilder sb = new StringBuilder();
             for (Course.Sections.CrossListedSections i : section.getCrossListedSections()) {
                 sb.append(i.getFullCrossListedSection());
                 sb.append(", ");
             }
+            mSectionCrossListLayout.setVisibility(View.VISIBLE);
             mSectionCrossListText.setText(Html.fromHtml(sb.toString()));
             mSectionCrossListText.setMovementMethod(LinkMovementMethod.getInstance());
         }
@@ -463,8 +469,9 @@ public class SectionInfoAdapter {
 
     void setSectionSubtitle(Course.Sections section) {
         if (!section.hasSubtitle()) {
-            mSectionSubtitleContainer.setVisibility(View.GONE);
+            mSectionSubtitleLayout.setVisibility(View.GONE);
         } else {
+            mSectionSubtitleLayout.setVisibility(View.VISIBLE);
             mSectionSubtitleText.setText(Html.fromHtml(section.getSubtitle()));
             mSectionSubtitleText.setMovementMethod(LinkMovementMethod.getInstance());
         }
@@ -482,12 +489,12 @@ public class SectionInfoAdapter {
         Collections.sort(s.getMeetingTimes());
         for (Course.Sections.MeetingTimes time : s.getMeetingTimes()) {
 
-            View timeLayout = inflater.inflate(R.layout.section_info_time, mSectionTimeContainer, false);
+            View timeLayout = inflater.inflate(R.layout.section_item_time, mSectionTimeContainer, false);
 
-            TextView dayText = ButterKnife.findById(timeLayout, R.id.day_text);
-            TextView timeText = ButterKnife.findById(timeLayout, R.id.time_text);
-            TextView locationText = ButterKnife.findById(timeLayout, R.id.sectionLocation_text);
-            TextView meetingTimeText = ButterKnife.findById(timeLayout, R.id.meetingType);
+            TextView dayText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_day_text);
+            TextView timeText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_meeting_time_text);
+            TextView locationText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_location_text);
+            TextView meetingTimeText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_meeting_type);
 
             dayText.setText(SectionUtils.getMeetingDayName(time));
             timeText.setText(SectionUtils.getMeetingHours(time));
