@@ -30,7 +30,6 @@ import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.SubjectFragmentAdapter;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
@@ -100,7 +99,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SubjectPresenterImpl(new RutgersApiImpl(RutgersCTApp.getClient())
+            mBasePresenter = new SubjectPresenterImpl(RutgersCTApp.getInstance().getRetroRutgers()
                     , mRequest);
         }
     }

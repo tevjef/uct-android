@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
@@ -22,14 +22,12 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
 
     private Subscription mSubscription;
     private Request mRequest;
-    private RutgersApi mRutgersApi;
+    private RetroRutgers mRetroRutgers;
     private boolean isLoading;
 
-    public SubjectPresenterImpl(RutgersApi mRutgersApi, Request mRequest) {
-        this.mRutgersApi = mRutgersApi;
+    public SubjectPresenterImpl(RetroRutgers retroRutgers, Request mRequest) {
+        this.mRetroRutgers = retroRutgers;
         this.mRequest = mRequest;
-
-        mRutgersApi.setTag(TAG);
     }
 
     @Override
@@ -73,30 +71,26 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
             }
         };
 
-        mSubscription =
-                mRutgersApi.getSubjects(mRequest)
-                        .toList()
-                        .doOnSubscribe(new Action0() {
-                            @Override
-                            public void call() {
-                                isLoading = true;
-                            }
-                        })
-                        .doOnTerminate(new Action0() {
-                            @Override
-                            public void call() {
-                                isLoading = false;
-                            }
-                        })
-                        .onBackpressureDrop()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(mSubscriber);
+        mSubscription = mRetroRutgers.getSubjects(mRequest)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        isLoading = true;
+                    }
+                })
+                .doOnTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        isLoading = false;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mSubscriber);
     }
 
     private void cancePreviousSubscription() {
         RxUtils.unsubscribeIfNotNull(mSubscription);
-        mRutgersApi.getClient().cancel(TAG);
     }
 
     public SubjectView getView() {

@@ -14,7 +14,10 @@ import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
+import com.squareup.otto.Bus;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,6 +43,10 @@ public class RutgersCTApp extends SugarApp {
 
     private static OkHttpClient client = new OkHttpClient();
 
+    private RetroRutgers mRetroRutgers;
+    private Bus bus;
+    private DatabaseHandler mDatabaseHandler;
+
     public static RutgersCTApp getInstance() {
         return sInstance;
     }
@@ -59,12 +66,15 @@ public class RutgersCTApp extends SugarApp {
 
         //refWatcher = LeakCanary.install(this);
 
-        RutgersApiImpl.init();
-
         initStetho();
 
-        initOkHttp();
+        initDefaultOkHttp();
 
+        initRetroRutgers();
+
+        initEventBus();
+
+        initDatabaseHandler();
 
         //Initalize crash reporting apis
         //Fabric.with(this, new Crashlytics());
@@ -87,6 +97,18 @@ public class RutgersCTApp extends SugarApp {
         }
     }
 
+    private void initDatabaseHandler() {
+        mDatabaseHandler = new DatabaseHandlerImpl(getBus());
+    }
+
+    private void initEventBus() {
+        bus = new Bus();
+    }
+
+    private void initRetroRutgers() {
+        getInstance().mRetroRutgers = new RetroRutgers(getDefaultClient());
+    }
+
     private void initStetho() {
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
@@ -97,12 +119,11 @@ public class RutgersCTApp extends SugarApp {
                         .build());
     }
 
-    private void initOkHttp() {
+    private void initDefaultOkHttp() {
         File httpCacheDir = new File(getApplicationContext().getCacheDir(), getString(R.string.app_name));
         long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
         Cache cache = new Cache(httpCacheDir, httpCacheSize);
         client.setCache(cache);
-        client.networkInterceptors().add(LOGGING_INTERCEPTOR);
         client.networkInterceptors().add(new StethoInterceptor());
 
         if (BuildConfig.DEBUG) {
@@ -118,7 +139,6 @@ public class RutgersCTApp extends SugarApp {
         return new Interceptor() {
             @Override
             public Response intercept(Interceptor.Chain chain) throws IOException {
-
                 Request originalRequest = chain.request();
                 Timber.d("Host: %s", originalRequest.httpUrl().host());
 
@@ -129,29 +149,6 @@ public class RutgersCTApp extends SugarApp {
             }
         };
     }
-
-    private static final Interceptor LOGGING_INTERCEPTOR = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-
-            long t1 = System.nanoTime();
-            Timber.i("Sending request %s on %s%n%s",
-                    request.url(), chain.connection(), request.headers());
-
-            Timber.d("Host: %s", request.httpUrl().host());
-            Timber.d("Query: %s", request.httpUrl().encodedQuery());
-
-
-            Response response = chain.proceed(request);
-
-            long t2 = System.nanoTime();
-            Timber.i("Received response for %s in %.1fms%n%s",
-                    response.request().url(), (t2 - t1) / 1e6d, response.headers());
-
-            return response;
-        }
-    };
 
     private synchronized static String getsID(Context context) {
         if (sID == null) {
@@ -215,9 +212,19 @@ public class RutgersCTApp extends SugarApp {
         }
     }
 
+    public Bus getBus() {
+        return bus;
+    }
 
-    public static OkHttpClient getClient() {
+    public DatabaseHandler getDatabaseHandler() {
+        return mDatabaseHandler;
+    }
+
+    public static OkHttpClient getDefaultClient() {
         return client;
     }
 
+    public RetroRutgers getRetroRutgers() {
+        return mRetroRutgers;
+    }
 }

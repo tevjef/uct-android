@@ -4,23 +4,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rmp.RMP;
 import com.tevinjeffrey.rmp.professor.Professor;
 import com.tevinjeffrey.rmp.search.Decider;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.Instructors;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
+import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -37,17 +40,17 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     private final RMP rmp;
     private final DatabaseHandler mDatabaseHandler;
-    private final Course.Section mSection;
-    private final RutgersApi mRutgersApi;
+    private final Section mSection;
+    private final RetroRutgers mRetroRutgers;
+    private final Bus mBus;
     private Subscription mSubscription;
 
-    public SectionInfoPresenterImpl(RutgersApi api, RMP rmp, Course.Section mSection, DatabaseHandler databaseHandler) {
+    public SectionInfoPresenterImpl(RetroRutgers retroRutgers, RMP rmp, Section mSection, DatabaseHandler databaseHandler, Bus bus) {
         this.mDatabaseHandler = databaseHandler;
         this.mSection = mSection;
         this.rmp = rmp;
-        this.mRutgersApi = api;
-
-        mRutgersApi.setTag(TAG);
+        this.mRetroRutgers = retroRutgers;
+        this.mBus = bus;
     }
 
     public void setFabState(boolean animate) {
@@ -78,7 +81,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
         mDatabaseHandler.addSectionToDb(request);
     }
 
-    public void loadRMP(final Course.Section sectionData) {
+    public void loadRMP(final Section sectionData) {
         final Iterable<Instructors> professorsNotFound = new ArrayList<>(sectionData.getInstructors());
         cancePreviousSubscription();
 
@@ -134,7 +137,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     }
 
-    private Observable<Decider.Parameter> buildSearchParameters(final Course.Section section) {
+    private Observable<Decider.Parameter> buildSearchParameters(final Section section) {
         return Observable.from(section.getInstructors())
                 .filter(filterGenericInstructors())
                 .flatMap(new Func1<Instructors, Observable<Decider.Parameter>>() {
@@ -153,13 +156,8 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
                     }
 
                     public Subject getMatchingSubject() {
-                        List<Subject> subjectsList = mRutgersApi.getSubjectsFromJson();
-                        for (Subject s : subjectsList) {
-                            if (s.getCode().equals(section.getCourse().getSubject())) {
-                                return s;
-                            }
-                        }
-                        return null;
+                        return mRetroRutgers
+                                .getSubjectFromJson(section.getCourse().getSubject());
                     }
                 });
     }
@@ -176,34 +174,28 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     private void cancePreviousSubscription() {
         RxUtils.unsubscribeIfNotNull(mSubscription);
-        mRutgersApi.getClient().cancel(TAG);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mDatabaseHandler.setDatabaseListener(this);
+        mBus.register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mDatabaseHandler.removeListener();
+        mBus.unregister(this);
+    }
+
+    @Subscribe
+    public void onDbUpdateEvent(DatabaseUpdateEvent event) {
+        setFabState(true);
     }
 
     @Nullable
     public SectionInfoView getView() {
         return (SectionInfoView) super.getView();
-    }
-
-    @Override
-    public void onAdd(Request addedSection) {
-        setFabState(true);
-    }
-
-    @Override
-    public void onRemove(Request removedSection) {
-        setFabState(true);
     }
 
     @Override

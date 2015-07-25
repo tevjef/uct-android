@@ -9,7 +9,6 @@ import android.os.SystemClock;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
-import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 

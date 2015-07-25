@@ -1,7 +1,6 @@
 package com.tevinjeffrey.rutgersct.testUtils;
 
 import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Response;
 import com.tevinjeffrey.rutgersct.database.TrackedSection;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;

@@ -2,13 +2,15 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import android.os.Bundle;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.TrackedSection;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
+import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import java.util.List;
@@ -27,18 +29,18 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
 
     private static final String TAG = TrackedSectionsPresenterImpl.class.getSimpleName();
 
+    private final DatabaseHandler mDatabaseHandler;
     private boolean mHasDataFlag = false;
     private Subscription mSubscription;
     private Subscriber<List<Section>> mSubscriber;
-    private final RutgersApi mRutgersApi;
+    private final RetroRutgers mRetroRutgers;
     private boolean isLoading = false;
-    private final DatabaseHandler mDatabaseHandler;
+    private final Bus mBus;
 
-    public TrackedSectionsPresenterImpl(RutgersApi api, DatabaseHandler databaseHandler) {
-        this.mRutgersApi = api;
+    public TrackedSectionsPresenterImpl(RetroRutgers retroRutgers, DatabaseHandler databaseHandler, Bus bus) {
+        this.mRetroRutgers = retroRutgers;
+        this.mBus = bus;
         this.mDatabaseHandler = databaseHandler;
-
-        mRutgersApi.setTag(TAG);
     }
 
     public void loadTrackedSections(final boolean pullToRefresh) {
@@ -95,7 +97,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
                     public void onNext(List<TrackedSection> trackedSections) {
                         mHasDataFlag = trackedSections.size() > 0;
                         mSubscription =
-                                mRutgersApi.getTrackedSections(trackedSections)
+                                mRetroRutgers.getTrackedSections(trackedSections)
                                         .doOnSubscribe(new Action0() {
                                             @Override
                                             public void call() {
@@ -118,7 +120,6 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
 
     private void cancePreviousSubscription() {
         RxUtils.unsubscribeIfNotNull(mSubscription);
-        mRutgersApi.getClient().cancel(TAG);
     }
 
     private Observable<List<TrackedSection>> getObservableSections() {
@@ -132,22 +133,17 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mDatabaseHandler.setDatabaseListener(this);
+        mBus.register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mDatabaseHandler.removeListener();
+        mBus.unregister(this);
     }
 
-    @Override
-    public void onAdd(Request addedSection) {
-        loadTrackedSections(false);
-    }
-
-    @Override
-    public void onRemove(Request removedSection) {
+    @Subscribe
+    public void onDbUpdateEvent(DatabaseUpdateEvent event) {
         loadTrackedSections(false);
     }
 

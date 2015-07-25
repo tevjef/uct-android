@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
-import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.ui.base.View.LayoutType;
 
 import java.util.ArrayList;

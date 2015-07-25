@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
-import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.ui.base.View.LayoutType;
 
 import java.util.ArrayList;
@@ -13,11 +12,11 @@ import java.util.List;
 
 public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView> implements Parcelable {
 
-    boolean isRefreshing = false;
-    LayoutType layoutType = LayoutType.LIST;
-    List<Course.Section> data = new ArrayList<>(10);
-    boolean snackBarShowing = false;
-    String errorMessage;
+    public boolean isRefreshing = false;
+    public LayoutType layoutType = LayoutType.LIST;
+    public List<Course.Section> data = new ArrayList<>(10);
+    public boolean snackBarShowing = false;
+    public String errorMessage;
 
     @Override
     public void apply(TrackedSectionsView view, boolean retainedState) {

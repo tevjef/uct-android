@@ -26,7 +26,6 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
@@ -109,8 +108,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (mBasePresenter == null) {
-            mBasePresenter = new ChooserPresenterImpl(
-                    new RutgersApiImpl(RutgersCTApp.getClient()));
+            mBasePresenter = new ChooserPresenterImpl(RutgersCTApp.getInstance().getRetroRutgers());
         }
     }
 

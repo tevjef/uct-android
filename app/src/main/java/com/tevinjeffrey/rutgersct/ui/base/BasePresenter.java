@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
-
 import java.lang.ref.WeakReference;
 
 public abstract class BasePresenter implements Presenter, StatefulPresenter {

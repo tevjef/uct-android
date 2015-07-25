@@ -3,7 +3,11 @@ package com.tevinjeffrey.rutgersct.database;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Produce;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
 
 import java.util.List;
 
@@ -14,29 +18,10 @@ import rx.schedulers.Schedulers;
 
 public class DatabaseHandlerImpl implements DatabaseHandler {
 
-    private static DatabaseHandler sDatabaseHandler = null;
+    private final Bus bus;
 
-    @Nullable
-    private DatabaseListener mListener;
-
-    public static DatabaseHandler getInstance() {
-        if (sDatabaseHandler == null) {
-            sDatabaseHandler = new DatabaseHandlerImpl();
-        }
-        return sDatabaseHandler;
-    }
-
-    private DatabaseHandlerImpl() {
-    }
-
-    @Override
-    public void setDatabaseListener(DatabaseListener listener) {
-        mListener = listener;
-    }
-
-    @Override
-    public void removeListener() {
-        mListener = null;
+    public DatabaseHandlerImpl(Bus eventBus) {
+        this.bus = eventBus;
     }
 
     @Override
@@ -59,7 +44,7 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
                 .subscribeOn(Schedulers.io());
     }
 
-    private static int removeFromDb(Request request) {
+    private int removeFromDb(Request request) {
         List<TrackedSection> trackedSections = TrackedSection.find(TrackedSection.class,
                 "INDEX_NUMBER = ?", request.getIndex());
         for (TrackedSection ts : trackedSections) {
@@ -69,13 +54,11 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
     }
 
     private void notifyOnRemoveListeners(Request request) {
-        if (mListener != null)
-            mListener.onRemove(request);
+        bus.post(new DatabaseUpdateEvent());
     }
 
     private void notifyOnAddListeners(Request request) {
-        if (mListener != null)
-            mListener.onAdd(request);
+        bus.post(new DatabaseUpdateEvent());
     }
 
     public boolean isSectionTracked(Request request) {
@@ -108,6 +91,11 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
         trackedSections.save();
 
         return trackedSections;
+    }
+
+    @Produce
+    public DatabaseUpdateEvent produceUpdate() {
+        return new DatabaseUpdateEvent();
     }
 
 }

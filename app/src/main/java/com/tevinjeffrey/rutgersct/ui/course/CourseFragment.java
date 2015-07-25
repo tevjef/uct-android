@@ -29,7 +29,6 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.CourseFragmentAdapter;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
@@ -102,7 +101,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new CoursePresenterImpl(new RutgersApiImpl(RutgersCTApp.getClient()),
+            mBasePresenter = new CoursePresenterImpl(RutgersCTApp.getInstance().getRetroRutgers(),
                     mRequest);
         }
     }

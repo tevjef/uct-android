@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.search;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
@@ -14,14 +14,12 @@ import rx.schedulers.Schedulers;
 public class ChooserPresenterImpl extends BasePresenter implements ChooserPresenter {
 
     private static final String TAG = ChooserPresenterImpl.class.getSimpleName();
-    private final RutgersApi mRutgersApi;
+    private final RetroRutgers mRetroRutgers;
     private Subscription mSubsciption;
     private boolean isLoading;
 
-    public ChooserPresenterImpl(RutgersApi mRutgersApi) {
-        this.mRutgersApi = mRutgersApi;
-        
-        mRutgersApi.setTag(TAG);
+    public ChooserPresenterImpl(RetroRutgers retroRutgers) {
+        this.mRetroRutgers = retroRutgers;
     }
 
     @Override
@@ -47,7 +45,7 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
             }
         };
 
-        mSubsciption = mRutgersApi.getSystemMessage()
+        mSubsciption = mRetroRutgers.getSystemMessage()
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
@@ -67,7 +65,6 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
 
     private void cancePreviousSubscription() {
         RxUtils.unsubscribeIfNotNull(mSubsciption);
-        mRutgersApi.getClient().cancel(TAG);
     }
 
     @Override

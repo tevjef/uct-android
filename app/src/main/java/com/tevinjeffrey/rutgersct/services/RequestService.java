@@ -16,9 +16,6 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.TrackedSection;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 
 import java.util.concurrent.CancellationException;
@@ -28,6 +25,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 
 public class RequestService extends Service {
     private Intent mIntent;
@@ -41,13 +40,13 @@ public class RequestService extends Service {
         mIntent = intent;
         Timber.i("Request Service started at %s", RutgersCTApp.getTimeNow());
 
-        RutgersApi api = new RutgersApiImpl(RutgersCTApp.getClient());
+        Observable<Section> courseObservable = RutgersCTApp.getInstance().getRetroRutgers()
+                .getTrackedSections(TrackedSection.listAll(TrackedSection.class));
 
-        Observable<Course.Section> courseObservable = api.getTrackedSections(TrackedSection.listAll(TrackedSection.class));
         courseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Course.Section>() {
+                .subscribe(new Subscriber<Section>() {
                     @Override
                     public void onCompleted() {
                         stopSelf();
@@ -64,7 +63,7 @@ public class RequestService extends Service {
                     }
 
                     @Override
-                    public void onNext(Course.Section section) {
+                    public void onNext(Section section) {
                         if (section.isOpenStatus())
                             makeNotification(section, section.getRequest());
                     }
@@ -73,7 +72,7 @@ public class RequestService extends Service {
     }
 
     //Creates a notfication of the Android system.
-    private void makeNotification(Course.Section section, Request r) {
+    private void makeNotification(Section section, Request r) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("app_notification", true)) {
             String courseTitle = section.getCourse().getTrueTitle();
 

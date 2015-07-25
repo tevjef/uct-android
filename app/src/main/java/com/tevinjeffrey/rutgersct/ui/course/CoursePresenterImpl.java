@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.course;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
@@ -19,16 +19,14 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
 
     private static final String TAG = CoursePresenterImpl.class.getSimpleName();
 
-    private final RutgersApi mRutgersApi;
+    private final RetroRutgers mRetroRutgers;
     private Subscription mSubscription;
     private Request mRequest;
     private boolean isLoading;
 
-    public CoursePresenterImpl(RutgersApi api, Request mRequest) {
+    public CoursePresenterImpl(RetroRutgers retroRutgers, Request mRequest) {
         this.mRequest = mRequest;
-        this.mRutgersApi = api;
-
-        mRutgersApi.setTag(TAG);
+        this.mRetroRutgers = retroRutgers;
     }
 
     @Override
@@ -67,7 +65,7 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
             }
         };
 
-        mSubscription = mRutgersApi.getCourses(mRequest)
+        mSubscription = mRetroRutgers.getCourses(mRequest)
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
@@ -80,7 +78,6 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
                         isLoading = false;
                     }
                 })
-                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mSubscriber);
@@ -88,7 +85,6 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
 
     private void cancePreviousSubscription() {
         RxUtils.unsubscribeIfNotNull(mSubscription);
-        mRutgersApi.getClient().cancel(TAG);
     }
 
     public CourseView getView() {

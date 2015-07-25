@@ -22,6 +22,7 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
+import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.RMP;
 import com.tevinjeffrey.rmp.professor.Professor;
 import com.tevinjeffrey.rutgersct.R;
@@ -30,10 +31,8 @@ import com.tevinjeffrey.rutgersct.adapters.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.utils.Utils;
@@ -188,12 +187,13 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RutgersApi rutgersApi = new RutgersApiImpl(RutgersCTApp.getClient());
-        RMP rmp = new RMP(RutgersCTApp.getClient());
-        DatabaseHandler databaseHandler = DatabaseHandlerImpl.getInstance();
+        RetroRutgers retroRutgers = RutgersCTApp.getInstance().getRetroRutgers();
+        RMP rmp = new RMP(RutgersCTApp.getDefaultClient());
+        DatabaseHandler databaseHandler = RutgersCTApp.getInstance().getDatabaseHandler();
+        Bus bus = RutgersCTApp.getInstance().getBus();
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SectionInfoPresenterImpl(rutgersApi, rmp, selectedSection, databaseHandler);
+            mBasePresenter = new SectionInfoPresenterImpl(retroRutgers, rmp, selectedSection, databaseHandler, bus);
         }
     }
 

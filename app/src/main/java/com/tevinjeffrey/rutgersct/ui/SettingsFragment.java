@@ -15,8 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.services.Alarm;
@@ -130,7 +128,7 @@ public class SettingsFragment extends PreferenceFragment {
                         .show();
 
                 final String url = "http://tevinjeffrey.com/licenses.txt";
-                Ion.with(SettingsFragment.this)
+                /*Ion.with(SettingsFragment.this)
                         .load(url)
                         .asString()
                         .setCallback(new FutureCallback<String>() {
@@ -165,7 +163,7 @@ public class SettingsFragment extends PreferenceFragment {
                                             .show();
                                 }
                             }
-                        });
+                        });*/
                 return true;
             }
         });

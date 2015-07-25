@@ -3,7 +3,7 @@ package com.tevinjeffrey.rutgersct.ui;
 import com.squareup.okhttp.OkHttpClient;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.RutgersApiTestConts;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
@@ -12,8 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * Created by Tevin on 7/22/2015.
@@ -23,7 +24,7 @@ public class TrackedSectionsPresenterImplTest {
 
     TrackedSectionsPresenterImpl trackedSectionsPresenterImpl;
 
-    RutgersApi testRutgersApi;
+    RetroRutgers testRutgersApi;
     DatabaseHandler testDatabaseHandler;
     TrackedSectionsView testTrackedSectionsView;
 
@@ -32,7 +33,7 @@ public class TrackedSectionsPresenterImplTest {
 
     @Before
     public void setUp() throws Exception {
-        testRutgersApi = mock(RutgersApi.class);
+        testRutgersApi = mock(RetroRutgers.class);
         testDatabaseHandler = mock(DatabaseHandler.class);
         testTrackedSectionsView = mock(TrackedSectionsView.class);
 
@@ -47,7 +48,7 @@ public class TrackedSectionsPresenterImplTest {
 
         when(testDatabaseHandler.getAllSections()).thenReturn(Observable.just(testConts.createTrackedSections()));
         when(testRutgersApi.getTrackedSections(testConts.createTrackedSections())).thenReturn(Observable.just(section));
-        when(testRutgersApi.getClient()).thenReturn(mock(OkHttpClient.class));*/
+        when(testRutgersApi.getDefaultClient()).thenReturn(mock(OkHttpClient.class));*/
 
         trackedSectionsPresenterImpl = new TrackedSectionsPresenterImpl(testRutgersApi, testDatabaseHandler);
         trackedSectionsPresenterImpl.attachView(testTrackedSectionsView);

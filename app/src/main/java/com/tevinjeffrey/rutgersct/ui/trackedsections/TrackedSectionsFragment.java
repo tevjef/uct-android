@@ -38,7 +38,6 @@ import com.tevinjeffrey.rutgersct.adapters.TrackedSectionsFragmentAdapter;
 import com.tevinjeffrey.rutgersct.animator.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
-import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.search.ChooserFragment;
@@ -109,8 +108,8 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new TrackedSectionsPresenterImpl(new RutgersApiImpl(RutgersCTApp.getClient()),
-                    DatabaseHandlerImpl.getInstance());
+            mBasePresenter = new TrackedSectionsPresenterImpl(RutgersCTApp.getInstance().getRetroRutgers(),
+                    RutgersCTApp.getInstance().getDatabaseHandler(), RutgersCTApp.getInstance().getBus());
         }
     }
 

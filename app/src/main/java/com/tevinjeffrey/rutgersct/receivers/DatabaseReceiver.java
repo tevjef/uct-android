@@ -21,7 +21,7 @@ public class DatabaseReceiver extends BroadcastReceiver {
         Course.Section section = intent.getParcelableExtra(RutgersCTApp.SELECTED_SECTION);
         if (request != null && section != null) {
             //Removes section from databse
-            DatabaseHandlerImpl.getInstance().removeSectionFromDb(request);
+            RutgersCTApp.getInstance().getDatabaseHandler().removeSectionFromDb(request);
             //Notify user with a toast.
             notifyUser(context, section);
             //Remove notification from notification panel
