@@ -1,48 +1,33 @@
 package com.tevinjeffrey.rutgersct.ui;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.services.Alarm;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 
-public class MainActivity extends ActionBarActivity {
+import icepick.Icepick;
+import icepick.Icicle;
 
-    public static void setGreenWindow(Activity context) {
-        setWindowColor(context.getResources().getColor(R.color.green), context.getResources().getColor(R.color.green_dark), context);
-    }
+public class MainActivity extends AppCompatActivity {
 
-    public static void setAccentWindow(Activity context) {
-        setWindowColor(context.getResources().getColor(R.color.accent), context.getResources().getColor(R.color.accent_dark), context);
-    }
-
-    public static void setPrimaryWindow(Activity context) {
-        setWindowColor(context.getResources().getColor(R.color.primary), context.getResources().getColor(R.color.primary_dark), context);
-    }
-
-    private static void setWindowColor(int color, int colorDark, Activity context) {
-        Window window = context.getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(colorDark);
-            window.setNavigationBarColor(colorDark);
-        }
-    }
+    @Icicle
+    public int mBackstackCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Icepick.restoreInstanceState(this, savedInstanceState);
 
         if (savedInstanceState == null) {
             TrackedSectionsFragment tsf = new TrackedSectionsFragment();
@@ -61,25 +46,41 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        setPrimaryWindow(this);
-
         new Alarm(getApplicationContext()).setAlarm();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    //Allows the up button to call the back button. This pops the fragment off the back stack.
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
+        if (getBackstackCount() > 0) {
+            decrementBackstackCount();
+            getFragmentManager().popBackStackImmediate();
         } else {
             super.onBackPressed();
         }
+    }
+
+    //Helper methods to manage the back stack count. The count return from
+    // getFragmentManager().getbackstackCount() is unreliable when using transitions
+    public int getBackstackCount() {
+        return mBackstackCount;
+    }
+
+    public void incrementBackstackCount() {
+        ++mBackstackCount;
+    }
+
+    public void decrementBackstackCount() {
+        --mBackstackCount;
     }
 }

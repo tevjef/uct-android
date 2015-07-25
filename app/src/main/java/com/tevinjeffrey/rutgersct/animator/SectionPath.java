@@ -21,7 +21,7 @@ public class SectionPath extends PathMotion {
         Timber.d("startX: %s, startY: %s, endX: %s, endY: %s", startX, startY, endX, endY);
         Path path = new Path();
         path.moveTo(startX, startY);
-        path.quadTo((float) ((endX - startX) * .2), (float) ((endY - startY ) * .8), endX, endY);
+        path.quadTo((float) (((endX - startX) * .3) + startX), (float) (((endY - startY) * .8) + startY), endX, endY);
         return path;
     }
 }

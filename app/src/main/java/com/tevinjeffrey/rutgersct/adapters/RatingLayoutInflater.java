@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -18,8 +19,10 @@ import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
 import butterknife.ButterKnife;
 
 public class RatingLayoutInflater {
-    Professor mProfessor;
-    Activity mContext;
+    public static final int LOW_RATING_LIMIT = 40;
+    public static final int MEDIUM_RATING_LIMIT = 60;
+    private Professor mProfessor;
+    private Activity mContext;
 
     public RatingLayoutInflater(@NonNull Activity context, @NonNull Professor professor) {
         this.mProfessor = professor;
@@ -27,7 +30,7 @@ public class RatingLayoutInflater {
     }
 
     @MainThread
-    public ViewGroup getLayout() {
+    public ViewGroup getProfessorLayout() {
         ViewGroup root = (ViewGroup) mContext.getLayoutInflater().inflate(R.layout.section_info_rmp_rating, null);
 
         setName(root);
@@ -53,39 +56,38 @@ public class RatingLayoutInflater {
         root.setTag("http://www.ratemyprofessors.com" + mProfessor.getUrl());
     }
 
-    public static ViewGroup getErrorLayout(Context context, String professorName, Course.Sections s) {
-       ViewGroup root = (ViewGroup) ((LayoutInflater)context.getSystemService
+    public View getErrorLayout(String professorName, Course.Section s) {
+        TextView message = (TextView) ((LayoutInflater) mContext.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.no_professor, null);
 
         String url = "http://www.google.com/#q=" + UrlUtils.getGoogleUrl(s);
-        root.setTag(url);
+        message.setTag(url);
 
-        TextView message = ButterKnife.findById(root, R.id.message);
         message.setText("Could not find professor: " + professorName);
-        return root;
+        return message;
     }
 
-    public void setName(ViewGroup root) {
+    private void setName(ViewGroup root) {
         String professorName = mProfessor.getFullName().toString();
         TextView professorNameText = ButterKnife.findById(root, R.id.rmp_prof_name);
         professorNameText.setText(professorName);
     }
 
-    public void setDepartment(ViewGroup root) {
+    private void setDepartment(ViewGroup root) {
         String professorDepartment = mProfessor.getDepartment();
         TextView professorDepartmentText = ButterKnife.findById(root, R.id.rmp_department);
         professorDepartmentText.setText(professorDepartment + " - " + mProfessor.getLocation());
     }
 
-    public void setAverageGrade(ViewGroup root) {
+    private void setAverageGrade(ViewGroup root) {
         String averageGrade = mProfessor.getRatings().getAverageGrade().toString();
         TextView averageGradeText = ButterKnife.findById(root, R.id.rmp_average_grade_text);
         averageGradeText.setText(averageGrade);
     }
 
-    public void setHelpfulness(ViewGroup root) {
+    private void setHelpfulness(ViewGroup root) {
         String helpfulnessRating = mProfessor.getRatings().getHelpfulness().getRating();
-        double rating = Double.valueOf(helpfulnessRating)/5;
+        double rating = Double.valueOf(helpfulnessRating) / 5;
         double percentage = rating * 100;
         WheelIndicatorView helpfulnessWheel = ButterKnife.findById(root, R.id.wheel_helpfullness_rating);
         helpfulnessWheel.setFilledPercent((int) percentage);
@@ -93,9 +95,9 @@ public class RatingLayoutInflater {
         helpfulnessWheel.startItemsAnimation();
     }
 
-    public void setClarity(ViewGroup root) {
+    private void setClarity(ViewGroup root) {
         String clarityRating = mProfessor.getRatings().getClarity().getRating();
-        double rating = Double.valueOf(clarityRating)/5;
+        double rating = Double.valueOf(clarityRating) / 5;
         double percentage = rating * 100;
         WheelIndicatorView clarityWheel = ButterKnife.findById(root, R.id.wheel_clarity_rating);
         clarityWheel.setFilledPercent((int) percentage);
@@ -103,9 +105,9 @@ public class RatingLayoutInflater {
         clarityWheel.startItemsAnimation();
     }
 
-    public void setEasiness(ViewGroup root) {
+    private void setEasiness(ViewGroup root) {
         String easinessRating = mProfessor.getRatings().getEasiness().getRating();
-        double rating = Double.valueOf(easinessRating)/5;
+        double rating = Double.valueOf(easinessRating) / 5;
         double percentage = rating * 100;
         WheelIndicatorView easinessWheel = ButterKnife.findById(root, R.id.wheel_easiness_rating);
         easinessWheel.setFilledPercent((int) percentage);
@@ -113,9 +115,9 @@ public class RatingLayoutInflater {
         easinessWheel.startItemsAnimation();
     }
 
-    public void setOverall(ViewGroup root) {
+    private void setOverall(ViewGroup root) {
         String overallRating = mProfessor.getRatings().getOverallQuality().getRating();
-        double rating = Double.valueOf(overallRating)/5;
+        double rating = Double.valueOf(overallRating) / 5;
         double percentage = rating * 100;
         WheelIndicatorView overallQualityWheel = ButterKnife.findById(root, R.id.wheel_quality_rating);
         TextView overallQualityText = ButterKnife.findById(root, R.id.rmp_overall_rating_number);
@@ -126,9 +128,9 @@ public class RatingLayoutInflater {
     }
 
     private int getRatingColor(double rating) {
-        if (rating < 40) {
+        if (rating < LOW_RATING_LIMIT) {
             return mContext.getResources().getColor(R.color.rating_low);
-        } else if (rating < 60) {
+        } else if (rating < MEDIUM_RATING_LIMIT) {
             return mContext.getResources().getColor(R.color.rating_medium);
         } else {
             return mContext.getResources().getColor(R.color.rating_high);

@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.testUtils.RutgersApiConts;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,17 +36,16 @@ public class TrackedSectionsFragmentTest {
 
     Activity mActivity;
 
+    RutgersApiConts rutgersApiConts = new RutgersApiConts();
+
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(
-            MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @Before
     public void setUp() throws Exception {
         // Espresso does not start the Activity for you we need to do this manually here.
         mActivity = mActivityRule.getActivity();
-
         assertThat(mActivity, notNullValue());
-
     }
 
     @Test
@@ -63,7 +63,6 @@ public class TrackedSectionsFragmentTest {
     public void testOrientationChange() {
         if (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             onView(isRoot()).perform(orientationLandscape());
-
             testAddCoursesButtonInteractivity();
             testClickRefresh();
             testSwipeToRefresh();
@@ -72,20 +71,37 @@ public class TrackedSectionsFragmentTest {
         }
     }
 
-    public void viewInteractivity(int viewId) {
-        onView(withId(viewId)).check(matches(isCompletelyDisplayed()));
-        onView(withId(viewId)).check(matches(isEnabled()));
-        onView(withId(viewId)).check(matches(isClickable()));
-    }
-
     @Test
     public void testClickRefresh() {
         onView(withId(R.id.action_refresh)).perform(click());
     }
 
+/*
+    Disabled until espresoo updates it's dependacies.
+    @Test
+    public void testRecyclerItemClickAndRemoveSection() {
+        Request expected = rutgersApiConts.getPrimarySemesterRequest();
+        DatabaseHandlerImpl.getInstance().saveToDb(expected);
+
+        onView(withId(R.id.tsf_list)).perform(actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.add_courses_fab)).perform(click());
+        onView(withId(R.id.tsf_list))
+                .perform(scrollToHolder
+                        (withIndexNumber(equalTo(expected.getIndex()))))
+                .check(doesNotExist());
+    }
+
+*/
+
     @Test
     public void testSwipeToRefresh() {
         onView(withId(R.id.swipeRefreshLayout)).perform(swipeDown());
+    }
+
+    public void viewInteractivity(int viewId) {
+        onView(withId(viewId)).check(matches(isCompletelyDisplayed()));
+        onView(withId(viewId)).check(matches(isEnabled()));
+        onView(withId(viewId)).check(matches(isClickable()));
     }
 
 

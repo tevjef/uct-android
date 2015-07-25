@@ -75,14 +75,14 @@ public class CircleView extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CircleView, defStyle, 0);
 
-        if(a.hasValue(R.styleable.CircleView_titleText)){
+        if (a.hasValue(R.styleable.CircleView_titleText)) {
             mTitleText = a.getString(R.styleable.CircleView_titleText);
         }
 
-        mTitleColor = a.getColor(R.styleable.CircleView_titleColor,DEFAULT_TITLE_COLOR);
-        mBackgroundColor = a.getColor(R.styleable.CircleView_backgroundColorValue,DEFAULT_BACKGROUND_COLOR);
+        mTitleColor = a.getColor(R.styleable.CircleView_titleColor, DEFAULT_TITLE_COLOR);
+        mBackgroundColor = a.getColor(R.styleable.CircleView_backgroundColorValue, DEFAULT_BACKGROUND_COLOR);
 
-        mTitleSize = a.getDimension(R.styleable.CircleView_titleSize,DEFAULT_TITLE_SIZE);
+        mTitleSize = a.getDimension(R.styleable.CircleView_titleSize, DEFAULT_TITLE_SIZE);
 
 
         a.recycle();
@@ -109,7 +109,7 @@ public class CircleView extends View {
     }
 
 
-    private void invalidatePaints(){
+    private void invalidatePaints() {
         mBackgroundPaint.setColor(mBackgroundColor);
         invalidate();
     }
@@ -132,7 +132,7 @@ public class CircleView extends View {
         final float centerX = mInnerRectF.centerX();
         final float centerY = mInnerRectF.centerY();
 
-        canvas.drawCircle(centerX, centerY, mViewSize/2 ,mBackgroundPaint);
+        canvas.drawCircle(centerX, centerY, mViewSize / 2, mBackgroundPaint);
 
         final int xPos = (int) centerX;
         final int yPos = (int) (centerY - (mTitleTextPaint.descent() + mTitleTextPaint.ascent()) / 2);
@@ -154,15 +154,17 @@ public class CircleView extends View {
 
     /**
      * Sets whether the view's title string will be shown.
+     *
      * @param flag The boolean value.
      */
-    public void setShowTitle(boolean flag){
+    public void setShowTitle(boolean flag) {
         this.mShowTitle = flag;
         invalidate();
     }
 
     /**
      * Sets the view's title string attribute value.
+     *
      * @param title The example string attribute value to use.
      */
     public void setTitleText(String title) {
@@ -171,11 +173,12 @@ public class CircleView extends View {
     }
 
     public String getTitleText() {
-       return mTitleText;
+        return mTitleText;
     }
 
     /**
      * Sets the view's background color attribute value.
+     *
      * @param backgroundColor The background color attribute value to use.
      */
     public void setBackgroundColor(int backgroundColor) {

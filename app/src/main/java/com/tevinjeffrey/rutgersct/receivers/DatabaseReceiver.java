@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 
@@ -18,12 +18,12 @@ public class DatabaseReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Request request = intent.getParcelableExtra(RutgersCTApp.REQUEST);
-        Course course = intent.getParcelableExtra(RutgersCTApp.SELECTED_COURSE);
-        if (request != null && course != null) {
+        Course.Section section = intent.getParcelableExtra(RutgersCTApp.SELECTED_SECTION);
+        if (request != null && section != null) {
             //Removes section from databse
-            DatabaseHandler.getInstance().removeSectionFromDb(request);
+            DatabaseHandlerImpl.getInstance().removeSectionFromDb(request);
             //Notify user with a toast.
-            notifyUser(context, course);
+            notifyUser(context, section);
             //Remove notification from notification panel
             removeNotification(context, request);
         }
@@ -35,7 +35,8 @@ public class DatabaseReceiver extends BroadcastReceiver {
         mNotifyMgr.cancel(Integer.valueOf(request.getIndex()));
     }
 
-    private void notifyUser(Context context, Course course) {
-        Toast.makeText(context, String.format("Stopped tracking %s", course.getTrueTitle()), Toast.LENGTH_SHORT).show();
+    private void notifyUser(Context context, Course.Section section) {
+        Toast.makeText(context, String.format("Stopped tracking %s",
+                section.getCourse().getTrueTitle()), Toast.LENGTH_SHORT).show();
     }
 }

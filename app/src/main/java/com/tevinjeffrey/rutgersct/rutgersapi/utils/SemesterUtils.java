@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class SemesterUtils  {
+@SuppressWarnings({"MagicNumber", "ValueOfIncrementOrDecrementUsed"})
+public class SemesterUtils {
 
     private final Calendar calendar;
-    public int UPPER_LIMIT;
-    public int LOWER_LIMIT = 2011;
+    private int UPPER_LIMIT;
+    private int LOWER_LIMIT = 2011;
 
     public SemesterUtils(Calendar calendar) {
         this.calendar = calendar;
@@ -36,7 +37,7 @@ public class SemesterUtils  {
         return list;
     }
 
-    public String resolveCurrentYear(Calendar c) {
+    private String resolveCurrentYear(Calendar c) {
         return String.valueOf(c.get(Calendar.YEAR));
     }
 
@@ -76,7 +77,7 @@ public class SemesterUtils  {
         return String.valueOf(++i);
     }
 
-    public Semester[] resolveSemesterChoices(Calendar c) {
+    private Semester[] resolveSemesterChoices(Calendar c) {
         int month = c.get(Calendar.MONTH);
         int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
         String currentYear = resolveCurrentYear(c);
@@ -178,15 +179,7 @@ public class SemesterUtils  {
     }
 
     public static class Semester implements Parcelable {
-        public static final Parcelable.Creator<Semester> CREATOR = new Parcelable.Creator<Semester>() {
-            public Semester createFromParcel(Parcel source) {
-                return new Semester(source);
-            }
 
-            public Semester[] newArray(int size) {
-                return new Semester[size];
-            }
-        };
         Season mSeason;
         String mYear;
 
@@ -220,12 +213,6 @@ public class SemesterUtils  {
             this(yearAndSeason.split(" ")[0], yearAndSeason.split(" ")[1]);
         }
 
-        private Semester(Parcel in) {
-            int tmpMSeason = in.readInt();
-            this.mSeason = tmpMSeason == -1 ? null : Season.values()[tmpMSeason];
-            this.mYear = in.readString();
-        }
-
         public Season getSeason() {
             return mSeason;
         }
@@ -249,5 +236,21 @@ public class SemesterUtils  {
             dest.writeInt(this.mSeason == null ? -1 : this.mSeason.ordinal());
             dest.writeString(this.mYear);
         }
+
+        protected Semester(Parcel in) {
+            int tmpMSeason = in.readInt();
+            this.mSeason = tmpMSeason == -1 ? null : Season.values()[tmpMSeason];
+            this.mYear = in.readString();
+        }
+
+        public static final Parcelable.Creator<Semester> CREATOR = new Parcelable.Creator<Semester>() {
+            public Semester createFromParcel(Parcel source) {
+                return new Semester(source);
+            }
+
+            public Semester[] newArray(int size) {
+                return new Semester[size];
+            }
+        };
     }
 }

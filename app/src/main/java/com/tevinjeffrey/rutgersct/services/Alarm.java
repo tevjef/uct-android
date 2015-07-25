@@ -9,6 +9,9 @@ import android.os.SystemClock;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
+
 
 public class Alarm {
     private final Context mContext;
@@ -40,18 +43,18 @@ public class Alarm {
                 alarmIntent);
     }
 
-    public long getInterval() {
+    private long getInterval() {
         int index = PreferenceUtils.getSyncInterval();
         if (index == 0) {
-            return 5 * 60 * 1000;
+            return TimeUnit.MINUTES.toMillis(5);
         } else if (index == 1) {
-            return 15 * 60 * 1000;
+            return TimeUnit.MINUTES.toMillis(15);
         } else if (index == 2) {
-            return 60 * 60 * 1000;
+            return TimeUnit.HOURS.toMillis(1);
         } else if (index == 3) {
-            return 3 * 60 * 60 * 1000;
+            return TimeUnit.HOURS.toMillis(3);
         } else {
-            return 6 * 60 * 60 * 1000;
+            return TimeUnit.HOURS.toMillis(6);
         }
     }
 }

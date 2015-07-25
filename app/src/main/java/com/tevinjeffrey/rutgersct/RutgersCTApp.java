@@ -8,7 +8,6 @@ import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
@@ -23,26 +22,23 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
-import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class RutgersCTApp extends SugarApp {
     public static final String REFRESH_INTERVAL = "Sync Interval";
     public static final String ITEMS_IN_DATABASE = "Items in database";
     public static final String RESPONSE = "Response from server";
-    public final static String SUBJECTS_LIST = "SUBJECTS_LIST";
-    public final static String COURSE_LIST = "COURSE_LIST";
+    public final static String SELECTED_SUBJECT = "SELECTED_SUBJECT";
+    public final static String SELECTED_SECTION = "SELECTED_SECTION";
     public final static String SELECTED_COURSE = "SELECTED_COURSE";
     public final static String REQUEST = "REQUEST";
-    public final static String TRACKED_SECTION = "TRACKED_SECTION";
-    public final static String COURSE_INFO_SECTION = "COURSE_INFO_SECTION";
     private static final String INSTALLATION = "INSTALLATION";
 
     private static RutgersCTApp sInstance;
 
     private static String sID = null;
 
-    public static OkHttpClient client = new OkHttpClient();
+    private static OkHttpClient client = new OkHttpClient();
 
     public static RutgersCTApp getInstance() {
         return sInstance;
@@ -61,7 +57,7 @@ public class RutgersCTApp extends SugarApp {
 
         sInstance = this;
 
-        refWatcher = LeakCanary.install(this);
+        //refWatcher = LeakCanary.install(this);
 
         RutgersApiImpl.init();
 
@@ -71,7 +67,7 @@ public class RutgersCTApp extends SugarApp {
 
 
         //Initalize crash reporting apis
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         if (BuildConfig.DEBUG) {
             //When debugging logs will go through the Android logger
             Timber.plant(new Timber.DebugTree());
@@ -213,11 +209,12 @@ public class RutgersCTApp extends SugarApp {
         @Override
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
-            Crashlytics.logException(t);
+            //Crashlytics.logException(t);
             Mint.logExceptionMessage("INFO: ", String.format(message, args),
                     new Exception(t));
         }
     }
+
 
     public static OkHttpClient getClient() {
         return client;

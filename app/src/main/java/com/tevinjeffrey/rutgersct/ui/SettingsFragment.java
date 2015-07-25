@@ -20,6 +20,7 @@ import com.koushikdutta.ion.Ion;
 import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.services.Alarm;
+import com.tevinjeffrey.rutgersct.ui.base.BasePreferenceActivity;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.net.UnknownHostException;
@@ -32,7 +33,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     private Preference syncInterval;
 
-    BasePreferenceActivity getParentActivity() {
+    private BasePreferenceActivity getParentActivity() {
         return (BasePreferenceActivity) getActivity();
     }
 
@@ -174,16 +175,11 @@ public class SettingsFragment extends PreferenceFragment {
         preference.setSummary(summary);
     }
 
-    int getInterval() {
+    private int getInterval() {
         return PreferenceUtils.getSyncInterval();
     }
 
-    void setInterval(int intervalIndex) {
+    private void setInterval(int intervalIndex) {
         PreferenceUtils.setSyncInterval(intervalIndex);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 }

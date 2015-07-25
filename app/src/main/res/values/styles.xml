@@ -3,7 +3,7 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="RutgersCT" parent="Theme.AppCompat.NoActionBar">
+    <style name="RutgersCT" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="mp_colorAccent">@color/primary</item>
         <item name="android:windowNoTitle">true</item>
         <!--We will be using the toolbar so no need to show ActionBar-->
@@ -28,7 +28,6 @@
         <item name="android:textColorSecondary">@color/secondary_text</item>
 
         <item name="android:windowBackground">@color/window_background</item>
-
 
     </style>
     <style name="RutgersCT.ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -84,7 +83,6 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:elevation">1dp</item>
     </style>
 
     <style name="ToolbarStyle.Big">
@@ -92,10 +90,26 @@
     </style>
 
 
-    <style name="RutgersCT.CourseInfo">
+    <style name="RutgersCT.Accent">
         <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryDark">@color/accent_dark</item>
         <item name="colorControlHighlight">@color/accent_light</item>
         <item name="colorControlNormal">@color/accent</item>
+    </style>
+
+    <style name="RutgersCT.Red">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <item name="colorControlHighlight">@color/red_light</item>
+        <item name="colorControlNormal">@color/red</item>
+    </style>
+
+
+    <style name="RutgersCT.Green">
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/green_dark</item>
+        <item name="colorControlHighlight">@color/green_light</item>
+        <item name="colorControlNormal">@color/green</item>
     </style>
 
     <style name="ToolbarTitleStyle">
@@ -171,7 +185,9 @@
     <style name="SecondaryMetadataTextStyle" parent="SecondaryTextStyle">
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_alignParentStart">true</item>
+        <item name="android:elegantTextHeight">true</item>
         <item name="android:paddingTop">4dp</item>
+        <item name="android:textColorLink">@color/accent</item>
     </style>
 
     <style name="divider.metadata" parent="divider">

@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -30,37 +31,10 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <RelativeLayout
-        android:id="@+id/add_courses_to_track"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:alpha="0.1"
-            android:contentDescription="@string/content_description_large_tracking_icon"
-            android:src="@drawable/ic_track_changes_large_black" />
+    <include layout="@layout/error_view"/>
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView2"
-            android:layout_centerHorizontal="true"
-            android:alpha="0.3"
-            android:text="Add some courses to track"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText" />
-    </RelativeLayout>
-
+    <include layout="@layout/add_courses_to_track" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_courses_fab"
@@ -72,8 +46,10 @@
         android:layout_gravity="bottom|right|end"
         android:src="@drawable/ic_add_white_24dp"
         app:borderWidth="0dp"
-        app:rippleColor="@android:color/white"
+        app:rippleColor="@color/blue_grey_light"
         android:visibility="visible"
         android:transitionName="@string/transition_name_fab" />
+
+
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -62,7 +63,7 @@ public class Request implements Parcelable {
         this.semester = semester;
     }
 
-    public ArrayList<String> getLocations() {
+    public AbstractList<String> getLocations() {
         return locations;
     }
 
@@ -112,7 +113,6 @@ public class Request implements Parcelable {
         }
         return false;
     }
-
 
     @Override
     public int describeContents() {

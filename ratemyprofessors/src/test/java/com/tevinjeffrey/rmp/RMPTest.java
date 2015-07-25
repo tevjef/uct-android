@@ -29,7 +29,8 @@ public class RMPTest {
     public void testRateMyProfessor() throws Exception {
         String base = "http://www.ratemyprofessors.com";
 
-        String response = rmp.get(base + "/search.jsp?query=GAWISER+rutgers");
+        String response = rmp.makeRequest(base + "/search.jsp?query=GAWISER+rutgers", "TEST")
+                .toBlocking().first();
 
         assertNotNull(response);
         assertNotSame(response, "");
@@ -144,16 +145,18 @@ public class RMPTest {
 
     @Test
     public void testMain() throws Exception {
-        String expected = "Eric";
-        String lastName = "GAWISER";
+        String expectedFirstName = "Lee";
+        String expectedLastName = "Mosher";
 
-        params.name = new Professor.Name("", lastName);
-        params.department = "ASTROPHYSICS";
-        params.location = "New Brunswick";
+        params.name = new Professor.Name("", "LEE");
+        params.department = "Mathematics";
+        params.location = "Newark";
 
-        String result = rmp.findBestProfessor(params).toBlocking().first().getFullName().getFirst();
+        String resultFirstName = rmp.findBestProfessor(params).toBlocking().first().getFullName().getFirst();
+        String resultLastName = rmp.findBestProfessor(params).toBlocking().first().getFullName().getLast();
 
-        assertEquals(expected, result);
+        assertEquals(expectedFirstName, resultFirstName);
+        assertEquals(expectedLastName, resultLastName);
 
     }
 } 

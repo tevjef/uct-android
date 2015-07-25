@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
@@ -25,9 +26,8 @@
         <LinearLayout
             android:id="@+id/bottomHalf"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingTop="16dp"
-            android:transitionGroup="true"
             android:orientation="vertical">
 
 
@@ -50,10 +50,10 @@
         android:alpha="0"
         tools:alpha="1"
         android:transitionName="@string/transition_name_fab"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="@color/blue_grey_light"
+        app:rippleColor="@color/accent_dark"
         app:borderWidth="0dp"
         app:layout_anchor="@id/tb_include"
+        android:clickable="true"
         app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

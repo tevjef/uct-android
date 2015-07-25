@@ -15,7 +15,7 @@ import java.util.List;
 //This class is a bit complicated. It's a POJO for the GSON library to quickly serialize json data
 // into java objects. It is also a parcelable object which means it allows the android system to serialize this object.
 // Which in turn allows me to pss this object between Activities and Fragments.
-public class Course implements Comparable, Parcelable {
+public final class Course implements Comparable, Parcelable {
 
     private String title;
     private String subject;
@@ -26,11 +26,43 @@ public class Course implements Comparable, Parcelable {
     private String preReqNotes;
     private String offeringUnitCode;
     private int openSections;
-    private List<Sections> sections = new ArrayList<>();
+    private List<Section> sections = new ArrayList<>();
     private String expandedTitle;
-
+    private Subject mEnclosingSubject;
+    private Request mRequest;
 
     public Course() {
+    }
+
+    public Course(Course course) {
+        this.title = course.title;
+        this.subject = course.subject;
+        this.credits = course.credits;
+        this.courseNumber = course.courseNumber;
+        this.subjectNotes = course.subjectNotes;
+        this.courseNotes = course.courseNotes;
+        this.preReqNotes = course.preReqNotes;
+        this.offeringUnitCode = course.offeringUnitCode;
+        this.openSections = course.openSections;
+        this.expandedTitle = course.expandedTitle;
+        this.mEnclosingSubject = course.mEnclosingSubject;
+        this.mRequest = course.mRequest;
+    }
+
+    public Subject getEnclosingSubject() {
+        return mEnclosingSubject;
+    }
+
+    public void setEnclosingSubject(Subject mEnclosingSubject) {
+        this.mEnclosingSubject = mEnclosingSubject;
+    }
+
+    public void setRequest(Request mRequest) {
+        this.mRequest = mRequest;
+    }
+
+    public Request getRequest() {
+        return mRequest;
     }
 
     public String getSubject() {
@@ -94,7 +126,7 @@ public class Course implements Comparable, Parcelable {
 
     public int getNumberOfNoPrintSections() {
         int num = 0;
-        for (Sections s : getSections()) {
+        for (Section s : getSections()) {
             if (!s.isPrinted()) ++num;
         }
         return num;
@@ -102,17 +134,17 @@ public class Course implements Comparable, Parcelable {
 
     public int getNumberOfOpenNoPrintSections() {
         int num = 0;
-        for (Sections s : getSections()) {
+        for (Section s : getSections()) {
             if (!s.isPrinted() && s.openStatus) ++num;
         }
         return num;
     }
 
-    public List<Sections> getSections() {
+    public List<Section> getSections() {
         return sections;
     }
 
-    public void setSections(List<Sections> sections) {
+    public void setSections(List<Section> sections) {
         this.sections = sections;
     }
 
@@ -124,32 +156,28 @@ public class Course implements Comparable, Parcelable {
     @Override
     public int compareTo(@NonNull Object another) {
         Course b = (Course) another;
-        if (Integer.valueOf(this.getSubject()) > Integer.valueOf(b.getSubject())) {
-            return 1;
-        } else if (Integer.valueOf(this.getSubject()) < Integer.valueOf(b.getSubject())) {
-            return -1;
-        } else if (Integer.valueOf(this.getSubject()).equals(Integer.valueOf(b.getSubject()))) {
-            if (Integer.valueOf(this.getCourseNumber()) > Integer.valueOf(b.getCourseNumber())) {
+        int result;
+
+        result = new SubjectNumberComparator().compare(this.getSubject(), b.getSubject());
+        if (result == 0)
+            return new SubjectNumberComparator().compare(this.getCourseNumber(), b.getCourseNumber());
+        return result;
+    }
+
+    private class SubjectNumberComparator implements Comparator<String> {
+        @Override
+        public int compare(String lhs, String rhs) {
+            if (Integer.valueOf(lhs) > Integer.valueOf(rhs)) {
                 return 1;
-            } else if (Integer.valueOf(this.getCourseNumber()) < Integer.valueOf(b.getCourseNumber())) {
+            } else if (Integer.valueOf(lhs) < Integer.valueOf(rhs)) {
                 return -1;
-            } else if (Integer.valueOf(this.getCourseNumber()).equals(Integer.valueOf(b.getCourseNumber()))) {
-                if (Integer.valueOf(getSections().get(0).getIndex()) > Integer.valueOf(b.getSections().get(0).getIndex())) {
-                    return 1;
-                } else if (Integer.valueOf(getSections().get(0).getIndex()) < Integer.valueOf(b.getSections().get(0).getIndex())) {
-                    return -1;
-                } else {
-                    return 0;
-                }
             } else {
                 return 0;
             }
-        } else {
-            return 0;
         }
     }
 
-    public static class Sections implements Parcelable {
+    public static class Section implements Comparable, Parcelable {
 
         List<Instructors> instructors = new ArrayList<>();
         List<MeetingTimes> meetingTimes = new ArrayList<>();
@@ -168,11 +196,54 @@ public class Course implements Comparable, Parcelable {
         String number;
         String campusCode;
         String printed;
+
+        Request request;
+        Course course;
+
+
+        public Course getCourse() {
+            return course;
+        }
+
+        public void setCourse(Course course) {
+            this.course = course;
+        }
+
+        public Request getRequest() {
+            return request;
+        }
+
+        public void setRequest(Request mRequest) {
+            this.request = mRequest;
+        }
+
         int stopPoint;
         boolean openStatus;
 
-        public Sections() {
-            
+        public Section() {
+
+        }
+
+        public Section(Section dummy) {
+            this.instructors = dummy.instructors;
+            this.meetingTimes = dummy.meetingTimes;
+            this.crossListedSections = dummy.crossListedSections;
+            this.majors = dummy.majors;
+            this.comments = dummy.comments;
+            this.subtitle = dummy.subtitle;
+            this.index = dummy.index;
+            this.specialPermissionAddCodeDescription = dummy.specialPermissionAddCodeDescription;
+            this.specialPermissionAddCode = dummy.specialPermissionAddCode;
+            this.specialPermissionDropCode = dummy.specialPermissionDropCode;
+            this.offeringUnitCode = dummy.offeringUnitCode;
+            this.synopsisUrl = dummy.synopsisUrl;
+            this.examCode = dummy.examCode;
+            this.sectionNotes = dummy.sectionNotes;
+            this.number = dummy.number;
+            this.campusCode = dummy.campusCode;
+            this.printed = dummy.printed;
+            this.stopPoint = dummy.stopPoint;
+            this.openStatus = dummy.openStatus;
         }
 
         public List<MeetingTimes> getMeetingTimes() {
@@ -317,6 +388,25 @@ public class Course implements Comparable, Parcelable {
             return "Section #" + getNumber();
         }
 
+        @Override
+        public int compareTo(@NonNull Object another) {
+            Section anotherSection = (Section) another;
+
+            int result = 0;
+            if (this.getCourse() != null && anotherSection.getCourse() != null) {
+                result = this.getCourse().compareTo(anotherSection.getCourse());
+                if (result == 0) return new SectionComparator().compare(this, anotherSection);
+            }
+            return result;
+        }
+
+        private class SectionComparator implements Comparator<Section> {
+
+            @Override
+            public int compare(Section lhs, Section rhs) {
+                return lhs.getIndex().compareTo(rhs.getIndex());
+            }
+        }
 
         public static class MeetingTimes implements Comparable, Parcelable {
 
@@ -332,7 +422,7 @@ public class Course implements Comparable, Parcelable {
             String baClassHours;
 
             public MeetingTimes() {
-                
+
             }
 
             public boolean isLecture() {
@@ -428,7 +518,7 @@ public class Course implements Comparable, Parcelable {
                 public int compare(MeetingTimes lhs, MeetingTimes rhs) {
                     if (SectionUtils.getClassRank(lhs) < SectionUtils.getClassRank(rhs)) {
                         return 1;
-                    } else if (SectionUtils.getClassRank(lhs) > SectionUtils.getClassRank(rhs)){
+                    } else if (SectionUtils.getClassRank(lhs) > SectionUtils.getClassRank(rhs)) {
                         return -1;
                     }
                     return 0;
@@ -502,7 +592,7 @@ public class Course implements Comparable, Parcelable {
             String name;
 
             public Instructors() {
-                
+
             }
 
             public String getName() {
@@ -519,8 +609,7 @@ public class Course implements Comparable, Parcelable {
             }
 
             public String getLastName() {
-                String lastName = StringUtils.substringBefore(name, ",");
-                return lastName;
+                return StringUtils.substringBefore(name, ",");
             }
 
             @Override
@@ -559,7 +648,7 @@ public class Course implements Comparable, Parcelable {
             String description;
 
             public Comments() {
-                
+
             }
 
             @Override
@@ -604,7 +693,7 @@ public class Course implements Comparable, Parcelable {
             String courseNumber;
 
             public CrossListedSections() {
-                
+
             }
 
 
@@ -674,7 +763,6 @@ public class Course implements Comparable, Parcelable {
             public Majors() {
             }
 
-
             public boolean isMajorCode() {
                 return isMajorCode;
             }
@@ -721,6 +809,7 @@ public class Course implements Comparable, Parcelable {
             };
         }
 
+
         @Override
         public int describeContents() {
             return 0;
@@ -728,11 +817,11 @@ public class Course implements Comparable, Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeTypedList(this.instructors);
-            dest.writeTypedList(this.meetingTimes);
-            dest.writeTypedList(this.crossListedSections);
-            dest.writeTypedList(this.majors);
-            dest.writeTypedList(this.comments);
+            dest.writeTypedList(instructors);
+            dest.writeTypedList(meetingTimes);
+            dest.writeTypedList(crossListedSections);
+            dest.writeTypedList(majors);
+            dest.writeTypedList(comments);
             dest.writeString(this.subtitle);
             dest.writeString(this.index);
             dest.writeString(this.specialPermissionAddCodeDescription);
@@ -745,21 +834,18 @@ public class Course implements Comparable, Parcelable {
             dest.writeString(this.number);
             dest.writeString(this.campusCode);
             dest.writeString(this.printed);
+            dest.writeParcelable(this.request, 0);
+            dest.writeParcelable(this.course, 0);
             dest.writeInt(this.stopPoint);
             dest.writeByte(openStatus ? (byte) 1 : (byte) 0);
         }
 
-        protected Sections(Parcel in) {
-            this.instructors = new ArrayList<Instructors>();
-            in.readTypedList(instructors, Instructors.CREATOR);
-            this.meetingTimes = new ArrayList<MeetingTimes>();
-            in.readTypedList(meetingTimes, MeetingTimes.CREATOR);
-            this.crossListedSections = new ArrayList<CrossListedSections>();
-            in.readTypedList(crossListedSections, CrossListedSections.CREATOR);
-            this.majors = new ArrayList<Majors>();
-            in.readTypedList(majors, Majors.CREATOR);
-            this.comments = new ArrayList<Comments>();
-            in.readTypedList(comments, Comments.CREATOR);
+        protected Section(Parcel in) {
+            this.instructors = in.createTypedArrayList(Instructors.CREATOR);
+            this.meetingTimes = in.createTypedArrayList(MeetingTimes.CREATOR);
+            this.crossListedSections = in.createTypedArrayList(CrossListedSections.CREATOR);
+            this.majors = in.createTypedArrayList(Majors.CREATOR);
+            this.comments = in.createTypedArrayList(Comments.CREATOR);
             this.subtitle = in.readString();
             this.index = in.readString();
             this.specialPermissionAddCodeDescription = in.readString();
@@ -772,17 +858,19 @@ public class Course implements Comparable, Parcelable {
             this.number = in.readString();
             this.campusCode = in.readString();
             this.printed = in.readString();
+            this.request = in.readParcelable(getClass().getClassLoader());
+            this.course = in.readParcelable(getClass().getClassLoader());
             this.stopPoint = in.readInt();
             this.openStatus = in.readByte() != 0;
         }
 
-        public static final Creator<Sections> CREATOR = new Creator<Sections>() {
-            public Sections createFromParcel(Parcel source) {
-                return new Sections(source);
+        public static final Creator<Section> CREATOR = new Creator<Section>() {
+            public Section createFromParcel(Parcel source) {
+                return new Section(source);
             }
 
-            public Sections[] newArray(int size) {
-                return new Sections[size];
+            public Section[] newArray(int size) {
+                return new Section[size];
             }
         };
     }
@@ -803,8 +891,10 @@ public class Course implements Comparable, Parcelable {
         dest.writeString(this.preReqNotes);
         dest.writeString(this.offeringUnitCode);
         dest.writeInt(this.openSections);
-        dest.writeTypedList(this.sections);
+        dest.writeTypedList(sections);
         dest.writeString(this.expandedTitle);
+        dest.writeParcelable(this.mEnclosingSubject, 0);
+        dest.writeParcelable(this.mRequest, 0);
     }
 
     protected Course(Parcel in) {
@@ -817,12 +907,13 @@ public class Course implements Comparable, Parcelable {
         this.preReqNotes = in.readString();
         this.offeringUnitCode = in.readString();
         this.openSections = in.readInt();
-        this.sections = new ArrayList<Sections>();
-        in.readTypedList(sections, Sections.CREATOR);
+        this.sections = in.createTypedArrayList(Section.CREATOR);
         this.expandedTitle = in.readString();
+        this.mEnclosingSubject = in.readParcelable(getClass().getClassLoader());
+        this.mRequest = in.readParcelable(getClass().getClassLoader());
     }
 
-    public static final Parcelable.Creator<Course> CREATOR = new Parcelable.Creator<Course>() {
+    public static final Creator<Course> CREATOR = new Creator<Course>() {
         public Course createFromParcel(Parcel source) {
             return new Course(source);
         }

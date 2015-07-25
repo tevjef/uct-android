@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    >
+
+    <RelativeLayout
+        style="@style/section_metadata_containers"
+        >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/rmp_prof_info_container">
+
+            <TextView
+                tools:text="Joyce Carolla"
+                style="@style/primary_metadata"
+                android:id="@+id/rmp_prof_name"
+                android:layout_toEndOf="@+id/overall_container" />
+
+            <TextView
+                tools:text="Mathematics"
+                android:id="@+id/rmp_department"
+                android:layout_below="@+id/rmp_prof_name"
+                style="@style/SecondaryTextStyle" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rmp_prof_info_container"
+            android:layout_centerHorizontal="true">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/other_rating_container"
+                android:layout_weight="1"
+                android:layout_gravity="center">
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/easiness_container">
+
+                    <TextView
+                        android:text="@string/easiness"
+                        android:layout_toRightOf="@+id/wheel_easiness_rating"
+                        android:layout_marginLeft="8dp"
+                        style="@style/SecondaryTextStyle"
+                        android:layout_centerVertical="true"/>
+
+                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                        android:layout_width="@dimen/mini_wheel"
+                        android:layout_height="@dimen/mini_wheel"
+                        android:id="@+id/wheel_easiness_rating"
+                        app:itemsLineWidth="3dp"
+                        app:backgroundColor="@android:color/white" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/clarity_container"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@+id/easiness_container" >
+
+                    <TextView
+                        android:text="@string/clarity"
+                        android:layout_toRightOf="@+id/wheel_clarity_rating"
+                        android:layout_marginLeft="8dp"
+                        style="@style/SecondaryTextStyle"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                        android:layout_width="@dimen/mini_wheel"
+                        android:layout_height="@dimen/mini_wheel"
+                        android:id="@+id/wheel_clarity_rating"
+                        app:itemsLineWidth="3dp"
+                        app:backgroundColor="@android:color/white"
+                        android:layout_below="@+id/wheel_easiness_rating" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/helpfullness_container"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@+id/clarity_container" >
+
+                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                        android:layout_width="@dimen/mini_wheel"
+                        android:layout_height="@dimen/mini_wheel"
+                        android:id="@+id/wheel_helpfullness_rating"
+                        app:itemsLineWidth="3dp"
+                        app:backgroundColor="@android:color/white"
+                        android:layout_below="@+id/wheel_clarity_rating" />
+
+                    <TextView
+                        android:text="@string/helpfullness"
+                        android:layout_toRightOf="@+id/wheel_helpfullness_rating"
+                        android:layout_marginLeft="8dp"
+                        style="@style/SecondaryTextStyle"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/overall_container"
+                android:layout_weight="1">
+
+
+                <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                    android:layout_width="124dp"
+                    android:layout_height="124dp"
+                    android:id="@+id/wheel_quality_rating"
+                    app:itemsLineWidth="7dp"
+                    app:backgroundColor="@android:color/white"
+                    android:layout_centerHorizontal="true" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <TextView
+                        android:text="@string/overall_rating"
+                        android:id="@+id/rmp_overall_rating_title"
+                        style="@style/SecondaryTextStyle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="3.2"
+                        android:id="@+id/rmp_overall_rating_number"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        style="@style/primary_metadata" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/tSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginLeft="4dp"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/rmp_average_grade_title"
+                    style="@style/SecondaryTextStyle"
+                    android:text="@string/average_grade"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/rmp_average_grade_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    tools:text="B"
+                    android:textSize="28sp"
+                    android:layout_gravity="center_horizontal"
+                    style="@style/primary_metadata"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

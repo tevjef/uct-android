@@ -6,18 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.adapters.holders.SubjectVH;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
-
-import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
-
-public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectFragmentAdapter.SubjectVH>{
+public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
 
     private List<Subject> subjectList;
     private ItemClickListener itemClickListener;
@@ -58,35 +54,6 @@ public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectFragment
     @Override
     public int getItemCount() {
         return subjectList.size();
-    }
-
-    public static final class SubjectVH extends RecyclerView.ViewHolder {
-
-        private final View mParent;
-        private final TextView mSubjectTitle;
-
-        public static SubjectVH newInstance(View parent) {
-
-            TextView subjectTitle = ButterKnife.findById(parent, R.id.list_item_title);
-
-            return new SubjectVH(parent, subjectTitle);
-        }
-
-        public SubjectVH(View parent, TextView subjectTitle) {
-            super(parent);
-            this.mParent = parent;
-            this.mSubjectTitle = subjectTitle;
-        }
-        
-        private void setSubjectTitle(Subject subject) {
-            String text = subject.getCode() + " | " + subject.getDescription();
-            mSubjectTitle.setText(WordUtils.capitalize(text.toLowerCase()));
-        }
-
-        public void setOnClickListener(View.OnClickListener listener) {
-            mParent.setOnClickListener(listener);
-        }
-
     }
 
     public interface ItemClickListener {

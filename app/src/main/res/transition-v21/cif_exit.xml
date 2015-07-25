@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together"
+    android:interpolator="@android:interpolator/fast_out_slow_in">
+    <transitionSet
+        android:transitionOrdering="together">
+        <fade
+            android:fadingMode="fade_out"/>
+
+        <targets>
+            <target android:targetName="@string/transition_name_tool_background"/>
+        </targets>
+    </transitionSet>
+
+    <transitionSet android:transitionOrdering="together">
+        <fade android:fadingMode="fade_out"/>
+        <targets>
+            <target android:excludeName="@string/transition_name_tool_background"/>
+        </targets>
+    </transitionSet>
+</transitionSet>

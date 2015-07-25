@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+        <changeBounds/>
+        <changeTransform/>
+        <changeImageTransform/>
+    <pathMotion class="com.tevinjeffrey.rutgersct.animator.SectionPath"/>
+        <targets>
+            <target android:targetName="@string/transition_name_circle_view"/>
+
+            <target android:excludeName="@string/transition_name_fab"/>
+            <target android:excludeId="@string/transition_name_fab"/>
+        </targets>
+</transitionSet>

@@ -21,25 +21,22 @@
             android:value="2" />
         <meta-data
             android:name="QUERY_LOG"
-            android:value="false" />
+            android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.tevinjeffrey.rutgersct.model" />
+            android:value="com.tevinjeffrey.rutgersct.database" />
 
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/application_name"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".ui.BasePreferenceActivity"
-            android:label="@string/application_name"
+            android:name=".ui.base.BasePreferenceActivity"
             android:launchMode="singleTop">
         </activity>
 

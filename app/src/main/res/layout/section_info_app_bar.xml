@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_bar_layout"
+    android:transitionName="@string/transition_name_tool_background"
+    style="@style/ToolbarStyle.Big"
+    android:theme="@style/RutgersCT.ToolbarTheme"
+    android:transitionGroup="true">
+
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/collapsing_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="parallax"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <RelativeLayout
+            android:id="@+id/course_header_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_collapseMode="parallax">
+
+            <TextView
+                android:id="@+id/course_title_text"
+                android:gravity="center_vertical"
+                style="@style/ToolbarTitleStyle"
+                android:minHeight="?attr/actionBarSize"
+                tools:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
+                android:paddingRight="60dp"
+                android:paddingLeft="60dp" />
+
+            <FrameLayout
+                android:layout_width="@dimen/default_circle_view_size"
+                android:layout_height="@dimen/default_circle_view_size"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:transitionName="@string/transition_name_circle_view"
+                android:id="@+id/frameLayout">
+
+                <com.tevinjeffrey.rutgersct.customviews.CircleView
+                    android:id="@+id/hidden_circle_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundColorValue="@color/accent"
+                    app:titleColor="@android:color/white"
+                    app:titleSize="13sp"
+                    app:titleText="Q1"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="60dp"
+                android:paddingBottom="28dp"
+                android:paddingRight="16dp">
+
+                <LinearLayout
+                    android:id="@+id/termContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:paddingRight="16dp">
+
+                    <TextView
+                        android:id="@+id/semesterTitle"
+                        android:singleLine="true"
+                        android:text="@string/term"
+                        style="@style/ToolbarSubtitleStyle.Normal" />
+
+                    <TextView
+                        android:id="@+id/semesterText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="4dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:singleLine="true"
+                        tools:text="Summer 2012"
+                        android:textColor="@android:color/white"
+                        android:transitionName="instructor_name"
+                        android:alpha="1"
+                        style="@style/ToolbarSubtitleStyle.Normal"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/instructors_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingRight="16dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@+id/termContainer"
+                    android:layout_toEndOf="@+id/termContainer">
+
+                    <TextView
+                        android:id="@+id/instructors_title"
+                        android:singleLine="true"
+                        android:text="@string/instructor"
+                        style="@style/ToolbarSubtitleStyle.Normal" />
+
+                    <TextView
+                        android:id="@+id/instructors_text"
+                        android:fontFamily="sans-serif-condensed"
+                        android:maxWidth="115dp"
+                        android:singleLine="false"
+                        tools:text="MAELLO | CAROLLA "
+                        android:textColor="@android:color/white"
+                        android:paddingStart="4dp"
+                        android:paddingLeft="4dp"
+                        android:alpha="1"
+                        style="@style/ToolbarSubtitleStyle.Normal"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/termContainer"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:transitionGroup="false"
+                    android:weightSum="4">
+
+                    <LinearLayout
+                        android:id="@+id/tSection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/shortenedCourseInfo"
+                            android:text="@string/section"
+                            android:layout_marginBottom="-4dp"
+                            style="@style/ToolbarSubtitleStyle.Normal" />
+
+                        <TextView
+                            android:id="@+id/sectionNumber_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            tools:text="Q2"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@android:color/white"
+                            android:textSize="34sp"
+                            android:transitionName="section_number"
+                            android:typeface="normal" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tIndex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/indexNumber_title"
+                            android:text="@string/index"
+                            android:layout_marginBottom="-4dp"
+                            style="@style/ToolbarSubtitleStyle.Normal" />
+
+                        <TextView
+                            android:id="@+id/indexNumber_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:maxLines="1"
+
+                            tools:text="34562"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@android:color/white"
+                            android:textIsSelectable="false"
+                            android:textSize="34sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tCredits"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/credits_title"
+                            android:text="@string/credits"
+                            android:layout_marginBottom="-4dp"
+                            style="@style/ToolbarSubtitleStyle.Normal" />
+
+                        <TextView
+                            android:id="@+id/subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            tools:text="4"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@android:color/white"
+                            android:textSize="34sp"
+                            android:typeface="normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tSeats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/exam_code_title"
+                            android:singleLine="true"
+                            android:text="@string/exam_code"
+                            android:layout_marginBottom="-4dp"
+                            style="@style/ToolbarSubtitleStyle.Normal" />
+
+                        <TextView
+                            android:id="@+id/exam_code_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:singleLine="true"
+                            tools:text="A"
+                            android:textColor="@android:color/white"
+                            android:textSize="34sp"
+                            android:typeface="normal" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+
+</android.support.design.widget.AppBarLayout>

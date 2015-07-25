@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="sequential"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <transitionSet android:transitionOrdering="together">
+        <transition
+            class="com.tevinjeffrey.rutgersct.animator.RevealTransition"
+            android:transitionVisibilityMode="mode_in">
+        </transition>
+        <targets>
+            <target android:targetName="@string/transition_name_tool_background"/>
+            <target android:targetId="@id/app_bar_layout"/>
+
+            <target android:excludeName="@string/transition_name_fab"/>
+            <target android:excludeId="@id/add_courses_fab"/>
+
+            <target android:excludeId="@id/scrollView"/>
+        </targets>
+    </transitionSet>
+
+    <transitionSet android:transitionOrdering="together">
+        <fade android:fadingMode="fade_in"/>
+        <targets>
+            <target android:excludeName="@string/transition_name_fab"/>
+            <target android:excludeId="@id/add_courses_fab"/>
+
+            <target android:excludeName="@string/transition_name_tool_background"/>
+            <target android:excludeId="@id/app_bar_layout"/>
+        </targets>
+    </transitionSet>
+</transitionSet>

@@ -16,10 +16,10 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.TrackedSection;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
+import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApi;
 import com.tevinjeffrey.rutgersct.rutgersapi.RutgersApiImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
 
 import java.util.concurrent.CancellationException;
 
@@ -30,7 +30,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class RequestService extends Service {
-    Intent mIntent;
+    private Intent mIntent;
 
     public RequestService() {
     }
@@ -41,13 +41,13 @@ public class RequestService extends Service {
         mIntent = intent;
         Timber.i("Request Service started at %s", RutgersCTApp.getTimeNow());
 
-        RutgersApiImpl api = new RutgersApiImpl(RutgersCTApp.getClient());
+        RutgersApi api = new RutgersApiImpl(RutgersCTApp.getClient());
 
-        Observable<Course> courseObservable = api.getTrackedSections(TrackedSection.listAll(TrackedSection.class));
+        Observable<Course.Section> courseObservable = api.getTrackedSections(TrackedSection.listAll(TrackedSection.class));
         courseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Course>() {
+                .subscribe(new Subscriber<Course.Section>() {
                     @Override
                     public void onCompleted() {
                         stopSelf();
@@ -57,31 +57,27 @@ public class RequestService extends Service {
                     public void onError(Throwable t) {
                         if (t != null && !(t instanceof CancellationException)) {
                             //If an error occured while completing the request. Send it to crash reporting.
-                            Timber.e(t, "Crash while attempting to complete request in %s to %s"
+                            Timber.d(t, "Crash while attempting to complete request in %s"
                                     , RequestService.this.toString());
                         }
+                        stopSelf();
                     }
 
                     @Override
-                    public void onNext(Course course) {
-                        Course.Sections s = course.getSections().get(0);
-                        String indexNumber = s.getIndex();
-                        TrackedSection ts = TrackedSection.find(TrackedSection.class, "index_number = ?", indexNumber).get(0);
-                        Request request = UrlUtils.getRequestFromTrackedSections(ts);
-
-                        if (s.isOpenStatus())
-                            makeNotification(course, request);
+                    public void onNext(Course.Section section) {
+                        if (section.isOpenStatus())
+                            makeNotification(section, section.getRequest());
                     }
                 });
         return START_NOT_STICKY;
     }
 
     //Creates a notfication of the Android system.
-    private void makeNotification(Course c, Request r) {
+    private void makeNotification(Course.Section section, Request r) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("app_notification", true)) {
-            String courseTitle = c.getTrueTitle();
-            Course.Sections sections = c.getSections().get(0);
-            String sectionNumber = sections.getNumber();
+            String courseTitle = section.getCourse().getTrueTitle();
+
+            String sectionNumber = section.getNumber();
 
             //Builds a notification
             NotificationCompat.Builder mBuilder =
@@ -109,7 +105,7 @@ public class RequestService extends Service {
             //Intent open the app.
             Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
             openTracked.putExtra(RutgersCTApp.REQUEST, r);
-            openTracked.putExtra(RutgersCTApp.SELECTED_COURSE, c);
+            openTracked.putExtra(RutgersCTApp.SELECTED_SECTION, section);
             PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this, Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.addAction(0, "Stop Tracking", pOpenTracked);
 

@@ -38,8 +38,6 @@ public class Stay extends Visibility {
         PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("scaleX", startScale, endScale);
         PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("scaleY", startScale, endScale);
 
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, holderX, holderY);
-
-        return animator;
+        return ObjectAnimator.ofPropertyValuesHolder(view, holderX, holderY);
     }
 }

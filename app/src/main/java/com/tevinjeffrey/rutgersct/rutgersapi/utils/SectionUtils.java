@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.rutgersapi.utils;
 
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.MeetingTimes;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +20,7 @@ public class SectionUtils {
         return time.substring(0, 2) + ":" + time.substring(2);
     }
 
-    private static String getMeetingHoursEnd(Course.Sections.MeetingTimes time) {
+    private static String getMeetingHoursEnd(MeetingTimes time) {
         String meridian;
         String starttime = time.getStartTime();
         String endtime = time.getEndTime();
@@ -46,7 +47,7 @@ public class SectionUtils {
         return formatMeetingHours(time.getEndTime()) + " " + meridian;
     }
 
-    private static String getMeetingHoursBegin(Course.Sections.MeetingTimes time) {
+    private static String getMeetingHoursBegin(MeetingTimes time) {
         String meridian;
         if (time.getPmCode() != null) {
             meridian = time.getPmCode().equals("A") ? "AM" : "PM";
@@ -55,7 +56,7 @@ public class SectionUtils {
         return "";
     }
 
-    public static String getMeetingDayName(Course.Sections.MeetingTimes time) {
+    public static String getMeetingDayName(MeetingTimes time) {
         if (time.getMeetingDay() != null) {
             String formattedDay;
             switch (time.getMeetingDay()) {
@@ -88,7 +89,7 @@ public class SectionUtils {
         return "";
     }
 
-    public static String getMeetingHours(Course.Sections.MeetingTimes time) {
+    public static String getMeetingHours(MeetingTimes time) {
         if (time.getStartTime() != null || time.getEndTime() != null) {
             return SectionUtils.getMeetingHoursBegin(time) + " - " +
                     SectionUtils.getMeetingHoursEnd(time);
@@ -98,7 +99,7 @@ public class SectionUtils {
         return time.getMeetingModeDesc();
     }
 
-    public static String getClassLocation(Course.Sections.MeetingTimes time) {
+    public static String getClassLocation(MeetingTimes time) {
         StringBuilder meetingLocation = new StringBuilder();
         if (time.getBuildingCode() != null) {
             meetingLocation.append(time.getBuildingCode());
@@ -114,7 +115,7 @@ public class SectionUtils {
         return meetingLocation.toString();
     }
 
-    public static int getTimeRank(Course.Sections.MeetingTimes time) {
+    public static int getTimeRank(MeetingTimes time) {
         if (time.getMeetingDay() != null) {
             switch (time.getMeetingDay()) {
                 case "M":
@@ -136,7 +137,7 @@ public class SectionUtils {
         return -1;
     }
 
-    public static int getClassRank(Course.Sections.MeetingTimes time) {
+    public static int getClassRank(MeetingTimes time) {
         if (time.isLecture()) {
             return 6;
         } else if (time.isRecitation()) {
@@ -151,9 +152,9 @@ public class SectionUtils {
         return -1;
     }
 
-    public static void scrubSectionList(List<Course.Sections> sectionData) {
-        Collection<Course.Sections> toRemove = new ArrayList<>();
-        Course.Sections temp;
+    public static void scrubSectionList(List<Course.Section> sectionData) {
+        Collection<Course.Section> toRemove = new ArrayList<>();
+        Course.Section temp;
         for (int i = 0, size = sectionData.size(); i < size; i++) {
             temp = sectionData.get(i);
             if (!temp.isPrinted()) {

@@ -2,11 +2,13 @@ package com.tevinjeffrey.rutgersct.testUtils;
 
 import android.support.test.espresso.matcher.BoundedMatcher;
 
+import com.tevinjeffrey.rutgersct.adapters.holders.TrackedSectionVH;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.internal.util.Checks.checkNotNull;
 
@@ -41,6 +43,22 @@ public class TestConts {
             public void describeTo(Description description) {
                 description.appendText("with with subject number: ");
                 itemTextMatcher.describeTo(description);
+            }
+        };
+    }
+
+    public static Matcher<TrackedSectionVH> withIndexNumber(final Matcher<String> indexNumberMatcher) {
+        checkNotNull(indexNumberMatcher);
+        return new TypeSafeMatcher<TrackedSectionVH>() {
+            @Override
+            protected boolean matchesSafely(TrackedSectionVH item) {
+                return indexNumberMatcher.matches(item.getIndexNumber());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with with index number: ");
+                indexNumberMatcher.describeTo(description);
             }
         };
     }

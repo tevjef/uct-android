@@ -8,13 +8,10 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="?attr/colorPrimary"
-        android:elevation="1dp"
+        style="@style/ToolbarStyle"
         android:transitionName="@string/transition_name_tool_background"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        android:theme="@style/RutgersCT.ToolbarTheme"/>
 
     <FrameLayout
         android:id="@+id/content_frame"

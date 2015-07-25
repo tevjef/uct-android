@@ -61,7 +61,7 @@ public class UrlUtils {
         return parseLocations(request.getLocations());
     }
 
-    private static String parseLevels(ArrayList<String> lvls) {
+    private static String parseLevels(Iterable<String> lvls) {
         StringBuilder level = new StringBuilder();
 
         for (String s : lvls) {
@@ -96,7 +96,7 @@ public class UrlUtils {
     }
 
     public static String buildParamUrl(Request request) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(50);
         sb.append("subject=");
         sb.append(request.getSubject());
         sb.append("&");
@@ -140,17 +140,17 @@ public class UrlUtils {
         }
     }
 
-    public static String getRmpUrl(Course.Sections s) {
+    public static String getRmpUrl(Course.Section s) {
         String query = "+rutgers+site:ratemyprofessors.com";
         return createSearchUrl(query, s);
 
     }
 
-    private static String createSearchUrl(String query, Course.Sections s) {
+    private static String createSearchUrl(String query, Course.Section s) {
         return s.getToStringInstructors("+OR+") + query;
     }
 
-    public static String getGoogleUrl(Course.Sections s) {
+    public static String getGoogleUrl(Course.Section s) {
         String query = "+rutgers";
         return createSearchUrl(query, s);
     }

@@ -103,7 +103,7 @@ public class RMP {
                             @Override
                             public void call(Subscriber<? super String> subscriber) {
                                 if (!subscriber.isUnsubscribed()) {
-                                    for (int i = 20; i <= numberOfProfessors; i += 20) {
+                                    for (int i = 0; i <= numberOfProfessors; i += 20) {
                                         subscriber.onNext(url + "&offset=" + i);
                                     }
                                     subscriber.onCompleted();

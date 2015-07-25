@@ -1,7 +1,5 @@
 package com.tevinjeffrey.rutgersct.rutgersapi;
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -11,101 +9,135 @@ import com.squareup.okhttp.Response;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.TrackedSection;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
-
-import org.apache.commons.lang3.text.WordUtils;
+import com.tevinjeffrey.rutgersct.utils.RxUtils;
+import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersDataIOException;
+import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class RutgersApiImpl implements RutgersApi {
 
-    private static final long SERVER_RETRY_COUNT = 5;
-    private final String TAG;
+    private static final int SERVER_RETRY_COUNT = 3;
+    private static final int RETRY_DELAY_MILLIS = 3000;
 
-    public OkHttpClient client;
+    private String TAG;
 
-    static Gson gson = new GsonBuilder()
+    private OkHttpClient client;
+
+    private static Gson gson = new GsonBuilder()
             .serializeNulls()
             .setPrettyPrinting()
             .create();
 
     public RutgersApiImpl(OkHttpClient client) {
-        this(client, ACTIVITY_TAG);
-    }
-
-    public RutgersApiImpl(OkHttpClient client, String tag) {
         this.client = client.clone();
-        this.TAG = tag;
-
         this.client.networkInterceptors().add(RutgersCTApp.getCacheControlInterceptor(10));
-
     }
 
-    static List<Subject> jsonSubjectList;
+    public void setTag(String TAG) {
+        this.TAG = TAG;
+    }
+
+    public OkHttpClient getClient() {
+        return client;
+    }
+
+    private static List<Subject> jsonSubjectList;
 
     public static void init() {
         jsonSubjectList = initSubjectList();
-
-
     }
 
-    public static List<Subject> initSubjectList() {
+    private static List<Subject> initSubjectList() {
         return gson.fromJson(SUBJECT_JSON, new TypeToken<List<Subject>>() {
         }.getType());
     }
 
+    public Observable<SystemMessage> getSystemMessage() {
+        return getServerResponse("http://sis.rutgers.edu/soc/current_system_message.json")
+                .flatMap(new Func1<String, Observable<SystemMessage>>() {
+                    @Override
+                    public Observable<SystemMessage> call(String s) {
+                        return createSystemMessage(s);
+                    }
+                });
+    }
 
     @Override
-    public Observable<Course> getTrackedSections(Iterable<TrackedSection> allTrackedSections) {
+    public Observable<Section> getTrackedSections(final List<TrackedSection> allTrackedSections) {
         return createRequestObservableFromTrackedSections(allTrackedSections)
-               .flatMap(new Func1<Request, Observable<Course>>() {
-                   @Override
-                   public Observable<Course> call(final Request request) {
-                       return getCourses(request)
-                               .map(new Func1<Course, Course>() {
-                                   @Override
-                                   public Course call(Course course) {
-                                       boolean foundMatchFlag = false;
-                                       for (Course.Sections section : course.getSections()) {
-                                           if (section.getIndex().equals(request.getIndex())) {
-                                               foundMatchFlag = true;
-                                               //Replace the sections in the course with the section we are looking for.
-                                               List<Course.Sections> currentSection = new ArrayList<>();
-                                               currentSection.add(section);
-                                               course.setSections(currentSection);
-                                           }
-                                       }
-                                       if (foundMatchFlag) {
-                                           return course;
-                                       } else {
-                                           return null;
-                                       }
-                                   }
-                               })
-                               //important for getting every request to be fired immediately
-                               .subscribeOn(Schedulers.io())
-                               .filter(new Func1<Course, Boolean>() {
-                                   @Override
-                                   public Boolean call(Course course) {
-                                       return course != null;
-                                   }
-                               });
-                   }
-               });
+                .flatMap(new Func1<Request, Observable<Section>>() {
+                    @Override
+                    public Observable<Section> call(final Request request) {
+                        return getCourses(request)
+                                //Emit the sections within the course that was emitted.
+                                .flatMap(new Func1<Course, Observable<Section>>() {
+                                    @Override
+                                    public Observable<Section> call(final Course course) {
+                                        return Observable.from(course.getSections());
+                                    }
+                                })
+                                        //Filters out the sections we were not looking for. If the condition
+                                        //true the item will be allow through
+                                .filter(new Func1<Section, Boolean>() {
+                                    @Override
+                                    public Boolean call(Section section) {
+                                        return section.getIndex().equals(request.getIndex());
+                                    }
+                                })
+                                .subscribeOn(Schedulers.io());
+
+
+                    }
+                })
+                        //Convert every completed request in into a list and check  if all were completed successfully.
+                        //Sometimes the servers bug out and course and section information will not be available.
+                        // Earlier in the the flow, this would simple result in a JsonSyntaxException or an
+                        // RutgersDataException. However, it can make it to this point where no section has been
+                        // found. Instead of emiting an empty observable, I've converted it to a list which
+                        // will then be compared to the original list of requests. Emit any items, before
+                        //deciding wheter or not to pass an exeception to onError()
+                .toList()
+                .flatMap(new Func1<List<Section>, Observable<Section>>() {
+                    @Override
+                    public Observable<Section> call(final List<Section> sectionList) {
+                        return Observable.create(new Observable.OnSubscribe<List<Section>>() {
+                            @Override
+                            public void call(Subscriber<? super List<Section>> subscriber) {
+                                if (!subscriber.isUnsubscribed()) {
+                                    subscriber.onNext(sectionList);
+                                    if (sectionList.size() != allTrackedSections.size()) {
+                                        subscriber.onError(new RutgersServerIOException("Could not retrieve all sections"));
+                                    } else {
+                                        subscriber.onCompleted();
+                                    }
+                                }
+                            }
+                        }).flatMap(new Func1<List<Section>, Observable<Section>>() {
+                            @Override
+                            public Observable<Section> call(List<Section> sectionList) {
+                                return Observable.from(sectionList);
+                            }
+                        });
+                    }
+                })
+                .retryWhen(new RxUtils.RetryWithDelay(SERVER_RETRY_COUNT, RETRY_DELAY_MILLIS));
 
     }
 
-    @NonNull
     public Observable<Request> createRequestObservableFromTrackedSections(Iterable<TrackedSection> allTrackedSections) {
         return Observable.from(allTrackedSections)
                 .flatMap(new Func1<TrackedSection, Observable<Request>>() {
@@ -116,40 +148,111 @@ public class RutgersApiImpl implements RutgersApi {
                 });
     }
 
-    @Override
-    public Observable<Request> createRequest(TrackedSection trackedSection) {
+    private Observable<Request> createRequest(TrackedSection trackedSection) {
         return Observable.just(UrlUtils.getRequestFromTrackedSections(trackedSection));
     }
 
-    @Override
-    @NonNull
     public Observable<Course> getCourses(final Request request) {
-        return getCourseResponseFromServer(request).retry(SERVER_RETRY_COUNT)
+        return getCourseResponseFromServer(request)
                 .flatMap(new Func1<String, Observable<Course>>() {
                     @Override
                     public Observable<Course> call(final String response) {
                         return createCourses(response)
                                 .flatMap(new Func1<List<Course>, Observable<Course>>() {
                                     @Override
-                                    public Observable<Course> call(List<Course> courses) {
-                                        return Observable.from(courses);
+                                    public Observable<Course> call(final List<Course> courses) {
+                                        return configureCourses(courses, request);
                                     }
                                 });
                     }
                 })
-                //Some courses have no sections
+                        //Some courses have no sections
                 .filter(new Func1<Course, Boolean>() {
                     @Override
                     public Boolean call(Course course) {
                         return course.getSectionsTotal() != 0;
                     }
-                });
+                })
+                .toList()
+                .flatMap(new Func1<List<Course>, Observable<Course>>() {
+                    @Override
+                    public Observable<Course> call(final List<Course> courses) {
+                        return Observable.create(new Observable.OnSubscribe<List<Course>>() {
+                            @Override
+                            public void call(Subscriber<? super List<Course>> subscriber) {
+                                if (!subscriber.isUnsubscribed()) {
+                                    if (courses.size() == 0) {
+                                        subscriber.onError(new RutgersServerIOException("Zero courses returned from server."));
+                                    } else {
+                                        subscriber.onNext(courses);
+                                        subscriber.onCompleted();
+                                    }
+                                }
+                            }
+                        }).flatMap(new Func1<List<Course>, Observable<Course>>() {
+                            @Override
+                            public Observable<Course> call(List<Course> courses) {
+                                return Observable.from(courses);
+                            }
+                        });
+                    }
+                })
+                ;
     }
 
-    @Override
-    @NonNull
+    private Observable<Course> configureCourses(List<Course> courses, final Request request) {
+        return Observable.from(courses)
+                .map(setSubjectInCourse())
+                .map(setRequestAndStubCourseInSection(request))
+                .map(filterUnprintedSections());
+    }
+
+    private Func1<Course, Course> filterUnprintedSections() {
+        return new Func1<Course, Course>() {
+            @Override
+            public Course call(Course course) {
+                Observable.from(course.getSections())
+                        .filter(new Func1<Section, Boolean>() {
+                            @Override
+                            public Boolean call(Section section) {
+                                return !section.isPrinted();
+                            }
+                        }).last();
+                return course;
+            }
+        };
+    }
+
+    private Func1<Course, Course> setRequestAndStubCourseInSection(final Request request) {
+        return new Func1<Course, Course>() {
+            @Override
+            public Course call(final Course course) {
+                Observable.from(course.getSections())
+                        .forEach(new Action1<Section>() {
+                            @Override
+                            public void call(Section section) {
+                                section.setRequest(request);
+                                section.setCourse(new Course(course));
+                            }
+                        });
+                return course;
+            }
+        };
+    }
+
+    private Func1<Course, Course> setSubjectInCourse() {
+        return new Func1<Course, Course>() {
+            @Override
+            public Course call(Course course) {
+                course.setEnclosingSubject(getSubjectFromJson(course.getSubject()));
+                return course;
+            }
+        };
+    }
+
     public Observable<Subject> getSubjects(final Request request) {
-        return getSubjectResponseFromServer(request).retry(SERVER_RETRY_COUNT)
+        return getSubjectResponseFromServer(request)
+                .retryWhen(new RxUtils.RetryWithDelay(SERVER_RETRY_COUNT, RETRY_DELAY_MILLIS))
                 .flatMap(new Func1<String, Observable<Subject>>() {
                     @Override
                     public Observable<Subject> call(final String response) {
@@ -170,23 +273,46 @@ public class RutgersApiImpl implements RutgersApi {
                 });
     }
 
-    @Override
-    @NonNull
-    public Observable<List<Course>> createCourses(final String response){
+    private Observable<SystemMessage> createSystemMessage(final String response) {
+        return parseJsonSystemMessage(response, new TypeToken<SystemMessage>() {
+        }.getType());
+    }
+
+    private Observable<SystemMessage> parseJsonSystemMessage(final String response, final Type type) {
+        return Observable.create(new Observable.OnSubscribe<SystemMessage>() {
+            @Override
+            public void call(Subscriber<? super SystemMessage> sub) {
+                if (!sub.isUnsubscribed()) {
+                    try {
+                        SystemMessage message = gson.fromJson(response, type);
+                        //It should have responded with a 400 or 500 error, but nope :/
+                        if (response == null || response.equals("")) {
+                            throw new RutgersServerIOException("No content response from server");
+                        } else if (message == null || message.getMessageText() == null) {
+                            throw new RutgersDataIOException("Could not find what your where looking for");
+                        }
+                        sub.onNext(message);
+                        sub.onCompleted();
+                    } catch (Exception e) {
+                        sub.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+
+    public Observable<List<Course>> createCourses(final String response) {
         return parseJsonResponse(response, new TypeToken<List<Course>>() {
         }.getType());
     }
 
-    @Override
-    @NonNull
     public Observable<List<Subject>> createSubjects(final String response) {
         return parseJsonResponse(response, new TypeToken<List<Subject>>() {
         }.getType());
     }
 
-    @Override
-    @NonNull
-    public <E> Observable<List<E>> parseJsonResponse(final String response, final Type type) {
+    private <E> Observable<List<E>> parseJsonResponse(final String response, final Type type) {
         return Observable.create(new Observable.OnSubscribe<List<E>>() {
             @Override
             public void call(Subscriber<? super List<E>> sub) {
@@ -195,21 +321,21 @@ public class RutgersApiImpl implements RutgersApi {
                     try {
                         courses = gson.fromJson(response, type);
                         //It should have responded with a 400 or 500 error, but nope :/
-                        if (response == null || response.equals("") || courses == null || courses.size() < 1) {
-                            throw new IllegalStateException("No content response from server");
+                        if (response == null || response.equals("")) {
+                            throw new RutgersServerIOException("No content response from server");
+                        } else if (courses == null || courses.size() < 1) {
+                            throw new RutgersDataIOException("Could not find what your where looking for");
                         }
                         sub.onNext(courses);
-
                         sub.onCompleted();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        sub.onError(e);
                     }
                 }
             }
         });
     }
 
-    @Override
     public Observable<String> getCourseResponseFromServer(final Request r) {
         final String url = createCourseUrlFromRequest(r);
 
@@ -220,7 +346,6 @@ public class RutgersApiImpl implements RutgersApi {
         return UrlUtils.getCourseUrl(UrlUtils.buildParamUrl(r));
     }
 
-    @Override
     public Observable<String> getSubjectResponseFromServer(final Request r) {
         final String url = createSubjectUrlFromRequest(r);
 
@@ -231,8 +356,7 @@ public class RutgersApiImpl implements RutgersApi {
         return UrlUtils.getSubjectUrl(UrlUtils.buildParamUrl(r));
     }
 
-    @Override
-    public Observable<String> getServerResponse(final String url) {
+    private Observable<String> getServerResponse(final String url) {
         return makeGetCall(new com.squareup.okhttp.Request.Builder()
                 .tag(TAG)
                 .url(url)
@@ -300,23 +424,23 @@ public class RutgersApiImpl implements RutgersApi {
         return "RutgersApiImpl";
     }
 
-    public static List<Subject> getSubjectsFromJson() {
+    public List<Subject> getSubjectsFromJson() {
         return jsonSubjectList;
     }
 
-    public static String getSubjectFromJson(String code) {
+    private Subject getSubjectFromJson(String code) {
         List<Subject> subjectsList = getSubjectsFromJson();
         Subject temp;
         for (int i = 0, size = subjectsList.size(); i < size; i++) {
             temp = subjectsList.get(i);
             if (temp.getCode().equals(code)) {
-                return WordUtils.capitalize(temp.getDescription().toLowerCase());
+                return temp;
             }
         }
         return null;
     }
 
-    public static final String SUBJECT_JSON = "[\n" +
+    private static final String SUBJECT_JSON = "[\n" +
             "    {\n" +
             "        \"description\": \"ACADEMIC FOUNDATIONS\",\n" +
             "        \"code\": \"003\",\n" +

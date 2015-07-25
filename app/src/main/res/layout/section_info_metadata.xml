@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/course_metadata"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:showIn="@layout/fragment_section_info">
+
+    <RelativeLayout
+        android:id="@+id/section_notes_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            style="@style/section_metadata_containers"
+            android:orientation="vertical"
+            android:id="@+id/section_notes_wrapper">
+            <TextView
+                android:id="@+id/course_notes_title"
+                style="@style/primary_metadata"
+                android:text="@string/section_notes" />
+
+            <TextView
+                android:id="@+id/section_notes_text"
+                style="@style/SecondaryMetadataTextStyle"
+                android:text="@string/metadata_dummy_text" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/fsl_divider1"
+            style="@style/divider.metadata"
+            android:layout_below="@id/section_notes_wrapper"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/section_comments_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/section_notes_layout">
+
+        <LinearLayout
+            style="@style/section_metadata_containers"
+            android:orientation="vertical"
+            android:id="@+id/course_subject_notes_wrapper">
+            <TextView
+                android:id="@+id/section_comments_title"
+                style="@style/primary_metadata"
+                android:text="@string/section_comments" />
+
+            <TextView
+                android:id="@+id/section_comments_text"
+                style="@style/SecondaryMetadataTextStyle"
+                android:layout_below="@+id/section_comments_title"
+                android:text="@string/metadata_dummy_text" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/fsl_divider2"
+            style="@style/divider.metadata"
+            android:layout_below="@+id/course_subject_notes_wrapper" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/section_crosslist_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/section_subtitle_layout">
+        <LinearLayout
+            style="@style/section_metadata_containers"
+            android:orientation="vertical"
+            android:id="@+id/section_crosslist_wrapper">
+            <TextView
+                android:id="@+id/section_crosslist_title"
+                style="@style/primary_metadata"
+                android:text="@string/cross_listed_sections" />
+
+            <TextView
+                android:id="@+id/section_crosslist_text"
+                style="@style/SecondaryMetadataTextStyle"
+                android:layout_below="@+id/section_crosslist_title"
+                android:text="@string/metadata_dummy_text" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/fsl_divider3"
+            style="@style/divider.metadata"
+            android:layout_below="@+id/section_crosslist_wrapper" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/section_subtitle_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/section_permission_layout">
+
+        <LinearLayout
+            style="@style/section_metadata_containers"
+            android:orientation="vertical"
+            android:id="@+id/section_subtitle_wrapper">
+            <TextView
+                android:id="@+id/section_subtitle_title"
+                style="@style/primary_metadata"
+                android:text="@string/subtitle" />
+
+            <TextView
+                android:id="@+id/section_subtitle_text"
+                style="@style/SecondaryMetadataTextStyle"
+                android:layout_below="@+id/section_subtitle_title"
+                android:text="@string/metadata_dummy_text" />
+
+        </LinearLayout>
+        <View
+            android:id="@+id/fsl_divider4"
+            style="@style/divider.metadata"
+            android:layout_below="@+id/section_subtitle_wrapper" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/section_permission_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/section_open_to_layout">
+
+        <LinearLayout
+            style="@style/section_metadata_containers"
+            android:orientation="vertical"
+            android:id="@+id/section_permission_wrapper">
+            <TextView
+                android:id="@+id/section_permission_title"
+                style="@style/primary_metadata"
+                android:text="@string/special_permission" />
+
+            <TextView
+                android:id="@+id/section_permission_text"
+                style="@style/SecondaryMetadataTextStyle"
+                android:layout_below="@+id/section_permission_title"
+                android:text="@string/metadata_dummy_text" />
+
+        </LinearLayout>
+        <View
+            android:id="@+id/fsl_divider5"
+            style="@style/divider.metadata"
+            android:layout_below="@+id/section_permission_wrapper" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/section_open_to_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/section_comments_layout">
+
+        <LinearLayout
+            style="@style/section_metadata_containers"
+            android:orientation="vertical"
+            android:id="@+id/section_open_to_wrapper">
+            <TextView
+                android:id="@+id/section_open_to_title"
+                style="@style/primary_metadata"
+                android:text="@string/open_to" />
+
+            <TextView
+                android:id="@+id/section_open_to_text"
+                style="@style/SecondaryMetadataTextStyle"
+                android:text="@string/metadata_dummy_text" />
+        </LinearLayout>
+        <View
+            android:id="@+id/fsl_divider6"
+            style="@style/divider.metadata"
+            android:layout_below="@+id/section_open_to_wrapper" />
+
+    </RelativeLayout>
+</RelativeLayout>

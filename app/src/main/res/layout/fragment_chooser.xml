@@ -8,7 +8,6 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:background="?attr/colorPrimary"
         style="@style/ToolbarStyle.Big"
         android:transitionName="@string/transition_name_tool_background"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -17,26 +16,28 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingRight="16dp">
 
             <TextView
                 android:id="@+id/header_text"
                 android:layout_above="@+id/subtitle"
                 android:layout_alignParentLeft="true"
-                android:text="Rutgers Schedule of Classes"
+                android:text="@string/chooser_title"
                 style="@style/ToolbarDisplayStyle"
-                android:typeface="normal" />
+                android:typeface="normal"
+                android:textSize="32dp" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="16dp"
-                android:text="Choose a term, location and level of study"
+                android:text="@string/chooser_subtitle"
                 style="@style/ToolbarSubtitleStyle"/>
 
-
         </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout

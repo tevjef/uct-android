@@ -3,7 +3,7 @@ package com.tevinjeffrey.rutgersct.rutgersapi.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 public class Subject implements Parcelable {
 
@@ -19,8 +19,11 @@ public class Subject implements Parcelable {
     }
 
     public void setDescription(String description) {
+        this.description = description;
+    }
 
-        this.description = StringUtils.capitalize(description.toLowerCase());
+    public String getTitle() {
+        return WordUtils.capitalize(description.toLowerCase());
     }
 
     public String getCode() {

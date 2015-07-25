@@ -16,11 +16,11 @@ import butterknife.ButterKnife;
 
 public class CircleSharedElementCallback extends SharedElementCallback {
 
-    CircleView mCircleViewSnapshot;
-    boolean isEnter = true;
+    private CircleView mCircleViewSnapshot;
+    private boolean isEnter = true;
     private WeakReference<View> tempView;
 
-    SharedElementsEnterTransitionCallback mCallback = new SharedElementsEnterTransitionCallback();
+    private final SharedElementsEnterTransitionCallback mCallback = new SharedElementsEnterTransitionCallback();
 
     @Override //capture
     public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {

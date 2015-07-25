@@ -18,12 +18,12 @@ import butterknife.ButterKnife;
 
 public class SectionInfoVH extends RecyclerView.ViewHolder {
 
-    final public View mParent;
-    final public TextView mInstructors;
-    final public CircleView mSectionNumberBackground;
-    final public ViewGroup mSectionTimeContainer;
+    private final View mParent;
+    final TextView mInstructors;
+    final CircleView mSectionNumberBackground;
+    final ViewGroup mSectionTimeContainer;
 
-    public static SectionInfoVH newInstance(View parent) {
+    static SectionInfoVH newInstance(View parent) {
         TextView instructors = ButterKnife.findById(parent, R.id.prof_text);
         CircleView sectionNumberBackground = ButterKnife.findById(parent, R.id.section_number_background);
         ViewGroup sectionTimeContainer = ButterKnife.findById(parent, R.id.section_item_time_container);
@@ -31,7 +31,7 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
         return new SectionInfoVH(parent, instructors, sectionNumberBackground, sectionTimeContainer);
     }
 
-    public SectionInfoVH(View parent, TextView instructors, CircleView sectionNumberBackground, ViewGroup mSectionTimeContainer) {
+    SectionInfoVH(View parent, TextView instructors, CircleView sectionNumberBackground, ViewGroup mSectionTimeContainer) {
         super(parent);
         this.mParent = parent;
         this.mInstructors = instructors;
@@ -39,19 +39,19 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
         this.mSectionTimeContainer = mSectionTimeContainer;
     }
 
-    public void setTimes(Course.Sections section) {
+    public void setTimes(Course.Section section) {
         TextView mDayText;
         TextView mSectionLocationText;
         TextView mTimeText;
 
-        final List<Course.Sections.MeetingTimes> meetingTimes = section.getMeetingTimes();
+        final List<Course.Section.MeetingTimes> meetingTimes = section.getMeetingTimes();
         //sort times so that Monday > Tuesday and Lecture > Recitation
         Collections.sort(meetingTimes);
 
-        for(int i = 0; i < mSectionTimeContainer.getChildCount(); i++) {
+        for (int i = 0; i < mSectionTimeContainer.getChildCount(); i++) {
             View timeLayout = mSectionTimeContainer.getChildAt(i);
 
-            Course.Sections.MeetingTimes time = null;
+            Course.Section.MeetingTimes time = null;
             if (meetingTimes.size() > 0 && meetingTimes.size() - 1 >= i) {
                 time = meetingTimes.get(i);
             }
@@ -83,18 +83,19 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
 
     }
 
-    public void setSectionNumber(Course.Sections section) {
+    public void setSectionNumber(Course.Section section) {
         mSectionNumberBackground.setTitleText(section.getNumber());
+        mSectionNumberBackground.setTag(section.getIndex());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        mSectionNumberBackground.setTransitionName(section.getNumber());
+            mSectionNumberBackground.setTransitionName(section.getIndex());
     }
 
-    public void setInstructors(Course.Sections section) {
+    public void setInstructors(Course.Section section) {
         mInstructors.setText(section.getToStringInstructors(" | "));
     }
 
-    public void setOpenStatus(Course.Sections section) {
+    public void setOpenStatus(Course.Section section) {
         if (section.isOpenStatus()) {
             mSectionNumberBackground.setBackgroundColor(mParent.getResources().getColor(R.color.green));
         } else {
@@ -106,4 +107,7 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
         mParent.setOnClickListener(listener);
     }
 
+    public String getIndexNumber() {
+        return (String) mSectionNumberBackground.getTag();
+    }
 }
