@@ -181,12 +181,11 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-condensed"
                             android:maxLines="1"
-
                             tools:text="34562"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textColor="@android:color/white"
                             android:textIsSelectable="false"
-                            android:textSize="34sp" />
+                            android:textSize="@dimen/section_info_data_text" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -239,6 +238,7 @@
                             android:textSize="34sp"
                             android:typeface="normal" />
                     </LinearLayout>
+
                 </LinearLayout>
             </RelativeLayout>
 

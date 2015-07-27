@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_width="290dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -8,32 +9,36 @@
     <TextView
         android:id="@+id/section_item_time_info_day_text"
         style="@style/SecondaryTextStyle"
-        android:minWidth="60dp"
         tools:text="Wednesday"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:ellipsize="none"
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/section_item_time_info_meeting_time_text"
         style="@style/SecondaryTextStyle"
         tools:text="10:00 AM - 11:20 AM"
         android:layout_weight="3"
-        android:gravity="center_horizontal" />
+        android:gravity="left"
+        android:ellipsize="none"
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/section_item_time_info_location_text"
         style="@style/SecondaryTextStyle"
-        android:minWidth="40dp"
         tools:text="ENG-102  NWK"
-        android:layout_weight="2"
-        android:gravity="right|end" />
+        android:layout_weight="1"
+        android:gravity="left"
+        android:ellipsize="none"
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/section_item_time_info_meeting_type"
         style="@style/SecondaryTextStyle"
-        android:minWidth="40dp"
         tools:text="STUDIO"
-        android:maxWidth="50dp"
         android:layout_weight="1"
-        android:gravity="right|end" />
+        android:gravity="right|end"
+        android:ellipsize="none"
+        android:singleLine="true"/>
 
 </LinearLayout>

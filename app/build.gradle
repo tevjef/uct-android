@@ -96,13 +96,14 @@ dependencies {
     */
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'junit:junit:4.11'
+
     //UI
     compile 'com.dlazaro66.wheelindicatorview:WheelIndicatorView:1.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.easing:library:1.0.1@aar'
     compile 'com.daimajia.androidanimations:library:1.1.3@aar'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jenzz:materialpreference:1.2'
+    compile 'com.jenzz:materialpreference:1.3'
     compile 'com.afollestad:material-dialogs:0.6.3.1'
     compile 'com.nispok:snackbar:2.9.1'
     //Boilerplate reduction
@@ -117,8 +118,8 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup:otto:1.3.8'
 
-    apt 'com.squareup.dagger:dagger-compiler:1.2.0'
-    compile 'com.squareup.dagger:dagger:1.2.0'
+    apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'com.squareup.dagger:dagger:1.2.2'
 
     //Debuging
     compile 'com.jakewharton.timber:timber:2.7.1'

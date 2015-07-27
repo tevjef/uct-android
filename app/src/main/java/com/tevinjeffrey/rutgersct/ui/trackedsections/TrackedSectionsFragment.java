@@ -33,14 +33,12 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.TrackedSectionsFragmentAdapter;
 import com.tevinjeffrey.rutgersct.animator.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
-import com.tevinjeffrey.rutgersct.ui.search.ChooserFragment;
+import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
 import com.tevinjeffrey.rutgersct.utils.RecyclerSimpleScrollListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
@@ -57,9 +55,7 @@ import butterknife.OnClick;
 import icepick.Icicle;
 import rx.functions.Action1;
 
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
-
-@SuppressWarnings({"OverlyCoupledClass", "ClassWithTooManyMethods"})
+@SuppressWarnings({"ClassWithTooManyMethods"})
 public class TrackedSectionsFragment extends MVPFragment implements TrackedSectionsView, SwipeRefreshLayout.OnRefreshListener,
         TrackedSectionsFragmentAdapter.ItemClickListener {
 
@@ -108,8 +104,8 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new TrackedSectionsPresenterImpl(RutgersCTApp.getInstance().getRetroRutgers(),
-                    RutgersCTApp.getInstance().getDatabaseHandler(), RutgersCTApp.getInstance().getBus());
+            mBasePresenter = new TrackedSectionsPresenterImpl();
+            getObjectGraph().inject(mBasePresenter);
         }
     }
 
@@ -162,7 +158,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     }
 
     public void initToolbar() {
-        setToolbarTitle(mToolbar, getString(R.string.tracked_sections));
+        setToolbarTitle(mToolbar, "");
         setToolbar(mToolbar);
     }
 
@@ -276,13 +272,6 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
             mRecyclerView.setVisibility(visibility);
     }
 
-    public void setToolbar(Toolbar toolbar) {
-        super.setToolbar(toolbar);
-        ActionBar actionBar = getParentActivity().getSupportActionBar();
-        if (actionBar != null)
-            getParentActivity().getSupportActionBar().setIcon(R.drawable.ic_track_changes_white);
-    }
-
     public void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getParentActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -311,13 +300,14 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
             }
 
             private void animateFabIn() {
-                ViewCompat.animate(mFab).alpha(1).setStartDelay(100).start();
-                ViewCompat.animate(mFab).translationY(0).setStartDelay(100).start();
+                ViewCompat.animate(mFab).alpha(1).setStartDelay(50).start();
+                ViewCompat.animate(mFab).translationY(mViewState.snackBarShowing?
+                        -SnackbarManager.getCurrentSnackbar().getHeight():0).setStartDelay(50).start();
             }
 
             private void animateFabOut() {
-                ViewCompat.animate(mFab).alphaBy(0).setStartDelay(100).start();
-                ViewCompat.animate(mFab).translationYBy(250).setStartDelay(100).start();
+                ViewCompat.animate(mFab).alphaBy(0).setStartDelay(50).start();
+                ViewCompat.animate(mFab).translationYBy(250).setStartDelay(50).start();
             }
         });
 
@@ -371,7 +361,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                                 mViewState.snackBarShowing = false;
                             }
                         })
-                        .actionColor(getResources().getColor(R.color.white))
+                        .actionColor(getResources().getColor(android.R.color.white))
                         .color(getResources().getColor(R.color.accent))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
                         .eventListener(new EventListener() {
@@ -380,7 +370,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                                 if (snackbar != null) {
                                     mViewState.snackBarShowing = true;
                                     if (mFab != null) {
-                                        animate(mFab).translationYBy(-snackbar.getHeight()).setInterpolator(new OvershootInterpolator()).start();
+                                        ViewCompat.animate(mFab).translationYBy(-snackbar.getHeight()).setInterpolator(new OvershootInterpolator());
                                     }
                                 }
 
@@ -398,7 +388,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                             @Override
                             public void onDismiss(Snackbar snackbar) {
                                 if (mFab != null) {
-                                    animate(mFab).translationYBy(snackbar.getHeight()).setInterpolator(new OvershootInterpolator()).start();
+                                    ViewCompat.animate(mFab).translationYBy(snackbar.getHeight()).setInterpolator(new OvershootInterpolator());
                                 }
                             }
 
@@ -420,7 +410,9 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mToolbar.setTransitionName(getString(R.string.transition_name_tool_background));
             ft.addSharedElement(mToolbar, getString(R.string.transition_name_tool_background));
+            setExitTransition(new Fade(Fade.OUT).setDuration(50));
             chooserFragment.setAllowEnterTransitionOverlap(false);
+            chooserFragment.setAllowReturnTransitionOverlap(false);
         } else {
             ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         }

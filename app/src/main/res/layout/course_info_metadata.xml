@@ -8,10 +8,10 @@
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    android:paddingRight="16dp"
+    android:paddingRight="@dimen/default_margin"
     android:paddingTop="4dp"
     android:paddingBottom="8dp"
-    android:paddingLeft="@dimen/material_padding_left"
+    android:paddingLeft="@dimen/start_keyline"
     tools:background="@android:color/white">
 
     <RelativeLayout
@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/course_notes_title"
             android:text="@string/course_notes"
-            style="@style/primary_metadata" />
+            style="@style/PrimaryTextStyle" />
 
         <TextView
             android:id="@+id/course_notes_text"
@@ -55,7 +55,7 @@
         <TextView
             android:id="@+id/course_subject_notes_title"
             android:text="@string/subject_notes"
-            style="@style/primary_metadata" />
+            style="@style/PrimaryTextStyle" />
 
         <TextView
             android:id="@+id/course_subject_notes_text"
@@ -87,7 +87,7 @@
             android:id="@+id/course_prereq_title"
             android:text="Prerequisites"
             tools:ignore="HardcodedText"
-            style="@style/primary_metadata" />
+            style="@style/PrimaryTextStyle" />
 
         <TextView
             android:id="@+id/course_prereq_text"

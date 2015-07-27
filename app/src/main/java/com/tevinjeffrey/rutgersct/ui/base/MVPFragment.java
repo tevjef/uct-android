@@ -12,14 +12,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
+import com.tevinjeffrey.rutgersct.ui.SettingsActivity;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 
 import butterknife.ButterKnife;
+import dagger.ObjectGraph;
 import icepick.Icepick;
 import timber.log.Timber;
 
-public class MVPFragment extends Fragment implements View {
+public abstract class MVPFragment extends Fragment implements View {
 
     public boolean mIsInitialLoad = true;
 
@@ -28,6 +31,7 @@ public class MVPFragment extends Fragment implements View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
         Icepick.restoreInstanceState(this, savedInstanceState);
         Timber.i("%s started with savedIntanceState %s and arguments %s",
@@ -46,6 +50,9 @@ public class MVPFragment extends Fragment implements View {
     @Override
     public void onResume() {
         super.onResume();
+        if (mBasePresenter != null) {
+            mBasePresenter.onResume();
+        }
         mIsInitialLoad = false;
     }
 
@@ -78,7 +85,7 @@ public class MVPFragment extends Fragment implements View {
                 getFragmentManager().popBackStackImmediate(TrackedSectionsFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 return true;
             case R.id.action_settings:
-                getParentActivity().startActivity(new Intent(getParentActivity(), BasePreferenceActivity.class));
+                getParentActivity().startActivity(new Intent(getParentActivity(), SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -146,5 +153,9 @@ public class MVPFragment extends Fragment implements View {
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
+    }
+
+    public ObjectGraph getObjectGraph() {
+        return ((RutgersCTApp) getParentActivity().getApplication()).getObjectGraph();
     }
 }

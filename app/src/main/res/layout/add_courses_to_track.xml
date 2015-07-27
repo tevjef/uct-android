@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/add_courses_to_track"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     tools:visibility="visible"
     android:visibility="gone">
 
-    <com.tevinjeffrey.rutgersct.utils.TintImageView
+    <com.tevinjeffrey.rutgersct.customviews.TintImageView
         android:id="@+id/imageView2"
         android:layout_width="160dp"
         android:layout_height="160dp"

@@ -20,7 +20,7 @@
 
             <TextView
                 tools:text="Joyce Carolla"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:id="@+id/rmp_prof_name"
                 android:layout_toEndOf="@+id/overall_container" />
 
@@ -151,7 +151,7 @@
                         android:textSize="28sp"
                         android:textStyle="bold"
                         android:layout_gravity="center"
-                        style="@style/primary_metadata" />
+                        style="@style/PrimaryTextStyle" />
 
                 </LinearLayout>
 
@@ -181,7 +181,7 @@
                     tools:text="B"
                     android:textSize="28sp"
                     android:layout_gravity="center_horizontal"
-                    style="@style/primary_metadata"/>
+                    style="@style/PrimaryTextStyle"/>
 
             </LinearLayout>
         </LinearLayout>

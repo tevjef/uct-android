@@ -87,7 +87,7 @@ public class UrlUtils {
     }
 
     private static void appendComma(StringBuilder sb) {
-        sb.append("%2C");
+        sb.append(",");
     }
 
     private static void append(StringBuilder sb, String loc) {
@@ -133,18 +133,6 @@ public class UrlUtils {
         return new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
     }
 
-    public static String getSubjectUrl(String params) {
-        String baseUrl = "http://sis.rutgers.edu/soc/";
-        String subjectJson = "subjects.json";
-        return baseUrl + subjectJson + "?" + params;
-    }
-
-    public static String getCourseUrl(String params) {
-        String baseUrl = "http://sis.rutgers.edu/soc/";
-        String courseJson = "courses.json";
-        return baseUrl + courseJson + "?" + params;
-    }
-
     public static String getAbbreviatedLocationName(String s) {
         switch (s) {
             case FIRST_LOCATION:
@@ -156,12 +144,6 @@ public class UrlUtils {
             default:
                 return null;
         }
-    }
-
-    public static String getRmpUrl(Course.Section s) {
-        String query = "+rutgers+site:ratemyprofessors.com";
-        return createSearchUrl(query, s);
-
     }
 
     private static String createSearchUrl(String query, Course.Section s) {

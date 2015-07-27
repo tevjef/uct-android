@@ -28,20 +28,7 @@ public class RMP {
     public final String RMP_BASE_URL = "http://www.ratemyprofessors.com";
 
     public RMP(OkHttpClient client) {
-        this.client = client.clone();
-        this.client.networkInterceptors().add(getCacheControlInterceptor(36000));
-    }
-
-    public static Interceptor getCacheControlInterceptor(final long age) {
-        return new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Response originalResponse = chain.proceed(chain.request());
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "max-age=" + age)
-                        .build();
-            }
-        };
+        this.client = client;
     }
 
     public Observable<Professor> findBestProfessor(final Decider.Parameter params) {

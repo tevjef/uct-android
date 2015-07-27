@@ -35,7 +35,7 @@
     <string name="rate_later">Later</string>
     <string name="rate_never">No Thanks!</string>
     <string name="action_rate">Rate this app!</string>
-    <string name="next_text">NEXT</string>
+    <string name="next_text">SEARCH</string>
 
     <!--
     System defaults
@@ -90,9 +90,12 @@
     <string name="tracked_sections">Tracked Sections</string>
     <string name="settings">Settings</string>
     <string name="chooser_title">Rutgers Schedule of Classes</string>
-    <string name="chooser_subtitle">Choose a term, location and level of study</string>
+    <string name="chooser_subtitle">Choose a term, campus and level of study</string>
     <string name="retry">RETRY</string>
     <string name="section_has_not_opened">" has not opened."</string>
+    <string name="select_a_semester">Select a semester</string>
+    <string name="select_a_location">Select a campus</string>
+    <string name="select_a_level">Select a level</string>
 
     <string-array name="intervals">
         <item>Every 5 minutes</item>

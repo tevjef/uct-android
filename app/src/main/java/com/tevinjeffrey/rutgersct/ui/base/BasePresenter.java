@@ -28,6 +28,10 @@ public abstract class BasePresenter implements Presenter, StatefulPresenter {
     public void onPause() {
     }
 
+    @Override
+    public void onResume() {
+    }
+
     @Nullable
     public View getView() {
         if (mBaseView != null)

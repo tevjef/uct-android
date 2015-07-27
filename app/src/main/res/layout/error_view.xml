@@ -12,7 +12,7 @@
     tools:showIn="@layout/fragment_tracked_sections"
     android:gravity="center">
 
-    <com.tevinjeffrey.rutgersct.utils.TintImageView
+    <com.tevinjeffrey.rutgersct.customviews.TintImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/error_icon"
@@ -39,7 +39,7 @@
         android:layout_centerHorizontal="true"
         android:textColor="?attr/colorAccent"
         android:textStyle="bold"
-        android:padding="16dp"
+        android:padding="@dimen/default_margin"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_alignParentBottom="false" />
 </LinearLayout>

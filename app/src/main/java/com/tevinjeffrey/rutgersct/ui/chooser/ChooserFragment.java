@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.ui.search;
+package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -9,9 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -108,7 +111,8 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (mBasePresenter == null) {
-            mBasePresenter = new ChooserPresenterImpl(RutgersCTApp.getInstance().getRetroRutgers());
+            mBasePresenter = new ChooserPresenterImpl();
+            getObjectGraph().inject(mBasePresenter);
         }
     }
 
@@ -184,14 +188,12 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            sf.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            sf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
-            sf.setReenterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
-            sf.setReturnTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true));
-            sf.setAllowReturnTransitionOverlap(true);
-            sf.setAllowEnterTransitionOverlap(true);
-            sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            sf.setExitTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true).setDuration(100));
+            sf.setReturnTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true).setDuration(100));
+            sf.setAllowReturnTransitionOverlap(false);
+            sf.setAllowEnterTransitionOverlap(false);
+            sf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
+            sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
             ft.addSharedElement(mToolbar, getString(R.string.transition_name_tool_background));
         } else {
             ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -338,13 +340,13 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
             int checkedButton = mSemesterRadiogroup.getCheckedRadioButtonId();
             RadioButton selectedButton = (RadioButton) getParentActivity().findViewById(checkedButton);
             if (selectedButton == null) {
-                makeToast("Select a semester");
+                makeToast(getParentActivity().getString(R.string.select_a_semester));
                 return false;
             } else if (!mLocation1.isChecked() && !mLocation2.isChecked() && !mLocation3.isChecked()) {
-                makeToast("Select a location");
+                makeToast(getParentActivity().getString(R.string.select_a_location));
                 return false;
             } else if (!mLevel1.isChecked() && !mLevel2.isChecked()) {
-                makeToast("Select a level");
+                makeToast(getParentActivity().getString(R.string.select_a_level));
                 return false;
             } else {
                 return true;

@@ -1,9 +1,11 @@
-package com.tevinjeffrey.rutgersct.ui.search;
+package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
+
+import javax.inject.Inject;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -14,12 +16,14 @@ import rx.schedulers.Schedulers;
 public class ChooserPresenterImpl extends BasePresenter implements ChooserPresenter {
 
     private static final String TAG = ChooserPresenterImpl.class.getSimpleName();
-    private final RetroRutgers mRetroRutgers;
+
+    @Inject
+    RetroRutgers mRetroRutgers;
+
     private Subscription mSubsciption;
     private boolean isLoading;
 
-    public ChooserPresenterImpl(RetroRutgers retroRutgers) {
-        this.mRetroRutgers = retroRutgers;
+    public ChooserPresenterImpl() {
     }
 
     @Override

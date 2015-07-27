@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:titleText="Q1"
     app:subtitleText=""
-    app:titleSize="13dp"
+    app:titleSize="@dimen/small_text"
     app:titleColor="@android:color/white"
     app:backgroundColorValue="@color/green"
     app:strokeColorValue="@color/green"
@@ -15,6 +15,6 @@
     android:layout_height="@dimen/default_circle_view_size"
     android:minHeight="@dimen/default_circle_view_size"
     android:minWidth="@dimen/default_circle_view_size"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="@dimen/default_margin"
     android:visibility="visible"
     tools:showIn="@layout/section_layout_with_title"/>

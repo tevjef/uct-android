@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +11,25 @@ import android.view.Menu;
 import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
+import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 import icepick.Icepick;
 import icepick.Icicle;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Inject
+    Context context;
+
+    @Inject
+    PreferenceUtils mPreferenceUtils;
 
     @Icicle
     public int mBackstackCount;
@@ -25,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ObjectGraph og = ((RutgersCTApp)getApplication()).getObjectGraph();
+        og.inject(this);
+
         setContentView(R.layout.activity_main);
 
         Icepick.restoreInstanceState(this, savedInstanceState);
@@ -45,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.container, tsf)
                     .commit();
         }
-
-        new Alarm(getApplicationContext()).setAlarm();
+        og.get(Alarm.class).setAlarm();
     }
 
     @Override

@@ -19,7 +19,7 @@
             android:id="@+id/section_notes_wrapper">
             <TextView
                 android:id="@+id/course_notes_title"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:text="@string/section_notes" />
 
             <TextView
@@ -47,7 +47,7 @@
             android:id="@+id/course_subject_notes_wrapper">
             <TextView
                 android:id="@+id/section_comments_title"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:text="@string/section_comments" />
 
             <TextView
@@ -77,7 +77,7 @@
             android:id="@+id/section_crosslist_wrapper">
             <TextView
                 android:id="@+id/section_crosslist_title"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:text="@string/cross_listed_sections" />
 
             <TextView
@@ -107,7 +107,7 @@
             android:id="@+id/section_subtitle_wrapper">
             <TextView
                 android:id="@+id/section_subtitle_title"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:text="@string/subtitle" />
 
             <TextView
@@ -136,7 +136,7 @@
             android:id="@+id/section_permission_wrapper">
             <TextView
                 android:id="@+id/section_permission_title"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:text="@string/special_permission" />
 
             <TextView
@@ -164,7 +164,7 @@
             android:id="@+id/section_open_to_wrapper">
             <TextView
                 android:id="@+id/section_open_to_title"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:text="@string/open_to" />
 
             <TextView

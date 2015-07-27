@@ -29,6 +29,8 @@ public interface StatefulPresenter {
      */
     void onPause();
 
+    void onResume();
+
     void onDestroyView(boolean retainedState);
 
     /**

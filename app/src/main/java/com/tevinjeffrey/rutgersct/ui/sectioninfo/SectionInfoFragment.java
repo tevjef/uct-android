@@ -22,6 +22,7 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.RMP;
 import com.tevinjeffrey.rmp.professor.Professor;
@@ -40,6 +41,8 @@ import com.tevinjeffrey.rutgersct.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -150,6 +153,18 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Icicle
     SectionInfoViewState mViewState = new SectionInfoViewState();
 
+    @Inject
+    RetroRutgers mRetroRutgers;
+
+    @Inject
+    DatabaseHandler mDatabaseHandler;
+
+    @Inject
+    Bus mBus;
+
+    @Inject
+    OkHttpClient mClient;
+
     public SectionInfoFragment() {
     }
 
@@ -186,14 +201,10 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        RetroRutgers retroRutgers = RutgersCTApp.getInstance().getRetroRutgers();
-        RMP rmp = new RMP(RutgersCTApp.getDefaultClient());
-        DatabaseHandler databaseHandler = RutgersCTApp.getInstance().getDatabaseHandler();
-        Bus bus = RutgersCTApp.getInstance().getBus();
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SectionInfoPresenterImpl(retroRutgers, rmp, selectedSection, databaseHandler, bus);
+            mBasePresenter = new SectionInfoPresenterImpl(selectedSection);
+            getObjectGraph().inject(mBasePresenter);
         }
     }
 
@@ -234,28 +245,35 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         final int ROTATION_ADDED = 225;
         final int DURATION = 500;
 
-        if (shouldAnimateView) {
-            ViewCompat.animate(mFab).setDuration(DURATION).setInterpolator(new EaseOutQuint())
-                    .rotation(sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
-            ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
-                    sectionIsAdded ? COLOR : COLOR_DARK,
-                    sectionIsAdded ? COLOR_DARK : COLOR
-            );
-            colorAnim.setDuration(500);
-            colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    if (mFab != null)
-                        mFab.setBackgroundTintList(ColorStateList.valueOf((Integer) animation.getAnimatedValue()));
+            if (shouldAnimateView) {
+                if (sectionIsAdded != mViewState.isSectionAdded) {
+                    ViewCompat.animate(mFab).setDuration(DURATION).setInterpolator(new EaseOutQuint())
+                            .rotation(sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
+                    //I would much prefer to animate from the current coolor to the next but the fab has
+                    // no method to get the current color and I'm not desparate enough to manage it myself.
+                    // As for now, the fab will only animate on user click. Not from a db update.
+                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
+                            sectionIsAdded ? COLOR : COLOR_DARK,
+                            sectionIsAdded ? COLOR_DARK : COLOR
+                    );
+                    colorAnim.setDuration(500);
+                    colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            if (mFab != null)
+                                mFab.setBackgroundTintList(ColorStateList.valueOf((Integer) animation.getAnimatedValue()));
 
+                        }
+                    });
+                    colorAnim.setEvaluator(new ArgbEvaluator());
+                    colorAnim.start();
                 }
-            });
-            colorAnim.setEvaluator(new ArgbEvaluator());
-            colorAnim.start();
-        } else {
-            ViewCompat.setBackgroundTintList(mFab, ColorStateList.valueOf(sectionIsAdded ? COLOR_DARK : COLOR));
-            ViewCompat.setRotation(mFab, sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
-        }
+            } else {
+                ViewCompat.setBackgroundTintList(mFab, ColorStateList.valueOf(sectionIsAdded ? COLOR_DARK : COLOR));
+                ViewCompat.setRotation(mFab, sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
+            }
+
+        mViewState.isSectionAdded = sectionIsAdded;
     }
 
     @Override

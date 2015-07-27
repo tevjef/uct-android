@@ -9,6 +9,8 @@ import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -19,14 +21,15 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
 
     private static final String TAG = CoursePresenterImpl.class.getSimpleName();
 
-    private final RetroRutgers mRetroRutgers;
+    @Inject
+    RetroRutgers mRetroRutgers;
+
     private Subscription mSubscription;
     private Request mRequest;
     private boolean isLoading;
 
-    public CoursePresenterImpl(RetroRutgers retroRutgers, Request mRequest) {
+    public CoursePresenterImpl(Request mRequest) {
         this.mRequest = mRequest;
-        this.mRetroRutgers = retroRutgers;
     }
 
     @Override

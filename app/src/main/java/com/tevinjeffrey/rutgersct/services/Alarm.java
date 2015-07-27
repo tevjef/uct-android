@@ -11,11 +11,18 @@ import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
+import timber.log.Timber;
+
 
 public class Alarm {
     private final Context mContext;
+    private PreferenceUtils mPreferenceUtils;
 
-    public Alarm(Context context) {
+    @Inject
+    public Alarm(PreferenceUtils preferenceUtils, Context context) {
+        this.mPreferenceUtils = preferenceUtils;
         this.mContext = context;
     }
 
@@ -40,10 +47,11 @@ public class Alarm {
                 SystemClock.elapsedRealtime(),
                 getInterval(),
                 alarmIntent);
+        Timber.d("Alarm set: " + getInterval());
     }
 
     private long getInterval() {
-        int index = PreferenceUtils.getSyncInterval();
+        int index = mPreferenceUtils.getSyncInterval();
         if (index == 0) {
             return TimeUnit.MINUTES.toMillis(5);
         } else if (index == 1) {

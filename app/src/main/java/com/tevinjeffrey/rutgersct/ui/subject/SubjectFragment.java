@@ -27,9 +27,12 @@ import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.ActionClickListener;
 import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
+import com.squareup.otto.Bus;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.SubjectFragmentAdapter;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
@@ -42,6 +45,8 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,6 +78,9 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     @Icicle
     SubjectViewState mViewState = new SubjectViewState();
 
+    @Inject
+    RetroRutgers mRetroRutgers;
+
     public SubjectFragment() {
     }
 
@@ -99,8 +107,8 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SubjectPresenterImpl(RutgersCTApp.getInstance().getRetroRutgers()
-                    , mRequest);
+            mBasePresenter = new SubjectPresenterImpl(mRequest);
+            getObjectGraph().inject(mBasePresenter);
         }
     }
 
@@ -303,7 +311,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
                                 mViewState.snackBarShowing = false;
                             }
                         })
-                        .actionColor(getResources().getColor(R.color.white))
+                        .actionColor(getResources().getColor(android.R.color.white))
                         .color(getResources().getColor(R.color.accent))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
                         .eventListener(new EventListener() {

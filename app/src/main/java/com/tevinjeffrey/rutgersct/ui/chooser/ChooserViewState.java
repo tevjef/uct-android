@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.ui.search;
+package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import android.os.Parcel;
 import android.os.Parcelable;

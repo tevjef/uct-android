@@ -14,7 +14,7 @@
 
             <TextView
                 android:id="@+id/sectionNumber"
-                style="@style/primary_metadata"
+                style="@style/PrimaryTextStyle"
                 android:text="@string/time_and_location" />
 
             <LinearLayout

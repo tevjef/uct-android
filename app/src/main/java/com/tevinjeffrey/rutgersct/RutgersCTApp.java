@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
+import dagger.ObjectGraph;
 import timber.log.Timber;
 
 public class RutgersCTApp extends SugarApp {
@@ -37,19 +38,10 @@ public class RutgersCTApp extends SugarApp {
     public final static String REQUEST = "REQUEST";
     private static final String INSTALLATION = "INSTALLATION";
 
-    private static RutgersCTApp sInstance;
-
     private static String sID = null;
 
-    private static OkHttpClient client = new OkHttpClient();
+    ObjectGraph objectGraph;
 
-    private RetroRutgers mRetroRutgers;
-    private Bus bus;
-    private DatabaseHandler mDatabaseHandler;
-
-    public static RutgersCTApp getInstance() {
-        return sInstance;
-    }
 
     private RefWatcher refWatcher;
 
@@ -62,19 +54,11 @@ public class RutgersCTApp extends SugarApp {
     public void onCreate() {
         super.onCreate();
 
-        sInstance = this;
-
         //refWatcher = LeakCanary.install(this);
 
         initStetho();
 
-        initDefaultOkHttp();
-
-        initRetroRutgers();
-
-        initEventBus();
-
-        initDatabaseHandler();
+        objectGraph = ObjectGraph.create(new RutgersCTModule(getApplicationContext()));
 
         //Initalize crash reporting apis
         //Fabric.with(this, new Crashlytics());
@@ -97,16 +81,8 @@ public class RutgersCTApp extends SugarApp {
         }
     }
 
-    private void initDatabaseHandler() {
-        mDatabaseHandler = new DatabaseHandlerImpl(getBus());
-    }
-
-    private void initEventBus() {
-        bus = new Bus();
-    }
-
-    private void initRetroRutgers() {
-        getInstance().mRetroRutgers = new RetroRutgers(getDefaultClient());
+    public ObjectGraph getObjectGraph() {
+        return objectGraph;
     }
 
     private void initStetho() {
@@ -117,37 +93,6 @@ public class RutgersCTApp extends SugarApp {
                         .enableWebKitInspector(
                                 Stetho.defaultInspectorModulesProvider(this))
                         .build());
-    }
-
-    private void initDefaultOkHttp() {
-        File httpCacheDir = new File(getApplicationContext().getCacheDir(), getString(R.string.app_name));
-        long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
-        Cache cache = new Cache(httpCacheDir, httpCacheSize);
-        client.setCache(cache);
-        client.networkInterceptors().add(new StethoInterceptor());
-
-        if (BuildConfig.DEBUG) {
-            try {
-                cache.evictAll();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static Interceptor getCacheControlInterceptor(final long age) {
-        return new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request originalRequest = chain.request();
-                Timber.d("Host: %s", originalRequest.httpUrl().host());
-
-                Response originalResponse = chain.proceed(chain.request());
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "max-age=" + age)
-                        .build();
-            }
-        };
     }
 
     private synchronized static String getsID(Context context) {
@@ -212,19 +157,4 @@ public class RutgersCTApp extends SugarApp {
         }
     }
 
-    public Bus getBus() {
-        return bus;
-    }
-
-    public DatabaseHandler getDatabaseHandler() {
-        return mDatabaseHandler;
-    }
-
-    public static OkHttpClient getDefaultClient() {
-        return client;
-    }
-
-    public RetroRutgers getRetroRutgers() {
-        return mRetroRutgers;
-    }
 }

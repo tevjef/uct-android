@@ -4,7 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.services.Alarm;
+import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -13,11 +17,13 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        RutgersCTApp rutgersCTApp = (RutgersCTApp) context.getApplicationContext();
+
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             Timber.i("BootReceiver: ", "Caught android.intent.action.BOOT_COMPLETED");
 
             //Set alarm when the device boots.
-            new Alarm(context).setAlarm();
+            rutgersCTApp.getObjectGraph().get(Alarm.class).setAlarm();
         }
     }
 }

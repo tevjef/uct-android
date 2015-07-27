@@ -10,6 +10,8 @@ import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersDataIOException;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,13 +22,14 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
 
     private static final String TAG = SubjectPresenter.class.getSimpleName();
 
+    @Inject
+    RetroRutgers mRetroRutgers;
+
     private Subscription mSubscription;
     private Request mRequest;
-    private RetroRutgers mRetroRutgers;
     private boolean isLoading;
 
-    public SubjectPresenterImpl(RetroRutgers retroRutgers, Request mRequest) {
-        this.mRetroRutgers = retroRutgers;
+    public SubjectPresenterImpl(Request mRequest) {
         this.mRequest = mRequest;
     }
 

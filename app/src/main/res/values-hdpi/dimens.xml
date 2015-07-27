@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="default_margin">12dp</dimen>
+    <dimen name="start_keyline">60dp</dimen>
+    <dimen name="default_circle_view_size">36dp</dimen>
+
+    <dimen name="primary_text">13sp</dimen>
+    <dimen name="small_text">11sp</dimen>
+</resources>

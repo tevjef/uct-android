@@ -15,6 +15,8 @@ import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -29,18 +31,19 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
 
     private static final String TAG = TrackedSectionsPresenterImpl.class.getSimpleName();
 
-    private final DatabaseHandler mDatabaseHandler;
+    @Inject
+    DatabaseHandler mDatabaseHandler;
+    @Inject
+    RetroRutgers mRetroRutgers;
+    @Inject
+    Bus mBus;
+
     private boolean mHasDataFlag = false;
     private Subscription mSubscription;
     private Subscriber<List<Section>> mSubscriber;
-    private final RetroRutgers mRetroRutgers;
     private boolean isLoading = false;
-    private final Bus mBus;
 
-    public TrackedSectionsPresenterImpl(RetroRutgers retroRutgers, DatabaseHandler databaseHandler, Bus bus) {
-        this.mRetroRutgers = retroRutgers;
-        this.mBus = bus;
-        this.mDatabaseHandler = databaseHandler;
+    public TrackedSectionsPresenterImpl() {
     }
 
     public void loadTrackedSections(final boolean pullToRefresh) {
@@ -133,13 +136,18 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mBus.register(this);
     }
+
 
     @Override
     public void onPause() {
         super.onPause();
         mBus.unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        mBus.register(this);
     }
 
     @Subscribe

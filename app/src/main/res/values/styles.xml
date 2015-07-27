@@ -4,7 +4,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="RutgersCT" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="mp_colorAccent">@color/primary</item>
         <item name="android:windowNoTitle">true</item>
         <!--We will be using the toolbar so no need to show ActionBar-->
         <item name="android:windowActionBar">false</item>
@@ -138,7 +137,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@string/default_font</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textSize">@dimen/small_text</item>
         <item name="android:textStyle">normal</item>
         <item name="android:alpha">0.5</item>
     </style>
@@ -152,10 +151,10 @@
     </style>
 
 
-    <style name="primary_metadata">
+    <style name="PrimaryTextStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/primary_text</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">none</item>
         <item name="android:fontFamily">@string/default_font</item>
@@ -174,6 +173,15 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@style/SecondaryTextApperance</item>
+    </style>
+
+    <style name="TwoStateTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColorLink">@color/accent</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingLeft">12dp</item>
     </style>
 
     <style name="SecondaryTextApperance">
@@ -204,6 +212,4 @@
     <style name="section_metadata_containers" parent="metadata_wrapper">
         <item name="android:layout_marginLeft">0dp</item>
     </style>
-
-
 </resources>

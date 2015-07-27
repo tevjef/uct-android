@@ -5,8 +5,10 @@
         <changeBounds/>
         <changeTransform/>
         <changeImageTransform/>
-    <pathMotion class="com.tevinjeffrey.rutgersct.animator.SectionPath"/>
-        <targets>
+    <arcMotion android:minimumHorizontalAngle="60"
+        android:minimumVerticalAngle="60"
+        android:maximumAngle="90"/>
+    <targets>
             <target android:targetName="@string/transition_name_circle_view"/>
 
             <target android:excludeName="@string/transition_name_fab"/>

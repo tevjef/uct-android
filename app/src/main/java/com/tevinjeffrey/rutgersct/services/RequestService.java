@@ -16,9 +16,12 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.TrackedSection;
 import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 
 import java.util.concurrent.CancellationException;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -29,6 +32,10 @@ import timber.log.Timber;
 import static com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 
 public class RequestService extends Service {
+
+    @Inject
+    RetroRutgers mRetroRutgers;
+
     private Intent mIntent;
 
     public RequestService() {
@@ -36,11 +43,15 @@ public class RequestService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        RutgersCTApp rutgersCTApp = (RutgersCTApp) this.getApplication();
+        rutgersCTApp.getObjectGraph().inject(this);
+
         //Hold the refence to the intent so that I can use it outside the scope of this method.
         mIntent = intent;
+
         Timber.i("Request Service started at %s", RutgersCTApp.getTimeNow());
 
-        Observable<Section> courseObservable = RutgersCTApp.getInstance().getRetroRutgers()
+        Observable<Section> courseObservable = mRetroRutgers
                 .getTrackedSections(TrackedSection.listAll(TrackedSection.class));
 
         courseObservable

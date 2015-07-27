@@ -3,13 +3,18 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
-    <dimen name="small_text">12sp</dimen>
-    <dimen name="medium_text">12sp</dimen>
+
     <dimen name="big_toolbar">190dp</dimen>
 
     <dimen name="default_circle_view_size">40dp</dimen>
     <dimen name="fab_compat_margin">0dp</dimen>
     <dimen name="mini_wheel">36dp</dimen>
-    <dimen name="material_padding_left">72dp</dimen>
+
+    <dimen name="primary_text">14sp</dimen>
+    <dimen name="small_text">12sp</dimen>
+
+    <dimen name="default_margin">16dp</dimen>
+    <dimen name="start_keyline">72dp</dimen>
+    <dimen name="section_info_data_text">34sp</dimen>
 
 </resources>

@@ -6,14 +6,11 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="?attr/colorPrimary"
-        android:elevation="1dp"
-        android:minHeight="?attr/actionBarSize"
         android:transitionName="@string/transition_name_tool_background"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        style="@style/ToolbarStyle"
+        android:theme="@style/RutgersCT.ToolbarTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:transitionGroup="true"
         >
 
     </android.support.v7.widget.Toolbar>

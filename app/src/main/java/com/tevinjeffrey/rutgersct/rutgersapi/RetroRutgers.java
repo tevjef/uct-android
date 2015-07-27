@@ -44,7 +44,7 @@ public class RetroRutgers {
 
     RestAdapter.Builder restBuilder = new RestAdapter.Builder()
             .setEndpoint("http://sis.rutgers.edu/soc/")
-            .setLogLevel(RestAdapter.LogLevel.FULL)
+            .setLogLevel(RestAdapter.LogLevel.HEADERS_AND_ARGS)
             .setErrorHandler(new MyErrorHandler())
             .setConverter(new GsonConverter(gson));
 

@@ -1,42 +1,44 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.content.Context;
+
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.otto.Bus;
+import com.tevinjeffrey.rutgersct.RutgersCTModule;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.RutgersApiTestConts;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
+import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.ObjectGraph;
+import dagger.Provides;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-/**
- * Created by Tevin on 7/22/2015.
- */
 public class TrackedSectionsPresenterImplTest {
     RutgersApiTestConts testConts = new RutgersApiTestConts();
-
     TrackedSectionsPresenterImpl trackedSectionsPresenterImpl;
 
-    RetroRutgers testRutgersApi;
-    DatabaseHandler testDatabaseHandler;
-    TrackedSectionsView testTrackedSectionsView;
-
-    @Mock
-    OkHttpClient client;
+    @Inject
+    TrackedSectionsView mockTrackedSectionsView;
 
     @Before
     public void setUp() throws Exception {
-        testRutgersApi = mock(RetroRutgers.class);
-        testDatabaseHandler = mock(DatabaseHandler.class);
-        testTrackedSectionsView = mock(TrackedSectionsView.class);
-
+        ObjectGraph og = ObjectGraph.create(new TestRutgersCTModule());
+        og.inject(this);
+        trackedSectionsPresenterImpl = new TrackedSectionsPresenterImpl();
+        og.inject(trackedSectionsPresenterImpl);
 
     }
 
@@ -50,8 +52,7 @@ public class TrackedSectionsPresenterImplTest {
         when(testRutgersApi.getTrackedSections(testConts.createTrackedSections())).thenReturn(Observable.just(section));
         when(testRutgersApi.getDefaultClient()).thenReturn(mock(OkHttpClient.class));*/
 
-        trackedSectionsPresenterImpl = new TrackedSectionsPresenterImpl(testRutgersApi, testDatabaseHandler);
-        trackedSectionsPresenterImpl.attachView(testTrackedSectionsView);
+        trackedSectionsPresenterImpl.attachView(mockTrackedSectionsView);
 
         assertTrue(trackedSectionsPresenterImpl.getView() != null);
         /*verify(testTrackedSectionsView)
@@ -64,26 +65,68 @@ public class TrackedSectionsPresenterImplTest {
 
     @Test
     public void testAttachView() throws Exception {
-        trackedSectionsPresenterImpl = new TrackedSectionsPresenterImpl(testRutgersApi, testDatabaseHandler);
-        trackedSectionsPresenterImpl.attachView(testTrackedSectionsView);
+        trackedSectionsPresenterImpl.attachView(mockTrackedSectionsView);
         assertTrue(trackedSectionsPresenterImpl.getView() != null);
     }
 
 
     @Test
     public void testDetachView() throws Exception {
-        trackedSectionsPresenterImpl = new TrackedSectionsPresenterImpl(testRutgersApi, testDatabaseHandler);
-        trackedSectionsPresenterImpl.attachView(testTrackedSectionsView);
+        trackedSectionsPresenterImpl.attachView(mockTrackedSectionsView);
         trackedSectionsPresenterImpl.detachView(false);
         assertTrue(trackedSectionsPresenterImpl.getView() == null);
     }
 
     @Test
     public void testGetView() throws Exception {
-        trackedSectionsPresenterImpl = new TrackedSectionsPresenterImpl(testRutgersApi, testDatabaseHandler);
-        trackedSectionsPresenterImpl.attachView(testTrackedSectionsView);
+        trackedSectionsPresenterImpl.attachView(mockTrackedSectionsView);
 
-        View expected = testTrackedSectionsView;
+        View expected = mockTrackedSectionsView;
         assertEquals(expected, trackedSectionsPresenterImpl.getView());
     }
+
+    @Module(
+            injects = TrackedSectionsPresenterImplTest.class
+            , overrides = true
+            ,library = true
+            ,complete = false)
+    static class TestRutgersCTModule {
+
+        @Provides
+        @Singleton
+        public Context provideContext() {
+            return mock(Context.class);
+        }
+
+        @Provides
+        @Singleton
+        public DatabaseHandler providesDatabaseHandler(Bus bus) {
+            return mock(DatabaseHandler.class);
+        }
+
+        @Provides
+        @Singleton
+        public Bus providesEventBus() {
+            return mock(Bus.class);
+        }
+
+        @Provides
+        @Singleton
+        public PreferenceUtils providesPreferenceUtils(Context context) {
+            return new PreferenceUtils(context);
+        }
+
+        @Provides
+        @Singleton
+        public OkHttpClient providesOkHttpClient(Context context) {
+            return mock(OkHttpClient.class);
+        }
+
+        @Provides
+        @Singleton
+        public TrackedSectionsView providesTrackedSectionView() {
+            return mock(TrackedSectionsView.class);
+        }
+    }
+
 }

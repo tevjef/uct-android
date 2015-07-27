@@ -25,6 +25,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -38,19 +40,23 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private final RMP rmp;
-    private final DatabaseHandler mDatabaseHandler;
+    @Inject
+    RMP rmp;
+
+    @Inject
+    DatabaseHandler mDatabaseHandler;
+
+    @Inject
+    RetroRutgers mRetroRutgers;
+
+    @Inject
+    Bus mBus;
+
     private final Section mSection;
-    private final RetroRutgers mRetroRutgers;
-    private final Bus mBus;
     private Subscription mSubscription;
 
-    public SectionInfoPresenterImpl(RetroRutgers retroRutgers, RMP rmp, Section mSection, DatabaseHandler databaseHandler, Bus bus) {
-        this.mDatabaseHandler = databaseHandler;
-        this.mSection = mSection;
-        this.rmp = rmp;
-        this.mRetroRutgers = retroRutgers;
-        this.mBus = bus;
+    public SectionInfoPresenterImpl(Section section) {
+        this.mSection = section;
     }
 
     public void setFabState(boolean animate) {
@@ -62,7 +68,6 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     public void toggleFab() {
         boolean sectionTracked = mDatabaseHandler.isSectionTracked(mSection.getRequest());
-
         if (sectionTracked) {
             removeSection(mSection.getRequest());
         } else {
@@ -179,13 +184,17 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mBus.register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mBus.unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        mBus.register(this);
     }
 
     @Subscribe

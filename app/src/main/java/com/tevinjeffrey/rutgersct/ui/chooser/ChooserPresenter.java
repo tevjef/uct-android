@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.ui.search;
+package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import com.tevinjeffrey.rutgersct.ui.base.StatefulPresenter;
 

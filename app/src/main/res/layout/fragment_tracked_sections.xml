@@ -9,10 +9,39 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/ToolbarStyle"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:transitionName="@string/transition_name_tool_background"
         android:theme="@style/RutgersCT.ToolbarTheme"
-        android:labelFor="@string/tracked_sections"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:src="@drawable/ic_tracked_sections"
+            android:layout_marginLeft="@dimen/default_margin" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/tracked_sections"
+            style="@style/ToolbarTitleStyle"
+            android:gravity="center"
+            android:paddingLeft="@dimen/start_keyline"/>
+
+        </FrameLayout>
+
     </android.support.v7.widget.Toolbar>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -49,7 +78,4 @@
         app:rippleColor="@color/blue_grey_light"
         android:visibility="visible"
         android:transitionName="@string/transition_name_fab" />
-
-
-
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.MeetingTimes;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
 
 import java.util.Collections;
@@ -44,14 +45,14 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
         TextView mSectionLocationText;
         TextView mTimeText;
 
-        final List<Course.Section.MeetingTimes> meetingTimes = section.getMeetingTimes();
+        final List<MeetingTimes> meetingTimes = section.getMeetingTimes();
         //sort times so that Monday > Tuesday and Lecture > Recitation
         Collections.sort(meetingTimes);
 
         for (int i = 0; i < mSectionTimeContainer.getChildCount(); i++) {
             View timeLayout = mSectionTimeContainer.getChildAt(i);
 
-            Course.Section.MeetingTimes time = null;
+            MeetingTimes time = null;
             if (meetingTimes.size() > 0 && meetingTimes.size() - 1 >= i) {
                 time = meetingTimes.get(i);
             }

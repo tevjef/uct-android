@@ -67,7 +67,7 @@
 
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/term_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -120,7 +120,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/level_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="50dp"
-            android:layout_toRightOf="@+id/linearLayout2"
+            android:layout_toRightOf="@+id/term_layout"
             android:orientation="vertical">
 
             <TextView

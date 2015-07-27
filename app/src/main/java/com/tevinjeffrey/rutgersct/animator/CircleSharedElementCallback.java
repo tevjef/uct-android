@@ -29,7 +29,7 @@ public class CircleSharedElementCallback extends SharedElementCallback {
 
         if (isEnter) {
             for (View v : sharedElements) {
-                if (v.getTransitionName().equals(RutgersCTApp.getInstance().getString(R.string.transition_name_circle_view)) && v instanceof CircleView) {
+                if (v.getTransitionName().equals(v.getResources().getString(R.string.transition_name_circle_view)) && v instanceof CircleView) {
                     mCircleViewSnapshot = (CircleView) v;
                     mCircleViewSnapshot.setVisibility(View.INVISIBLE);
                 }
