@@ -5,7 +5,6 @@ import android.transition.Transition;
 import android.view.View;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
 
 import java.lang.ref.WeakReference;

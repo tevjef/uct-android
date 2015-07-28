@@ -1,11 +1,9 @@
 package com.tevinjeffrey.rutgersct.database;
 
 import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
 
@@ -39,15 +37,15 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
                 .subscribe();
     }
 
-    public Observable<List<TrackedSection>> getAllSections() {
-        return Observable.just(TrackedSection.listAll(TrackedSection.class))
+    public Observable<List<TrackedSections>> getAllSections() {
+        return Observable.just(TrackedSections.listAll(TrackedSections.class))
                 .subscribeOn(Schedulers.io());
     }
 
     private int removeFromDb(Request request) {
-        List<TrackedSection> trackedSections = TrackedSection.find(TrackedSection.class,
+        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
                 "INDEX_NUMBER = ?", request.getIndex());
-        for (TrackedSection ts : trackedSections) {
+        for (TrackedSections ts : trackedSections) {
             ts.delete();
         }
         return trackedSections.size();
@@ -62,7 +60,7 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
     }
 
     public boolean isSectionTracked(Request request) {
-        List<TrackedSection> trackedSections = TrackedSection.find(TrackedSection.class,
+        List<TrackedSections> trackedSections = TrackedSections.find(TrackedSections.class,
                 "INDEX_NUMBER = ?", request.getIndex());
 
         return trackedSections != null && trackedSections.size() != 0;
@@ -84,8 +82,8 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
     }
 
     @Override
-    public TrackedSection saveToDb(Request request) {
-        TrackedSection trackedSections = new TrackedSection(request.getSubject(),
+    public TrackedSections saveToDb(Request request) {
+        TrackedSections trackedSections = new TrackedSections(request.getSubject(),
                 request.getSemester().toString(), Request.toStringList(request.getLocations()),
                 Request.toStringList(request.getLevels()), request.getIndex());
         trackedSections.save();

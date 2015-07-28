@@ -6,9 +6,6 @@ import android.content.Intent;
 
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.services.Alarm;
-import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
-
-import javax.inject.Inject;
 
 import timber.log.Timber;
 

@@ -23,7 +23,7 @@ public class RutgersApiImplTest {
 
     OkHttpClient client = new OkHttpClient();
 
-    List<TrackedSection> trackedSections;
+    List<TrackedSections> trackedSections;
 
     RetroRutgers retroRutgers = new RetroRutgers(client);
 

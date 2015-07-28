@@ -1,11 +1,12 @@
 package com.tevinjeffrey.rutgersct.modules;
 
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Response;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.ui.course.CoursePresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserPresenterImpl;
+import com.tevinjeffrey.rutgersct.ui.course.CoursePresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
@@ -38,7 +39,8 @@ public class RetroRutgersModule {
     @Singleton
     public RetroRutgers providesRetroRutgers(OkHttpClient client) {
         OkHttpClient okClient = client.clone();
-        okClient.networkInterceptors().add(getCacheControlInterceptor(TimeUnit.SECONDS.toMillis(20)));
+        okClient.networkInterceptors().add(getCacheControlInterceptor(TimeUnit.SECONDS.toMillis(5  )));
+
         return new RetroRutgers(okClient);
     }
 

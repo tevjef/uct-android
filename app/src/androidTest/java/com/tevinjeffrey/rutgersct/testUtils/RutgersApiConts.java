@@ -2,7 +2,7 @@ package com.tevinjeffrey.rutgersct.testUtils;
 
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Response;
-import com.tevinjeffrey.rutgersct.database.TrackedSection;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
 
@@ -29,7 +29,7 @@ public class RutgersApiConts {
         }
     };
 
-    List<TrackedSection> trackedSections;
+    List<TrackedSections> trackedSections;
 
     SemesterUtils semesterUtils = new SemesterUtils(Calendar.getInstance());
 
@@ -38,12 +38,12 @@ public class RutgersApiConts {
     final String YEAR = SEMESTER.getYear();
     final String SEASON = SEMESTER.getSeason().getName();
 
-    final TrackedSection t1 = new TrackedSection("011", SEASON + " " + YEAR, "Newark", "Undergraduate", "19961");
-    final TrackedSection t2 = new TrackedSection("014", SEASON + " " + YEAR, "Newark", "Undergraduate", "07495");
-    final TrackedSection t3 = new TrackedSection("049", SEASON + " " + YEAR, "Newark", "Undergraduate", "13927");
-    final TrackedSection t4 = new TrackedSection("510", SEASON + " " + YEAR, "Newark", "Undergraduate", "19173");
-    final TrackedSection t5 = new TrackedSection("510", SEASON + " " + YEAR, "Newark", "Undergraduate", "19172");
-    final TrackedSection t6 = new TrackedSection("011", SEASON + " " + YEAR, "Newark", "Undergraduate", "01842");
+    final TrackedSections t1 = new TrackedSections("011", SEASON + " " + YEAR, "Newark", "Undergraduate", "19961");
+    final TrackedSections t2 = new TrackedSections("014", SEASON + " " + YEAR, "Newark", "Undergraduate", "07495");
+    final TrackedSections t3 = new TrackedSections("049", SEASON + " " + YEAR, "Newark", "Undergraduate", "13927");
+    final TrackedSections t4 = new TrackedSections("510", SEASON + " " + YEAR, "Newark", "Undergraduate", "19173");
+    final TrackedSections t5 = new TrackedSections("510", SEASON + " " + YEAR, "Newark", "Undergraduate", "19172");
+    final TrackedSections t6 = new TrackedSections("011", SEASON + " " + YEAR, "Newark", "Undergraduate", "01842");
 
     final Request requestNewark =
             new Request("010",
@@ -100,7 +100,7 @@ public class RutgersApiConts {
                 new ArrayList<>(Arrays.asList(new String[]{"Undergraduate", "Graduate"})));
     }
 
-    public List<TrackedSection> createTrackedSections() {
+    public List<TrackedSections> createTrackedSections() {
         trackedSections = new ArrayList<>();
         trackedSections.add(t1);
         trackedSections.add(t2);

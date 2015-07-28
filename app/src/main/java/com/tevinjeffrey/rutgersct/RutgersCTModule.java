@@ -20,6 +20,7 @@ import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -39,6 +40,8 @@ import dagger.Provides;
 
 public class RutgersCTModule {
 
+    private static final long CONNECT_TIMEOUT_MILLIS = 15000;
+    private static final long READ_TIMEOUT_MILLIS = 20000;
     private final Context applicationContext;
 
     public RutgersCTModule(Context context) {
@@ -73,13 +76,14 @@ public class RutgersCTModule {
     @Singleton
     public OkHttpClient providesOkHttpClient(Context context) {
         OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        client.networkInterceptors().add(new StethoInterceptor());
 
         File httpCacheDir = new File(context.getCacheDir(), context.getString(R.string.application_name));
         long httpCacheSize = 50 * 1024 * 1024; // 50 MiB
         Cache cache = new Cache(httpCacheDir, httpCacheSize);
         client.setCache(cache);
-        client.networkInterceptors().add(new StethoInterceptor());
-
         if (BuildConfig.DEBUG) {
             try {
                 cache.evictAll();

@@ -5,10 +5,9 @@ import android.os.Bundle;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.database.TrackedSection;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
@@ -85,7 +84,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
         };
 
         getObservableSections()
-                .subscribe(new Subscriber<List<TrackedSection>>() {
+                .subscribe(new Subscriber<List<TrackedSections>>() {
                     @Override
                     public void onCompleted() {
 
@@ -97,7 +96,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
                     }
 
                     @Override
-                    public void onNext(List<TrackedSection> trackedSections) {
+                    public void onNext(List<TrackedSections> trackedSections) {
                         mHasDataFlag = trackedSections.size() > 0;
                         mSubscription =
                                 mRetroRutgers.getTrackedSections(trackedSections)
@@ -125,7 +124,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
         RxUtils.unsubscribeIfNotNull(mSubscription);
     }
 
-    private Observable<List<TrackedSection>> getObservableSections() {
+    private Observable<List<TrackedSections>> getObservableSections() {
         return mDatabaseHandler.getAllSections();
     }
 

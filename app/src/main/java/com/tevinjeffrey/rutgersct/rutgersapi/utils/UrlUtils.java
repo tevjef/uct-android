@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rutgersct.rutgersapi.utils;
 
 
-import com.tevinjeffrey.rutgersct.database.TrackedSection;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 
@@ -129,7 +129,7 @@ public class UrlUtils {
         return query;
     }
 
-    public static Request getRequestFromTrackedSections(TrackedSection ts) {
+    public static Request getRequestFromTrackedSections(TrackedSections ts) {
         return new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
     }
 

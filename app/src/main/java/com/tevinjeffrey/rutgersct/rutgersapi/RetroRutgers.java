@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
-import com.tevinjeffrey.rutgersct.database.TrackedSection;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
@@ -36,6 +36,7 @@ public class RetroRutgers {
 
     private static final int SERVER_RETRY_COUNT = 3;
     private static final int RETRY_DELAY_MILLIS = 3000;
+    private final RetroRutgersService mRetroRutgersService;
 
     private Gson gson = new GsonBuilder()
             .serializeNulls()
@@ -56,6 +57,7 @@ public class RetroRutgers {
         mRestAdapter = restBuilder
                 .setClient(new OkClient(client))
                 .build();
+        mRetroRutgersService = getRestAdapter().create(RetroRutgersService.class);
 
         mSubjectsList = initSubjectList();
     }
@@ -80,14 +82,14 @@ public class RetroRutgers {
     }
 
     RetroRutgersService getRetroRutgersService() {
-        return getRestAdapter().create(RetroRutgersService.class);
+        return mRetroRutgersService;
     }
 
     public Observable<SystemMessage> getSystemMessage() {
         return getRetroRutgersService().getSystemMessage();
     }
 
-    public Observable<Course.Section> getTrackedSections(final List<TrackedSection> allTrackedSections) {
+    public Observable<Course.Section> getTrackedSections(final List<TrackedSections> allTrackedSections) {
         return createRequestObservableFromTrackedSections(allTrackedSections)
                 .flatMap(new Func1<Request, Observable<Section>>() {
                     @Override
@@ -197,17 +199,17 @@ public class RetroRutgers {
         };
     }
 
-    public Observable<Request> createRequestObservableFromTrackedSections(Iterable<TrackedSection> allTrackedSections) {
+    public Observable<Request> createRequestObservableFromTrackedSections(Iterable<TrackedSections> allTrackedSections) {
         return Observable.from(allTrackedSections)
-                .flatMap(new Func1<TrackedSection, Observable<Request>>() {
+                .flatMap(new Func1<TrackedSections, Observable<Request>>() {
                     @Override
-                    public Observable<Request> call(TrackedSection trackedSection) {
+                    public Observable<Request> call(TrackedSections trackedSection) {
                         return createRequest(trackedSection);
                     }
                 });
     }
 
-    private Observable<Request> createRequest(TrackedSection trackedSection) {
+    private Observable<Request> createRequest(TrackedSections trackedSection) {
         return Observable.just(UrlUtils.getRequestFromTrackedSections(trackedSection));
     }
 

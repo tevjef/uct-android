@@ -25,6 +25,7 @@ public class RMP {
     final static String TAG = RMP.class.getSimpleName();
 
     OkHttpClient client;
+
     public final String RMP_BASE_URL = "http://www.ratemyprofessors.com";
 
     public RMP(OkHttpClient client) {

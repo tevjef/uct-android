@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
-import com.tevinjeffrey.rutgersct.RutgersCTModule;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.RutgersApiTestConts;
 import com.tevinjeffrey.rutgersct.ui.base.View;

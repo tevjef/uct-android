@@ -1,23 +1,12 @@
 package com.tevinjeffrey.rutgersct;
 
 import android.content.Context;
-import android.text.format.Time;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.orm.SugarApp;
 import com.splunk.mint.Mint;
 import com.squareup.leakcanary.RefWatcher;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.otto.Bus;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,12 +15,10 @@ import java.io.RandomAccessFile;
 import java.util.UUID;
 
 import dagger.ObjectGraph;
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class RutgersCTApp extends SugarApp {
-    public static final String REFRESH_INTERVAL = "Sync Interval";
-    public static final String ITEMS_IN_DATABASE = "Items in database";
-    public static final String RESPONSE = "Response from server";
     public final static String SELECTED_SUBJECT = "SELECTED_SUBJECT";
     public final static String SELECTED_SECTION = "SELECTED_SECTION";
     public final static String SELECTED_COURSE = "SELECTED_COURSE";
@@ -61,7 +48,7 @@ public class RutgersCTApp extends SugarApp {
         objectGraph = ObjectGraph.create(new RutgersCTModule(getApplicationContext()));
 
         //Initalize crash reporting apis
-        //Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         if (BuildConfig.DEBUG) {
             //When debugging logs will go through the Android logger
             Timber.plant(new Timber.DebugTree());
@@ -124,12 +111,6 @@ public class RutgersCTApp extends SugarApp {
         out.close();
     }
 
-    public static String getTimeNow() {
-        Time t = new Time();
-        t.setToNow();
-        return t.toString();
-    }
-
     // A tree which logs important information for crash reporting.
     private static class CrashReportingTree extends Timber.HollowTree {
         @Override
@@ -151,7 +132,7 @@ public class RutgersCTApp extends SugarApp {
         @Override
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
-            //Crashlytics.logException(t);
+            Crashlytics.logException(t);
             Mint.logExceptionMessage("INFO: ", String.format(message, args),
                     new Exception(t));
         }

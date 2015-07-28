@@ -21,8 +21,7 @@
             <TextView
                 tools:text="Joyce Carolla"
                 style="@style/PrimaryTextStyle"
-                android:id="@+id/rmp_prof_name"
-                android:layout_toEndOf="@+id/overall_container" />
+                android:id="@+id/rmp_prof_name" />
 
             <TextView
                 tools:text="Mathematics"
@@ -87,7 +86,7 @@
                         android:id="@+id/wheel_clarity_rating"
                         app:itemsLineWidth="3dp"
                         app:backgroundColor="@android:color/white"
-                        android:layout_below="@+id/wheel_easiness_rating" />
+                        />
 
                 </RelativeLayout>
 
@@ -104,8 +103,7 @@
                         android:layout_height="@dimen/mini_wheel"
                         android:id="@+id/wheel_helpfullness_rating"
                         app:itemsLineWidth="3dp"
-                        app:backgroundColor="@android:color/white"
-                        android:layout_below="@+id/wheel_clarity_rating" />
+                        app:backgroundColor="@android:color/white" />
 
                     <TextView
                         android:text="@string/helpfullness"

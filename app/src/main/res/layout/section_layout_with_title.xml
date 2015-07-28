@@ -25,9 +25,7 @@
             android:id="@+id/section_item_time_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fsl_divider"
-            android:layout_toRightOf="@+id/section_number_background"
-            android:layout_toEndOf="@+id/section_number_background" />
+            android:layout_below="@+id/fsl_divider" />
 
         <TextView
             android:id="@+id/course_title_text"
@@ -37,16 +35,12 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="false"
             android:layout_alignParentLeft="false"
-            android:paddingBottom="4dp"
-            android:layout_toRightOf="@+id/section_number_background"
-            android:layout_toEndOf="@+id/section_number_background" />
+            android:paddingBottom="4dp" />
 
         <View xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/fsl_divider"
             android:layout_below="@+id/course_title_text"
-            android:layout_toRightOf="@+id/section_number_background"
-            android:layout_toEndOf="@+id/section_number_background"
             android:layout_marginBottom="4dp"
             style="@style/divider" />
 

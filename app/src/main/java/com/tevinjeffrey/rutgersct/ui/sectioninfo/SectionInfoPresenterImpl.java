@@ -11,7 +11,6 @@ import com.tevinjeffrey.rmp.professor.Professor;
 import com.tevinjeffrey.rmp.search.Decider;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.Instructors;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;

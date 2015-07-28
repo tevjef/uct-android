@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.StatefulPresenter;

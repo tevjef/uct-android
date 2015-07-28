@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.database.TrackedSection;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
@@ -53,10 +53,10 @@ public class RequestService extends Service {
         //Hold the refence to the intent so that I can use it outside the scope of this method.
         mIntent = intent;
 
-        Timber.i("Request Service started at %s", RutgersCTApp.getTimeNow());
+        Timber.i("Request Service started at %s", System.currentTimeMillis());
 
         Observable<Section> courseObservable = mRetroRutgers
-                .getTrackedSections(TrackedSection.listAll(TrackedSection.class));
+                .getTrackedSections(TrackedSections.listAll(TrackedSections.class));
 
         courseObservable
                 .subscribeOn(Schedulers.io())
@@ -155,7 +155,7 @@ public class RequestService extends Service {
 
     @Override
     public void onDestroy() {
-        Timber.i("Request Service ended at %s", RutgersCTApp.getTimeNow());
+        Timber.i("Request Service ended at %s", System.currentTimeMillis());
         super.onDestroy();
     }
 

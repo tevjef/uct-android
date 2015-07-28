@@ -10,11 +10,11 @@ public interface DatabaseHandler {
 
     void removeSectionFromDb(Request request);
 
-    Observable<List<TrackedSection>> getAllSections();
+    Observable<List<TrackedSections>> getAllSections();
 
     void addSectionToDb(Request request);
 
     boolean isSectionTracked(Request request);
 
-    TrackedSection saveToDb(Request request);
+    TrackedSections saveToDb(Request request);
 }
