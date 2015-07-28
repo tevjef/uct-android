@@ -2,6 +2,6 @@ package com.tevinjeffrey.rutgersct.ui.base;
 
 public interface View {
     enum LayoutType {
-        EMPTY, ERROR, layoutType, LIST
+        EMPTY, ERROR, LIST
     }
 }

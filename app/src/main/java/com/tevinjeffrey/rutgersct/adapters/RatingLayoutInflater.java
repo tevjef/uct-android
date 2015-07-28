@@ -22,7 +22,7 @@ public class RatingLayoutInflater {
     public static final int LOW_RATING_LIMIT = 40;
     public static final int MEDIUM_RATING_LIMIT = 60;
     private Professor mProfessor;
-    private Activity mContext;
+    private Context mContext;
 
     public RatingLayoutInflater(@NonNull Activity context, @NonNull Professor professor) {
         this.mProfessor = professor;
@@ -31,22 +31,14 @@ public class RatingLayoutInflater {
 
     @MainThread
     public ViewGroup getProfessorLayout() {
-        ViewGroup root = (ViewGroup) mContext.getLayoutInflater().inflate(R.layout.section_info_rmp_rating, null);
-
+        ViewGroup root = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.section_info_rmp_rating, null);
         setName(root);
-
         setDepartment(root);
-
         setOverall(root);
-
         setEasiness(root);
-
         setClarity(root);
-
         setHelpfulness(root);
-
         setAverageGrade(root);
-
         tagView(root);
 
         return root;
@@ -63,7 +55,7 @@ public class RatingLayoutInflater {
         String url = "http://www.google.com/#q=" + UrlUtils.getGoogleUrl(s);
         message.setTag(url);
 
-        message.setText("Could not find professor: " + professorName);
+        message.setText(mContext.getString(R.string.could_not_find_professor) + professorName);
         return message;
     }
 

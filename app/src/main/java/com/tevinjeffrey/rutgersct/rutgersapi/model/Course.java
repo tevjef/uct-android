@@ -596,7 +596,7 @@ public final class Course implements Comparable, Parcelable {
             }
 
             public String getName() {
-                return name;
+                return name.replaceAll("\\s+", " ").trim();
             }
 
             public String getFirstName() {

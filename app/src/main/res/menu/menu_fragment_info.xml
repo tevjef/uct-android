@@ -8,7 +8,7 @@
             app:showAsAction="withText|ifRoom" />-->
     <item
         android:id="@+id/action_track"
-        android:icon="@drawable/ic_track_changes_white"
+        android:icon="@drawable/ic_tracked_sections"
         android:title="@string/action_track"
         android:titleCondensed="@string/action_track"
         app:showAsAction="ifRoom" />

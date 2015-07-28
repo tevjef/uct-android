@@ -410,7 +410,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mToolbar.setTransitionName(getString(R.string.transition_name_tool_background));
             ft.addSharedElement(mToolbar, getString(R.string.transition_name_tool_background));
-            setExitTransition(new Fade(Fade.OUT).setDuration(50));
+            setExitTransition(new Fade(Fade.OUT).setDuration(getResources().getInteger(R.integer.exit_anim)));
             chooserFragment.setAllowEnterTransitionOverlap(false);
             chooserFragment.setAllowReturnTransitionOverlap(false);
         } else {

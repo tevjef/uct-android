@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -29,12 +28,10 @@ public class Alarm {
     public void setAlarm() {
         AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
 
-        //Intent to a wakeful receiver. Rather than to the service directly.
-        Intent wakefulBroadcastReceiverIntent = new Intent(mContext,
-                AlarmWakefulReceiver.class);
+        Intent service = new Intent(mContext, RequestService.class);;
 
         //Package that intent into a pending intent.
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 1234, wakefulBroadcastReceiverIntent,
+        PendingIntent alarmIntent = PendingIntent.getService(mContext, 1234, service,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         //Cancel all previous alarms of the same pending intent.

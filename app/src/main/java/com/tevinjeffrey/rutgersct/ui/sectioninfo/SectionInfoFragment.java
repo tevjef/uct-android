@@ -269,10 +269,10 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
                     colorAnim.start();
                 }
             } else {
-                ViewCompat.setBackgroundTintList(mFab, ColorStateList.valueOf(sectionIsAdded ? COLOR_DARK : COLOR));
+                //Using ViewCompat to set the tint list is bugged on pre lollipop.
+                mFab.setBackgroundTintList(ColorStateList.valueOf(sectionIsAdded ? COLOR_DARK : COLOR));
                 ViewCompat.setRotation(mFab, sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
             }
-
         mViewState.isSectionAdded = sectionIsAdded;
     }
 

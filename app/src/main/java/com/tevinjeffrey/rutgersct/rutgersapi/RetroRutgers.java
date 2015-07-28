@@ -1,5 +1,7 @@
 package com.tevinjeffrey.rutgersct.rutgersapi;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -133,7 +135,7 @@ public class RetroRutgers {
                             public void call(Subscriber<? super List<Course.Section>> subscriber) {
                                 if (!subscriber.isUnsubscribed()) {
                                     subscriber.onNext(sectionList);
-                                    if (sectionList.size() != allTrackedSections.size()) {
+                                    if (sectionList.size() < allTrackedSections.size()) {
                                         subscriber.onError(new RutgersServerIOException("Could not retrieve all sections"));
                                     } else {
                                         subscriber.onCompleted();
@@ -163,9 +165,20 @@ public class RetroRutgers {
 
     private Observable<Course> configureCourses(List<Course> courses, final Request request) {
         return Observable.from(courses)
+                .filter(filterEmptySections())
+                .map(filterUnprintedSections())
                 .map(setSubjectInCourse())
-                .map(setRequestAndStubCourseInSection(request))
-                .map(filterUnprintedSections());
+                .map(setRequestAndStubCourseInSection(request));
+    }
+
+    @NonNull
+    private Func1<Course, Boolean> filterEmptySections() {
+        return new Func1<Course, Boolean>() {
+            @Override
+            public Boolean call(Course course) {
+                return course.getSections().size() > 0;
+            }
+        };
     }
 
     private Func1<Course, Course> filterUnprintedSections() {

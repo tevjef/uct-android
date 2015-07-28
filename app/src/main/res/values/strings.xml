@@ -50,16 +50,6 @@
     <string name="transition_name_circle_view">transition_name_circle_view</string>
     <string name="transition_name_fab">transition_name_fab</string>
 
-    <!--
-    Preferences
-    -->
-    <string name="pref_learned_server_issues_key">pref_learned_server_issues_key</string>
-    <string name="pref_learned_server_issues_default_value">false</string>
-
-    <string name="pref_sync_interval_key">pref_sync_interval_key</string>
-    <string name="pref_sync_interval_default_value">1</string>
-
-
 
     <string name="time_and_location">Time and Location</string>
     <string name="cross_listed_sections">Cross-Listed</string>
@@ -96,6 +86,7 @@
     <string name="select_a_semester">Select a semester</string>
     <string name="select_a_location">Select a campus</string>
     <string name="select_a_level">Select a level</string>
+    <string name="could_not_find_professor">"Could not find professor: "</string>
 
     <string-array name="intervals">
         <item>Every 5 minutes</item>

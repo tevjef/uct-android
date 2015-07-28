@@ -20,7 +20,7 @@ public class BootReceiver extends BroadcastReceiver {
         RutgersCTApp rutgersCTApp = (RutgersCTApp) context.getApplicationContext();
 
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            Timber.i("BootReceiver: ", "Caught android.intent.action.BOOT_COMPLETED");
+            Timber.d("BootReceiver: ", "Caught android.intent.action.BOOT_COMPLETED");
 
             //Set alarm when the device boots.
             rutgersCTApp.getObjectGraph().get(Alarm.class).setAlarm();

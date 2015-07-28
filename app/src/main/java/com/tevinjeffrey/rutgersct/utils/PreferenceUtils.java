@@ -20,18 +20,18 @@ public class PreferenceUtils {
         this.context = context;
     }
 
-    public boolean getLearnedServerIssues() {
+    public boolean getCanPlaySound() {
         Context context = this.context;
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean(context.getString(R.string.pref_learned_server_issues_key),
-                context.getResources().getBoolean(R.bool.pref_learned_server_issues_default_value));
+        return sharedPreferences.getBoolean(context.getString(R.string.pref_sound_key),
+                context.getResources().getBoolean(R.bool.pref_sound_default_value));
     }
 
-    public void setLearnedServerIssues(boolean learned) {
+    public void setSound(boolean learned) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.edit()
-                .putBoolean(getString(R.string.pref_learned_server_issues_key), learned)
+                .putBoolean(getString(R.string.pref_sound_key), learned)
                 .commit();
 
     }

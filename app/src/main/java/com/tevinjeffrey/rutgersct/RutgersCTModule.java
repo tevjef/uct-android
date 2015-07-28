@@ -74,7 +74,7 @@ public class RutgersCTModule {
     public OkHttpClient providesOkHttpClient(Context context) {
         OkHttpClient client = new OkHttpClient();
 
-        File httpCacheDir = new File(context.getCacheDir(), context.getString(R.string.app_name));
+        File httpCacheDir = new File(context.getCacheDir(), context.getString(R.string.application_name));
         long httpCacheSize = 50 * 1024 * 1024; // 50 MiB
         Cache cache = new Cache(httpCacheDir, httpCacheSize);
         client.setCache(cache);

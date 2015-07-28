@@ -14,10 +14,10 @@ import android.support.v4.app.NotificationCompat;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.TrackedSection;
-import com.tevinjeffrey.rutgersct.receivers.AlarmWakefulReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.util.concurrent.CancellationException;
 
@@ -33,8 +33,12 @@ import static com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 
 public class RequestService extends Service {
 
+    private static final String SECTION_NOTIFICATION_GROUP = "SECTION_NOTIFICATION_GROUP";
+
     @Inject
     RetroRutgers mRetroRutgers;
+    @Inject
+    PreferenceUtils mPreferenceUtils;
 
     private Intent mIntent;
 
@@ -101,6 +105,7 @@ public class RequestService extends Service {
                             .setPriority(NotificationCompat.PRIORITY_MAX)
                             .setColor(getResources().getColor(R.color.green))
                             .setAutoCancel(true)
+                            .setGroup(SECTION_NOTIFICATION_GROUP)
                             .setSound(getSound())
                             .setContentTitle("A section has opened!")
                             .setContentText("Section " + sectionNumber + " of " + courseTitle
@@ -110,14 +115,14 @@ public class RequestService extends Service {
             Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
             openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
             PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this, 0, openInBrowser, 0);
-            mBuilder.addAction(0, "Open Webreg", pOpenInBrowser);
+            mBuilder.addAction(R.drawable.ic_open_in_browser_white_24dp, "Webreg", pOpenInBrowser);
 
             //Intent open the app.
             Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
             openTracked.putExtra(RutgersCTApp.REQUEST, r);
             openTracked.putExtra(RutgersCTApp.SELECTED_SECTION, section);
             PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this, Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.addAction(0, "Stop Tracking", pOpenTracked);
+            mBuilder.addAction(R.drawable.ic_close_white_24dp, "Stop Tracking", pOpenTracked);
 
             //When you click on the notification itself.
             mBuilder.setContentIntent(pOpenInBrowser);
@@ -134,7 +139,7 @@ public class RequestService extends Service {
     }
 
     private Uri getSound() {
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sound", true)) {
+        if (mPreferenceUtils.getCanPlaySound()) {
             return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         } else {
             return null;
@@ -151,9 +156,6 @@ public class RequestService extends Service {
     @Override
     public void onDestroy() {
         Timber.i("Request Service ended at %s", RutgersCTApp.getTimeNow());
-
-        //Tells wakeful reciever to release wakelock and allow the the CPU to goto sleep.
-        AlarmWakefulReceiver.completeWakefulIntent(mIntent);
         super.onDestroy();
     }
 

@@ -212,4 +212,14 @@
     <style name="section_metadata_containers" parent="metadata_wrapper">
         <item name="android:layout_marginLeft">0dp</item>
     </style>
+
+    <style name="SectionInfoDataText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:typeface">normal</item>
+    </style>
 </resources>

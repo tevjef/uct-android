@@ -150,15 +150,8 @@
 
                         <TextView
                             android:id="@+id/sectionNumber_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-condensed"
                             tools:text="Q2"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@android:color/white"
-                            android:textSize="34sp"
-                            android:transitionName="section_number"
-                            android:typeface="normal" />
+                            style="@style/SectionInfoDataText" />
 
                     </LinearLayout>
 
@@ -177,15 +170,8 @@
 
                         <TextView
                             android:id="@+id/indexNumber_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-condensed"
-                            android:maxLines="1"
                             tools:text="34562"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@android:color/white"
-                            android:textIsSelectable="false"
-                            android:textSize="@dimen/section_info_data_text" />
+                            style="@style/SectionInfoDataText" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -203,14 +189,8 @@
 
                         <TextView
                             android:id="@+id/subtitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-condensed"
                             tools:text="4"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@android:color/white"
-                            android:textSize="34sp"
-                            android:typeface="normal" />
+                            style="@style/SectionInfoDataText" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -229,14 +209,8 @@
 
                         <TextView
                             android:id="@+id/exam_code_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-condensed"
-                            android:singleLine="true"
                             tools:text="A"
-                            android:textColor="@android:color/white"
-                            android:textSize="34sp"
-                            android:typeface="normal" />
+                            style="@style/SectionInfoDataText"/>
                     </LinearLayout>
 
                 </LinearLayout>

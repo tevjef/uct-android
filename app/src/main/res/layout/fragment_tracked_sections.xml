@@ -25,10 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/imageView"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
             android:src="@drawable/ic_tracked_sections"
-            android:layout_marginLeft="@dimen/default_margin" />
+            android:layout_marginLeft="@dimen/default_margin"
+            android:paddingLeft="3dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,9 +52,9 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tsf_list"
-            android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="vertical"
             android:visibility="visible" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
