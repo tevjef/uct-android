@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.holders.TrackedSectionVH;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 
 import java.util.List;
 
 public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<TrackedSectionVH> {
 
-    private final List<Course.Section> sectionList;
-    private final ItemClickListener itemClickListener;
+    private final List<Section> sectionList;
+    private final ItemClickListener<Section, View> itemClickListener;
 
-    public TrackedSectionsFragmentAdapter(List<Course.Section> sectionList, @NonNull ItemClickListener listener) {
+    public TrackedSectionsFragmentAdapter(List<Section> sectionList, @NonNull ItemClickListener<Section, View> listener) {
         this.sectionList = sectionList;
         this.itemClickListener = listener;
         setHasStableIds(true);
@@ -35,7 +35,7 @@ public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<Tracked
     @Override
     public void onBindViewHolder(final TrackedSectionVH holder, int position) {
 
-        final Course.Section section = sectionList.get(position);
+        final Section section = sectionList.get(position);
 
         holder.setCourseTitle(section.getCourse());
         holder.setOpenStatus(section);
@@ -46,7 +46,7 @@ public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<Tracked
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onItemClicked(section, v, holder.getAdapterPosition());
+                itemClickListener.onItemClicked(section, v);
             }
         });
     }
@@ -59,10 +59,5 @@ public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<Tracked
     @Override
     public int getItemCount() {
         return sectionList.size();
-    }
-
-
-    public interface ItemClickListener {
-        void onItemClicked(Course.Section section, View view, int positon);
     }
 }

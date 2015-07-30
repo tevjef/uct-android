@@ -12,24 +12,24 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.holders.CourseInfoVH;
 import com.tevinjeffrey.rutgersct.adapters.holders.HeaderVH;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
 
 import java.util.List;
 
 public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final List<Course.Section> sectionList;
-    final private ItemClickListener itemClickListener;
+    private final List<Section> sectionList;
+    final private ItemClickListener<Section, View> itemClickListener;
     final private List<View> mHeaders;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    public CourseInfoFragmentAdapter(List<View> headers, List<Course.Section> sections, @NonNull ItemClickListener listener) {
+    public CourseInfoFragmentAdapter(List<View> headers, List<Section> sections, @NonNull ItemClickListener<Section, View> listener) {
         this.mHeaders = headers;
         this.itemClickListener = listener;
         this.sectionList = sections;
-        SectionUtils.scrubSectionList(sectionList);
         setHasStableIds(true);
     }
 
@@ -54,7 +54,7 @@ public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView
             headerVH.setHeaders(mHeaders);
         } else if (holder.getItemViewType() == TYPE_ITEM) {
             CourseInfoVH courseInfoVH = (CourseInfoVH) holder;
-            final Course.Section section = sectionList.get(position - 1);
+            final Section section = sectionList.get(position - 1);
 
             courseInfoVH.setOpenStatus(section);
             courseInfoVH.setSectionNumber(section);
@@ -64,7 +64,7 @@ public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView
             courseInfoVH.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClicked(section, v, holder.getAdapterPosition());
+                    itemClickListener.onItemClicked(section, v);
                 }
             });
         }
@@ -92,9 +92,4 @@ public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView
     public int getItemCount() {
         return sectionList.size() + 1;
     }
-
-    public interface ItemClickListener {
-        void itemClicked(Course.Section section, View view, int positon);
-    }
-
 }

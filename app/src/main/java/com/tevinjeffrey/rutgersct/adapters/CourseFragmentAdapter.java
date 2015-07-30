@@ -16,9 +16,9 @@ import java.util.List;
 public class CourseFragmentAdapter extends RecyclerView.Adapter<CourseVH> {
 
     private List<Course> courseList;
-    private ItemClickListener itemClickListener;
+    private ItemClickListener<Course, View> itemClickListener;
 
-    public CourseFragmentAdapter(List<Course> courseList, @NonNull ItemClickListener listener) {
+    public CourseFragmentAdapter(List<Course> courseList, @NonNull ItemClickListener<Course, View> listener) {
         this.courseList = courseList;
         this.itemClickListener = listener;
         setHasStableIds(true);
@@ -42,7 +42,7 @@ public class CourseFragmentAdapter extends RecyclerView.Adapter<CourseVH> {
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.itemClicked(course, v, holder.getAdapterPosition());
+                itemClickListener.onItemClicked(course, v);
             }
         });
     }
@@ -57,7 +57,4 @@ public class CourseFragmentAdapter extends RecyclerView.Adapter<CourseVH> {
         return courseList.size();
     }
 
-    public interface ItemClickListener {
-        void itemClicked(Course course, View view, int positon);
-    }
 }

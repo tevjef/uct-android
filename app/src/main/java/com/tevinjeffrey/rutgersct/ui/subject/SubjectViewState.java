@@ -29,7 +29,7 @@ public class SubjectViewState extends BaseViewState<SubjectView> implements Parc
             view.setData(data);
             if ((snackBarShowing || layoutType == LayoutType.ERROR)
                     && errorMessage != null)
-                view.showError(new Exception(errorMessage), false);
+                view.showError(new Exception(errorMessage));
 
         }
     }

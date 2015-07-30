@@ -32,10 +32,12 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
 import com.tevinjeffrey.rutgersct.adapters.TrackedSectionsFragmentAdapter;
 import com.tevinjeffrey.rutgersct.animator.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
@@ -56,7 +58,7 @@ import rx.functions.Action1;
 
 @SuppressWarnings({"ClassWithTooManyMethods"})
 public class TrackedSectionsFragment extends MVPFragment implements TrackedSectionsView, SwipeRefreshLayout.OnRefreshListener,
-        TrackedSectionsFragmentAdapter.ItemClickListener {
+        ItemClickListener<Section, View> {
 
     public static final String TAG = TrackedSectionsFragment.class.getSimpleName();
 
@@ -81,7 +83,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     @Icicle
     TrackedSectionsViewState mViewState = new TrackedSectionsViewState();
 
-    private ArrayList<Course.Section> mListDataset;
+    private ArrayList<Section> mListDataset;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
             mBasePresenter = new TrackedSectionsPresenterImpl();
+            //I opted for field inject instead of constructor injection.
             getObjectGraph().inject(mBasePresenter);
         }
     }
@@ -157,7 +160,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     }
 
     public void initToolbar() {
-        setToolbarTitle(mToolbar, "");
+        //setToolbarTitle(mToolbar, "");
         setToolbar(mToolbar);
     }
 
@@ -174,7 +177,11 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         });
     }
 
-    public void setData(List<Course.Section> data) {
+    public void setData(List<Section> data) {
+        //mViewstate holds the data and parceles it into a bundle whenever the the state is saved
+        // and needs to be restored. Since this is a retainedfragment, the data set will not be
+        // destroyed on a config change. That does not not matter since the ViewState will be appling
+        // it's saved dataset when ever the onActivityCreated is called.
         mViewState.data = data;
         mListDataset.clear();
         mListDataset.addAll(data);
@@ -252,6 +259,11 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         }
     }
 
+    //Click events get through to the SwipeRefreshLayout even though another view is covering it.
+    // Instead of interecepting clicks I can disable it the layout entirely. Unfortunately disabling the SRL disables
+    // the gesture and the loading animation when setEnabled(false) is called. This is an issue as
+    // the refresh animation is the only way to notify the user of the work being done. So e.g if the
+    // we're in an empty state an the user issues a refresh there will be no refresh animation.
     private void enableSwipeRefreshLayout(boolean enable) {
         mSwipeRefreshLayout.setEnabled(enable);
     }
@@ -286,18 +298,20 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                 switch (direction) {
                     case UP:
                         animateFabIn();
+                        //These help methods have a glitchy animation on some Samsung devices.
                         //mFab.show();
                         break;
                     case DOWN:
                         animateFabOut();
+                        //These help methods have a glitchy animation on some Samsung devices.
                         //mFab.hide();
                         break;
                     case NEUTRAL:
-                        //mFab.jumpDrawablesToCurrentState();
                         break;
                 }
             }
 
+            //The animation up and down takes into account if he snackbar is showing or not.
             private void animateFabIn() {
                 ViewCompat.animate(mFab).alpha(1).setStartDelay(50).start();
                 ViewCompat.animate(mFab).translationY(mViewState.snackBarShowing?
@@ -337,7 +351,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     }
 
     @Override
-    public void onItemClicked(Course.Section section, View view, int positon) {
+    public void onItemClicked(Section section, View view) {
         startSectionInfoFragment(SectionInfoFragment.newInstance(section), view);
     }
 

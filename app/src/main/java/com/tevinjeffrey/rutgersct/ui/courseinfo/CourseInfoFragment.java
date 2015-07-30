@@ -24,9 +24,11 @@ import android.widget.TextView;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.CourseInfoFragmentAdapter;
+import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
 import com.tevinjeffrey.rutgersct.animator.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
@@ -41,7 +43,7 @@ import butterknife.ButterKnife;
 import icepick.Icicle;
 
 @SuppressWarnings("ClassWithTooManyMethods")
-public class CourseInfoFragment extends MVPFragment implements CourseInfoView, CourseInfoFragmentAdapter.ItemClickListener {
+public class CourseInfoFragment extends MVPFragment implements CourseInfoView, ItemClickListener<Section, View> {
 
     private static final String TAG = CourseInfoFragment.class.getSimpleName();
 
@@ -120,7 +122,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, C
 
 
     @Override
-    public void itemClicked(Course.Section section, View view, int positon) {
+    public void onItemClicked(Section section, View view) {
         setIndexInRequestObject(section.getIndex());
         Bundle bundle = new Bundle();
         bundle.putParcelable(RutgersCTApp.SELECTED_SECTION, section);
@@ -142,7 +144,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, C
         mRecyclerView.setHasFixedSize(true);
         if (mRecyclerView.getAdapter() == null) {
             mRecyclerView.setAdapter(new CourseInfoFragmentAdapter(mHeaderViews,
-                    mSelectedCourse.getSections(), CourseInfoFragment.this));
+                    mSelectedCourse.getSections(), this));
         }
     }
 

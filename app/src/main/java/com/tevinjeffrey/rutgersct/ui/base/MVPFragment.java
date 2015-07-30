@@ -34,7 +34,7 @@ public abstract class MVPFragment extends Fragment implements View {
 
         setHasOptionsMenu(true);
         Icepick.restoreInstanceState(this, savedInstanceState);
-        Timber.i("%s started with savedIntanceState %s and arguments %s",
+        Timber.d("%s started with savedIntanceState %s and arguments %s",
                 this.toString(), savedInstanceState == null ? "null" : savedInstanceState.toString()
                 , this.getArguments() == null ? "null" : this.getArguments().toString());
     }
@@ -69,7 +69,7 @@ public abstract class MVPFragment extends Fragment implements View {
         super.onDestroyView();
         ButterKnife.unbind(this);
         if (mBasePresenter != null) {
-            mBasePresenter.detachView(getRetainInstance());
+            mBasePresenter.detachView();
         }
         //RefWatcher refWatcher = RutgersCTApp.getRefWatcher(getActivity());
         //refWatcher.watch(this);
@@ -94,7 +94,7 @@ public abstract class MVPFragment extends Fragment implements View {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Timber.i("%s paused with outState %s and arguments %s",
+        Timber.d("%s paused with outState %s and arguments %s",
                 this.toString(), outState == null ? "null" : outState.toString()
                 , this.getArguments() == null ? "null" : this.getArguments().toString());
         super.onSaveInstanceState(outState);

@@ -12,7 +12,7 @@ public interface SubjectView extends View, BaseToolbarView {
 
     void setData(List<Subject> data);
 
-    void showError(Throwable e, boolean pullToRefresh);
+    void showError(Throwable e);
 
     void showLayout(LayoutType showEmptyLayout);
 

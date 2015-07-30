@@ -28,6 +28,7 @@ import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.CourseFragmentAdapter;
+import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
@@ -55,7 +56,7 @@ import icepick.Icicle;
 
 @SuppressWarnings("ClassWithTooManyMethods")
 public class CourseFragment extends MVPFragment implements CourseView, SwipeRefreshLayout.OnRefreshListener,
-        CourseFragmentAdapter.ItemClickListener {
+        ItemClickListener<Course, View> {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -235,7 +236,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     }
 
     @Override
-    public void itemClicked(Course course, View view, int positon) {
+    public void onItemClicked(Course course, View view) {
         startCourseInfoFragment(createArgs(mRequest, course));
     }
 

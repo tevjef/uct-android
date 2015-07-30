@@ -16,9 +16,9 @@ import java.util.List;
 public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
 
     private List<Subject> subjectList;
-    private ItemClickListener itemClickListener;
+    private ItemClickListener<Subject, View> itemClickListener;
 
-    public SubjectFragmentAdapter(List<Subject> subjectList, @NonNull ItemClickListener listener) {
+    public SubjectFragmentAdapter(List<Subject> subjectList, @NonNull ItemClickListener<Subject, View> listener) {
         this.subjectList = subjectList;
         this.itemClickListener = listener;
         setHasStableIds(true);
@@ -41,7 +41,7 @@ public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.itemClicked(subject, v, holder.getAdapterPosition());
+                itemClickListener.onItemClicked(subject, v);
             }
         });
     }
@@ -56,7 +56,4 @@ public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
         return subjectList.size();
     }
 
-    public interface ItemClickListener {
-        void itemClicked(Subject course, View view, int positon);
-    }
 }

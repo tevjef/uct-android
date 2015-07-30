@@ -51,7 +51,7 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
             public void onError(Throwable e) {
                 //Lets the view decide what to display depending on what type of exception it is.
                 if (getView() != null)
-                    getView().showError(e, true);
+                    getView().showError(e);
                 //Removes the animated loading drawable
                 if (getView() != null) {
                     getView().showLoading(false);
@@ -66,7 +66,7 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
                     getView().setData(subjectList);
 
                     if (subjectList.size() == 0)
-                        getView().showError(new RutgersDataIOException(), true);
+                        getView().showError(new RutgersDataIOException());
 
                     if (subjectList.size() > 0)
                         getView().showLayout(View.LayoutType.LIST);

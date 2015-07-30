@@ -72,7 +72,7 @@ public class TrackedSectionsPresenterImplTest {
     @Test
     public void testDetachView() throws Exception {
         trackedSectionsPresenterImpl.attachView(mockTrackedSectionsView);
-        trackedSectionsPresenterImpl.detachView(false);
+        trackedSectionsPresenterImpl.detachView();
         assertTrue(trackedSectionsPresenterImpl.getView() == null);
     }
 

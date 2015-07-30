@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.modules;
 
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Response;

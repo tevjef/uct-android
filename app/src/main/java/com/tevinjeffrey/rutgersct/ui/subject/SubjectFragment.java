@@ -29,8 +29,10 @@ import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
 import com.tevinjeffrey.rutgersct.adapters.SubjectFragmentAdapter;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
@@ -51,7 +53,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icicle;
 
-public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRefreshLayout.OnRefreshListener, SubjectFragmentAdapter.ItemClickListener {
+public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
 
     private static final String TAG = SubjectFragment.class.getSimpleName();
 
@@ -175,7 +177,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     }
 
     @Override
-    public void itemClicked(Subject subject, View view, int positon) {
+    public void onItemClicked(Subject subject, View view) {
         setSubjectInRequestObject(subject.getCode());
         startCourseFragement(createArgs(subject, mRequest));
     }
@@ -210,7 +212,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     }
 
     @Override
-    public void showError(Throwable t, boolean pullToRefresh) {
+    public void showError(Throwable t) {
         String message;
         Resources resources = getContext().getResources();
         if (t instanceof UnknownHostException) {
@@ -295,7 +297,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
                 Snackbar.with(getParentActivity())
                         .type(SnackbarType.MULTI_LINE)
                         .text(message)
-                        .actionLabel("RETRY")// text to display
+                        .actionLabel(R.string.snackbar_retry)// text to display
                         .actionListener(new ActionClickListener() {
                             @Override
                             public void onActionClicked(Snackbar snackbar) {
@@ -395,5 +397,4 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     private SubjectPresenter getPresenter() {
         return (SubjectPresenter) mBasePresenter;
     }
-
 }

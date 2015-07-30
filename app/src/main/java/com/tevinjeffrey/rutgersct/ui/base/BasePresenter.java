@@ -7,9 +7,12 @@ import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
+//Responsible for attaching and detaching the view to the presentor
 public abstract class BasePresenter implements Presenter, StatefulPresenter {
 
     @Nullable
+    //I admit this was a bit premature. The WeakReference holds the view to avoid leaking a
+    // reference to it.
     private WeakReference<View> mBaseView;
 
     @Override
@@ -44,7 +47,7 @@ public abstract class BasePresenter implements Presenter, StatefulPresenter {
         return mBaseView.get();
     }
 
-    public void detachView(boolean retainedInstance) {
+    public void detachView() {
         if (mBaseView != null) {
             mBaseView.clear();
         }

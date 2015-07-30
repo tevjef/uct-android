@@ -151,6 +151,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
 
     @Subscribe
     public void onDbUpdateEvent(DatabaseUpdateEvent event) {
+        //When a database update event comes through it loads the data, without a loading animation.
         loadTrackedSections(false);
     }
 

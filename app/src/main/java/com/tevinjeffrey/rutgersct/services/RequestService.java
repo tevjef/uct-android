@@ -19,8 +19,6 @@ import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
-import java.util.concurrent.CancellationException;
-
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -40,8 +38,6 @@ public class RequestService extends Service {
     @Inject
     PreferenceUtils mPreferenceUtils;
 
-    private Intent mIntent;
-
     public RequestService() {
     }
 
@@ -50,11 +46,9 @@ public class RequestService extends Service {
         RutgersCTApp rutgersCTApp = (RutgersCTApp) this.getApplication();
         rutgersCTApp.getObjectGraph().inject(this);
 
-        //Hold the refence to the intent so that I can use it outside the scope of this method.
-        mIntent = intent;
+        Timber.d("Request Service started at %s", System.currentTimeMillis());
 
-        Timber.i("Request Service started at %s", System.currentTimeMillis());
-
+        //TODO remove database call on the UI thread.
         Observable<Section> courseObservable = mRetroRutgers
                 .getTrackedSections(TrackedSections.listAll(TrackedSections.class));
 
@@ -69,14 +63,9 @@ public class RequestService extends Service {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t != null && !(t instanceof CancellationException)) {
-                            //If an error occured while completing the request. Send it to crash reporting.
-                            Timber.d(t, "Crash while attempting to complete request in %s"
-                                    , RequestService.this.toString());
-                        }
+                        Timber.d(t, "Crash while attempting to complete request");
                         stopSelf();
                     }
-
                     @Override
                     public void onNext(Section section) {
                         if (section.isOpenStatus())
@@ -121,7 +110,9 @@ public class RequestService extends Service {
             Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
             openTracked.putExtra(RutgersCTApp.REQUEST, r);
             openTracked.putExtra(RutgersCTApp.SELECTED_SECTION, section);
-            PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this, Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
+            //The intent that will be when the user clicks stop tracking in the notification bar.
+            PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this,
+                    Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.addAction(R.drawable.ic_close_white_24dp, "Stop Tracking", pOpenTracked);
 
             //When you click on the notification itself.
@@ -155,7 +146,7 @@ public class RequestService extends Service {
 
     @Override
     public void onDestroy() {
-        Timber.i("Request Service ended at %s", System.currentTimeMillis());
+        Timber.d("Request Service ended at %s", System.currentTimeMillis());
         super.onDestroy();
     }
 

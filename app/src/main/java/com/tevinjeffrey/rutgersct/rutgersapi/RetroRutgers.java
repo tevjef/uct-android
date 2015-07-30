@@ -162,6 +162,24 @@ public class RetroRutgers {
                         return configureCourses(courses, request);
                     }
                 }).toList()
+                .flatMap(new Func1<List<Course>, Observable<? extends List<Course>>>() {
+                    @Override
+                    public Observable<? extends List<Course>> call(final List<Course> courseList) {
+                        return Observable.create(new Observable.OnSubscribe<List<Course>>() {
+                            @Override
+                            public void call(Subscriber<? super List<Course>> subscriber) {
+                                if (!subscriber.isUnsubscribed()) {
+                                    if (courseList.isEmpty()) {
+                                        subscriber.onError(new RutgersServerIOException());
+                                    } else {
+                                        subscriber.onNext(courseList);
+                                        subscriber.onCompleted();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
                 .retryWhen(new RxUtils.RetryWithDelay(SERVER_RETRY_COUNT, RETRY_DELAY_MILLIS));
     }
 
