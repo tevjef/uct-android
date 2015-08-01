@@ -185,8 +185,8 @@ public class RetroRutgers {
 
     private Observable<Course> configureCourses(List<Course> courses, final Request request) {
         return Observable.from(courses)
-                .filter(filterEmptySections())
                 .map(filterUnprintedSections())
+                .filter(filterEmptySections())
                 .map(setSubjectInCourse())
                 .map(setRequestAndStubCourseInSection(request));
     }
@@ -196,7 +196,7 @@ public class RetroRutgers {
         return new Func1<Course, Boolean>() {
             @Override
             public Boolean call(Course course) {
-                return course.getSections().size() > 0;
+                return course.getSectionsTotal() > 0;
             }
         };
     }
