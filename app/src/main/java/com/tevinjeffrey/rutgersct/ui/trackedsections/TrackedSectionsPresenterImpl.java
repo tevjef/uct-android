@@ -8,9 +8,11 @@ import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
+import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.EMPTY;
@@ -83,49 +86,34 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
             }
         };
 
-        getObservableSections()
-                .subscribe(new Subscriber<List<TrackedSections>>() {
+        mSubscription = mDatabaseHandler.getObservableSections()
+                .flatMap(new Func1<List<Request>, Observable<Section>>() {
                     @Override
-                    public void onCompleted() {
-
+                    public Observable<Section> call(List<Request> requests) {
+                        mHasDataFlag = requests.size() > 0;
+                        return mRetroRutgers.getTrackedSections(requests);
                     }
-
+                })
+                .doOnSubscribe(new Action0() {
                     @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
+                    public void call() {
+                        isLoading = true;
                     }
-
+                })
+                .doOnTerminate(new Action0() {
                     @Override
-                    public void onNext(List<TrackedSections> trackedSections) {
-                        mHasDataFlag = trackedSections.size() > 0;
-                        mSubscription =
-                                mRetroRutgers.getTrackedSections(trackedSections)
-                                        .doOnSubscribe(new Action0() {
-                                            @Override
-                                            public void call() {
-                                                isLoading = true;
-                                            }
-                                        })
-                                        .doOnTerminate(new Action0() {
-                                            @Override
-                                            public void call() {
-                                                isLoading = false;
-                                            }
-                                        })
-                                        .toSortedList()
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(mSubscriber);
+                    public void call() {
+                        isLoading = false;
                     }
-                });
+                })
+                .toSortedList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mSubscriber);
     }
 
     private void cancePreviousSubscription() {
         RxUtils.unsubscribeIfNotNull(mSubscription);
-    }
-
-    private Observable<List<TrackedSections>> getObservableSections() {
-        return mDatabaseHandler.getAllSections();
     }
 
     public TrackedSectionsView getView() {

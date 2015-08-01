@@ -19,11 +19,6 @@ repositories {
 def isProguarded = false;
 def vName = '0.9.0.' + (isProguarded ? '1' : '0')
 
-configurations.all {
-    // Currently espresso is dependent on support-annotations:22.2.0
-    resolutionStrategy.force 'com.android.support:support-annotations:22.2.1'
-}
-
 android {
     signingConfigs {
     }
@@ -84,9 +79,15 @@ dependencies {
     compile project(':stringpicker')
     compile project(':ratemyprofessors')
     //Testing
-    androidTestCompile 'com.android.support.test:runner:0.3'
-    androidTestCompile 'com.android.support.test:rules:0.3'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+    androidTestCompile('com.android.support.test:runner:0.3') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test:rules:0.3') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
+        exclude module: 'support-annotations'
+    }
     /* Disabled until espresso updates
                 androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2'
             */

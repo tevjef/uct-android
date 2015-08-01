@@ -13,17 +13,21 @@ import android.support.v4.app.NotificationCompat;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -37,6 +41,8 @@ public class RequestService extends Service {
     RetroRutgers mRetroRutgers;
     @Inject
     PreferenceUtils mPreferenceUtils;
+    @Inject
+    DatabaseHandler mDatabaseHandler;
 
     public RequestService() {
     }
@@ -48,11 +54,13 @@ public class RequestService extends Service {
 
         Timber.d("Request Service started at %s", System.currentTimeMillis());
 
-        //TODO remove database call on the UI thread.
-        Observable<Section> courseObservable = mRetroRutgers
-                .getTrackedSections(TrackedSections.listAll(TrackedSections.class));
-
-        courseObservable
+        mDatabaseHandler.getObservableSections()
+                .flatMap(new Func1<List<Request>, Observable<Section>>() {
+                    @Override
+                    public Observable<Section> call(List<Request> requests) {
+                        return mRetroRutgers.getTrackedSections(requests);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Section>() {

@@ -36,8 +36,6 @@ public class TrackedSectionsFragmentTest {
 
     Activity mActivity;
 
-    RutgersApiConts rutgersApiConts = new RutgersApiConts();
-
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(MainActivity.class);
 

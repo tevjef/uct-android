@@ -12,6 +12,13 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
+
+import rx.Observable;
+import rx.functions.Func1;
 
 public class Utils {
     private static void setWindowColor(int colorDark, Activity context) {
@@ -43,6 +50,24 @@ public class Utils {
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(activity, styleRes);
         setWindowColor(fetchPrimaryDarkColor(contextThemeWrapper.getTheme()), activity);
         return contextThemeWrapper;
+    }
+
+    public static Request getRequestFromTrackedSections(TrackedSections ts) {
+        return new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
+    }
+
+    public static Observable<Request> createRequestObservableFromTrackedSections(Iterable<TrackedSections> allTrackedSections) {
+        return Observable.from(allTrackedSections)
+                .flatMap(new Func1<TrackedSections, Observable<Request>>() {
+                    @Override
+                    public Observable<Request> call(TrackedSections trackedSection) {
+                        return createRequest(trackedSection);
+                    }
+                });
+    }
+
+    private static Observable<Request> createRequest(TrackedSections trackedSection) {
+        return Observable.just(getRequestFromTrackedSections(trackedSection));
     }
 
 }

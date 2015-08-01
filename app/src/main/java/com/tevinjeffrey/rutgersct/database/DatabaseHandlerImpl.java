@@ -6,12 +6,14 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
+import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class DatabaseHandlerImpl implements DatabaseHandler {
@@ -38,8 +40,7 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
     }
 
     public Observable<List<TrackedSections>> getAllSections() {
-        return Observable.just(TrackedSections.listAll(TrackedSections.class))
-                .subscribeOn(Schedulers.io());
+        return Observable.just(TrackedSections.listAll(TrackedSections.class));
     }
 
     private int removeFromDb(Request request) {
@@ -94,6 +95,17 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
     @Produce
     public DatabaseUpdateEvent produceUpdate() {
         return new DatabaseUpdateEvent();
+    }
+
+    public Observable<List<Request>> getObservableSections() {
+        return getAllSections()
+                .map(new Func1<List<TrackedSections>, List<Request>>() {
+                    @Override
+                    public List<Request> call(List<TrackedSections> trackedSections) {
+                        return Utils.createRequestObservableFromTrackedSections(trackedSections)
+                                .toList().toBlocking().single();
+                    }
+                });
     }
 
 }

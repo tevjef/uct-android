@@ -129,10 +129,6 @@ public class UrlUtils {
         return query;
     }
 
-    public static Request getRequestFromTrackedSections(TrackedSections ts) {
-        return new Request(ts.getSubject(), new SemesterUtils.Semester(ts.getSemester()), ts.getLocations(), ts.getLevels(), ts.getIndexNumber());
-    }
-
     public static String getAbbreviatedLocationName(String s) {
         switch (s) {
             case FIRST_LOCATION:

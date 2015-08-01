@@ -89,8 +89,8 @@ public class RetroRutgers {
         return getRetroRutgersService().getSystemMessage();
     }
 
-    public Observable<Course.Section> getTrackedSections(final List<TrackedSections> allTrackedSections) {
-        return createRequestObservableFromTrackedSections(allTrackedSections)
+    public Observable<Course.Section> getTrackedSections(final List<Request> allTrackedSections) {
+        return Observable.from(allTrackedSections)
                 .flatMap(new Func1<Request, Observable<Section>>() {
                     @Override
                     public Observable<Section> call(final Request request) {
@@ -215,20 +215,6 @@ public class RetroRutgers {
                 return course;
             }
         };
-    }
-
-    public Observable<Request> createRequestObservableFromTrackedSections(Iterable<TrackedSections> allTrackedSections) {
-        return Observable.from(allTrackedSections)
-                .flatMap(new Func1<TrackedSections, Observable<Request>>() {
-                    @Override
-                    public Observable<Request> call(TrackedSections trackedSection) {
-                        return createRequest(trackedSection);
-                    }
-                });
-    }
-
-    private Observable<Request> createRequest(TrackedSections trackedSection) {
-        return Observable.just(UrlUtils.getRequestFromTrackedSections(trackedSection));
     }
 
     private Func1<Course, Course> setRequestAndStubCourseInSection(final Request request) {
