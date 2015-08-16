@@ -1,79 +1,81 @@
-package com.tevinjeffrey.rmp;
+package com.tevinjeffrey.rmp.scraper;
 
 import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.tevinjeffrey.rmp.professor.Professor;
-import com.tevinjeffrey.rmp.ratings.RatingParser;
-import com.tevinjeffrey.rmp.search.Decider;
-import com.tevinjeffrey.rmp.search.Listing;
-import com.tevinjeffrey.rmp.search.SearchParser;
+import com.tevinjeffrey.rmp.client.module.ClientModule$$ModuleAdapter;
+import com.tevinjeffrey.rmp.common.Parameter;
+import com.tevinjeffrey.rmp.common.Professor;
+import com.tevinjeffrey.rmp.common.RMP;
+import com.tevinjeffrey.rmp.scraper.search.Decider;
+import com.tevinjeffrey.rmp.scraper.search.Listing;
+import com.tevinjeffrey.rmp.scraper.search.RatingParser;
+import com.tevinjeffrey.rmp.scraper.search.SearchParser;
 
 import java.io.IOException;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.tevinjeffrey.rmp.common.RMP.RMP_BASE_URL;
 
-public class RMP {
 
-    final static String TAG = RMP.class.getSimpleName();
+public class RMPScraper {
+
+    final static String TAG = RMPScraper.class.getSimpleName();
 
     OkHttpClient client;
 
-    public final String RMP_BASE_URL = "http://www.ratemyprofessors.com";
-
-    public RMP(OkHttpClient client) {
+    @Inject
+    public RMPScraper(OkHttpClient client) {
         this.client = client;
     }
 
-    public Observable<Professor> findBestProfessor(final Decider.Parameter params) {
-
-        Observable<Professor> firstChoice = getProfessors(params);
-
+    public Observable<Professor> findBestProfessor(final Parameter params) {
+        Observable<? extends Professor> firstChoice = getProfessors(params);
         params.university = "";
-
-        Observable<Professor> secondChoice = getProfessors(params);
-
+        Observable<? extends Professor> secondChoice = getProfessors(params);
         
-        return Observable.concat(firstChoice, secondChoice).takeFirst(new Func1<Professor, Boolean>() {
-            @Override
-            public Boolean call(Professor professor) {
-                return true;
-            }
-        });
+        return Observable.concat(firstChoice, secondChoice)
+                .takeFirst(new Func1<Professor, Boolean>() {
+                    @Override
+                    public Boolean call(Professor professor) {
+                        return true;
+                    }
+                });
     }
 
-    public Observable<Professor> getProfessors(final Decider.Parameter params) {
+    public Observable<? extends Professor> getProfessors(final Parameter params) {
         return performSearch(createUrlFromParams(params))
-                .flatMap(new Func1<String, Observable<Professor>>() {
+                .flatMap(new Func1<String, Observable<ScrapeProfessor>>() {
                     @Override
-                    public Observable<Professor> call(String response) {
+                    public Observable<ScrapeProfessor> call(String response) {
                         return getProfessors(response);
                     }
                 })
-                .filter(new Func1<Professor, Boolean>() {
+                .filter(new Func1<ScrapeProfessor, Boolean>() {
                     @Override
-                    public Boolean call(Professor professor) {
+                    public Boolean call(ScrapeProfessor professor) {
                         return professor != null;
                     }
                 })
                 .toList()
-                .flatMap(new Func1<List<Professor>, Observable<Professor>>() {
+                .flatMap(new Func1<List<ScrapeProfessor>, Observable<ScrapeProfessor>>() {
                     @Override
-                    public Observable<Professor> call(List<Professor> professors) {
+                    public Observable<ScrapeProfessor> call(List<ScrapeProfessor> professors) {
                         return Observable.from(Decider.determineProfessor(professors, params));
                     }
                 });
     }
 
-    public String createUrlFromParams(Decider.Parameter params) {
-        return RMP_BASE_URL + "/search.jsp?stateselect=nj&query=" + params.name.getLast() +
+    public String createUrlFromParams(Parameter params) {
+        return RMP_BASE_URL + "/search.jsp?stateselect=nj&query=" + params.lastName +
                                     (params.university.toLowerCase().contains("rutgers") ? "+rutgers":"");
     }
 
@@ -129,7 +131,7 @@ public class RMP {
         });
     }
 
-    private Observable<Professor> getProfessors(String response)  {
+    private Observable<ScrapeProfessor> getProfessors(String response)  {
         return Observable.from(SearchParser.getSearchResults(response))
                 .filter(new Func1<Listing, Boolean>() {
                     @Override
@@ -137,13 +139,13 @@ public class RMP {
                         return !listing.getUrl().contains("Add");
                     }
                 })
-                .flatMap(new Func1<Listing, Observable<? extends Professor>>() {
+                .flatMap(new Func1<Listing, Observable<? extends ScrapeProfessor>>() {
                     @Override
-                    public Observable<? extends Professor> call(final Listing listing) {
+                    public Observable<? extends ScrapeProfessor> call(final Listing listing) {
                         return makeRequest(RMP_BASE_URL + listing.getUrl(), TAG)
-                                .flatMap(new Func1<String, Observable<Professor>>() {
+                                .flatMap(new Func1<String, Observable<ScrapeProfessor>>() {
                                     @Override
-                                    public Observable<Professor> call(String s) {
+                                    public Observable<ScrapeProfessor> call(String s) {
                                         return Observable.just(RatingParser.findProfessor(listing, s));
                                     }
                                 })

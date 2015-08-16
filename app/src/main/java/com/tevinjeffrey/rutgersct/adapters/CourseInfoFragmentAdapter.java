@@ -11,9 +11,7 @@ import android.widget.LinearLayout;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.adapters.holders.CourseInfoVH;
 import com.tevinjeffrey.rutgersct.adapters.holders.HeaderVH;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
 
 import java.util.List;
 

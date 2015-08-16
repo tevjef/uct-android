@@ -24,7 +24,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
-import com.tevinjeffrey.rmp.professor.Professor;
+import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.RatingLayoutInflater;

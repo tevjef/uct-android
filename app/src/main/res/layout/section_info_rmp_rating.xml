@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    >
+    android:paddingRight="@dimen/activity_horizontal_margin">
 
     <RelativeLayout
         style="@style/section_metadata_containers"
@@ -16,18 +15,35 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:id="@+id/rmp_prof_info_container">
+            android:id="@+id/rmp_prof_info_container"
+            >
 
             <TextView
+                android:layout_width="wrap_content"
                 tools:text="Joyce Carolla"
                 style="@style/PrimaryTextStyle"
                 android:id="@+id/rmp_prof_name" />
 
             <TextView
+                android:layout_width="wrap_content"
                 tools:text="Mathematics"
-                android:id="@+id/rmp_department"
+                android:id="@+id/rmp_subtitle"
                 android:layout_below="@+id/rmp_prof_name"
                 style="@style/SecondaryTextStyle" />
+
+            <com.tevinjeffrey.rutgersct.customviews.TintImageView
+                android:id="@+id/open_in_browser"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_open_in_browser_white_24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@+id/rmp_subtitle"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitEnd"
+                android:tint="@color/secondary_text"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+
         </RelativeLayout>
 
         <LinearLayout
@@ -161,8 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginLeft="4dp"
-                android:layout_gravity="center_vertical">
+                android:layout_marginLeft="4dp">
 
                 <TextView
                     android:id="@+id/rmp_average_grade_title"
@@ -178,8 +193,26 @@
                     android:maxLines="3"
                     tools:text="B"
                     android:textSize="28sp"
+                    style="@style/PrimaryTextStyle"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:id="@+id/rmp_rating_count_title"
+                    style="@style/SecondaryTextStyle"
+                    android:text="@string/rating_count"
+                    android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    style="@style/PrimaryTextStyle"/>
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/rmp_rating_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    tools:text="123"
+                    android:textSize="28sp"
+                    style="@style/PrimaryTextStyle"
+                    android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
         </LinearLayout>

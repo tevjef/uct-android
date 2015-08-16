@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.database;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
@@ -25,7 +26,7 @@ public class RutgersApiImplTest {
 
     List<TrackedSections> trackedSections;
 
-    RetroRutgers retroRutgers = new RetroRutgers(client);
+    RetroRutgers retroRutgers = new RetroRutgers(client, new Gson());
 
     RutgersApiTestConts conts = new RutgersApiTestConts();
 

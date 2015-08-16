@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
+import jonathanfinerty.once.Once;
 import timber.log.Timber;
 
 public class RutgersCTApp extends SugarApp {
@@ -42,6 +43,9 @@ public class RutgersCTApp extends SugarApp {
         super.onCreate();
 
         //refWatcher = LeakCanary.install(this);
+
+        Once.initialise(this);
+        Once.clearAll();
 
         initStetho();
 
@@ -137,5 +141,4 @@ public class RutgersCTApp extends SugarApp {
                     new Exception(t));
         }
     }
-
 }

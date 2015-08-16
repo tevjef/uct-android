@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.modules;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Response;
@@ -36,11 +37,11 @@ public class RetroRutgersModule {
 
     @Provides
     @Singleton
-    public RetroRutgers providesRetroRutgers(OkHttpClient client) {
+    public RetroRutgers providesRetroRutgers(OkHttpClient client, Gson gson) {
         OkHttpClient okClient = client.clone();
         okClient.networkInterceptors().add(getCacheControlInterceptor(TimeUnit.SECONDS.toMillis(5  )));
 
-        return new RetroRutgers(okClient);
+        return new RetroRutgers(okClient, gson);
     }
 
     public Interceptor getCacheControlInterceptor(final long age) {

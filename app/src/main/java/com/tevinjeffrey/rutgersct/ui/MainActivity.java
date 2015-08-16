@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +23,11 @@ import javax.inject.Inject;
 import dagger.ObjectGraph;
 import icepick.Icepick;
 import icepick.Icicle;
+import jonathanfinerty.once.Once;
 
 public class MainActivity extends AppCompatActivity {
+
+    public final static String SHOW_TOUR = "showTour";
 
     @Inject
     Context context;
@@ -37,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, SHOW_TOUR)) {
+            Intent intent = new Intent(this, IntroActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
 
         ObjectGraph og = ((RutgersCTApp)getApplication()).getObjectGraph();
         og.inject(this);
@@ -81,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             decrementBackstackCount();
             getFragmentManager().popBackStackImmediate();
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 

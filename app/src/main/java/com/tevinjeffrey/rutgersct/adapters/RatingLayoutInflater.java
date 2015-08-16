@@ -2,6 +2,8 @@ package com.tevinjeffrey.rutgersct.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -11,7 +13,7 @@ import android.widget.TextView;
 
 import com.dlazaro66.wheelindicatorview.WheelIndicatorItem;
 import com.dlazaro66.wheelindicatorview.WheelIndicatorView;
-import com.tevinjeffrey.rmp.professor.Professor;
+import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
@@ -32,20 +34,22 @@ public class RatingLayoutInflater {
     @MainThread
     public ViewGroup getProfessorLayout() {
         ViewGroup root = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.section_info_rmp_rating, null);
+        setOpenInBrowser(root);
         setName(root);
-        setDepartment(root);
+        setSubtitle(root);
         setOverall(root);
         setEasiness(root);
         setClarity(root);
         setHelpfulness(root);
         setAverageGrade(root);
+        setRatingCount(root);
         tagView(root);
 
         return root;
     }
 
     private void tagView(ViewGroup root) {
-        root.setTag("http://www.ratemyprofessors.com" + mProfessor.getUrl());
+        root.setTag("http://www.ratemyprofessors.com" + mProfessor.getRating().getRatingUrl());
     }
 
     public View getErrorLayout(String professorName, Course.Section s) {
@@ -59,27 +63,62 @@ public class RatingLayoutInflater {
         return message;
     }
 
+
+    private void setOpenInBrowser(ViewGroup root) {
+        View openInBrowser = ButterKnife.findById(root, R.id.open_in_browser);
+        openInBrowser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = mProfessor.getRating().getFullRatingUrl();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                mContext.startActivity(i);
+
+            }
+        });
+    }
+
+
     private void setName(ViewGroup root) {
-        String professorName = mProfessor.getFullName().toString();
+        String professorName = mProfessor.getFirstName() + " " + mProfessor.getLastName();
         TextView professorNameText = ButterKnife.findById(root, R.id.rmp_prof_name);
         professorNameText.setText(professorName);
     }
 
-    private void setDepartment(ViewGroup root) {
+    private void setSubtitle(ViewGroup root) {
         String professorDepartment = mProfessor.getDepartment();
-        TextView professorDepartmentText = ButterKnife.findById(root, R.id.rmp_department);
-        professorDepartmentText.setText(professorDepartment + " - " + mProfessor.getLocation());
+        TextView professorDepartmentText = ButterKnife.findById(root, R.id.rmp_subtitle);
+        String str = professorDepartment;
+        if (mProfessor.getTitle() != null) {
+            str += append(mProfessor.getTitle());
+        }
+        if (mProfessor.getLocation().getCity() != null) {
+            str += append(mProfessor.getLocation().getCity());
+        }
+        professorDepartmentText.setText(str);
+    }
+
+    private String append(String str) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" - ");
+        sb.append(str);
+        return sb.toString();
     }
 
     private void setAverageGrade(ViewGroup root) {
-        String averageGrade = mProfessor.getRatings().getAverageGrade().toString();
+        String averageGrade = mProfessor.getRating().getAverageGrade();
         TextView averageGradeText = ButterKnife.findById(root, R.id.rmp_average_grade_text);
         averageGradeText.setText(averageGrade);
     }
 
+    private void setRatingCount(ViewGroup root) {
+        String ratingCount = String.valueOf(mProfessor.getRating().getRatingsCount());
+        TextView ratingCountText = ButterKnife.findById(root, R.id.rmp_rating_count_text);
+        ratingCountText.setText(ratingCount);
+    }
+
     private void setHelpfulness(ViewGroup root) {
-        String helpfulnessRating = mProfessor.getRatings().getHelpfulness().getRating();
-        double rating = Double.valueOf(helpfulnessRating) / 5;
+        double rating = mProfessor.getRating().getHelpfulness() / 5;
         double percentage = rating * 100;
         WheelIndicatorView helpfulnessWheel = ButterKnife.findById(root, R.id.wheel_helpfullness_rating);
         helpfulnessWheel.setFilledPercent((int) percentage);
@@ -88,8 +127,7 @@ public class RatingLayoutInflater {
     }
 
     private void setClarity(ViewGroup root) {
-        String clarityRating = mProfessor.getRatings().getClarity().getRating();
-        double rating = Double.valueOf(clarityRating) / 5;
+        double rating = mProfessor.getRating().getClarity() / 5;
         double percentage = rating * 100;
         WheelIndicatorView clarityWheel = ButterKnife.findById(root, R.id.wheel_clarity_rating);
         clarityWheel.setFilledPercent((int) percentage);
@@ -98,8 +136,7 @@ public class RatingLayoutInflater {
     }
 
     private void setEasiness(ViewGroup root) {
-        String easinessRating = mProfessor.getRatings().getEasiness().getRating();
-        double rating = Double.valueOf(easinessRating) / 5;
+        double rating = mProfessor.getRating().getEasiness() / 5;
         double percentage = rating * 100;
         WheelIndicatorView easinessWheel = ButterKnife.findById(root, R.id.wheel_easiness_rating);
         easinessWheel.setFilledPercent((int) percentage);
@@ -108,12 +145,11 @@ public class RatingLayoutInflater {
     }
 
     private void setOverall(ViewGroup root) {
-        String overallRating = mProfessor.getRatings().getOverallQuality().getRating();
-        double rating = Double.valueOf(overallRating) / 5;
+        double rating = mProfessor.getRating().getOverall() / 5;
         double percentage = rating * 100;
         WheelIndicatorView overallQualityWheel = ButterKnife.findById(root, R.id.wheel_quality_rating);
         TextView overallQualityText = ButterKnife.findById(root, R.id.rmp_overall_rating_number);
-        overallQualityText.setText(overallRating);
+        overallQualityText.setText(String.valueOf(mProfessor.getRating().getOverall()));
         overallQualityWheel.setFilledPercent((int) percentage);
         overallQualityWheel.addWheelIndicatorItem(getItem(percentage));
         overallQualityWheel.startItemsAnimation();

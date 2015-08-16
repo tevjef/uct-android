@@ -14,7 +14,6 @@ import android.support.v4.app.NotificationCompat;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;

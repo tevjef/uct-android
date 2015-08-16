@@ -5,14 +5,12 @@ import android.os.Bundle;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import java.util.List;
 

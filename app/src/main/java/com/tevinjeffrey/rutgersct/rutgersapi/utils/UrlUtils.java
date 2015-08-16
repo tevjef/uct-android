@@ -1,7 +1,6 @@
 package com.tevinjeffrey.rutgersct.rutgersapi.utils;
 
 
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 

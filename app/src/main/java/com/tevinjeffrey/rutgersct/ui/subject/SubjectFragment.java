@@ -32,7 +32,6 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
 import com.tevinjeffrey.rutgersct.adapters.SubjectFragmentAdapter;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;

@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 
-import com.tevinjeffrey.rmp.professor.Professor;
+import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.ui.base.BaseToolbarView;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 

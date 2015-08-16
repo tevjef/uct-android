@@ -3,10 +3,8 @@ package com.tevinjeffrey.rutgersct.rutgersapi;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
@@ -37,26 +35,24 @@ public class RetroRutgers {
     private static final int SERVER_RETRY_COUNT = 3;
     private static final int RETRY_DELAY_MILLIS = 3000;
     private final RetroRutgersService mRetroRutgersService;
+    private final Gson gson;
 
-    private Gson gson = new GsonBuilder()
-            .serializeNulls()
-            .setPrettyPrinting()
-            .create();
 
     private final RestAdapter mRestAdapter;
 
     RestAdapter.Builder restBuilder = new RestAdapter.Builder()
             .setEndpoint("http://sis.rutgers.edu/soc/")
             .setLogLevel(RestAdapter.LogLevel.HEADERS_AND_ARGS)
-            .setErrorHandler(new MyErrorHandler())
-            .setConverter(new GsonConverter(gson));
+            .setErrorHandler(new MyErrorHandler());
 
     List<Subject> mSubjectsList;
 
-    public RetroRutgers(OkHttpClient client) {
+    public RetroRutgers(OkHttpClient client, Gson gson) {
+        this.gson = gson;
         mRestAdapter = restBuilder
                 .setClient(new OkClient(client))
-                .build();
+                .setConverter(new GsonConverter(gson))
+        .build();
         mRetroRutgersService = getRestAdapter().create(RetroRutgersService.class);
 
         mSubjectsList = initSubjectList();

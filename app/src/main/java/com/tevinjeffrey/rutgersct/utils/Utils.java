@@ -15,7 +15,6 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
 
 import rx.Observable;
 import rx.functions.Func1;

@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rmp.search;
+package com.tevinjeffrey.rmp.scraper.search;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,20 +9,14 @@ import java.util.List;
 public class SearchParser {
 
     public static List<Listing> getSearchResults(String html) {
-        String profName;
-        String profDepartment;
         String profUrl;
-        String profUniversity;
         List<String> rawListings = getRawListings(html);
         List<Listing> listings = new ArrayList<Listing>();
 
         for (String rawListing : rawListings) {
-            profName = getListingName(rawListing);
-            profUniversity = getListingUniversity(rawListing);
-            profDepartment = getListingDepartment(profUniversity);
             profUrl = getListingUrl(rawListing);
 
-            listings.add(new Listing(profName, profUniversity, profDepartment, profUrl));
+            listings.add(new Listing(profUrl));
         }
 
         return listings;
@@ -46,20 +40,6 @@ public class SearchParser {
     private static String getListingUrl(String rawListing) {
         String dirty = StringUtils.substringAfter(rawListing, "<a href=\"");
         return StringUtils.substringBefore(dirty, "\">");
-    }
-
-    private static String getListingUniversity(String rawListing) {
-        String dirty = StringUtils.substringAfter(rawListing, "<span class=\"sub\">");
-        return StringUtils.substringBefore(dirty, "</span>");
-    }
-
-    private static String getListingDepartment(String profUniversity) {
-        return StringUtils.substringAfter(profUniversity, ", ");
-    }
-
-    private static String getListingName(String rawListing) {
-        String dirty = StringUtils.substringAfter(rawListing, "<span class=\"main\">");
-        return StringUtils.substringBefore(dirty, "</span>");
     }
 
     private static List<String> getRawListings(String html) {

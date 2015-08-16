@@ -3,12 +3,15 @@ package com.tevinjeffrey.rutgersct;
 import android.content.Context;
 
 import com.facebook.stetho.okhttp.StethoInterceptor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
+import com.tevinjeffrey.rmp.common.RMPModule;
+import com.tevinjeffrey.rutgersct.adapters.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
-import com.tevinjeffrey.rutgersct.modules.RMPModule;
 import com.tevinjeffrey.rutgersct.modules.RetroRutgersModule;
 import com.tevinjeffrey.rutgersct.receivers.BootReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
@@ -16,6 +19,7 @@ import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.services.RequestService;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.ui.SettingsActivity.SettingsFragment;
+import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.io.File;
@@ -27,21 +31,24 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(injects = {
+@Module(
+        injects = {
         Alarm.class,
         RequestService.class,
         SettingsFragment.class,
         MainActivity.class,
         BootReceiver.class,
         DatabaseReceiver.class,
-
-}, includes = {RetroRutgersModule.class,
+        SectionInfoPresenterImpl.class,
+},
+        includes = {RetroRutgersModule.class,
                 RMPModule.class})
 
 public class RutgersCTModule {
 
     private static final long CONNECT_TIMEOUT_MILLIS = 15000;
     private static final long READ_TIMEOUT_MILLIS = 20000;
+
     private final Context applicationContext;
 
     public RutgersCTModule(Context context) {
@@ -64,6 +71,15 @@ public class RutgersCTModule {
     @Singleton
     public Bus providesEventBus() {
         return new Bus();
+    }
+
+    @Provides
+    @Singleton
+    public Gson providesGson() {
+        return new GsonBuilder()
+                .serializeNulls()
+                .setPrettyPrinting()
+                .create();
     }
 
     @Provides

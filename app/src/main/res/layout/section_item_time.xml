@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:layout_width="290dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -12,16 +11,18 @@
         tools:text="Wednesday"
         android:layout_weight="1"
         android:ellipsize="none"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:minWidth="60dp" />
 
     <TextView
         android:id="@+id/section_item_time_info_meeting_time_text"
         style="@style/SecondaryTextStyle"
         tools:text="10:00 AM - 11:20 AM"
         android:layout_weight="3"
-        android:gravity="left"
         android:ellipsize="none"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:layout_gravity="center"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/section_item_time_info_location_text"

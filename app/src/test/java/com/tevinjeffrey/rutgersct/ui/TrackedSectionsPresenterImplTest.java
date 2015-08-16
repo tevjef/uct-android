@@ -5,7 +5,6 @@ import android.content.Context;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.database.RutgersApiTestConts;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
@@ -26,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class TrackedSectionsPresenterImplTest {
-    RutgersApiTestConts testConts = new RutgersApiTestConts();
     TrackedSectionsPresenterImpl trackedSectionsPresenterImpl;
 
     @Inject

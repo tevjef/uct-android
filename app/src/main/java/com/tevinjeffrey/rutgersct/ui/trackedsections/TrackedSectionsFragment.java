@@ -36,7 +36,6 @@ import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
 import com.tevinjeffrey.rutgersct.adapters.TrackedSectionsFragmentAdapter;
 import com.tevinjeffrey.rutgersct.animator.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;

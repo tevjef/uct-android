@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-import com.tevinjeffrey.rmp.RMP;
-import com.tevinjeffrey.rmp.professor.Professor;
-import com.tevinjeffrey.rmp.search.Decider;
+import com.tevinjeffrey.rmp.common.Parameter;
+import com.tevinjeffrey.rmp.common.Professor;
+import com.tevinjeffrey.rmp.common.RMP;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
@@ -52,6 +52,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
     Bus mBus;
 
     private final Section mSection;
+
     private Subscription mSubscription;
 
     public SectionInfoPresenterImpl(Section section) {
@@ -89,20 +90,19 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
         final Iterable<Instructors> professorsNotFound = new ArrayList<>(sectionData.getInstructors());
         cancePreviousSubscription();
 
-        mSubscription = buildSearchParameters(sectionData).flatMap(new Func1<Decider.Parameter, Observable<Professor>>() {
+        mSubscription = buildSearchParameters(sectionData).flatMap(new Func1<Parameter, Observable<Professor>>() {
             @Override
-            public Observable<Professor> call(Decider.Parameter parameter) {
-                return rmp.findBestProfessor(parameter);
-            }
-        })
+            public Observable<Professor> call(Parameter parameter) {
+                return rmp.getProfessor(parameter);
+            }})
                 //Should need this to busness code.
                 .doOnNext(new Action1<Professor>() {
                     @Override
                     public void call(Professor professor) {
                         for (final Iterator<Instructors> iterator = professorsNotFound.iterator(); iterator.hasNext(); ) {
                             Instructors i = iterator.next();
-                            if (StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getFullName().getLast()) > .70
-                                    || StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getFullName().getFirst()) > .70) {
+                            if (StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getLastName()) > .70
+                                    || StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getFirstName()) > .70) {
                                 iterator.remove();
                             }
                         }
@@ -141,20 +141,21 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     }
 
-    private Observable<Decider.Parameter> buildSearchParameters(final Section section) {
+    private Observable<Parameter> buildSearchParameters(final Section section) {
         return Observable.from(section.getInstructors())
                 .filter(filterGenericInstructors())
-                .flatMap(new Func1<Instructors, Observable<Decider.Parameter>>() {
+                .flatMap(new Func1<Instructors, Observable<Parameter>>() {
                     @Override
-                    public Observable<Decider.Parameter> call(Instructors instructor) {
-                        String campus = mSection.getRequest().getLocations().get(0);
+                    public Observable<Parameter> call(Instructors instructor) {
+                        String university = "rutgers";
+                        String department = getMatchingSubject().getDescription();
+                        String location = mSection.getRequest().getLocations().get(0);
+                        String courseNumber = section.getCourse().getCourseNumber();
+                        String firstName = instructor.getFirstName();
+                        String lastName = instructor.getLastName();
 
-                        Subject matchingSubject = getMatchingSubject();
-
-                        final Decider.Parameter params = new Decider.Parameter("rutgers",
-                                matchingSubject != null ? matchingSubject.getDescription() : "",
-                                campus, new Professor.Name(instructor.getFirstName(),
-                                instructor.getLastName()));
+                        final Parameter params = new Parameter(university, department, location,
+                                courseNumber, firstName, lastName);
 
                         return Observable.just(params);
                     }

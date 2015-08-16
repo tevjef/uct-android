@@ -88,6 +88,7 @@
     <string name="select_a_level">Select a level</string>
     <string name="could_not_find_professor">"Could not find professor: "</string>
     <string name="snackbar_retry">RETRY</string>
+    <string name="rating_count">Rating Count</string>
 
     <string-array name="intervals">
         <item>Every 5 minutes</item>
@@ -95,5 +96,6 @@
         <item>Every 1 hour</item>
         <item>Every 3 hours</item>
     </string-array>
+    <string name="title_activity_intro">Title</string>
 
 </resources>
