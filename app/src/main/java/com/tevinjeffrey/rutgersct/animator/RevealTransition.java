@@ -46,7 +46,7 @@ public class RevealTransition extends Visibility {
     static float calculateMaxRadius(View view) {
         float widthSquared = view.getWidth() * view.getWidth();
         float heightSquared = view.getHeight() * view.getHeight();
-        float radius = FloatMath.sqrt(widthSquared + heightSquared) / 2;
+        float radius = (float) (Math.sqrt(widthSquared + heightSquared) / 2);
         return radius;
     }
 
