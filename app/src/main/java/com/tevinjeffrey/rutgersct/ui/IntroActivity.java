@@ -24,7 +24,7 @@ public class IntroActivity extends AppIntro2 {
     public void init(Bundle bundle) {
         addSlide(AppIntroFragment.newInstance(
                 "View course info!",
-                "Get an overal view of all sections and view information about the course's requirements.",
+                "Get an comprehensive view of all sections and view information about course requirements.",
                 R.drawable.slide_see_course,
                 getResources().getColor(R.color.accent)));
 
