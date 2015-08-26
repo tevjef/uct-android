@@ -45,7 +45,9 @@ public class RutgersCTApp extends SugarApp {
         //refWatcher = LeakCanary.install(this);
 
         Once.initialise(this);
-        Once.clearAll();
+        if (BuildConfig.DEBUG) {
+            Once.clearAll();
+        }
 
         initStetho();
 
