@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:launchMode="singleTop" >
         </activity>
 

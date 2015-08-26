@@ -1,13 +1,11 @@
-package com.tevinjeffrey.rutgersct.ui.settings;
+package com.tevinjeffrey.rutgersct.ui;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -15,25 +13,16 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.utils.AppCompatPreferenceActivity;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
-import com.tevinjeffrey.rutgersct.utils.Utils;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -45,7 +34,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_preference);
-        Utils.setWindowColor(ContextCompat.getColor(this, R.color.primary_dark), this);
         setToolbar();
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
     }
@@ -180,51 +168,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             .show();
 
                     final String url = "http://tevinjeffrey.com/licenses.txt";
+                    /*Ion.with(SettingsFragment.this)
+                            .load(url)
+                            .asString()
+                            .setCallback(new FutureCallback<String>() {
+                                @Override
+                                public void onCompleted(Exception e, String response) {
+                                    String content = null;
+                                    if (e == null && response.length() > 0) {
+                                        content = response;
+                                    } else {
+                                        if (e instanceof UnknownHostException) {
+                                            content = getResources().getString(R.string.no_internet);
+                                        } else if (e instanceof IllegalStateException && !(e instanceof CancellationException)) {
+                                            content = getResources().getString(R.string.server_down);
+                                        } else if (e instanceof TimeoutException) {
+                                            content = getResources().getString(R.string.timed_out);
+                                        } else if (!(e instanceof CancellationException)) {
+                                            Timber.e(e, "Crash while attempting to complete mRequest in %s to %s"
+                                                    , SettingsFragment.this.toString(), url);
+                                        }
+                                    }
 
-                    Gson gson = new GsonBuilder()
-                            .setPrettyPrinting()
-                            .disableHtmlEscaping()
-                            .create();
-
-                    String licenses = null;
-                    try {
-                        licenses = Utils.parseResource(getParentActivity(), R.raw.open_source_licenses);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    LinearLayout linearLayout = new LinearLayout(getParentActivity());
-                    linearLayout.setOrientation(LinearLayout.VERTICAL);
-                    linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    Type listType = new TypeToken<List<License>>() {
-                    }.getType();
-                    List<License> licenseList = gson.fromJson(licenses, listType);
-                    for (final License license : licenseList) {
-                        View licenseView = LayoutInflater.from(getParentActivity()).inflate(R.layout.license, null);
-                        TextView name = ButterKnife.findById(licenseView, R.id.name);
-                        TextView author = ButterKnife.findById(licenseView, R.id.author);
-                        TextView content = ButterKnife.findById(licenseView, R.id.content);
-                        View openInBrowser = ButterKnife.findById(licenseView, R.id.open_in_browser);
-                        openInBrowser.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Utils.openLink(getParentActivity(), license.getWebsite());
-                            }
-                        });
-                        name.setText(license.getName());
-                        author.setText(license.getAuthor());
-                        content.setText(license.getContent());
-                        linearLayout.addView(licenseView);
-                    }
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                        new MaterialDialog.Builder(getParentActivity())
-                                .title("Open Source Licenses")
-                                .titleColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
-                                .positiveText("Ok")
-                                .positiveColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
-                                        .customView(linearLayout, true)
-                                        .show();
-                    }
+                                    TextView tv = new TextView(SettingsFragment.this.getParentActivity());
+                                    tv.setTextSize(14);
+                                    tv.setTextColor(getResources().getColor(R.color.primary_text));
+                                    tv.setText(Html.fromHtml(content));
+                                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                                    tv.setLinkTextColor(getResources().getColor(R.color.accent));
+                                    if (progressDialog.isShowing()) {
+                                        progressDialog.dismiss();
+                                        new MaterialDialog.Builder(getParentActivity())
+                                                .customView(tv, true)
+                                                .show();
+                                    }
+                                }
+                            });*/
                     return true;
                 }
             });
