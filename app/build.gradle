@@ -20,17 +20,26 @@ def isProguarded = false;
 def vName = '0.9.0.' + (isProguarded ? '1' : '0')
 
 android {
+
     signingConfigs {
+        release {
+            keyAlias rootProject.ext.keyAlias
+            keyPassword rootProject.ext.keyPassword
+            storeFile file(rootProject.ext.storeFile)
+            storePassword rootProject.ext.storePassword
+        }
     }
 
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 20
+        targetSdkVersion 23
+        versionCode 21
         versionName vName
+
+
     }
 
     compileOptions {
@@ -40,6 +49,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             debuggable false
             minifyEnabled isProguarded
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -96,12 +106,11 @@ dependencies {
 
     //UI
     compile 'com.dlazaro66.wheelindicatorview:WheelIndicatorView:1.0.0'
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.easing:library:1.0.1@aar'
     compile 'com.daimajia.androidanimations:library:1.1.3@aar'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jenzz:materialpreference:1.3'
     compile 'com.afollestad:material-dialogs:0.6.3.1'
+    compile 'com.jenzz:materialpreference:1.3'
     compile 'com.nispok:snackbar:2.9.1'
     compile 'net.steamcrafted:materialiconlib:1.0.3'
     //Boilerplate reduction
@@ -130,10 +139,10 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     //Android
-    compile 'com.android.support:design:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:support-annotations:22.2.1'
+    compile 'com.android.support:design:23.0.0'
+    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:support-annotations:23.0.0'
 }
 
