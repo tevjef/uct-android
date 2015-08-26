@@ -1,5 +1,9 @@
 package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -18,10 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ArgbEvaluator;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Professor;

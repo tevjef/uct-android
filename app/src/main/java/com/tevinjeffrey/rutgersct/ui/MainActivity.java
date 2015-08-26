@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-
         ObjectGraph og = ((RutgersCTApp)getApplication()).getObjectGraph();
         og.inject(this);
 
