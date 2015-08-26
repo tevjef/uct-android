@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.ui.SettingsActivity;
+import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 
 import butterknife.ButterKnife;

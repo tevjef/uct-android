@@ -2,8 +2,10 @@ package com.tevinjeffrey.rutgersct.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.StyleRes;
 import android.support.v7.internal.view.ContextThemeWrapper;
@@ -16,11 +18,19 @@ import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+
 import rx.Observable;
 import rx.functions.Func1;
 
 public class Utils {
-    private static void setWindowColor(int colorDark, Activity context) {
+    public static void setWindowColor(int colorDark, Activity context) {
         Window window = context.getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -67,6 +77,27 @@ public class Utils {
 
     private static Observable<Request> createRequest(TrackedSections trackedSection) {
         return Observable.just(getRequestFromTrackedSections(trackedSection));
+    }
+
+    public static String parseResource(Context context, int resource) throws IOException {
+        InputStream is = context.getResources().openRawResource(resource);
+        Writer writer = new StringWriter();
+        char[] buffer = new char[1024];
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            int n;
+            while ((n = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, n);
+            }
+        } finally {
+            is.close();
+        }
+         return writer.toString();
+    }
+    public static void openLink(Context context, String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        i.setData(Uri.parse(url));
+        context.startActivity(i);
     }
 
 }

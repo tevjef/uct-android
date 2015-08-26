@@ -105,7 +105,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
             mBasePresenter = new TrackedSectionsPresenterImpl();
-            //I opted for field inject instead of constructor injection.
+            //I opted for field inject instead of constructor injection. Less code when adding dependancies.
             getObjectGraph().inject(mBasePresenter);
         }
     }

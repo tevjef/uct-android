@@ -296,5 +296,6 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     @Override
     public void initToolbar() {
         setToolbar(mToolbar);
+        getParentActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 }
