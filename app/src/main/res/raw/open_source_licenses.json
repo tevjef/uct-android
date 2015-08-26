@@ -1,0 +1,152 @@
+[{
+  "name": "WheelIndicatorView",
+  "author": "David Lázaro",
+  "website": "http://github.com/dlazaro66/WheelIndicatorView",
+  "type": "Apache License, Version 2.0",
+  "content": "Copyright 2015 David Lázaro \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+},
+  {
+    "name": "AndroidViewAnimations",
+    "author": "daimajia",
+    "website": "https://github.com/daimajia/AndroidViewAnimations",
+    "type": "MIT",
+    "content": "The MIT License (MIT) \n\n Copyright (c) 2014 daimajia \n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\n THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+  },{
+  "name": "Butterknife",
+  "author": "Jake Wharton",
+  "website": "http://jakewharton.github.io/butterknife/",
+  "type": "Apache License, Version 2.0",
+  "content": "Copyright 2013 Jake Wharton \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+},{
+  "name": "material-dialogs",
+  "author": "Aidan Michael Follestad",
+  "website": "https://github.com/afollestad/material-dialogs",
+  "type": "MIT",
+  "content": "The MIT License (MIT) \n\n Copyright (c) 2015 Aidan Michael Follestad \n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\n THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+},{
+  "name": "snackbar",
+  "author": "William Mora",
+  "website": "https://github.com/nispok/snackbar",
+  "type": "MIT",
+  "content": "The MIT License (MIT) \n\n Copyright (c) 2015 William Mora \n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\n THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+
+},
+  {
+    "name": "material-icon-lib",
+    "author": "CodeCrafted",
+    "website": "https://github.com/code-mc/material-icon-lib",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2015 CodeCrafted. http://codecrafted.net/ \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+    "name": "materialdesignicons",
+    "author": "Austin Andrews",
+    "website": "http://materialdesignicons.com/",
+    "type": "SIL OPEN FONT LICENSE Version 1.",
+    "content": " Copyright (c) 2014, Austin Andrews (http://materialdesignicons.com/), with Reserved Font Name Material Design Icons. Copyright (c) 2014, Google (http://www.google.com/design/) uses the license at https://github.com/google/material-design-icons/blob/master/LICENSE \n\n This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL"
+  },
+  {
+    "name": "AppIntro",
+    "author": "Paolo Rotolo",
+    "website": "https://github.com/PaoloRotolo/AppIntro",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2015 Paolo Rotolo. \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+  "name": "Once",
+  "author": "Jon Finerty",
+  "website": "https://github.com/jonfinerty/Once",
+  "type": "Apache License, Version 2.0",
+  "content": "Copyright 2015 Paolo Rotolo. \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+},
+  {
+    "name": "gson",
+    "author": "Google",
+    "website": "https://github.com/google/gson/",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2008 Google Inc.  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },{
+  "name": "gson",
+  "author": "Google",
+  "website": "https://github.com/google/gson/",
+  "type": "Apache License, Version 2.0",
+  "content": "Copyright 2008 Google Inc.  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+},
+  {
+    "name": "OkHttp",
+    "author": "Square",
+    "website": "http://square.github.io/okhttp/",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2014 Square, Inc.  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+    "name": "RxJava",
+    "author": "Netflix",
+    "website": "https://github.com/ReactiveX/RxJava/",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2012 Netflix, Inc.  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+    "name": "commons-lang",
+    "author": "Apache",
+    "website": "https://github.com/apache/commons-lang",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2001-2015 The Apache Software Foundation\n\n This product includes software developed at \n The Apache Software Foundation (http://www.apache.org/). \n\n This product includes software from the Spring Framework, under the Apache License 2.0 (see: StringUtils.containsWhitespace())"
+
+  },
+  {
+    "name": "SugarOrm",
+    "author": "Apache",
+    "website": "https://github.com/satyan/sugar",
+    "type": "MIT",
+    "content": "The MIT License (MIT) \n\n Copyright (c) 2012 by Satya Narayan \n\n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: \n\n The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. \n\n THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+
+  },
+  {
+    "name": "RxAndroid",
+    "author": "Android Developers",
+    "website": "https://github.com/ReactiveX/RxAndroid/",
+    "type": "Apache License, Version 2.0",
+    "content": "Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+    "name": "Retrofit",
+    "author": "Square",
+    "website": "http://square.github.io/retrofit/",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2013 Square, Inc.  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+    "name": "Otto",
+    "author": "Square",
+    "website": "http://square.github.io/otto/",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2013 Square, Inc.  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+    "name": "Dagger",
+    "author": "Square",
+    "website": "http://square.github.io/dagger/",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2013 Square, Inc.  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  },
+  {
+    "name": "Timber",
+    "author": "Jake Wharton",
+    "website": "https://github.com/JakeWharton/timber/",
+    "type": "Apache License, Version 2.0",
+    "content": "Copyright 2013 Jake Wharton  \n\n  Licensed under the Apache License, Version 2.0 (the \"License\"); \n you may not use this file except in compliance with the License. \nYou may obtain a copy of the License at \n\n http://www.apache.org/licenses/LICENSE-2.0 \n\n Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+
+  }]

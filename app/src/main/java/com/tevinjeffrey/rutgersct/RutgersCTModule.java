@@ -9,7 +9,6 @@ import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.RMPModule;
-import com.tevinjeffrey.rutgersct.adapters.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
 import com.tevinjeffrey.rutgersct.modules.RetroRutgersModule;
@@ -18,7 +17,7 @@ import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.services.RequestService;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.ui.SettingsActivity.SettingsFragment;
+import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity.SettingsFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
