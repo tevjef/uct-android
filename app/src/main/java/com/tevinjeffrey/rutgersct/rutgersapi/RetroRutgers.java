@@ -157,7 +157,7 @@ public class RetroRutgers {
                     public Observable<Course> call(final List<Course> courses) {
                         return configureCourses(courses, request);
                     }
-                }).toList()
+                }).toSortedList()
                 .flatMap(new Func1<List<Course>, Observable<? extends List<Course>>>() {
                     @Override
                     public Observable<? extends List<Course>> call(final List<Course> courseList) {
@@ -181,7 +181,7 @@ public class RetroRutgers {
 
     private Observable<Course> configureCourses(List<Course> courses, final Request request) {
         return Observable.from(courses)
-                .map(filterUnprintedSections())
+                .flatMap(filterUnprintedSections())
                 .filter(filterEmptySections())
                 .map(setSubjectInCourse())
                 .map(setRequestAndStubCourseInSection(request));
@@ -197,18 +197,24 @@ public class RetroRutgers {
         };
     }
 
-    private Func1<Course, Course> filterUnprintedSections() {
-        return new Func1<Course, Course>() {
+    private Func1<Course, Observable<Course>> filterUnprintedSections() {
+        return new Func1<Course, Observable<Course>>() {
             @Override
-            public Course call(Course course) {
-                Observable.from(course.getSections())
+            public Observable<Course> call(final Course course) {
+                return Observable.from(course.getSections())
                         .filter(new Func1<Course.Section, Boolean>() {
                             @Override
                             public Boolean call(Section section) {
-                                return !section.isPrinted();
+                                return section.isPrinted();
                             }
-                        }).last();
-                return course;
+                        }).toList()
+                        .map(new Func1<List<Section>, Course>() {
+                            @Override
+                            public Course call(List<Section> sections) {
+                                course.setSections(sections);
+                                return course;
+                            }
+                        });
             }
         };
     }
