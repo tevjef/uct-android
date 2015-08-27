@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="config_shortAnimTime">600</integer>
     <integer name="exit_anim">50</integer>
 </resources>

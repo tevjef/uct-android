@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 public final class HeaderVH extends RecyclerView.ViewHolder {
 
-    private ViewGroup parent;
+    private final ViewGroup parent;
 
     public static HeaderVH newInstance(ViewGroup parent) {
         return new HeaderVH(parent);

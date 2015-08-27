@@ -9,6 +9,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -237,8 +238,8 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
     @Override
     public void showSectionTracked(boolean sectionIsAdded, boolean shouldAnimateView) {
-        final int COLOR = getParentActivity().getResources().getColor(R.color.accent);
-        final int COLOR_DARK = getParentActivity().getResources().getColor(R.color.accent_dark);
+        final int COLOR = ContextCompat.getColor(getParentActivity(), R.color.accent);
+        final int COLOR_DARK = ContextCompat.getColor(getParentActivity(), R.color.accent_dark);
         final int ROTATION_NORMAL = 0;
         final int ROTATION_ADDED = 225;
         final int DURATION = 500;

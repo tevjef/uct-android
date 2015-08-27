@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -310,8 +311,8 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
                                 mViewState.snackBarShowing = false;
                             }
                         })
-                        .actionColor(getResources().getColor(android.R.color.white))
-                        .color(getResources().getColor(R.color.accent))// action button label color
+                        .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
+                        .color(ContextCompat.getColor(getParentActivity(), R.color.accent))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
                         .eventListener(new EventListener() {
                             @Override

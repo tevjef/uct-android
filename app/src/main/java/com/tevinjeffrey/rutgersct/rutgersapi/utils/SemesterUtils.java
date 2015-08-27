@@ -11,7 +11,7 @@ import java.util.List;
 public class SemesterUtils {
 
     private final Calendar calendar;
-    private int UPPER_LIMIT;
+    private final int UPPER_LIMIT;
     private int LOWER_LIMIT = 2011;
 
     public SemesterUtils(Calendar calendar) {
@@ -181,7 +181,7 @@ public class SemesterUtils {
     public static class Semester implements Parcelable {
 
         Season mSeason;
-        String mYear;
+        final String mYear;
 
         public Semester(Season season, String year) {
             this.mSeason = season;

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,8 @@ import butterknife.ButterKnife;
 public class RatingLayoutInflater {
     public static final int LOW_RATING_LIMIT = 40;
     public static final int MEDIUM_RATING_LIMIT = 60;
-    private Professor mProfessor;
-    private Context mContext;
+    private final Professor mProfessor;
+    private final Context mContext;
 
     public RatingLayoutInflater(@NonNull Activity context, @NonNull Professor professor) {
         this.mProfessor = professor;
@@ -99,10 +100,7 @@ public class RatingLayoutInflater {
     }
 
     private String append(String str) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(" - ");
-        sb.append(str);
-        return sb.toString();
+        return " - " + str;
     }
 
     private void setAverageGrade(ViewGroup root) {
@@ -157,11 +155,11 @@ public class RatingLayoutInflater {
 
     private int getRatingColor(double rating) {
         if (rating < LOW_RATING_LIMIT) {
-            return mContext.getResources().getColor(R.color.rating_low);
+            return ContextCompat.getColor(mContext, R.color.rating_low);
         } else if (rating < MEDIUM_RATING_LIMIT) {
-            return mContext.getResources().getColor(R.color.rating_medium);
+            return ContextCompat.getColor(mContext, R.color.rating_medium);
         } else {
-            return mContext.getResources().getColor(R.color.rating_high);
+            return ContextCompat.getColor(mContext, R.color.rating_high);
         }
     }
 

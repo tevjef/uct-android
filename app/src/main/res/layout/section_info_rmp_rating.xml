@@ -33,7 +33,7 @@
 
             <com.tevinjeffrey.rutgersct.customviews.TintImageView
                 android:id="@+id/open_in_browser"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_open_in_browser_white_24dp"
                 android:layout_alignParentEnd="true"
@@ -42,7 +42,8 @@
                 android:scaleType="fitEnd"
                 android:tint="@color/secondary_text"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                android:paddingBottom="5dp"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
 

@@ -40,12 +40,12 @@ public class RetroRutgers {
 
     private final RestAdapter mRestAdapter;
 
-    RestAdapter.Builder restBuilder = new RestAdapter.Builder()
+    final RestAdapter.Builder restBuilder = new RestAdapter.Builder()
             .setEndpoint("http://sis.rutgers.edu/soc/")
             .setLogLevel(RestAdapter.LogLevel.HEADERS_AND_ARGS)
             .setErrorHandler(new MyErrorHandler());
 
-    List<Subject> mSubjectsList;
+    final List<Subject> mSubjectsList;
 
     public RetroRutgers(OkHttpClient client, Gson gson) {
         this.gson = gson;

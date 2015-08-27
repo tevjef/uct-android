@@ -4,14 +4,18 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.transition.TransitionValues;
 import android.transition.Visibility;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+@TargetApi(Build.VERSION_CODES.KITKAT)
 public class Scale extends Visibility {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Scale(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

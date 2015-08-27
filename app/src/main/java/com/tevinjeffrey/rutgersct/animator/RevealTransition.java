@@ -26,7 +26,6 @@ import android.transition.TransitionValues;
 import android.transition.Visibility;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
-import android.util.FloatMath;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewAnimationUtils;

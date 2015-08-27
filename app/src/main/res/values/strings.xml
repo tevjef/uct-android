@@ -19,7 +19,6 @@
     <string name="action_track">Track Sections</string>
 
     <string name="sync_interval">Sync Interval</string>
-    <string name="set">Set</string>
     <string name="please_wait">Please wait…</string>
     <string name="gettingData">Fetching data</string>
     <string name="expect_server_issues">Expect intermittent server issues from 3:00am to 5:00am</string>
@@ -27,7 +26,6 @@
     <string name="no_internet">No internet connection!</string>
     <string name="timed_out">Connection timed out. Check internet connection.</string>
 
-    <string name="content_description_webreg_image">large webreg icon</string>
     <string name="content_description_large_tracking_icon">Large tracking icon</string>
     <string name="rate_title">Rate this app</string>
     <string name="rate_explanation">Do you like Rutgers Course Tracker? Rate it on Google Play!</string>
