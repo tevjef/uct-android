@@ -28,7 +28,7 @@ public class Alarm {
     public void setAlarm() {
         AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
 
-        Intent service = new Intent(mContext, RequestService.class);;
+        Intent service = new Intent(mContext, RequestService.class);
 
         //Package that intent into a pending intent.
         PendingIntent alarmIntent = PendingIntent.getService(mContext, 1234, service,

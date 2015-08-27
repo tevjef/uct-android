@@ -18,8 +18,10 @@
 -keep class butterknife.** { *; }
 -keep class com.tevinjeffrey.rutgersct.** { *;}
 
+#ButterKnife
+-keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
--keep class **$$ViewInjector { *; }
+-keep class **$$ViewBinder { *; }
 
 -keepclasseswithmembernames class * {
     @butterknife.* <fields>;
@@ -28,6 +30,36 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+
+#Otto
+
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
+
+#Icepick
+-dontwarn icepick.**
+-keep class **$$Icepick { *; }
+-keepnames class * { @icepick.State *; }
+-keepclasseswithmembernames class * {
+    @icepick.* <fields>;
+}
+
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+
+#Retrofit
+-keep class retrofit.** { *; }
+
+# LeakCanary
+-keep class org.eclipse.mat.** { *; }
+-keep class com.squareup.leakcanary.** { *; }
 
 -dontwarn okio.**
 -dontwarn org.mockito.**
@@ -150,6 +182,7 @@
 -keep class com.google.common.cache.LocalCache$ReferenceEntry
 
 -keep public class * extends com.orm.** { *;}
--keep class <com.tevinjeffrey.rutgersct>.db.** { *; }
+#-keep class <com.tevinjeffrey.rutgersct>.db.** { *; }
 
 -keep class com.crashlytics.** { *; }
+

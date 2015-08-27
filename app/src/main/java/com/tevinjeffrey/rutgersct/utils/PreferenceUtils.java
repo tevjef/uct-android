@@ -12,7 +12,7 @@ import com.tevinjeffrey.rutgersct.R;
 import javax.inject.Inject;
 
 public class PreferenceUtils {
-    Context context;
+    final Context context;
 
     @Inject
     public PreferenceUtils(Context context) {

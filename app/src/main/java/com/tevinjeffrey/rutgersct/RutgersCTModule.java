@@ -17,8 +17,8 @@ import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.services.RequestService;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
-import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity.SettingsFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
+import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity.SettingsFragment;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.io.File;

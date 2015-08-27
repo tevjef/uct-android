@@ -210,7 +210,7 @@
         android:id="@+id/relativeLayout3">
 
         <Button
-            android:id="@+id/search_button"
+            android:id="@+id/search_btn"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:layout_alignParentRight="true"
@@ -232,8 +232,8 @@
             android:id="@+id/systemMessage"
             android:maxLines="2"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/search_button"
-            android:layout_toStartOf="@+id/search_button"
+            android:layout_toLeftOf="@+id/search_btn"
+            android:layout_toStartOf="@+id/search_btn"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="8dp" />

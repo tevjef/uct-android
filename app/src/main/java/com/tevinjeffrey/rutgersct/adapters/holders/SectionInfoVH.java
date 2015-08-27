@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.adapters.holders;
 
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,9 +99,9 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
 
     public void setOpenStatus(Course.Section section) {
         if (section.isOpenStatus()) {
-            mSectionNumberBackground.setBackgroundColor(mParent.getResources().getColor(R.color.green));
+            mSectionNumberBackground.setBackgroundColor(ContextCompat.getColor(mParent.getContext(), R.color.green));
         } else {
-            mSectionNumberBackground.setBackgroundColor(mParent.getResources().getColor(R.color.red));
+            mSectionNumberBackground.setBackgroundColor(ContextCompat.getColor(mParent.getContext(), R.color.red));
         }
     }
 

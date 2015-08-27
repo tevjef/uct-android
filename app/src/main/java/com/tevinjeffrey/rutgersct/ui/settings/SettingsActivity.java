@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.settings;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -121,9 +120,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                     TextView tv = new TextView(getParentActivity());
                     tv.setMovementMethod(new LinkMovementMethod());
-                    tv.setLinkTextColor(getResources().getColor(R.color.accent));
+                    tv.setLinkTextColor(ContextCompat.getColor(getParentActivity(), R.color.accent));
                     tv.setTextSize(18);
-                    tv.setTextColor(getResources().getColor(R.color.secondary_text));
+                    tv.setTextColor(ContextCompat.getColor(getParentActivity(), R.color.secondary_text));
                     tv.setText(Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br><br>" +
                             "<a href=\"http://tevinjeffrey.com/\">Website</a>" + "       <a href=\"mailto:tev.jeffrey@gmail.com\">Email</a>"));
 
@@ -172,15 +171,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             licenses.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-
-                    final MaterialDialog progressDialog = new MaterialDialog.Builder(getParentActivity())
-                            .title(R.string.gettingData)
-                            .content(R.string.please_wait)
-                            .progress(true, 0)
-                            .show();
-
-                    final String url = "http://tevinjeffrey.com/licenses.txt";
-
                     Gson gson = new GsonBuilder()
                             .setPrettyPrinting()
                             .disableHtmlEscaping()
@@ -215,16 +205,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         content.setText(license.getContent());
                         linearLayout.addView(licenseView);
                     }
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                        new MaterialDialog.Builder(getParentActivity())
-                                .title("Open Source Licenses")
-                                .titleColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
-                                .positiveText("Ok")
-                                .positiveColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
-                                        .customView(linearLayout, true)
-                                        .show();
-                    }
+
+                    new MaterialDialog.Builder(getParentActivity())
+                            .title("Open Source Licenses")
+                            .titleColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
+                            .positiveText("Ok")
+                            .positiveColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
+                                    .customView(linearLayout, true)
+                                    .show();
+
                     return true;
                 }
             });

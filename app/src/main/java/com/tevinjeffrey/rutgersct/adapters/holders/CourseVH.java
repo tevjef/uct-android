@@ -13,7 +13,7 @@ public final class CourseVH extends RecyclerView.ViewHolder {
 
     private final View mParent;
     private final TextView mCourseTitle;
-    private TextView mSectionInfo;
+    private final TextView mSectionInfo;
 
     public static CourseVH newInstance(View parent) {
 

@@ -15,8 +15,8 @@ import java.util.List;
 
 public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
 
-    private List<Subject> subjectList;
-    private ItemClickListener<Subject, View> itemClickListener;
+    private final List<Subject> subjectList;
+    private final ItemClickListener<Subject, View> itemClickListener;
 
     public SubjectFragmentAdapter(List<Subject> subjectList, @NonNull ItemClickListener<Subject, View> listener) {
         this.subjectList = subjectList;

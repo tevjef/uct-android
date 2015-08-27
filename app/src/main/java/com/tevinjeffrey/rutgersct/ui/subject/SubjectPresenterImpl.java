@@ -26,7 +26,7 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
     RetroRutgers mRetroRutgers;
 
     private Subscription mSubscription;
-    private Request mRequest;
+    private final Request mRequest;
     private boolean isLoading;
 
     public SubjectPresenterImpl(Request mRequest) {

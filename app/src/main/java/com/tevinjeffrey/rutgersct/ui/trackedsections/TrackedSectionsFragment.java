@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -373,8 +374,8 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                                 mViewState.snackBarShowing = false;
                             }
                         })
-                        .actionColor(getResources().getColor(android.R.color.white))
-                        .color(getResources().getColor(R.color.accent))// action button label color
+                        .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
+                        .color(ContextCompat.getColor(getParentActivity(), R.color.accent))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
                         .eventListener(new EventListener() {
                             @Override

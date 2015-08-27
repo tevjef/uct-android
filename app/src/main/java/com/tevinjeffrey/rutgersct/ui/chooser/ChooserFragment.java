@@ -22,8 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -41,7 +39,6 @@ import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnLongClick;
 import icepick.Icicle;
 
@@ -68,7 +65,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     @Bind(R.id.level2)
     CheckBox mLevel2;
 
-    @Bind(R.id.search_button)
+    @Bind(R.id.search_btn)
     TextView mSearchButton;
 
     @Bind(R.id.primarySemester)
@@ -167,11 +164,6 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     public void restoreOtherSemester(String text, Semester tag) {
         mOtherSemester.setText(text);
         mOtherSemester.setTag(tag);
-    }
-
-    @OnClick(R.id.systemMessage)
-    public void onSystemMessageClick(View view) {
-        YoYo.with(Techniques.Shake).duration(2000).playOn(mSystemMessage);
     }
 
     @OnLongClick(R.id.systemMessage)

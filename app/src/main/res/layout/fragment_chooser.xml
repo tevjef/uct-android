@@ -280,7 +280,7 @@
         android:background="@color/accent">
 
         <Button
-            android:id="@+id/search_button"
+            android:id="@+id/search_btn"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:layout_alignParentRight="true"

@@ -1,6 +1,8 @@
 package com.tevinjeffrey.rutgersct.animator;
 
+import android.annotation.TargetApi;
 import android.app.SharedElementCallback;
+import android.os.Build;
 import android.transition.Transition;
 import android.view.View;
 
@@ -13,6 +15,7 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CircleSharedElementCallback extends SharedElementCallback {
 
     private CircleView mCircleViewSnapshot;
