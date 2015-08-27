@@ -36,9 +36,6 @@ File propertiesFile = new File('signing.properties')
 propertiesFile.withInputStream {
     properties.load(it)
 }
-def map = [keyAlias: "deadpixel", keyPassword: "WisrocLinden1",storePassword: "WisrocLinden1",storeFile:"C:\\Users\\Tevin\\keystore.jks"]
-properties.putAll(map)
-
 ext {
     keyAlias = properties.keyAlias
     keyPassword = properties.keyPassword
