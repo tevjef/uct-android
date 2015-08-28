@@ -6,6 +6,7 @@
     android:id="@+id/app_bar_layout"
     android:transitionName="@string/transition_name_tool_background"
     style="@style/ToolbarStyle.Big"
+    android:clickable="true"
     android:theme="@style/RutgersCT.ToolbarTheme"
     android:transitionGroup="true">
 
