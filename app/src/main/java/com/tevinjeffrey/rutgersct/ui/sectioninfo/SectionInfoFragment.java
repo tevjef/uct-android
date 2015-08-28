@@ -302,6 +302,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Override
     public void initToolbar() {
         setToolbar(mToolbar);
+        getParentActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void addRMPView(View view) {
