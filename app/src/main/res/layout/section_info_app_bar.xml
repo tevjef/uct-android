@@ -118,7 +118,6 @@
                         android:singleLine="false"
                         tools:text="MAELLO | CAROLLA "
                         android:textColor="@android:color/white"
-                        android:paddingStart="4dp"
                         android:paddingLeft="4dp"
                         android:alpha="1"
                         style="@style/ToolbarSubtitleStyle.Normal"/>
