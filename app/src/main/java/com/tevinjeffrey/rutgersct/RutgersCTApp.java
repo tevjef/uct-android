@@ -68,7 +68,6 @@ public class RutgersCTApp extends SugarApp {
             //Set unique user id
             Mint.setUserIdentifier(s);
             Crashlytics.setUserIdentifier(s);
-
             //Diverts logs through crash roeporting APIs
             Timber.plant(new CrashReportingTree());
         }

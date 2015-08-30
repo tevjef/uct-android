@@ -2,6 +2,8 @@ package com.tevinjeffrey.rutgersct.database;
 
 import android.support.annotation.MainThread;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;

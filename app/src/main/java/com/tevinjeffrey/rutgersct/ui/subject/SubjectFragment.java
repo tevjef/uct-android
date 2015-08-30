@@ -52,6 +52,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icicle;
+import timber.log.Timber;
 
 public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
 
@@ -178,6 +179,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
 
     @Override
     public void onItemClicked(Subject subject, View view) {
+        Timber.i("Selected subject: %s", subject);
         setSubjectInRequestObject(subject.getCode());
         startCourseFragement(createArgs(subject, mRequest));
     }

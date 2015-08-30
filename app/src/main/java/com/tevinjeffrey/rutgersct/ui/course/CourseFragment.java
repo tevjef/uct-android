@@ -54,6 +54,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icicle;
+import timber.log.Timber;
 
 @SuppressWarnings("ClassWithTooManyMethods")
 public class CourseFragment extends MVPFragment implements CourseView, SwipeRefreshLayout.OnRefreshListener,
@@ -238,6 +239,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
 
     @Override
     public void onItemClicked(Course course, View view) {
+        Timber.i("Selected course: %s", course);
         startCourseInfoFragment(createArgs(mRequest, course));
     }
 

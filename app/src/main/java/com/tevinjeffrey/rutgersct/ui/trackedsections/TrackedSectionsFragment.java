@@ -55,6 +55,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icicle;
 import rx.functions.Action1;
+import timber.log.Timber;
 
 @SuppressWarnings({"ClassWithTooManyMethods"})
 public class TrackedSectionsFragment extends MVPFragment implements TrackedSectionsView, SwipeRefreshLayout.OnRefreshListener,
@@ -106,7 +107,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
             mBasePresenter = new TrackedSectionsPresenterImpl();
-            //I opted for field inject instead of constructor injection. Less code when adding dependancies.
+            //Field injection instead of constructor injection. Less code when adding dependancies.
             getObjectGraph().inject(mBasePresenter);
         }
     }
@@ -352,6 +353,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
 
     @Override
     public void onItemClicked(Section section, View view) {
+        Timber.i("Selected tracked section: %s", section);
         startSectionInfoFragment(SectionInfoFragment.newInstance(section), view);
     }
 

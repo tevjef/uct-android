@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rmp.common.Parameter;
@@ -71,6 +73,9 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
         if (sectionTracked) {
             removeSection(mSection.getRequest());
         } else {
+            Answers.getInstance().logCustom(new CustomEvent("Tracked Section")
+                    .putCustomAttribute("Subject", mSection.getCourse().getEnclosingSubject().getDescription())
+                    .putCustomAttribute("Course", mSection.getCourse().getTrueTitle()));
             addSection(mSection.getRequest());
         }
     }

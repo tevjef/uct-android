@@ -55,7 +55,7 @@ public class RequestService extends Service {
         RutgersCTApp rutgersCTApp = (RutgersCTApp) this.getApplication();
         rutgersCTApp.getObjectGraph().inject(this);
 
-        Timber.d("Request Service started at %s", System.currentTimeMillis());
+        Timber.i("Request Service started at %s", System.currentTimeMillis());
 
         mDatabaseHandler.getObservableSections()
                 .flatMap(new Func1<List<Request>, Observable<Section>>() {
@@ -74,7 +74,7 @@ public class RequestService extends Service {
 
                     @Override
                     public void onError(Throwable t) {
-                        Timber.d(t, "Crash while attempting to complete request");
+                        Timber.e(t, "Crash while attempting to complete request");
                         stopSelf();
                     }
                     @Override
@@ -157,7 +157,7 @@ public class RequestService extends Service {
 
     @Override
     public void onDestroy() {
-        Timber.d("Request Service ended at %s", System.currentTimeMillis());
+        Timber.i("Request Service ended at %s", System.currentTimeMillis());
         super.onDestroy();
     }
 

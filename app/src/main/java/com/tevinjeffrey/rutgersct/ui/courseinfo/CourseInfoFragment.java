@@ -41,6 +41,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.Icicle;
+import timber.log.Timber;
 
 @SuppressWarnings("ClassWithTooManyMethods")
 public class CourseInfoFragment extends MVPFragment implements CourseInfoView, ItemClickListener<Section, View> {
@@ -123,6 +124,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
 
     @Override
     public void onItemClicked(Section section, View view) {
+        Timber.i("Selected section: %s", section);
         setIndexInRequestObject(section.getIndex());
         Bundle bundle = new Bundle();
         bundle.putParcelable(RutgersCTApp.SELECTED_SECTION, section);
@@ -162,9 +164,14 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
 
         Subject subject = mSelectedCourse.getEnclosingSubject();
         String courseNumber = mSelectedCourse.getCourseNumber();
-        String shortenedCourseInfo = subject.getTitle() + " › " + courseNumber;
-
-        mShortenedCourseInfo.setText(shortenedCourseInfo);
+        if (subject != null) {
+            String shortenedCourseInfo = subject.getTitle() + " › " + courseNumber;
+            mShortenedCourseInfo.setText(shortenedCourseInfo);
+        } else {
+            Timber.i("http://crashes.to/s/0397fd79332 Selected course: %s\n" +
+                    " Course number: %s\n" +
+                    " Request: %s", mSelectedCourse, courseNumber, mSelectedCourse.getRequest());
+        }
     }
 
     private void setCredits() {

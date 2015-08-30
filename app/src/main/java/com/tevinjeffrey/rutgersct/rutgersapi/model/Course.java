@@ -150,7 +150,7 @@ public final class Course implements Comparable, Parcelable {
 
     @Override
     public String toString() {
-        return getTrueTitle();
+        return "Course" + getTrueTitle();
     }
 
     @Override
