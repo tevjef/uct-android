@@ -5,19 +5,28 @@ import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Response;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgersService;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.course.CoursePresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
+import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit.ErrorHandler;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.OkClient;
+import retrofit.converter.ConversionException;
+import retrofit.converter.GsonConverter;
 
 @Module(injects = {
         TrackedSectionsPresenterImpl.class,
@@ -37,12 +46,25 @@ public class RetroRutgersModule {
 
     @Provides
     @Singleton
-    public RetroRutgers providesRetroRutgers(OkHttpClient client, Gson gson) {
-        OkHttpClient okClient = client.clone();
-        okClient.networkInterceptors().add(getCacheControlInterceptor(TimeUnit.SECONDS.toMillis(5  )));
-
-        return new RetroRutgers(okClient, gson);
+    public RetroRutgers providesRetroRutgers(RetroRutgersService retroRutgersService) {
+        return new RetroRutgers(retroRutgersService);
     }
+
+    @Provides
+    @Singleton
+    public RetroRutgersService providesRutgersRestAdapter(OkHttpClient client, Gson gson) {
+        OkHttpClient okClient = client.clone();
+        okClient.networkInterceptors().add(getCacheControlInterceptor(TimeUnit.SECONDS.toMillis(5)));
+
+        return new RestAdapter.Builder()
+                .setEndpoint("http://sis.rutgers.edu/soc/")
+                .setLogLevel(RestAdapter.LogLevel.HEADERS_AND_ARGS)
+                .setErrorHandler(new MyErrorHandler())
+                .setClient(new OkClient(client))
+                .setConverter(new GsonConverter(gson))
+                .build().create(RetroRutgersService.class);
+    }
+
 
     public Interceptor getCacheControlInterceptor(final long age) {
         return new Interceptor() {
@@ -55,4 +77,16 @@ public class RetroRutgersModule {
             }
         };
     }
+
+    class MyErrorHandler implements ErrorHandler {
+        @Override
+        public Throwable handleError(RetrofitError cause) {
+            if (cause.getCause() instanceof ConversionException)
+                return new RutgersServerIOException();
+            if (cause.getCause() instanceof UnknownHostException)
+                return cause.getCause();
+            return cause;
+        }
+    }
+
 }

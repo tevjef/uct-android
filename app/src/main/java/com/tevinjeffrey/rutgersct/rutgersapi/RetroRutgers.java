@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.okhttp.OkHttpClient;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
@@ -13,15 +12,8 @@ import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
-import retrofit.ErrorHandler;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.OkClient;
-import retrofit.converter.ConversionException;
-import retrofit.converter.GsonConverter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -35,54 +27,20 @@ public class RetroRutgers {
     private static final int SERVER_RETRY_COUNT = 3;
     private static final int RETRY_DELAY_MILLIS = 3000;
     private final RetroRutgersService mRetroRutgersService;
-    private final Gson gson;
-
-
-    private final RestAdapter mRestAdapter;
-
-    final RestAdapter.Builder restBuilder = new RestAdapter.Builder()
-            .setEndpoint("http://sis.rutgers.edu/soc/")
-            .setLogLevel(RestAdapter.LogLevel.HEADERS_AND_ARGS)
-            .setErrorHandler(new MyErrorHandler());
-
     final List<Subject> mSubjectsList;
 
-    public RetroRutgers(OkHttpClient client, Gson gson) {
-        this.gson = gson;
-        mRestAdapter = restBuilder
-                .setClient(new OkClient(client))
-                .setConverter(new GsonConverter(gson))
-        .build();
-        mRetroRutgersService = getRestAdapter().create(RetroRutgersService.class);
-
+    public RetroRutgers(RetroRutgersService retroRutgersService) {
+        this.mRetroRutgersService = retroRutgersService;
         mSubjectsList = initSubjectList();
     }
 
-    public RestAdapter getRestAdapter() {
-        return mRestAdapter;
-    }
 
     public Observable<List<Subject>> getSubjects(Request request) {
-        return getRetroRutgersService().getSubjects(UrlUtils.buildSubjectQuery(request));
-    }
-
-    class MyErrorHandler implements ErrorHandler {
-        @Override
-        public Throwable handleError(RetrofitError cause) {
-            if (cause.getCause() instanceof ConversionException)
-                return new RutgersServerIOException();
-            if (cause.getCause() instanceof UnknownHostException)
-                return cause.getCause();
-            return cause;
-        }
-    }
-
-    RetroRutgersService getRetroRutgersService() {
-        return mRetroRutgersService;
+        return mRetroRutgersService.getSubjects(UrlUtils.buildSubjectQuery(request));
     }
 
     public Observable<SystemMessage> getSystemMessage() {
-        return getRetroRutgersService().getSystemMessage();
+        return mRetroRutgersService.getSystemMessage();
     }
 
     public Observable<Course.Section> getTrackedSections(final List<Request> allTrackedSections) {
@@ -151,7 +109,7 @@ public class RetroRutgers {
     }
 
     public Observable<List<Course>> getCourses(final Request request) {
-        return getRetroRutgersService().getCourses(UrlUtils.buildCourseQuery(request))
+        return mRetroRutgersService.getCourses(UrlUtils.buildCourseQuery(request))
                 .flatMap(new Func1<List<Course>, Observable<Course>>() {
                     @Override
                     public Observable<Course> call(final List<Course> courses) {
@@ -259,7 +217,7 @@ public class RetroRutgers {
     }
 
     private List<Subject> initSubjectList() {
-        return gson.fromJson(RetroRutgersService.SUBJECT_JSON, new TypeToken<List<Subject>>() {
+        return new Gson().fromJson(RetroRutgersService.SUBJECT_JSON, new TypeToken<List<Subject>>() {
         }.getType());
     }
 }
