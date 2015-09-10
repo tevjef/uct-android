@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:weightSum="6">
 
     <TextView
         android:id="@+id/section_item_time_info_day_text"
@@ -36,6 +37,7 @@
     <TextView
         android:id="@+id/section_item_time_info_meeting_type"
         style="@style/SecondaryTextStyle"
+        android:minWidth="50dp"
         tools:text="STUDIO"
         android:layout_weight="1"
         android:gravity="right|end"

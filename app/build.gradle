@@ -133,7 +133,7 @@ dependencies {
     compile 'com.squareup.dagger:dagger:1.2.2'
     //Debuging
     compile 'com.jakewharton.timber:timber:2.7.1'
-    compile 'com.splunk.mint:mint:4.0.8'
+    compile 'com.splunk.mint:mint:4.3.0'
     compile 'com.facebook.stetho:stetho:1.1.1'
     compile 'com.facebook.stetho:stetho-okhttp:1.1.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
