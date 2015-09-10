@@ -45,9 +45,6 @@ public class RutgersCTApp extends SugarApp {
         //refWatcher = LeakCanary.install(this);
 
         Once.initialise(this);
-        if (BuildConfig.DEBUG) {
-            Once.clearAll();
-        }
 
         initStetho();
 
@@ -60,13 +57,13 @@ public class RutgersCTApp extends SugarApp {
             Timber.plant(new Timber.DebugTree());
         } else {
 
-            Mint.enableDebug();
-            Mint.initAndStartSession(this, "2974ff7f");
+            //Mint.enableDebug();
+            //Mint.initAndStartSession(this, "2974ff7f");
             //Gets a unique id for for every installation
             String s = getsID(getApplicationContext());
 
             //Set unique user id
-            Mint.setUserIdentifier(s);
+            //Mint.setUserIdentifier(s);
             Crashlytics.setUserIdentifier(s);
             //Diverts logs through crash roeporting APIs
             Timber.plant(new CrashReportingTree());
@@ -120,7 +117,7 @@ public class RutgersCTApp extends SugarApp {
     private static class CrashReportingTree extends Timber.HollowTree {
         @Override
         public void i(String message, Object... args) {
-            Mint.leaveBreadcrumb(String.format(message, args));
+            //Mint.leaveBreadcrumb(String.format(message, args));
             Crashlytics.log(String.format(message, args));
         }
 
@@ -138,8 +135,8 @@ public class RutgersCTApp extends SugarApp {
         public void e(Throwable t, String message, Object... args) {
             e(message, args);
             Crashlytics.logException(t);
-            Mint.logExceptionMessage("INFO: ", String.format(message, args),
-                    new Exception(t));
+            //Mint.logExceptionMessage("INFO: ", String.format(message, args),
+            //        new Exception(t));
         }
     }
 }
