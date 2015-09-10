@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
@@ -316,6 +318,11 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         @Override
         public void onClick(View v) {
             if (isValidInputs()) {
+                Answers.getInstance().logCustom(new CustomEvent("Search")
+                        .putCustomAttribute("Location", Request.toStringList(getLocations()))
+                        .putCustomAttribute("Level", Request.toStringList(getLevels()))
+                        .putCustomAttribute("Semester", getSemester().toString()));
+
                 startSubjectFragment(createArgs(createRequest()));
             }
         }
