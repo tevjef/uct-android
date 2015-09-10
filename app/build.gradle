@@ -17,7 +17,7 @@ repositories {
 }
 
 def isProguarded = false;
-def vName = '0.9.3.' + (isProguarded ? '1' : '0')
+def vName = '0.9.4.' + (isProguarded ? '1' : '0')
 
 android {
 
@@ -36,7 +36,7 @@ android {
         applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 24
+        versionCode 25
         versionName vName
 
 
