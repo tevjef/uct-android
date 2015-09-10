@@ -140,7 +140,7 @@ public abstract class MVPFragment extends Fragment implements View {
     public void startFragment(Fragment outgoingFragment, Fragment incomingFragment, FragmentTransaction ft) {
         mIsInitialLoad = true;
         ft.addToBackStack(outgoingFragment.toString()).replace(R.id.container, incomingFragment)
-                .commit();
+                .commitAllowingStateLoss();
         getParentActivity().incrementBackstackCount();
         getFragmentManager().executePendingTransactions();
     }
