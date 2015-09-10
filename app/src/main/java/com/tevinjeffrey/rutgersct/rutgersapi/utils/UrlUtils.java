@@ -5,6 +5,7 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class UrlUtils {
@@ -112,7 +113,8 @@ public class UrlUtils {
     }
 
     public static Map<String, String> buildSubjectQuery(Request request) {
-        Map<String, String> query = new HashMap<>(3);
+        //The order of the parameters matter when send the request >:(
+        Map<String, String> query = new LinkedHashMap<>(3);
         query.put("semester", getSemester(request));
         query.put("campus", getLocations(request));
         query.put("level", getLevels(request));
@@ -120,7 +122,8 @@ public class UrlUtils {
     }
 
     public static Map<String, String> buildCourseQuery(Request request) {
-        Map<String, String> query = new HashMap<>(4);
+        //The order of the parameters matter when send the request >:(
+        Map<String, String> query = new LinkedHashMap<>(4);
         query.put("subject", request.getSubject());
         query.put("semester", getSemester(request));
         query.put("campus", getLocations(request));
