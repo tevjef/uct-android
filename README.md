@@ -1,6 +1,6 @@
 Rutgers Course Tracker [![Build Status](https://travis-ci.org/tevjef/Rutgers-Course-Tracker.svg?branch=master)](https://travis-ci.org/tevjef/Rutgers-Course-Tracker)
 ======================
-#### Build 
+#### How to Build 
 <pre> Import with Android Studio </pre>
 <pre> gradle assembleDebug </pre>
 
@@ -22,7 +22,7 @@ I owe the speed at which I developed the application to <a href="https://github.
 
 Video
 -----------
-<video width="100%" height="600" autoplay loop>
+<video width="500"autoplay loop>
   <source src="http://fat.gfycat.com/ImprobableImmaterialDunlin.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
