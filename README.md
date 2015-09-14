@@ -20,13 +20,6 @@ RCT was developed in my spare time using <a href="https://developer.android.com/
 I owe the speed at which I developed the application to <a href="https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/app/build.gradle#L87-L146">many open source libraries</a>. Each one of them likely saved me from 3 days of headaches, debugging and testing. 3 of them in particular, <strong>RxJava</strong>, <strong>Retrofit</strong> and <strong>Dagger</strong>, greatly simplified my business code and reduced some very complex logic to child's play. I highly recommend using any of these libraries in you own applications.
 
 
-Video
------------
-<video width="500"autoplay loop>
-  <source src="http://fat.gfycat.com/ImprobableImmaterialDunlin.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-
 Screenshots
 -----------
 <img width="300" src="https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/assets/new_material/tracked_sections.png">
