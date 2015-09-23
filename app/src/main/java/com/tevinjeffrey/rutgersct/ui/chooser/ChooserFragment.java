@@ -26,7 +26,6 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
@@ -213,8 +212,8 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
             newInstance.setEnterTransition(new Fade(Fade.IN));
             newInstance.setReturnTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true).setDuration(50));
 
-            newInstance.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-            newInstance.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+            newInstance.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
+            newInstance.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
 
         }
 

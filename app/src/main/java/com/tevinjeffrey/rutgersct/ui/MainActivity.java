@@ -9,11 +9,11 @@ import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.view.Menu;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 tsf.setReturnTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
                 tsf.setAllowReturnTransitionOverlap(false);
                 tsf.setAllowEnterTransitionOverlap(false);
-                tsf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
-                tsf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));
+                tsf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
+                tsf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
             }
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, tsf)

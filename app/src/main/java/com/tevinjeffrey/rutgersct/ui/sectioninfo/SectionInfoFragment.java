@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,7 +30,6 @@ import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
-import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
@@ -246,7 +246,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
             if (shouldAnimateView) {
                 if (sectionIsAdded != mViewState.isSectionAdded) {
-                    ViewCompat.animate(mFab).setDuration(DURATION).setInterpolator(new EaseOutQuint())
+                    ViewCompat.animate(mFab).setDuration(DURATION).setInterpolator(new DecelerateInterpolator())
                             .rotation(sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
                     //I would much prefer to animate from the current coolor to the next but the fab has
                     // no method to get the current color and I'm not desparate enough to manage it myself.
@@ -351,7 +351,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
                     ObjectAnimator.ofFloat(mFab, "alpha", 0, 1)
 
             );
-            set.setInterpolator(new EaseOutQuint());
+            set.setInterpolator(new DecelerateInterpolator());
             set.setStartDelay(400);
             set.setDuration(250).start();
         } else {

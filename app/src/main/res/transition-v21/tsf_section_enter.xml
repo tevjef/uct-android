@@ -4,7 +4,7 @@
     android:interpolator="@android:interpolator/decelerate_cubic">
 
     <transition
-        class="com.tevinjeffrey.rutgersct.animator.RevealTransition"
+        class="com.tevinjeffrey.rutgersct.ui.utils.RevealTransition"
         android:transitionVisibilityMode="mode_in">
 
         <targets>

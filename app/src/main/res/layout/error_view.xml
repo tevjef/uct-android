@@ -12,7 +12,7 @@
     tools:showIn="@layout/fragment_tracked_sections"
     android:gravity="center">
 
-    <com.tevinjeffrey.rutgersct.customviews.TintImageView
+    <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/error_icon"

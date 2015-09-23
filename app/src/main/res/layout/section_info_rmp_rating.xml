@@ -31,7 +31,7 @@
                 android:layout_below="@+id/rmp_prof_name"
                 style="@style/SecondaryTextStyle" />
 
-            <com.tevinjeffrey.rutgersct.customviews.TintImageView
+            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
                 android:id="@+id/open_in_browser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -9,7 +9,7 @@
     </targets>
 
     <transition
-        class="com.tevinjeffrey.rutgersct.animator.RevealTransition"
+        class="com.tevinjeffrey.rutgersct.ui.utils.RevealTransition"
         android:transitionVisibilityMode="mode_in">
 
         <targets>

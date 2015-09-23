@@ -9,7 +9,7 @@
     tools:visibility="visible"
     android:visibility="gone">
 
-    <com.tevinjeffrey.rutgersct.customviews.TintImageView
+    <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
         android:id="@+id/imageView2"
         android:layout_width="160dp"
         android:layout_height="160dp"

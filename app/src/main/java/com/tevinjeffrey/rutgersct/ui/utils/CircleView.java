@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.customviews;
+package com.tevinjeffrey.rutgersct.ui.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;

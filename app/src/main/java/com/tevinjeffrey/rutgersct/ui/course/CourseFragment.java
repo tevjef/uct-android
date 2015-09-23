@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.google.gson.JsonParseException;
@@ -29,7 +30,6 @@ import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.animator.EaseOutQuint;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
@@ -365,7 +365,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ChangeBounds changeBoundsTransition = new ChangeBounds();
-            changeBoundsTransition.setInterpolator(new EaseOutQuint());
+            changeBoundsTransition.setInterpolator(new DecelerateInterpolator());
 
             courseInfoFragment.setEnterTransition(new Fade(Fade.IN).setStartDelay(250));
             courseInfoFragment.setReturnTransition(new Fade(Fade.OUT).setDuration(50));

@@ -57,7 +57,7 @@
             android:layout_alignParentTop="true"
             android:orientation="vertical">
 
-            <com.tevinjeffrey.rutgersct.customviews.TintImageView
+            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_today_white_24dp"
@@ -136,7 +136,7 @@
             android:layout_alignLeft="@+id/term_layout"
             android:layout_below="@+id/term_layout">
 
-            <com.tevinjeffrey.rutgersct.customviews.TintImageView
+            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_hat"
@@ -197,7 +197,7 @@
             android:orientation="vertical">
 
 
-            <com.tevinjeffrey.rutgersct.customviews.TintImageView
+            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_location_city_white_24dp"

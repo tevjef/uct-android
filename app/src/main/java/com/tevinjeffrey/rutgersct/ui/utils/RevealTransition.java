@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.animator;
+package com.tevinjeffrey.rutgersct.ui.utils;
 /*
  * Copyright (C) 2014 The Android Open Source Project
  *

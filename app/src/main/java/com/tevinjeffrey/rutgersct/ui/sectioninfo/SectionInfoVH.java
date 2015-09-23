@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.customviews.CircleView;
+import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.MeetingTimes;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;

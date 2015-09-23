@@ -4,7 +4,7 @@
     android:interpolator="@android:interpolator/fast_out_linear_in">
     <transitionSet android:transitionOrdering="together">
         <transition
-            class="com.tevinjeffrey.rutgersct.animator.RevealTransition"
+            class="com.tevinjeffrey.rutgersct.ui.utils.RevealTransition"
             android:transitionVisibilityMode="mode_out">
             <targets>
                 <target android:targetId="@id/app_bar_layout"/>

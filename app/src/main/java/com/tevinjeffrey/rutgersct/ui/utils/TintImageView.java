@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.customviews;/*
+package com.tevinjeffrey.rutgersct.ui.utils;/*
  * Copyright (C) 2014 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
