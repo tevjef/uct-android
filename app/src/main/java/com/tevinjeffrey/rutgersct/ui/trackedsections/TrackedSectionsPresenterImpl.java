@@ -9,7 +9,7 @@ import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
-import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
+import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import java.util.List;

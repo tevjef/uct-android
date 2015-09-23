@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.utils.exceptions;
+package com.tevinjeffrey.rutgersct.rutgersapi.exceptions;
 
 import java.io.IOException;
 

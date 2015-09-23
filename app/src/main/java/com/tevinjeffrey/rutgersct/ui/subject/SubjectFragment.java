@@ -37,8 +37,8 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersDataIOException;
-import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersDataIOException;
+import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;

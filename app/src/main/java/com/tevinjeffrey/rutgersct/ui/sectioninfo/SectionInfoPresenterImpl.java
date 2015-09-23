@@ -18,7 +18,7 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.Instructors;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
-import com.tevinjeffrey.rutgersct.utils.DatabaseUpdateEvent;
+import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import org.apache.commons.lang3.StringUtils;

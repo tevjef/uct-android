@@ -38,7 +38,7 @@ import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
 
 import org.apache.commons.lang3.text.WordUtils;
 

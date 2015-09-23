@@ -11,7 +11,7 @@ import com.tevinjeffrey.rutgersct.ui.course.CoursePresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
-import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
 
 import java.io.IOException;
 import java.net.UnknownHostException;

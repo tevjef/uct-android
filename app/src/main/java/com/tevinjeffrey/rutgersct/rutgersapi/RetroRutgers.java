@@ -4,13 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
 
 import java.util.List;
 
@@ -75,13 +75,14 @@ public class RetroRutgers {
 
                     }
                 })
-                        //Convert every completed request in into a list and check  if all were completed successfully.
-                        //Sometimes the servers bug out and course and section information will not be available.
+                        // Convert every completed request in into a list and check if all were completed successfully.
+                        // Sometimes the servers bug out and course and section information will not be available.
                         // Earlier in the the flow, this would simple result in a JsonSyntaxException or an
                         // RutgersDataException. However, it can make it to this point where no section has been
-                        // found. Instead of emiting an empty observable, I've converted it to a list which
+                        // found. Instead of emiting an empty observable, I converted it to a list whose size
                         // will then be compared to the original list of requests. Emit any items, before
-                        //deciding wheter or not to pass an exeception to onError()
+                        // deciding wheter or not to pass an exeception to onError(). Comparing by the size of the
+                        // retrieved list is an indication that all requests weren't made.
                 .toList()
                 .flatMap(new Func1<List<Course.Section>, Observable<Course.Section>>() {
                     @Override

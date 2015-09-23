@@ -42,7 +42,7 @@ import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.RecyclerSimpleScrollListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;

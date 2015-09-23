@@ -6,7 +6,7 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersDataIOException;
+import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersDataIOException;
 
 import java.util.List;
 
