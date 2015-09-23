@@ -75,7 +75,8 @@
                 android:layout_toRightOf="@id/ic_today"
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="false"
-                android:gravity="center"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp" />
 
             <RadioGroup
@@ -152,7 +153,8 @@
                 android:layout_toRightOf="@id/ic_level"
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="false"
-                android:gravity="center"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"  />
 
             <LinearLayout
@@ -212,7 +214,8 @@
                 android:layout_toRightOf="@id/ic_location"
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="false"
-                android:gravity="center"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"  />
 
         <LinearLayout
