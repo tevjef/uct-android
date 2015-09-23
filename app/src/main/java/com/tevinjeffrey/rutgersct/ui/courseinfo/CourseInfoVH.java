@@ -1,10 +1,11 @@
-package com.tevinjeffrey.rutgersct.adapters.holders;
+package com.tevinjeffrey.rutgersct.ui.courseinfo;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
+import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoVH;
 
 public final class CourseInfoVH extends SectionInfoVH {
 

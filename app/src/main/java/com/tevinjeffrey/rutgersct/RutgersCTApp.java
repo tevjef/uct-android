@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
@@ -65,7 +66,7 @@ public class RutgersCTApp extends SugarApp {
             //Set unique user id
             //Mint.setUserIdentifier(s);
             Crashlytics.setUserIdentifier(s);
-            //Diverts logs through crash roeporting APIs
+            //Diverts logs through crash reporting APIs
             Timber.plant(new CrashReportingTree());
         }
     }
@@ -114,29 +115,19 @@ public class RutgersCTApp extends SugarApp {
     }
 
     // A tree which logs important information for crash reporting.
-    private static class CrashReportingTree extends Timber.HollowTree {
+    private static class CrashReportingTree extends Timber.Tree {
         @Override
-        public void i(String message, Object... args) {
-            //Mint.leaveBreadcrumb(String.format(message, args));
-            Crashlytics.log(String.format(message, args));
-        }
+        protected void log(int priority, String tag, String message, Throwable t) {
+            if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+                return;
+            }
 
-        @Override
-        public void i(Throwable t, String message, Object... args) {
-            i(message, args); // Just add to the log.
-        }
-
-        @Override
-        public void e(String message, Object... args) {
-            i("ERROR: " + message, args); // Just add to the log.
-        }
-
-        @Override
-        public void e(Throwable t, String message, Object... args) {
-            e(message, args);
-            Crashlytics.logException(t);
-            //Mint.logExceptionMessage("INFO: ", String.format(message, args),
-            //        new Exception(t));
+            if (t != null) {
+                if (priority == Log.ERROR) {
+                    Crashlytics.logException(t);
+                }
+            }
+            Crashlytics.log(priority, tag, message);
         }
     }
 }

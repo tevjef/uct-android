@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.adapters;
+package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.adapters.holders.TrackedSectionVH;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 
 import java.util.List;

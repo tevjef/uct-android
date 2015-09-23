@@ -207,12 +207,10 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         ChooserFragment newInstance = new ChooserFragment();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            newInstance.setAllowEnterTransitionOverlap(false);
-            newInstance.setAllowReturnTransitionOverlap(false);
 
             newInstance.setExitTransition(new Fade(Fade.OUT).setDuration(50).excludeTarget(ImageView.class, true));
 
-            newInstance.setEnterTransition(new Fade(Fade.IN).excludeTarget(ImageView.class, true));
+            newInstance.setEnterTransition(new Fade(Fade.IN));
             newInstance.setReturnTransition(new Fade(Fade.OUT).excludeTarget(ImageView.class, true).setDuration(50));
 
             newInstance.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new EaseOutQuint()));

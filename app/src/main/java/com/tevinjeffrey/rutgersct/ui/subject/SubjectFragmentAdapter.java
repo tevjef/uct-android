@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.adapters;
+package com.tevinjeffrey.rutgersct.ui.subject;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.adapters.holders.SubjectVH;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 
 import java.util.List;

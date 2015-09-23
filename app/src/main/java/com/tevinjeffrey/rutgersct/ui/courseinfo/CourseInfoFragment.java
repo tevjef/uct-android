@@ -23,8 +23,7 @@ import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.adapters.CourseInfoFragmentAdapter;
-import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.animator.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;

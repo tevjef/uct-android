@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.adapters.holders;
+package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -21,11 +21,11 @@ import butterknife.ButterKnife;
 public class SectionInfoVH extends RecyclerView.ViewHolder {
 
     private final View mParent;
-    final TextView mInstructors;
-    final CircleView mSectionNumberBackground;
-    final ViewGroup mSectionTimeContainer;
+    public final TextView mInstructors;
+    public final CircleView mSectionNumberBackground;
+    public final ViewGroup mSectionTimeContainer;
 
-    static SectionInfoVH newInstance(View parent) {
+    public static SectionInfoVH newInstance(View parent) {
         TextView instructors = ButterKnife.findById(parent, R.id.prof_text);
         CircleView sectionNumberBackground = ButterKnife.findById(parent, R.id.section_number_background);
         ViewGroup sectionTimeContainer = ButterKnife.findById(parent, R.id.section_item_time_container);
@@ -33,7 +33,7 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
         return new SectionInfoVH(parent, instructors, sectionNumberBackground, sectionTimeContainer);
     }
 
-    SectionInfoVH(View parent, TextView instructors, CircleView sectionNumberBackground, ViewGroup mSectionTimeContainer) {
+    public SectionInfoVH(View parent, TextView instructors, CircleView sectionNumberBackground, ViewGroup mSectionTimeContainer) {
         super(parent);
         this.mParent = parent;
         this.mInstructors = instructors;

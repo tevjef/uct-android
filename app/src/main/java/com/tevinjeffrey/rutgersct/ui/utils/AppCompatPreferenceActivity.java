@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.utils;
+package com.tevinjeffrey.rutgersct.ui.utils;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

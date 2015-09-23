@@ -26,7 +26,7 @@ import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.services.Alarm;
-import com.tevinjeffrey.rutgersct.utils.AppCompatPreferenceActivity;
+import com.tevinjeffrey.rutgersct.ui.utils.AppCompatPreferenceActivity;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 
@@ -148,13 +148,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     new MaterialDialog.Builder(getParentActivity())
                             .title("Set sync interval")
                             .items(R.array.intervals).alwaysCallSingleChoiceCallback()
-                            .itemsCallbackSingleChoice(getInterval(), new MaterialDialog.ListCallback() {
+                            .itemsCallbackSingleChoice(getInterval(), new MaterialDialog.ListCallbackSingleChoice() {
                                 @Override
-                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                public boolean onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
                                     setInterval(which);
                                     setSummary(syncInterval, String.format("%s",
                                             getResources().getStringArray(R.array.intervals)[getInterval()]));
                                     getObjectGraph().get(Alarm.class).setAlarm();
+                                    return true;
                                 }
                             })
                             .positiveColorRes(R.color.accent)

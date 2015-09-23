@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.adapters;
+package com.tevinjeffrey.rutgersct.ui.utils;
 
 import android.app.Activity;
 import android.content.Context;

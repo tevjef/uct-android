@@ -33,15 +33,14 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.adapters.ItemClickListener;
-import com.tevinjeffrey.rutgersct.adapters.TrackedSectionsFragmentAdapter;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.animator.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.customviews.CircleView;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
-import com.tevinjeffrey.rutgersct.utils.RecyclerSimpleScrollListener;
+import com.tevinjeffrey.rutgersct.ui.utils.RecyclerSimpleScrollListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 import com.tevinjeffrey.rutgersct.utils.exceptions.RutgersServerIOException;
 

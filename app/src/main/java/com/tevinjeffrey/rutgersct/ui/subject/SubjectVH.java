@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.adapters.holders;
+package com.tevinjeffrey.rutgersct.ui.subject;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
