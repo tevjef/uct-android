@@ -27,14 +27,6 @@ public class PreferenceUtils {
                 context.getResources().getBoolean(R.bool.pref_sound_default_value));
     }
 
-    public void setSound(boolean learned) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPreferences.edit()
-                .putBoolean(getString(R.string.pref_sound_key), learned)
-                .commit();
-
-    }
-
     public int getSyncInterval() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getInt(getString(R.string.pref_sync_interval_key), getInt(R.string.pref_sync_interval_default_value));
@@ -58,7 +50,4 @@ public class PreferenceUtils {
         return Integer.parseInt(getString(strRes));
     }
 
-    private boolean getBool(@BoolRes int boolRes) {
-        return context.getResources().getBoolean(boolRes);
-    }
 }
