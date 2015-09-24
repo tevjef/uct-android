@@ -33,6 +33,7 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
@@ -107,7 +108,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         if (mBasePresenter == null) {
             mBasePresenter = new TrackedSectionsPresenterImpl();
             //Field injection instead of constructor injection. Less code when adding dependancies.
-            getObjectGraph().inject(mBasePresenter);
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
 
@@ -152,7 +153,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                 launchWebReg();
                 return true;
             case R.id.action_rate:
-                lauchMarket();
+                launchMarket();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -160,7 +161,6 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     }
 
     public void initToolbar() {
-        //setToolbarTitle(mToolbar, "");
         setToolbar(mToolbar);
     }
 
@@ -178,15 +178,10 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     }
 
     public void setData(List<Section> data) {
-        //mViewstate holds the data and parceles it into a bundle whenever the the state is saved
-        // and needs to be restored. Since this is a retainedfragment, the data set will not be
-        // destroyed on a config change. That does not not matter since the ViewState will be appling
-        // it's saved dataset when ever the onActivityCreated is called.
         mViewState.data = data;
         mListDataset.clear();
         mListDataset.addAll(data);
         mRecyclerView.getAdapter().notifyDataSetChanged();
-
     }
 
     @Override
@@ -203,10 +198,11 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
             message = t.getMessage();
 
         }
-        //error message finalized, now save it.
+        // Save current error message ahead of config change.
         mViewState.errorMessage = message;
-        //Show the error layout if there's nothing in the adpater to show.
+        // Show the error layout if there's nothing in the adpater to show.
         // Redirects the message that would usually be in the snackbar, to error layout.
+        // https://www.google.com/design/spec/patterns/errors.html#errors-app-errors
         if (!adapterHasItems()) {
             showLayout(LayoutType.ERROR);
             TextView textViewMessage = ButterKnife.findById(mErrorView, R.id.text);
@@ -224,19 +220,16 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                 showEmptyLayout(View.GONE);
                 showRecyclerView(View.GONE);
                 showErrorLayout(View.VISIBLE);
-                //enableSwipeRefreshLayout(true);
                 break;
             case EMPTY:
                 showRecyclerView(View.GONE);
                 showErrorLayout(View.GONE);
                 showEmptyLayout(View.VISIBLE);
-                //enableSwipeRefreshLayout(false);
                 break;
             case LIST:
                 showErrorLayout(View.GONE);
                 showEmptyLayout(View.GONE);
                 showRecyclerView(View.VISIBLE);
-                //enableSwipeRefreshLayout(true);
                 break;
             default:
                 throw new RuntimeException("Unknown type: " + type);
@@ -264,9 +257,9 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     // the gesture and the loading animation when setEnabled(false) is called. This is an issue as
     // the refresh animation is the only way to notify the user of the work being done. So e.g if the
     // we're in an empty state an the user issues a refresh there will be no refresh animation.
-    private void enableSwipeRefreshLayout(boolean enable) {
+    /*private void enableSwipeRefreshLayout(boolean enable) {
         mSwipeRefreshLayout.setEnabled(enable);
-    }
+    }*/
 
     private void showErrorLayout(int visibility) {
         if (mErrorView.getVisibility() != visibility)
@@ -298,12 +291,12 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                 switch (direction) {
                     case UP:
                         animateFabIn();
-                        //These help methods have a glitchy animation on some Samsung devices.
+                        //These helper methods have a glitchy animation on some Samsung devices.
                         //mFab.show();
                         break;
                     case DOWN:
                         animateFabOut();
-                        //These help methods have a glitchy animation on some Samsung devices.
+                        //These helper methods have a glitchy animation on some Samsung devices.
                         //mFab.hide();
                         break;
                     case NEUTRAL:
@@ -347,6 +340,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
 
     @Override
     public void onRefresh() {
+        // Retrieve section and while showing the loading animation.
         getPresenter().loadTrackedSections(true);
     }
 
@@ -357,6 +351,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     }
 
     private void showSnackBar(CharSequence message) {
+        // TODO Repace when android.design Snackbar recieves decent callbacks.
         SnackbarManager.show(
                 Snackbar.with(getParentActivity())
                         .type(SnackbarType.MULTI_LINE)
@@ -491,10 +486,9 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         startActivity(i);
     }
 
-    private void lauchMarket() {
+    private void launchMarket() {
         final Uri uri = Uri.parse("market://details?id=" + getParentActivity().getApplicationContext().getPackageName());
         final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
-
         if (getParentActivity().getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0) {
             startActivity(rateAppIntent);
         }

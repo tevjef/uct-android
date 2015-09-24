@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface SubjectView extends View, BaseToolbarView {
 
+    String SELECTED_SUBJECT = "SELECTED_SUBJECT";
+
     void showLoading(boolean pullToRefresh);
 
     void setData(List<Subject> data);

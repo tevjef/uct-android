@@ -10,6 +10,8 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 
 import javax.inject.Inject;
 
@@ -23,11 +25,10 @@ public class DatabaseReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        RutgersCTApp rutgersCTApp = (RutgersCTApp) context.getApplicationContext();
-        rutgersCTApp.getObjectGraph().inject(this);
+        RutgersCTApp.getObjectGraph(context).inject(this);
 
-        Request request = intent.getParcelableExtra(RutgersCTApp.REQUEST);
-        Course.Section section = intent.getParcelableExtra(RutgersCTApp.SELECTED_SECTION);
+        Request request = intent.getParcelableExtra(TrackedSectionsView.REQUEST);
+        Course.Section section = intent.getParcelableExtra(CourseInfoView.SELECTED_SECTION);
         if (request != null && section != null) {
             //Removes section from databse
             mDatabaseHandler.removeSectionFromDb(request);

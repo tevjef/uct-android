@@ -129,8 +129,8 @@ dependencies {
     //Debuging
     compile 'com.jakewharton.timber:timber:3.1.0'
     compile 'com.splunk.mint:mint:4.3.0'
-    compile 'com.facebook.stetho:stetho:1.1.1'
-    compile 'com.facebook.stetho:stetho-okhttp:1.1.1'
+    compile 'com.facebook.stetho:stetho:1.2.0'
+    compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }

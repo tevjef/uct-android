@@ -20,7 +20,6 @@ import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import javax.inject.Inject;
 
-import dagger.ObjectGraph;
 import icepick.Icepick;
 import icepick.Icicle;
 import jonathanfinerty.once.Once;
@@ -48,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        ObjectGraph og = ((RutgersCTApp)getApplication()).getObjectGraph();
-        og.inject(this);
+        RutgersCTApp.getObjectGraph(this).inject(this);
 
         setContentView(R.layout.activity_main);
 
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.container, tsf)
                     .commit();
         }
-        og.get(Alarm.class).setAlarm();
+        RutgersCTApp.getObjectGraph(this).get(Alarm.class).setAlarm();
     }
 
     @Override

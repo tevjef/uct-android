@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.rutgersapi.utils;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -97,19 +96,13 @@ public class UrlUtils {
     }
 
     public static String buildParamUrl(Request request) {
-        StringBuilder sb = new StringBuilder(50);
-        sb.append("subject=");
-        sb.append(request.getSubject());
-        sb.append("&");
-        sb.append("semester=");
-        sb.append(getSemester(request));
-        sb.append("&");
-        sb.append("campus=");
-        sb.append(getLocations(request));
-        sb.append("&");
-        sb.append("level=");
-        sb.append(getLevels(request));
-        return sb.toString();
+        return "subject=" + request.getSubject()
+                + "&" + "semester="
+                + getSemester(request)
+                + "&" + "campus="
+                + getLocations(request)
+                + "&" + "level="
+                + getLevels(request);
     }
 
     public static Map<String, String> buildSubjectQuery(Request request) {

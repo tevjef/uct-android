@@ -9,6 +9,8 @@ import java.util.List;
 @SuppressWarnings("BooleanParameter")
 public interface CourseView extends BaseToolbarView, View {
 
+    String SELECTED_COURSE = "SELECTED_COURSE";
+
     void showLoading(boolean pullToRefresh);
 
     void setData(List<Course> data);

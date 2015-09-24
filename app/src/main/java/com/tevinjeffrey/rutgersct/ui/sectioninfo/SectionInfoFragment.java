@@ -29,6 +29,8 @@ import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
@@ -172,7 +174,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (getArguments() != null) {
-            selectedSection = getArguments().getParcelable(RutgersCTApp.SELECTED_SECTION);
+            selectedSection = getArguments().getParcelable(CourseInfoView.SELECTED_SECTION);
         }
     }
 
@@ -203,7 +205,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
             mBasePresenter = new SectionInfoPresenterImpl(selectedSection);
-            getObjectGraph().inject(mBasePresenter);
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
 
@@ -509,8 +511,8 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         final SectionInfoFragment newInstance = new SectionInfoFragment();
 
         final Bundle arguments = new Bundle();
-        arguments.putParcelable(RutgersCTApp.SELECTED_SECTION, selectedSection);
-        arguments.putParcelable(RutgersCTApp.REQUEST, selectedSection.getRequest());
+        arguments.putParcelable(CourseInfoView.SELECTED_SECTION, selectedSection);
+        arguments.putParcelable(TrackedSectionsView.REQUEST, selectedSection.getRequest());
 
         newInstance.setArguments(arguments);
         return newInstance;

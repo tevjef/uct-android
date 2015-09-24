@@ -30,6 +30,7 @@ import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
@@ -89,7 +90,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (getArguments() != null) {
-            mRequest = getArguments().getParcelable(RutgersCTApp.REQUEST);
+            mRequest = getArguments().getParcelable(TrackedSectionsView.REQUEST);
         }
     }
 
@@ -108,7 +109,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
             mBasePresenter = new SubjectPresenterImpl(mRequest);
-            getObjectGraph().inject(mBasePresenter);
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
 
@@ -390,8 +391,8 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
 
     private Bundle createArgs(Parcelable selectedSubject, Parcelable request) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RutgersCTApp.SELECTED_SUBJECT, selectedSubject);
-        bundle.putParcelable(RutgersCTApp.REQUEST, request);
+        bundle.putParcelable(SELECTED_SUBJECT, selectedSubject);
+        bundle.putParcelable(TrackedSectionsView.REQUEST, request);
         return bundle;
     }
 

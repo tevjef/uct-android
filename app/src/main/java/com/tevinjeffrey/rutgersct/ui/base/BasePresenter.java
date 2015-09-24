@@ -20,10 +20,6 @@ public abstract class BasePresenter implements Presenter, StatefulPresenter {
     }
 
     @Override
-    public void onDestroyView(boolean retainedState) {
-    }
-
-    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
     }
 

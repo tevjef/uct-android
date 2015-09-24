@@ -12,13 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 
 import butterknife.ButterKnife;
-import dagger.ObjectGraph;
 import icepick.Icepick;
 import timber.log.Timber;
 
@@ -155,7 +153,4 @@ public abstract class MVPFragment extends Fragment implements View {
         return this.getClass().getSimpleName();
     }
 
-    public ObjectGraph getObjectGraph() {
-        return ((RutgersCTApp) getParentActivity().getApplication()).getObjectGraph();
-    }
 }

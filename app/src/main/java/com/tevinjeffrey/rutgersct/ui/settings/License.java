@@ -6,6 +6,7 @@ public class License {
     String website;
     String type;
     String content;
+    String usage;
 
     public String getName() {
         return name;
@@ -26,4 +27,9 @@ public class License {
     public String getContent() {
         return content;
     }
+
+    public String getUsage() {
+        return usage;
+    }
+
 }

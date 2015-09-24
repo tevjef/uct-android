@@ -29,6 +29,7 @@ import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.ui.subject.SubjectView;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
@@ -92,7 +93,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mRequest = getArguments().getParcelable(RutgersCTApp.REQUEST);
+        mRequest = getArguments().getParcelable(TrackedSectionsView.REQUEST);
     }
 
     @Override
@@ -110,7 +111,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
             mBasePresenter = new CoursePresenterImpl(mRequest);
-            getObjectGraph().inject(mBasePresenter);
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
 
@@ -350,7 +351,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     }
 
     private void setToolbarTitle() {
-        Subject selectedSubject = getArguments().getParcelable(RutgersCTApp.SELECTED_SUBJECT);
+        Subject selectedSubject = getArguments().getParcelable(SubjectView.SELECTED_SUBJECT);
         super.setToolbarTitle(mToolbar, (selectedSubject != null ? selectedSubject.getCode() : "")
                 + " | " + WordUtils.capitalize(selectedSubject != null ?
                 selectedSubject.getDescription().toLowerCase() : ""));
@@ -387,7 +388,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     private Bundle createArgs(Request request, Course selectedCourse) {
         Bundle bundle = new Bundle();
         selectedCourse.setRequest(request);
-        bundle.putParcelable(RutgersCTApp.SELECTED_COURSE, selectedCourse);
+        bundle.putParcelable(SELECTED_COURSE, selectedCourse);
         return bundle;
     }
 

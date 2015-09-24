@@ -37,7 +37,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import dagger.ObjectGraph;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
@@ -83,15 +82,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            getObjectGraph().inject(this);
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
 
             addPreferencesFromResource(R.xml.settings);
         }
 
-        public ObjectGraph getObjectGraph() {
-            RutgersCTApp rutgersCTApp = (RutgersCTApp) getParentActivity().getApplication();
-            return rutgersCTApp.getObjectGraph();
-        }
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,7 +149,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                     setInterval(which);
                                     setSummary(syncInterval, String.format("%s",
                                             getResources().getStringArray(R.array.intervals)[getInterval()]));
-                                    getObjectGraph().get(Alarm.class).setAlarm();
+                                    RutgersCTApp.getObjectGraph(getParentActivity()).get(Alarm.class).setAlarm();
                                     return true;
                                 }
                             })

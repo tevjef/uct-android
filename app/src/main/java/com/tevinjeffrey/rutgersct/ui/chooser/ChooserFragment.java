@@ -32,6 +32,7 @@ import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils.Semester;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 import com.tevinjeffrey.stringpicker.StringPicker;
 
@@ -108,7 +109,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         super.onViewCreated(view, savedInstanceState);
         if (mBasePresenter == null) {
             mBasePresenter = new ChooserPresenterImpl();
-            getObjectGraph().inject(mBasePresenter);
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
 
@@ -194,7 +195,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
     private Bundle createArgs(Parcelable p) {
         Bundle args = new Bundle();
-        args.putParcelable(RutgersCTApp.REQUEST, p);
+        args.putParcelable(TrackedSectionsView.REQUEST, p);
         return args;
     }
 

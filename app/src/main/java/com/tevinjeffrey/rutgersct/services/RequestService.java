@@ -19,6 +19,8 @@ import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.util.List;
@@ -52,8 +54,7 @@ public class RequestService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        RutgersCTApp rutgersCTApp = (RutgersCTApp) this.getApplication();
-        rutgersCTApp.getObjectGraph().inject(this);
+        RutgersCTApp.getObjectGraph(this).inject(this);
 
         Timber.i("Request Service started at %s", System.currentTimeMillis());
 
@@ -119,8 +120,8 @@ public class RequestService extends Service {
 
             //Intent open the app.
             Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
-            openTracked.putExtra(RutgersCTApp.REQUEST, r);
-            openTracked.putExtra(RutgersCTApp.SELECTED_SECTION, section);
+            openTracked.putExtra(TrackedSectionsView.REQUEST, r);
+            openTracked.putExtra(CourseInfoView.SELECTED_SECTION, section);
             //The intent that will be when the user clicks stop tracking in the notification bar.
             PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this,
                     Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);

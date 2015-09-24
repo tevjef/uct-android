@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.ui.course.CourseView;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
@@ -93,8 +93,10 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (getArguments() != null) {
-            mSelectedCourse = getArguments().getParcelable(RutgersCTApp.SELECTED_COURSE);
-            mRequest = mSelectedCourse.getRequest();
+            mSelectedCourse = getArguments().getParcelable(CourseView.SELECTED_COURSE);
+            if (mSelectedCourse != null) {
+                mRequest = mSelectedCourse.getRequest();
+            }
         }
     }
 
@@ -126,7 +128,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
         Timber.i("Selected section: %s", section);
         setIndexInRequestObject(section.getIndex());
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RutgersCTApp.SELECTED_SECTION, section);
+        bundle.putParcelable(SELECTED_SECTION, section);
         startSectionInfoFragment(bundle, view);
     }
 
