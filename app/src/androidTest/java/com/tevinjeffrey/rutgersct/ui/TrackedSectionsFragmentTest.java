@@ -2,36 +2,50 @@ package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+
+import android.support.test.espresso.action.ViewActions;
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.RutgersCTTestModule;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.testUtils.CustomMatchers;
+import com.tevinjeffrey.rutgersct.testUtils.RutgersApiConts;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
+
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeDown;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
-import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.assertion.ViewAssertions.*;
+import static android.support.test.espresso.contrib.RecyclerViewActions.*;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static android.support.test.espresso.Espresso.*;
 import static com.tevinjeffrey.rutgersct.testUtils.OrientationChangeAction.orientationLandscape;
 import static com.tevinjeffrey.rutgersct.testUtils.OrientationChangeAction.orientationPortrait;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
+
 import static org.junit.Assert.assertThat;
 
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TrackedSectionsFragmentTest {
+
+    @Inject
+    DatabaseHandler databaseHandler;
 
     Activity mActivity;
 
@@ -43,6 +57,7 @@ public class TrackedSectionsFragmentTest {
         // Espresso does not start the Activity for you we need to do this manually here.
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
+        ObjectGraph.create(new RutgersCTTestModule()).inject(this);
     }
 
     @Test
@@ -73,22 +88,17 @@ public class TrackedSectionsFragmentTest {
         onView(withId(R.id.action_refresh)).perform(click());
     }
 
-/*
-    Disabled until espresoo updates it's dependacies.
+
     @Test
     public void testRecyclerItemClickAndRemoveSection() {
-        Request expected = rutgersApiConts.getPrimarySemesterRequest();
-        DatabaseHandlerImpl.getInstance().saveToDb(expected);
+        Request expected = RutgersApiConts.getPrimarySemesterRequest();
+        databaseHandler.saveToDb(expected);
 
         onView(withId(R.id.tsf_list)).perform(actionOnItemAtPosition(0, click()));
         onView(withId(R.id.add_courses_fab)).perform(click());
-        onView(withId(R.id.tsf_list))
-                .perform(scrollToHolder
-                        (withIndexNumber(equalTo(expected.getIndex()))))
-                .check(doesNotExist());
     }
 
-*/
+
 
     @Test
     public void testSwipeToRefresh() {

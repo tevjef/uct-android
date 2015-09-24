@@ -30,7 +30,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.tevinjeffrey.rutgersct.testUtils.OrientationChangeAction.orientationLandscape;
 import static com.tevinjeffrey.rutgersct.testUtils.OrientationChangeAction.orientationPortrait;
-import static com.tevinjeffrey.rutgersct.testUtils.TestConts.withSubjectNumber;
+import static com.tevinjeffrey.rutgersct.testUtils.CustomMatchers.withSubjectNumber;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;

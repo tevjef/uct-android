@@ -34,12 +34,15 @@ allprojects {
     }
 }
 
-Properties properties = new Properties()
-File propertiesFile = new File('signing.properties')
-propertiesFile.withInputStream {
-    properties.load(it)
-}
+
+
 ext {
+    Properties properties = new Properties()
+    File propertiesFile = file('signing.properties')
+    propertiesFile.withInputStream {
+        properties.load(it)
+    }
+
     keyAlias = properties.keyAlias
     keyPassword = properties.keyPassword
     storePassword = properties.storePassword

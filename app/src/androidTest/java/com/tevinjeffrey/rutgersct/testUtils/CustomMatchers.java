@@ -2,7 +2,7 @@ package com.tevinjeffrey.rutgersct.testUtils;
 
 import android.support.test.espresso.matcher.BoundedMatcher;
 
-import com.tevinjeffrey.rutgersct.adapters.holders.TrackedSectionVH;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionVH;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 
@@ -13,7 +13,7 @@ import org.hamcrest.TypeSafeMatcher;
 import static android.support.test.internal.util.Checks.checkNotNull;
 
 
-public class TestConts {
+public class CustomMatchers {
 
     public static Matcher<Object> withSubjectNumber(final Matcher<String> itemTextMatcher){
         checkNotNull(itemTextMatcher);
