@@ -86,8 +86,10 @@ android {
 
 dependencies {
     fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':stringpicker')
     compile project(':ratemyprofessors')
+    compile project(':libraries:stringpicker')
+    compile project(':libraries:ratemyprofessors')
+    
     //Testing
     androidTestCompile('com.android.support.test:runner:0.3') {
         exclude module: 'support-annotations'

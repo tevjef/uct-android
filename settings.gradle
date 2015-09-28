@@ -1,1 +1,1 @@
-include ':app', ':stringpicker', ':ratemyprofessors'
+include ':app', ':libraries:stringpicker', ':libraries:ratemyprofessors'
