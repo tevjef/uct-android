@@ -224,7 +224,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
         //Requires a database access and the results should not be saved.
         getPresenter().setFabState(false);
-        getPresenter().loadRMP(selectedSection);
+        getPresenter().loadRMP();
     }
 
     @Override

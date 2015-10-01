@@ -57,6 +57,9 @@ import icepick.Icicle;
 import rx.functions.Action1;
 import timber.log.Timber;
 
+import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.EMPTY;
+import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.LIST;
+
 @SuppressWarnings({"ClassWithTooManyMethods"})
 public class TrackedSectionsFragment extends MVPFragment implements TrackedSectionsView, SwipeRefreshLayout.OnRefreshListener,
         ItemClickListener<Section, View> {
@@ -182,6 +185,11 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         mListDataset.clear();
         mListDataset.addAll(data);
         mRecyclerView.getAdapter().notifyDataSetChanged();
+
+        if (data.size() == 0)
+            showLayout(EMPTY);
+        else if (data.size() > 0)
+            showLayout(LIST);
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
+import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersDataIOException;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -24,6 +27,12 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
 
     @Inject
     RetroRutgers mRetroRutgers;
+    @Inject
+    @AndroidMainThread
+    Scheduler mMainThread;
+    @Inject
+    @BackgroundThread
+    Scheduler mBackgroundThread;
 
     private Subscription mSubscription;
     private final Request mRequest;
@@ -87,8 +96,8 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
                         isLoading = false;
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(mBackgroundThread)
+                .observeOn(mMainThread)
                 .subscribe(mSubscriber);
     }
 

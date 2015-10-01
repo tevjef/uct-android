@@ -12,6 +12,7 @@ import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
 import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -27,6 +28,7 @@ import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import retrofit.converter.ConversionException;
 import retrofit.converter.GsonConverter;
+import rx.Scheduler;
 
 @Module(injects = {
         TrackedSectionsPresenterImpl.class,
@@ -46,8 +48,8 @@ public class RetroRutgersModule {
 
     @Provides
     @Singleton
-    public RetroRutgers providesRetroRutgers(RetroRutgersService retroRutgersService) {
-        return new RetroRutgers(retroRutgersService);
+    public RetroRutgers providesRetroRutgers(RetroRutgersService retroRutgersService, @BackgroundThread Scheduler backgroundThread) {
+        return new RetroRutgers(retroRutgersService, backgroundThread);
     }
 
     @Provides
@@ -60,7 +62,7 @@ public class RetroRutgersModule {
                 .setEndpoint("http://sis.rutgers.edu/soc/")
                 .setLogLevel(RestAdapter.LogLevel.HEADERS_AND_ARGS)
                 .setErrorHandler(new MyErrorHandler())
-                .setClient(new OkClient(client))
+                .setClient(new OkClient(okClient))
                 .setConverter(new GsonConverter(gson))
                 .build().create(RetroRutgersService.class);
     }

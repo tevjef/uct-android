@@ -15,7 +15,7 @@ import java.util.List;
 //This class is a bit complicated. It's a POJO for the GSON library to quickly serialize json data
 // into java objects. It is also a parcelable object which means it allows the android system to serialize this object.
 // Which in turn allows me to pss this object between Activities and Fragments.
-public final class Course implements Comparable, Parcelable {
+public class Course implements Comparable, Parcelable {
 
     private String title;
     private String subject;
@@ -179,26 +179,25 @@ public final class Course implements Comparable, Parcelable {
 
     public static class Section implements Comparable, Parcelable {
 
-        List<Instructors> instructors = new ArrayList<>();
-        List<MeetingTimes> meetingTimes = new ArrayList<>();
-        List<CrossListedSections> crossListedSections = new ArrayList<>();
-        List<Majors> majors = new ArrayList<>();
-        List<Comments> comments = new ArrayList<>();
-        String subtitle;
-        String index;
-        String specialPermissionAddCodeDescription;
-        String specialPermissionAddCode;
-        String specialPermissionDropCode;
-        String offeringUnitCode;
-        String synopsisUrl;
-        String examCode;
-        String sectionNotes;
-        String number;
-        String campusCode;
-        String printed;
-
-        Request request;
-        Course course;
+        public List<Instructors> instructors = new ArrayList<>();
+        public List<MeetingTimes> meetingTimes = new ArrayList<>();
+        public List<CrossListedSections> crossListedSections = new ArrayList<>();
+        public List<Majors> majors = new ArrayList<>();
+        public List<Comments> comments = new ArrayList<>();
+        public String subtitle;
+        public String index;
+        public String specialPermissionAddCodeDescription;
+        public String specialPermissionAddCode;
+        public String specialPermissionDropCode;
+        public String offeringUnitCode;
+        public String synopsisUrl;
+        public String examCode;
+        public String sectionNotes;
+        public String number;
+        public String campusCode;
+        public String printed;
+        public Request request;
+        public Course course;
 
 
         public Course getCourse() {
@@ -591,8 +590,8 @@ public final class Course implements Comparable, Parcelable {
 
             String name;
 
-            public Instructors() {
-
+            public Instructors(String name) {
+                this.name = name;
             }
 
             public String getName() {

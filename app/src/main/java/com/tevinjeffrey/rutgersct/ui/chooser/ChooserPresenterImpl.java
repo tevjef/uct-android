@@ -3,10 +3,13 @@ package com.tevinjeffrey.rutgersct.ui.chooser;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
+import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import javax.inject.Inject;
 
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -19,6 +22,12 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
 
     @Inject
     RetroRutgers mRetroRutgers;
+    @Inject
+    @AndroidMainThread
+    Scheduler mMainThread;
+    @Inject
+    @BackgroundThread
+    Scheduler mBackgroundThread;
 
     private Subscription mSubsciption;
     private boolean isLoading;
@@ -62,8 +71,8 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
                         isLoading = false;
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(mBackgroundThread)
+                .observeOn(mMainThread)
                 .subscribe(mSubscriber);
     }
 

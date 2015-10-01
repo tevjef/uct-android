@@ -66,11 +66,9 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
         return trackedSections != null && trackedSections.size() != 0;
     }
 
-    @Override
-    @MainThread
     public void addSectionToDb(final Request request) {
-        Observable.just(saveToDb(request))
-                .subscribeOn(Schedulers.io())
+        saveToDb(request);
+        Observable.just(null)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnCompleted(new Action0() {
                     @Override
@@ -81,14 +79,11 @@ public class DatabaseHandlerImpl implements DatabaseHandler {
                 .subscribe();
     }
 
-    @Override
-    public TrackedSections saveToDb(Request request) {
+    public void saveToDb(Request request) {
         TrackedSections trackedSections = new TrackedSections(request.getSubject(),
                 request.getSemester().toString(), Request.toStringList(request.getLocations()),
                 Request.toStringList(request.getLevels()), request.getIndex());
         trackedSections.save();
-
-        return trackedSections;
     }
 
     @Produce

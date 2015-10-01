@@ -20,7 +20,9 @@ def isProguarded = false;
 def vName = '0.9.4.' + (isProguarded ? '1' : '0')
 
 android {
-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     signingConfigs {
         release {
             keyAlias rootProject.ext.keyAlias
@@ -38,6 +40,7 @@ android {
         targetSdkVersion 23
         versionCode 25
         versionName vName
+        signingConfig signingConfigs.release
     }
 
     compileOptions {
@@ -83,31 +86,26 @@ android {
     }
 }
 
-
 dependencies {
     fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':ratemyprofessors')
     compile project(':libraries:stringpicker')
     compile project(':libraries:ratemyprofessors')
     
     //Testing
-    androidTestCompile('com.android.support.test:runner:0.3') {
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile('com.android.support.test:rules:0.3') {
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.1') {
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2.1') {
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'
     }
+    testCompile 'com.squareup.retrofit:retrofit:1.9.0'
+    testCompile 'com.squareup.retrofit:retrofit-mock:1.9.0'
 
+    //For code generation in android and unit tests.
     androidTestApt 'com.squareup.dagger:dagger-compiler:1.2.2'
-
+    testApt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'junit:junit:4.11'
@@ -134,8 +132,7 @@ dependencies {
     compile 'com.squareup:otto:1.3.8'
     apt 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.squareup.dagger:dagger:1.2.2'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
-        //Debuging
+    //Debuging
     compile 'com.jakewharton.timber:timber:3.1.0'
     compile 'com.splunk.mint:mint:4.3.0'
     compile 'com.facebook.stetho:stetho:1.2.0'

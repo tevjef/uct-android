@@ -14,22 +14,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class RutgersApiConts {
-
-    public static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            com.squareup.okhttp.Request originalRequest = chain.request();
-            Timber.d("Host: %s", originalRequest.httpUrl().host());
-
-            Response originalResponse = chain.proceed(chain.request());
-            return originalResponse.newBuilder()
-                    .header("Cache-Control", "max-age=10")
-                    .build();
-        }
-    };
-
-    List<TrackedSections> trackedSections;
+public class TestConts {
 
     public static SemesterUtils semesterUtils = new SemesterUtils(Calendar.getInstance());
 
@@ -82,7 +67,7 @@ public class RutgersApiConts {
                     new ArrayList<>(Arrays.asList(new String[]{"Newark", "New Brunswick", "Camden"})),
                     new ArrayList<>(Arrays.asList(new String[]{"Undergraduate", "Graduate"})));
 
-    public RutgersApiConts() {
+    public TestConts() {
         throw new AssertionError("Can't instantiate");
     }
 

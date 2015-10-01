@@ -10,7 +10,7 @@ public interface SectionInfoPresenter extends StatefulPresenter {
 
     void toggleFab();
 
-    void loadRMP(Course.Section sectionData);
+    void loadRMP();
 
     void removeSection(Request request);
 

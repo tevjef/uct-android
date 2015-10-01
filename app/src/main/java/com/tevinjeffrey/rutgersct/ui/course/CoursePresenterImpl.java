@@ -5,12 +5,15 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
+import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -23,6 +26,12 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
 
     @Inject
     RetroRutgers mRetroRutgers;
+    @Inject
+    @AndroidMainThread
+    Scheduler mMainThread;
+    @Inject
+    @BackgroundThread
+    Scheduler mBackgroundThread;
 
     private Subscription mSubscription;
     private Request mRequest;
@@ -81,8 +90,8 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
                         isLoading = false;
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(mBackgroundThread)
+                .observeOn(mMainThread)
                 .subscribe(mSubscriber);
     }
 

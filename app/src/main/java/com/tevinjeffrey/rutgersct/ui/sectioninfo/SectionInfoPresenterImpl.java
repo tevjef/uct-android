@@ -19,6 +19,8 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
+import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +31,7 @@ import java.util.Iterator;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -52,6 +55,13 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     @Inject
     Bus mBus;
+
+    @Inject
+    @AndroidMainThread
+    Scheduler mMainThread;
+    @Inject
+    @BackgroundThread
+    Scheduler mBackgroundThread;
 
     private final Section mSection;
 
@@ -91,15 +101,35 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
         mDatabaseHandler.addSectionToDb(request);
     }
 
-    public void loadRMP(final Section sectionData) {
-        final Iterable<Instructors> professorsNotFound = new ArrayList<>(sectionData.getInstructors());
+    public void loadRMP() {
+        final Iterable<Instructors> professorsNotFound = new ArrayList<>(mSection.getInstructors());
+
         cancePreviousSubscription();
 
-        mSubscription = buildSearchParameters(sectionData).flatMap(new Func1<Parameter, Observable<Professor>>() {
+        Subscriber<Professor> subscriber = new Subscriber<Professor>() {
             @Override
-            public Observable<Professor> call(Parameter parameter) {
-                return rmp.getProfessor(parameter);
-            }})
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Professor professor) {
+                if (getView() != null)
+                    getView().addRMPProfessor(professor);
+            }
+        };
+
+        mSubscription = buildSearchParameters(mSection)
+                .flatMap(new Func1<Parameter, Observable<Professor>>() {
+                    @Override
+                    public Observable<Professor> call(Parameter parameter) {
+                        return rmp.getProfessor(parameter);
+                    }
+                })
                 //Should need this to busness code.
                 .doOnNext(new Action1<Professor>() {
                     @Override
@@ -113,8 +143,8 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
                         }
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(mBackgroundThread)
+                .observeOn(mMainThread)
                 .doOnTerminate(new Action0() {
                     @Override
                     public void call() {
@@ -127,22 +157,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
                         }
                     }
                 })
-                .subscribe(new Subscriber<Professor>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(Professor professor) {
-                        if (getView() != null)
-                            getView().addRMPProfessor(professor);
-                    }
-                });
+                .subscribe(subscriber);
 
     }
 

@@ -6,17 +6,23 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
+import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
+import com.tevinjeffrey.rutgersct.utils.AndroidSchedulerTransformer;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
+import com.tevinjeffrey.rutgersct.utils.SchedulerTransformer;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -33,15 +39,25 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
 
     @Inject
     DatabaseHandler mDatabaseHandler;
+
     @Inject
     RetroRutgers mRetroRutgers;
+
     @Inject
     Bus mBus;
 
-    private boolean mHasDataFlag = false;
-    private Subscription mSubscription;
-    private Subscriber<List<Section>> mSubscriber;
+    @Inject
+    @AndroidMainThread
+    Scheduler mMainThread;
+
+    @Inject
+    @BackgroundThread
+    Scheduler mBackgroundThread;
+
     private boolean isLoading = false;
+
+    private Subscription mSubscription;
+    Subscriber<List<Section>> trackedSectinsSubscriber;
 
     public TrackedSectionsPresenterImpl() {
     }
@@ -52,7 +68,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
 
         cancePreviousSubscription();
 
-        mSubscriber = new Subscriber<List<Section>>() {
+        trackedSectinsSubscriber = new Subscriber<List<Section>>() {
             @Override
             public void onCompleted() {
                 if (getView() != null)
@@ -73,13 +89,6 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
             public void onNext(List<Section> sectionList) {
                 if (getView() != null) {
                     getView().setData(sectionList);
-
-                    if (!mHasDataFlag || sectionList.size() == 0)
-                        getView().showLayout(EMPTY);
-
-                    else if (sectionList.size() > 0)
-                        getView().showLayout(LIST);
-
                 }
             }
         };
@@ -88,7 +97,6 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
                 .flatMap(new Func1<List<Request>, Observable<Section>>() {
                     @Override
                     public Observable<Section> call(List<Request> requests) {
-                        mHasDataFlag = requests.size() > 0;
                         return mRetroRutgers.getTrackedSections(requests);
                     }
                 })
@@ -105,9 +113,9 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
                     }
                 })
                 .toSortedList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mSubscriber);
+                .subscribeOn(mBackgroundThread)
+                .observeOn(mMainThread)
+                .subscribe(trackedSectinsSubscriber);
     }
 
     private void cancePreviousSubscription() {

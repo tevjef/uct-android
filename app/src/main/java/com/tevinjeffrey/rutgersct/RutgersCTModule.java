@@ -19,7 +19,11 @@ import com.tevinjeffrey.rutgersct.services.RequestService;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity.SettingsFragment;
+import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
+import com.tevinjeffrey.rutgersct.utils.AndroidSchedulerTransformer;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
+import com.tevinjeffrey.rutgersct.utils.SchedulerTransformer;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +33,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 @Module(
         injects = {
@@ -52,6 +59,20 @@ public class RutgersCTModule {
 
     public RutgersCTModule(Context context) {
         this.applicationContext = context;
+    }
+
+    @Provides
+    @Singleton
+    @AndroidMainThread
+    public Scheduler provideAndroidMainThread() {
+        return AndroidSchedulers.mainThread();
+    }
+
+    @Provides
+    @Singleton
+    @BackgroundThread
+    public Scheduler provideBackgroundThread() {
+        return Schedulers.io();
     }
 
     @Provides

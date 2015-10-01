@@ -19,6 +19,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -98,7 +99,7 @@ public class ChooserFragmentTest {
     }
 
     public void viewInteractivity(int viewId) {
-        onView(withId(viewId)).check(matches(isCompletelyDisplayed()));
+        onView(withId(viewId)).check(matches(isDisplayed()));
         onView(withId(viewId)).check(matches(isEnabled()));
         onView(withId(viewId)).check(matches(isClickable()));
     }

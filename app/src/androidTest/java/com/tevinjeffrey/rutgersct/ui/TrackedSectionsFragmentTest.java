@@ -92,10 +92,12 @@ public class TrackedSectionsFragmentTest {
     @Test
     public void testRecyclerItemClickAndRemoveSection() {
         Request expected = RutgersApiConts.getPrimarySemesterRequest();
-        databaseHandler.saveToDb(expected);
+        databaseHandler.addSectionToDb(expected);
 
         onView(withId(R.id.tsf_list)).perform(actionOnItemAtPosition(0, click()));
         onView(withId(R.id.add_courses_fab)).perform(click());
+
+        databaseHandler.removeSectionFromDb(expected);
     }
 
 

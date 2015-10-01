@@ -10,15 +10,16 @@ import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
 import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import java.util.List;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import static com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
 
@@ -27,9 +28,11 @@ public class RetroRutgers {
     private static final int SERVER_RETRY_COUNT = 3;
     private static final int RETRY_DELAY_MILLIS = 3000;
     private final RetroRutgersService mRetroRutgersService;
+    private final Scheduler mBackgroundThread;
     final List<Subject> mSubjectsList;
 
-    public RetroRutgers(RetroRutgersService retroRutgersService) {
+    public RetroRutgers(RetroRutgersService retroRutgersService, @BackgroundThread Scheduler backgroundThread) {
+        this.mBackgroundThread = backgroundThread;
         this.mRetroRutgersService = retroRutgersService;
         mSubjectsList = initSubjectList();
     }
@@ -70,7 +73,7 @@ public class RetroRutgers {
                                         return section.getIndex().equals(request.getIndex());
                                     }
                                 })
-                                .subscribeOn(Schedulers.io());
+                                .subscribeOn(mBackgroundThread);
 
 
                     }
@@ -111,6 +114,7 @@ public class RetroRutgers {
 
     public Observable<List<Course>> getCourses(final Request request) {
         return mRetroRutgersService.getCourses(UrlUtils.buildCourseQuery(request))
+                .subscribeOn(mBackgroundThread)
                 .flatMap(new Func1<List<Course>, Observable<Course>>() {
                     @Override
                     public Observable<Course> call(final List<Course> courses) {
