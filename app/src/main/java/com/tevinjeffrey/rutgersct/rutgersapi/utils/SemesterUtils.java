@@ -48,7 +48,7 @@ public class SemesterUtils {
 
         //Dec 15 <-> Jan 15 = Winter
         if ((month == 11 && dayOfMonth > 15) ||
-                //The first day of the year is 0 for some fucking reason.
+                //The first month of the year is 0 for some fucking reason.
                 (month == 0 && dayOfMonth < 15)) {
             return new Semester(Season.WINTER, month != 0 ? nextYear(currentYear) : currentYear);
 
@@ -83,8 +83,8 @@ public class SemesterUtils {
         String currentYear = resolveCurrentYear(c);
 
         //Oct 1 <-> Jan 15
-        if ((month >= 9 && dayOfMonth > 1) ||
-                //The first day of the year is 0 for some fucking reason.
+        if ((month >= 9 && dayOfMonth >= 1) ||
+                //The first day of the month is 0 for some fucking reason.
                 (month == 0 && dayOfMonth < 15)) {
             return new Semester[]{new Semester(Season.WINTER, month != 0 ? nextYear(currentYear) : currentYear)
                     , new Semester(Season.SPRING, month != 0 ? nextYear(currentYear) : currentYear)};
