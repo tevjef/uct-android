@@ -8,8 +8,8 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.StyleRes;
-import android.support.v7.internal.view.ContextThemeWrapper;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.Window;
 import android.view.WindowManager;
 

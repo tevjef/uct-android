@@ -47,5 +47,7 @@ ext {
     keyPassword = properties.keyPassword
     storePassword = properties.storePassword
     storeFile = properties.storeFile
+
+    supportVersion = '23.0.1'
 }
 

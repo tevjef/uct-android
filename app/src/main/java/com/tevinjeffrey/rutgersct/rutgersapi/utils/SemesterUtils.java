@@ -68,7 +68,7 @@ public class SemesterUtils {
                 (month <= 11 && dayOfMonth <= 15)) {
             return new Semester(Season.FALL, currentYear);
         } else {
-            throw new IllegalStateException("could not resolveCurrentSemester");
+            throw new IllegalStateException("could not resolveSemesterChoices" + " month: " + month + " day: " + dayOfMonth);
         }
     }
 
@@ -102,7 +102,7 @@ public class SemesterUtils {
             return new Semester[]{new Semester(Season.SUMMER, currentYear)
                     , new Semester(Season.FALL, currentYear)};
         } else {
-            throw new IllegalStateException("could not resolveSemesterChoices");
+            throw new IllegalStateException("could not resolveSemesterChoices" + " month: " + month + " day: " + dayOfMonth);
         }
     }
 
