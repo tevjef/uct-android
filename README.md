@@ -49,9 +49,6 @@ The libraries and tools used include:
 
 and [more...](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/app/src/main/res/raw/open_source_licenses.json)
 
-Screenshots
------------
-
 # Licence
 
 ```
