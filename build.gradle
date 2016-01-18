@@ -40,6 +40,7 @@ allprojects {
 ext {
     Properties properties = new Properties()
     File propertiesFile = file('local.properties')
+    propertiesFile.createNewFile()
     propertiesFile.withInputStream {
         properties.load(it)
     }
@@ -47,7 +48,7 @@ ext {
     keyAlias = properties.keyAlias
     keyPassword = properties.keyPassword
     storePassword = properties.storePassword
-    storeFile = properties.storeFile
+    storeFile = properties.storeFile == null? "/":properties.storeFile
 
     supportVersion = '23.1.1'
 }
