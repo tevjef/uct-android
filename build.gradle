@@ -39,7 +39,7 @@ allprojects {
 
 ext {
     Properties properties = new Properties()
-    File propertiesFile = file('signing.properties')
+    File propertiesFile = file('local.properties')
     propertiesFile.withInputStream {
         properties.load(it)
     }
@@ -49,6 +49,6 @@ ext {
     storePassword = properties.storePassword
     storeFile = properties.storeFile
 
-    supportVersion = '23.0.1'
+    supportVersion = '23.1.1'
 }
 

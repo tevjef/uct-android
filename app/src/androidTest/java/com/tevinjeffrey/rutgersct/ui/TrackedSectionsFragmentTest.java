@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
+import jonathanfinerty.once.Once;
 
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeDown;
@@ -58,6 +59,7 @@ public class TrackedSectionsFragmentTest {
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
         ObjectGraph.create(new RutgersCTTestModule()).inject(this);
+        Once.markDone(MainActivity.SHOW_TOUR);
     }
 
     @Test

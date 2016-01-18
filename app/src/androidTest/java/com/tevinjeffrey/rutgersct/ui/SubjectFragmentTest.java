@@ -14,6 +14,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import jonathanfinerty.once.Once;
+
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -52,6 +54,7 @@ public class SubjectFragmentTest {
     public void setUp() throws Exception {
         // Espresso does not start the Activity for you we need to do this manually here.
         mActivity = mActivityRule.getActivity();
+        Once.markDone(MainActivity.SHOW_TOUR);
 
         assertThat(mActivity, notNullValue());
 
