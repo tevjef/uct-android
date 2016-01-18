@@ -76,12 +76,7 @@ public class RetroRutgersTest {
     public void testPrimarySemester() {
         getSubjectAndCourses(TestConts.getPrimarySemesterRequest());
     }
-
-    @Test
-    public void testSecondarySemester() {
-        getSubjectAndCourses(TestConts.getSecondarySemesterRequest());
-    }
-
+    
     private void getSubjectAndCourses(Request request) {
         testSubject(request);
         testCourse(request);
