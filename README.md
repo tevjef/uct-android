@@ -1,4 +1,4 @@
-Rutgers Course Tracker 
+Rutgers Course Tracker [![Build Status](https://travis-ci.org/tevjef/Rutgers-Course-Tracker.svg?branch=master)](https://travis-ci.org/tevjef/Rutgers-Course-Tracker)
 ======================
 
 <p align="center">
