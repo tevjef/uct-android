@@ -37,13 +37,13 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.RecyclerSimpleScrollListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;

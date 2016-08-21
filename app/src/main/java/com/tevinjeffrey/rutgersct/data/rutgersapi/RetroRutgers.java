@@ -1,15 +1,15 @@
-package com.tevinjeffrey.rutgersct.rutgersapi;
+package com.tevinjeffrey.rutgersct.data.rutgersapi;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.SystemMessage;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.UrlUtils;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
@@ -21,7 +21,7 @@ import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-import static com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
+import static com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
 
 public class RetroRutgers {
 

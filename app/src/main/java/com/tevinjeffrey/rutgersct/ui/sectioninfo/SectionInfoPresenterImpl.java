@@ -11,12 +11,10 @@ import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.Instructors;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
@@ -34,24 +32,20 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class SectionInfoPresenterImpl extends BasePresenter implements SectionInfoPresenter {
 
     private final String TAG = this.getClass().getSimpleName();
+    private final SearchFlow searchFlow;
 
     @Inject
     RMP rmp;
 
     @Inject
-    DatabaseHandler mDatabaseHandler;
-
-    @Inject
-    RetroRutgers mRetroRutgers;
+    RetroUCT mRetroUCT;
 
     @Inject
     Bus mBus;
@@ -63,23 +57,21 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
     @BackgroundThread
     Scheduler mBackgroundThread;
 
-    private final Section mSection;
-
     private Subscription mSubscription;
 
-    public SectionInfoPresenterImpl(Section section) {
-        this.mSection = section;
+    public SectionInfoPresenterImpl(SearchFlow searchFlow) {
+        this.searchFlow = searchFlow;
     }
 
     public void setFabState(boolean animate) {
         if (getView() != null) {
-            boolean sectionTracked = mDatabaseHandler.isSectionTracked(mSection.getRequest());
+            boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.getSectionTopic());
             getView().showSectionTracked(sectionTracked, animate);
         }
     }
 
     public void toggleFab() {
-        boolean sectionTracked = mDatabaseHandler.isSectionTracked(mSection.getRequest());
+        boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.getSectionTopic());
         if (sectionTracked) {
             removeSection(mSection.getRequest());
         } else {
@@ -92,13 +84,13 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
 
     @Override
-    public void removeSection(Request request) {
-        mDatabaseHandler.removeSectionFromDb(request);
+    public void removeSection() {
+        mRetroUCT.removeTopic(searchFlow.getSectionTopic());
     }
 
     @Override
-    public void addSection(Request request) {
-        mDatabaseHandler.addSectionToDb(request);
+    public void addSection() {
+        mRetroUCT.removeTopic(searchFlow.getSectionTopic());
     }
 
     public void loadRMP() {

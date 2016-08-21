@@ -5,17 +5,14 @@ import android.os.Bundle;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
-import com.tevinjeffrey.rutgersct.utils.AndroidSchedulerTransformer;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-import com.tevinjeffrey.rutgersct.utils.SchedulerTransformer;
 
 import java.util.List;
 
@@ -25,13 +22,8 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-
-import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.EMPTY;
-import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.LIST;
 
 public class TrackedSectionsPresenterImpl extends BasePresenter implements TrackedSectionsPresenter {
 

@@ -1,7 +1,7 @@
-package com.tevinjeffrey.rutgersct.rutgersapi.utils;
+package com.tevinjeffrey.rutgersct.data.rutgersapi.utils;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.MeetingTimes;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section.MeetingTimes;
 
 import java.util.ArrayList;
 import java.util.Collection;

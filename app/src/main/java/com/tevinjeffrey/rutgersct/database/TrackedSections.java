@@ -1,11 +1,12 @@
 package com.tevinjeffrey.rutgersct.database;
 
+
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TrackedSections extends SugarRecord<TrackedSections> {
+public class TrackedSections extends SugarRecord {
     private String subject;
     private String semester;
     private String locations;

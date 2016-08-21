@@ -1,8 +1,8 @@
 package com.tevinjeffrey.rutgersct.ui.course;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
@@ -16,16 +16,14 @@ import javax.inject.Inject;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.schedulers.Schedulers;
 
 public class CoursePresenterImpl extends BasePresenter implements CoursePresenter {
 
     private static final String TAG = CoursePresenterImpl.class.getSimpleName();
+    private final SearchFlow searchFlow;
 
     @Inject
-    RetroRutgers mRetroRutgers;
+    RetroUCT mRetroUCT;
     @Inject
     @AndroidMainThread
     Scheduler mMainThread;
@@ -34,11 +32,10 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
     Scheduler mBackgroundThread;
 
     private Subscription mSubscription;
-    private Request mRequest;
     private boolean isLoading;
 
-    public CoursePresenterImpl(Request mRequest) {
-        this.mRequest = mRequest;
+    public CoursePresenterImpl(SearchFlow searchFlow) {
+        this.searchFlow = searchFlow;
     }
 
     @Override
@@ -77,19 +74,9 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
             }
         };
 
-        mSubscription = mRetroRutgers.getCourses(mRequest)
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = true;
-                    }
-                })
-                .doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = false;
-                    }
-                })
+        mSubscription = mRetroUCT.getCourses(searchFlow)
+                .doOnSubscribe(() -> isLoading = true)
+                .doOnTerminate(() -> isLoading = false)
                 .subscribeOn(mBackgroundThread)
                 .observeOn(mMainThread)
                 .subscribe(mSubscriber);

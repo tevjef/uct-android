@@ -1,8 +1,8 @@
-package com.tevinjeffrey.rutgersct.rutgersapi.utils;
+package com.tevinjeffrey.rutgersct.data.rutgersapi.utils;
 
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -17,8 +17,8 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
@@ -34,7 +34,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section;
+import static com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
 
 public class RequestService extends Service {
 

@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 
 import butterknife.ButterKnife;
 

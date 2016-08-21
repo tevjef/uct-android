@@ -1,27 +1,27 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
+import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Semester;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.schedulers.Schedulers;
 
 public class ChooserPresenterImpl extends BasePresenter implements ChooserPresenter {
 
     private static final String TAG = ChooserPresenterImpl.class.getSimpleName();
 
     @Inject
-    RetroRutgers mRetroRutgers;
+    RetroUCT mRetroUCT;
     @Inject
     @AndroidMainThread
     Scheduler mMainThread;
@@ -35,49 +35,58 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
     public ChooserPresenterImpl() {
     }
 
-    @Override
-    public void loadSystemMessage() {
 
+    private void cancePreviousSubscription() {
+        RxUtils.unsubscribeIfNotNull(mSubsciption);
+    }
+
+
+    @Override
+    public void loadUniversities() {
+        mSubsciption = mRetroUCT.getUniversities()
+                .subscribe(new Subscriber<List<University>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+
+                    }
+
+                    @Override
+                    public void onNext(List<University> universities) {
+                        if (getView() != null) {
+                            getView().setUniversities(universities);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void loadAvailableSemesters(String universityTopicName) {
         cancePreviousSubscription();
-        Subscriber<SystemMessage> mSubscriber = new Subscriber<SystemMessage>() {
+        mSubsciption = mRetroUCT.getUniversity(universityTopicName).map(university -> university.available_semesters)
+                .subscribe(new Subscriber<List<Semester>>() {
             @Override
             public void onCompleted() {
-                //Noop
+
             }
 
             @Override
             public void onError(Throwable e) {
-                //Noop
+
             }
 
             @Override
-            public void onNext(SystemMessage systemMessage) {
-                if (getView() != null) {
-                    getView().showMessage(systemMessage);
+            public void onNext(List<Semester> semesters) {
+                if (getView() !=  null) {
+                    getView().setAvailableSemesters(semesters);
                 }
             }
-        };
-
-        mSubsciption = mRetroRutgers.getSystemMessage()
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = true;
-                    }
-                })
-                .doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = false;
-                    }
-                })
-                .subscribeOn(mBackgroundThread)
-                .observeOn(mMainThread)
-                .subscribe(mSubscriber);
-    }
-
-    private void cancePreviousSubscription() {
-        RxUtils.unsubscribeIfNotNull(mSubsciption);
+        });
     }
 
     @Override

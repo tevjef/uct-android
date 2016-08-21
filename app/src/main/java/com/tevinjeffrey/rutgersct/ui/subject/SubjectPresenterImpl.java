@@ -1,14 +1,14 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersDataIOException;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersDataIOException;
 
 import java.util.List;
 
@@ -17,9 +17,7 @@ import javax.inject.Inject;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
-import rx.schedulers.Schedulers;
 
 public class SubjectPresenterImpl extends BasePresenter implements SubjectPresenter {
 

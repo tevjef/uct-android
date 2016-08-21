@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.BaseToolbarView;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 

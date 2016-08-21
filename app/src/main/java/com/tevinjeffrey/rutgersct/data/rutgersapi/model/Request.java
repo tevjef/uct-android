@@ -1,10 +1,10 @@
-package com.tevinjeffrey.rutgersct.rutgersapi.model;
+package com.tevinjeffrey.rutgersct.data.rutgersapi.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils.Semester;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils.Semester;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.UrlUtils;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.database;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
 
 import org.apache.commons.lang3.text.WordUtils;
 

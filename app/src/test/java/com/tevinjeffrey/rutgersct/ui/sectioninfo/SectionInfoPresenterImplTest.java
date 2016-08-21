@@ -5,9 +5,9 @@ import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
 import com.tevinjeffrey.rutgersct.TestModule;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 
 import com.tevinjeffrey.rutgersct.utils.TestConts;

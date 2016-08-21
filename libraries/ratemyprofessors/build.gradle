@@ -24,5 +24,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
-    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.squareup.dagger:dagger:1.2.5'
 }

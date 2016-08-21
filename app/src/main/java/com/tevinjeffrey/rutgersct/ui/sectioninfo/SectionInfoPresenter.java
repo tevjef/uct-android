@@ -1,7 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.StatefulPresenter;
 
 public interface SectionInfoPresenter extends StatefulPresenter {
@@ -12,7 +11,7 @@ public interface SectionInfoPresenter extends StatefulPresenter {
 
     void loadRMP();
 
-    void removeSection(Request request);
+    void removeSection();
 
-    void addSection(Request request);
+    void addSection();
 }

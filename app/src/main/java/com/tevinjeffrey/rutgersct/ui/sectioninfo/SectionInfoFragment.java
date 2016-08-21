@@ -33,9 +33,9 @@ import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SectionUtils;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 

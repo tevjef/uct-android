@@ -10,11 +10,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.RutgersCTTestModule;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.testUtils.CustomMatchers;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.testUtils.RutgersApiConts;
 
 import org.hamcrest.Matchers;

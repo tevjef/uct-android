@@ -3,8 +3,8 @@ package com.tevinjeffrey.rutgersct.ui.chooser;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.SystemMessage;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
 
 public class ChooserViewState extends BaseViewState<ChooserView> implements Parcelable {

@@ -1,8 +1,8 @@
-package com.tevinjeffrey.rutgersct.rutgersapi;
+package com.tevinjeffrey.rutgersct.data.rutgersapi;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.SystemMessage;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.SystemMessage;
 
 import java.util.List;
 import java.util.Map;

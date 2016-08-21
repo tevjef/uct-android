@@ -1,0 +1,146 @@
+syntax = "proto2";
+
+option java_package = "com.tevinjeffrey.rutgersct.data.uctapi.model";
+
+message University {
+    optional int64 id = 1;
+    optional string name = 2;
+    optional string abbr = 3;
+    optional string home_page = 4;
+    optional string registration_page = 5;
+    optional string main_color = 6;
+    optional string accent_color = 7;
+    optional string topic_name = 8;
+    optional string topic_id = 9;
+    optional ResolvedSemester resolved_semesters = 10;
+    repeated Subject subjects = 11;
+    repeated Semester available_semesters = 12;
+    repeated Registration registrations = 13;
+    repeated Metadata metadata = 14;
+}
+
+message Subject {
+    optional int64 id = 1;
+    optional int64 university_id = 2;
+    optional string name = 3;
+    optional string number = 4;
+    optional string season = 5;
+    optional string year = 6;
+    optional string topic_name = 7;
+    optional string topic_id = 8;
+    repeated Course courses = 9;
+    repeated Metadata metadata = 10;
+
+}
+
+message Course {
+    optional int64 id = 1;
+    optional int64 subject_id = 2;
+    optional string name = 3;
+    optional string number = 4;
+    optional string synopsis = 5;
+    optional string topic_name = 6;
+    optional string topic_id = 7;
+    repeated Section sections = 8;
+    repeated Metadata metadata = 9;
+}
+
+message Section {
+    optional int64 id = 1;
+    optional int64 course_id = 2;
+    optional string number = 3;
+    optional string call_number = 4;
+    optional int64 max = 5;
+    optional int64 now = 6;
+    optional string status = 7;
+    optional string credits = 8;
+    optional string topic_name = 9;
+    optional string topic_id = 10;
+    repeated Meeting meetings = 11;
+    repeated Instructor instructors = 12;
+    repeated Book books = 13;
+    repeated Metadata metadata = 14;
+}
+
+message Meeting {
+    optional int64 id = 1;
+    optional int64 section_id = 2 ;
+    optional string room = 3;
+    optional string day = 4;
+    optional string start_time = 5;
+    optional string end_time = 6;
+    optional string class_type = 7;
+    optional int32 index = 8;
+    repeated Metadata metadata = 9;
+}
+message Instructor {
+    optional int64 id = 1 ;
+    optional int64 section_id = 2 ;
+    optional string name = 3 ;
+    optional int32 index = 4 ;
+}
+
+message Book {
+    optional int64 id = 1 ;
+    optional int64 section_id = 2 ;
+    optional string title = 3 ;
+    optional string url = 4 ;
+}
+
+message Metadata {
+    optional int64 id = 1 ;
+    optional int64 university_id = 2 ;
+    optional int64 subject_id = 3 ;
+    optional int64 course_id = 4 ;
+    optional int64 section_id = 5 ;
+    optional int64 meeting_id = 6 ;
+    optional string title = 7 ;
+    optional string content = 8 ;
+}
+
+message Registration {
+    optional int64 id = 1 ;
+    optional int64 university_id = 2 ;
+    optional string period = 3 ;
+    optional int64 period_date = 4 ;
+
+}
+
+message ResolvedSemester {
+    optional Semester current = 1;
+    optional Semester last = 2;
+    optional Semester next = 3;
+}
+
+message Semester {
+    optional int32 year = 1 ;
+    optional string season = 2 ;
+}
+
+message UCTNotification {
+    optional int64 notification_id = 1 ;
+    optional string topic_name = 2 ;
+    optional string status = 3 ;
+    optional University university = 4 ;
+}
+
+message Response {
+    optional Meta meta = 1;
+    optional Data data = 2;
+}
+
+message Meta {
+    optional int32 code = 1;
+    optional string message = 2;
+}
+
+message Data {
+    repeated University universities = 1;
+    repeated Subject subjects = 2;
+    repeated Course courses = 3;
+    repeated Section sections = 4;
+    optional University university = 5;
+    optional Subject subject = 6;
+    optional Course course = 7;
+    optional Section section = 8;
+}

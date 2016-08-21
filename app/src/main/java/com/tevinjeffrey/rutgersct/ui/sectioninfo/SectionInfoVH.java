@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course.Section.MeetingTimes;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section.MeetingTimes;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SectionUtils;
 
 import java.util.Collections;
 import java.util.List;

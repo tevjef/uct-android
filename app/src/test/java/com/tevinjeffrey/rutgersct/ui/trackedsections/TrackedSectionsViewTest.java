@@ -1,9 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsViewState;
 
 import org.junit.Before;
 import org.junit.Test;

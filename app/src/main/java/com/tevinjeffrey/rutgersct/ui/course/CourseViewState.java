@@ -3,7 +3,7 @@ package com.tevinjeffrey.rutgersct.ui.course;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
 import com.tevinjeffrey.rutgersct.ui.base.View.LayoutType;
 

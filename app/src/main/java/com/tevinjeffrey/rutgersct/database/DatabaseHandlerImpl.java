@@ -4,7 +4,7 @@ import android.support.annotation.MainThread;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import java.util.List;

@@ -1,18 +1,13 @@
 package com.tevinjeffrey.rutgersct.utils;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.Response;
 import com.tevinjeffrey.rutgersct.database.TrackedSections;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class TestConts {
 

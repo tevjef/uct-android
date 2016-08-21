@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
 
 import java.util.List;
 

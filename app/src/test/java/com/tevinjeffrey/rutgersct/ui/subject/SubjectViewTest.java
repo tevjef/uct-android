@@ -1,10 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-import com.tevinjeffrey.rutgersct.ui.subject.SubjectView;
-import com.tevinjeffrey.rutgersct.ui.subject.SubjectViewState;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
-
-import rx.Subscription;
 
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.mock;

@@ -1,10 +1,10 @@
-package com.tevinjeffrey.rutgersct.rutgersapi.model;
+package com.tevinjeffrey.rutgersct.data.rutgersapi.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.utils.SectionUtils;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SectionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 

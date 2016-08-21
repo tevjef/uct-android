@@ -7,7 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
 
 import org.junit.Before;
 import org.junit.Rule;

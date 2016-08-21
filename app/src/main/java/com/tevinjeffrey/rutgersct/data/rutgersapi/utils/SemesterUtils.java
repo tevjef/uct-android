@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.rutgersapi.utils;
+package com.tevinjeffrey.rutgersct.data.rutgersapi.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;

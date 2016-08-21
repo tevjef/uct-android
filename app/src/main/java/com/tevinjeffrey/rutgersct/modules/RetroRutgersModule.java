@@ -4,14 +4,14 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Response;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.rutgersapi.RetroRutgersService;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgersService;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.course.CoursePresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
-import com.tevinjeffrey.rutgersct.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 
 import java.io.IOException;

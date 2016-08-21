@@ -12,6 +12,7 @@ import com.tevinjeffrey.rmp.common.RMPModule;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
 import com.tevinjeffrey.rutgersct.modules.RetroRutgersModule;
+import com.tevinjeffrey.rutgersct.modules.RetroUCTModule;
 import com.tevinjeffrey.rutgersct.receivers.BootReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.services.Alarm;
@@ -47,7 +48,7 @@ import rx.schedulers.Schedulers;
         DatabaseReceiver.class,
         SectionInfoPresenterImpl.class,
 },
-        includes = {RetroRutgersModule.class,
+        includes = {RetroRutgersModule.class, RetroUCTModule.class,
                 RMPModule.class})
 
 public class RutgersCTModule {

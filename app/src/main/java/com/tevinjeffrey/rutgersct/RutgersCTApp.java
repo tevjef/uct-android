@@ -1,11 +1,13 @@
 package com.tevinjeffrey.rutgersct;
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.orm.SugarApp;
+import com.orm.SugarContext;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
@@ -19,7 +21,7 @@ import io.fabric.sdk.android.Fabric;
 import jonathanfinerty.once.Once;
 import timber.log.Timber;
 
-public class RutgersCTApp extends SugarApp {
+public class RutgersCTApp extends Application {
     private static final String INSTALLATION = "INSTALLATION";
     private static String sID = null;
     private ObjectGraph objectGraph;
@@ -36,6 +38,7 @@ public class RutgersCTApp extends SugarApp {
 
         //refWatcher = LeakCanary.install(this);
 
+        SugarContext.init(this);
         Once.initialise(this);
 
         objectGraph = ObjectGraph.create(new RutgersCTModule(getApplicationContext()));
@@ -59,6 +62,12 @@ public class RutgersCTApp extends SugarApp {
             //Diverts logs through crash reporting APIs
             Timber.plant(new CrashReportingTree());
         }
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        SugarContext.terminate();
     }
 
     public static ObjectGraph getObjectGraph(Context context) {

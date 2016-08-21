@@ -16,10 +16,8 @@
 
 package com.tevinjeffrey.rutgersct.ui.course;
 
-import com.tevinjeffrey.rutgersct.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-import com.tevinjeffrey.rutgersct.ui.course.CourseView;
-import com.tevinjeffrey.rutgersct.ui.course.CourseViewState;
 
 import org.junit.Before;
 import org.junit.Test;
