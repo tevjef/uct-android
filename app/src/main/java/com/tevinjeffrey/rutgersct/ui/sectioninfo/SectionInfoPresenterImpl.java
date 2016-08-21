@@ -11,9 +11,11 @@ import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Instructor;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
@@ -73,28 +75,28 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
     public void toggleFab() {
         boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.getSectionTopic());
         if (sectionTracked) {
-            removeSection(mSection.getRequest());
+            removeSection();
         } else {
             Answers.getInstance().logCustom(new CustomEvent("Tracked Section")
-                    .putCustomAttribute("Subject", mSection.getCourse().getEnclosingSubject().getDescription())
-                    .putCustomAttribute("Course", mSection.getCourse().getTrueTitle()));
-            addSection(mSection.getRequest());
+                    .putCustomAttribute("Subject", searchFlow.getSubject().name)
+                    .putCustomAttribute("Course", searchFlow.getCourse().name));
+            addSection();
         }
     }
 
 
     @Override
     public void removeSection() {
-        mRetroUCT.removeTopic(searchFlow.getSectionTopic());
+        mRetroUCT.unsubscribe(searchFlow.getSectionTopic());
     }
 
     @Override
     public void addSection() {
-        mRetroUCT.removeTopic(searchFlow.getSectionTopic());
+        mRetroUCT.subscribe(searchFlow.buildSubscription());
     }
 
     public void loadRMP() {
-        final Iterable<Instructors> professorsNotFound = new ArrayList<>(mSection.getInstructors());
+        final Iterable<Instructor> professorsNotFound = new ArrayList<>(searchFlow.getSection().instructors);
 
         cancePreviousSubscription();
 
@@ -115,23 +117,15 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
             }
         };
 
-        mSubscription = buildSearchParameters(mSection)
-                .flatMap(new Func1<Parameter, Observable<Professor>>() {
-                    @Override
-                    public Observable<Professor> call(Parameter parameter) {
-                        return rmp.getProfessor(parameter);
-                    }
-                })
+        mSubscription = buildSearchParameters(searchFlow)
+                .flatMap(parameter -> rmp.getProfessor(parameter))
                 //Should need this to busness code.
-                .doOnNext(new Action1<Professor>() {
-                    @Override
-                    public void call(Professor professor) {
-                        for (final Iterator<Instructors> iterator = professorsNotFound.iterator(); iterator.hasNext(); ) {
-                            Instructors i = iterator.next();
-                            if (StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getLastName()) > .70
-                                    || StringUtils.getJaroWinklerDistance(i.getLastName(), professor.getFirstName()) > .70) {
-                                iterator.remove();
-                            }
+                .doOnNext(professor -> {
+                    for (final Iterator<Instructor> iterator = professorsNotFound.iterator(); iterator.hasNext(); ) {
+                        Instructor i = iterator.next();
+                        if (StringUtils.getJaroWinklerDistance(Utils.InstructorUtils.getLastName(i), professor.getLastName()) > .70
+                                || StringUtils.getJaroWinklerDistance(Utils.InstructorUtils.getLastName(i), professor.getFirstName()) > .70) {
+                            iterator.remove();
                         }
                     }
                 })
@@ -143,8 +137,8 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
                         if (getView() != null) {
                             getView().showRatingsLayout();
                             getView().hideRatingsLoading();
-                            for (Instructors i : professorsNotFound) {
-                                getView().addErrorProfessor(i.getName());
+                            for (Instructor i : professorsNotFound) {
+                                getView().addErrorProfessor(Utils.InstructorUtils.getName(i));
                             }
                         }
                     }
@@ -153,40 +147,27 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     }
 
-    private Observable<Parameter> buildSearchParameters(final Section section) {
-        return Observable.from(section.getInstructors())
+    private Observable<Parameter> buildSearchParameters(final SearchFlow searchFlow) {
+        return Observable.from(searchFlow.getSection().instructors)
                 .filter(filterGenericInstructors())
-                .flatMap(new Func1<Instructors, Observable<Parameter>>() {
-                    @Override
-                    public Observable<Parameter> call(Instructors instructor) {
-                        String university = "rutgers";
-                        String department = getMatchingSubject().getDescription();
-                        String location = mSection.getRequest().getLocations().get(0);
-                        String courseNumber = section.getCourse().getCourseNumber();
-                        String firstName = instructor.getFirstName();
-                        String lastName = instructor.getLastName();
+                .flatMap(instructor -> {
+                    String university = "rutgers";
+                    String department = searchFlow.getSubject().name;
+                    String location = searchFlow.getUniversity().name;
+                    String courseNumber = searchFlow.getCourse().number ;
+                    String firstName = Utils.InstructorUtils.getFirstName(instructor);
+                    String lastName = Utils.InstructorUtils.getLastName(instructor);
 
-                        final Parameter params = new Parameter(university, department, location,
-                                courseNumber, firstName, lastName);
+                    final Parameter params = new Parameter(university, department, location,
+                            courseNumber, firstName, lastName);
 
-                        return Observable.just(params);
-                    }
-
-                    public Subject getMatchingSubject() {
-                        return mRetroRutgers
-                                .getSubjectFromJson(section.getCourse().getSubject());
-                    }
+                    return Observable.just(params);
                 });
     }
 
     @NonNull
-    private Func1<Instructors, Boolean> filterGenericInstructors() {
-        return new Func1<Instructors, Boolean>() {
-            @Override
-            public Boolean call(Instructors instructors) {
-                return !instructors.getLastName().equals("STAFF");
-            }
-        };
+    private Func1<Instructor, Boolean> filterGenericInstructors() {
+        return instructor -> !Utils.InstructorUtils.getLastName(instructor).equals("STAFF");
     }
 
     private void cancePreviousSubscription() {

@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.BaseToolbarView;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 
@@ -13,7 +13,7 @@ public interface TrackedSectionsView extends View, BaseToolbarView {
 
     void showLoading(boolean pullToRefresh);
 
-    void setData(List<Course.Section> data);
+    void setData(List<UCTSubscription> data);
 
     void showError(Throwable e);
 

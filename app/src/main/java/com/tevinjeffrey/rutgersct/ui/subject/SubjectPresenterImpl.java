@@ -1,14 +1,14 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
-
-import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersDataIOException;
+
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ import javax.inject.Inject;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Action0;
 
 public class SubjectPresenterImpl extends BasePresenter implements SubjectPresenter {
 
     private static final String TAG = SubjectPresenter.class.getSimpleName();
+    private final SearchFlow searchFlow;
 
     @Inject
-    RetroRutgers mRetroRutgers;
+    RetroUCT mRetroUCT;
     @Inject
     @AndroidMainThread
     Scheduler mMainThread;
@@ -33,11 +33,10 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
     Scheduler mBackgroundThread;
 
     private Subscription mSubscription;
-    private final Request mRequest;
     private boolean isLoading;
 
-    public SubjectPresenterImpl(Request mRequest) {
-        this.mRequest = mRequest;
+    public SubjectPresenterImpl(SearchFlow searchFlow) {
+        this.searchFlow = searchFlow;
     }
 
     @Override
@@ -81,19 +80,9 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
             }
         };
 
-        mSubscription = mRetroRutgers.getSubjects(mRequest)
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = true;
-                    }
-                })
-                .doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = false;
-                    }
-                })
+        mSubscription = mRetroUCT.getSubjects(searchFlow)
+                .doOnSubscribe(() -> isLoading = true)
+                .doOnTerminate(() -> isLoading = false)
                 .subscribeOn(mBackgroundThread)
                 .observeOn(mMainThread)
                 .subscribe(mSubscriber);

@@ -31,10 +31,7 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectView;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
+
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;

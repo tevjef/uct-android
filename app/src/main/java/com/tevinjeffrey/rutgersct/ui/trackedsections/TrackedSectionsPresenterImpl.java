@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
@@ -23,6 +25,7 @@ import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class TrackedSectionsPresenterImpl extends BasePresenter implements TrackedSectionsPresenter {
@@ -30,10 +33,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
     private static final String TAG = TrackedSectionsPresenterImpl.class.getSimpleName();
 
     @Inject
-    DatabaseHandler mDatabaseHandler;
-
-    @Inject
-    RetroRutgers mRetroRutgers;
+    RetroUCT mRetroUCT;
 
     @Inject
     Bus mBus;
@@ -49,7 +49,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
     private boolean isLoading = false;
 
     private Subscription mSubscription;
-    Subscriber<List<Section>> trackedSectinsSubscriber;
+    private Subscriber<List<UCTSubscription>> trackedSectinsSubscriber;
 
     public TrackedSectionsPresenterImpl() {
     }
@@ -60,7 +60,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
 
         cancePreviousSubscription();
 
-        trackedSectinsSubscriber = new Subscriber<List<Section>>() {
+        trackedSectinsSubscriber = new Subscriber<List<UCTSubscription>>() {
             @Override
             public void onCompleted() {
                 if (getView() != null)
@@ -78,33 +78,19 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
             }
 
             @Override
-            public void onNext(List<Section> sectionList) {
+            public void onNext(List<UCTSubscription> subscriptions) {
                 if (getView() != null) {
-                    getView().setData(sectionList);
+                    getView().setData(subscriptions);
                 }
             }
         };
 
-        mSubscription = mDatabaseHandler.getObservableSections()
-                .flatMap(new Func1<List<Request>, Observable<Section>>() {
-                    @Override
-                    public Observable<Section> call(List<Request> requests) {
-                        return mRetroRutgers.getTrackedSections(requests);
-                    }
-                })
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = true;
-                    }
-                })
-                .doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        isLoading = false;
-                    }
-                })
-                .toSortedList()
+        mSubscription = Observable.defer(() -> Observable.from(mRetroUCT.getTopics()))
+                .flatMap(subscription -> mRetroUCT.refreshSubscription(subscription))
+                .doOnSubscribe(() -> isLoading = true)
+                .doOnTerminate(() -> isLoading = false)
+                //.toSortedList()
+                .toList()
                 .subscribeOn(mBackgroundThread)
                 .observeOn(mMainThread)
                 .subscribe(trackedSectinsSubscriber);

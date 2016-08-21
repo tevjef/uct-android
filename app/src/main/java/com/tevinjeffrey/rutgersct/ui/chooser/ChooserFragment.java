@@ -26,10 +26,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.SystemMessage;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils.Semester;
+
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
