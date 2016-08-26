@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.uct.UCTApplication;
 
 import javax.inject.Inject;
 

@@ -14,14 +14,13 @@ import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import javax.inject.Inject;
 
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 import jonathanfinerty.once.Once;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     PreferenceUtils mPreferenceUtils;
 
-    @Icicle
+    @State
     public int mBackstackCount;
 
     @Override
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.container, tsf)
                     .commit();
         }
-        RutgersCTApp.getObjectGraph(this).get(Alarm.class).setAlarm();
     }
 
     @Override

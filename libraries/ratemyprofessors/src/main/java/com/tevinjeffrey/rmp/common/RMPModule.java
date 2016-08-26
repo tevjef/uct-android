@@ -1,10 +1,6 @@
 package com.tevinjeffrey.rmp.common;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.OkHttpClient;
-import com.tevinjeffrey.rmp.client.ClientService;
+
 import com.tevinjeffrey.rmp.client.RMPClient;
 import com.tevinjeffrey.rmp.client.module.ClientModule;
 import com.tevinjeffrey.rmp.scraper.RMPScraper;

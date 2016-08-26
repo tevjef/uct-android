@@ -15,6 +15,9 @@ import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
@@ -23,6 +26,7 @@ import rx.functions.Func1;
 
 import static com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
 
+@Singleton
 public class RetroRutgers {
 
     private static final int SERVER_RETRY_COUNT = 3;
@@ -31,6 +35,7 @@ public class RetroRutgers {
     private final Scheduler mBackgroundThread;
     final List<Subject> mSubjectsList;
 
+    @Inject
     public RetroRutgers(RetroRutgersService retroRutgersService, @BackgroundThread Scheduler backgroundThread) {
         this.mBackgroundThread = backgroundThread;
         this.mRetroRutgersService = retroRutgersService;

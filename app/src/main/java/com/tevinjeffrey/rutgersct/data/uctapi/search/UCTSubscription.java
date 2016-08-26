@@ -1,11 +1,17 @@
 package com.tevinjeffrey.rutgersct.data.uctapi.search;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
 
-public class UCTSubscription {
+public class UCTSubscription implements Parcelable {
+
+    public static final String SUBSCRIPTION = "UCTSubscription";
+
     String sectionTopicName;
     University university;
 
@@ -70,4 +76,32 @@ public class UCTSubscription {
     public int hashCode() {
         return sectionTopicName.hashCode();
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.sectionTopicName);
+        dest.writeParcelable(this.university, flags);
+    }
+
+    protected UCTSubscription(Parcel in) {
+        this.sectionTopicName = in.readString();
+        this.university = in.readParcelable(University.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<UCTSubscription> CREATOR = new Parcelable.Creator<UCTSubscription>() {
+        @Override
+        public UCTSubscription createFromParcel(Parcel source) {
+            return new UCTSubscription(source);
+        }
+
+        @Override
+        public UCTSubscription[] newArray(int size) {
+            return new UCTSubscription[size];
+        }
+    };
 }

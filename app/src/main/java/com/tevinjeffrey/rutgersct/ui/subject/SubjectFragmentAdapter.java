@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
 
 import java.util.List;
 
@@ -38,17 +38,12 @@ public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
         final Subject subject = subjectList.get(position);
 
         holder.setSubjectTitle(subject);
-        holder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemClickListener.onItemClicked(subject, v);
-            }
-        });
+        holder.setOnClickListener(v -> itemClickListener.onItemClicked(subject, v));
     }
 
     @Override
     public long getItemId(int position) {
-        return Long.valueOf(subjectList.get(position).getCode());
+        return Long.valueOf(subjectList.get(position).topic_name);
     }
 
     @Override

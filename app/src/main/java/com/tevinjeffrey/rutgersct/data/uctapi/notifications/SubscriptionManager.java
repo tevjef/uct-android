@@ -20,13 +20,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.tevinjeffrey.uct.dagger.annotations.PerApplication;
 
 import java.io.IOException;
 
 import javax.inject.Inject;
 
-@PerApplication
 public class SubscriptionManager {
 
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";

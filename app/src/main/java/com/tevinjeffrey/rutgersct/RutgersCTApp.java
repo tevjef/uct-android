@@ -5,10 +5,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.facebook.stetho.Stetho;
-import com.orm.SugarApp;
+import com.orhanobut.hawk.Hawk;
+import com.orhanobut.hawk.HawkBuilder;
+import com.orhanobut.hawk.LogLevel;
 import com.orm.SugarContext;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,18 +25,16 @@ public class RutgersCTApp extends Application {
     private static final String INSTALLATION = "INSTALLATION";
     private static String sID = null;
     private ObjectGraph objectGraph;
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher(Context context) {
-        RutgersCTApp rutgersCTApp = (RutgersCTApp) context.getApplicationContext();
-        return rutgersCTApp.refWatcher;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        //refWatcher = LeakCanary.install(this);
+        Hawk.init(this)
+                .setEncryptionMethod(HawkBuilder.EncryptionMethod.NO_ENCRYPTION)
+                .setStorage(HawkBuilder.newSqliteStorage(this))
+                .setLogLevel(LogLevel.FULL)
+                .build();
 
         SugarContext.init(this);
         Once.initialise(this);
@@ -48,7 +46,6 @@ public class RutgersCTApp extends Application {
         if (BuildConfig.DEBUG) {
             //When debugging logs will go through the Android logger
             Timber.plant(new Timber.DebugTree());
-            Stetho.initializeWithDefaults(this);
         } else {
 
             //Mint.enableDebug();

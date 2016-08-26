@@ -6,12 +6,8 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
+import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
@@ -24,9 +20,6 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Func0;
-import rx.functions.Func1;
 
 public class TrackedSectionsPresenterImpl extends BasePresenter implements TrackedSectionsPresenter {
 

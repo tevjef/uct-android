@@ -17,9 +17,9 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import com.tevinjeffrey.rutgersct.TestModule;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.SystemMessage;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.TestConts;
 
@@ -37,7 +37,11 @@ import dagger.ObjectGraph;
 import dagger.Provides;
 import rx.Observable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;

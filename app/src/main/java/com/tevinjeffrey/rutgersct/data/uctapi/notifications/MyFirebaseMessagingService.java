@@ -111,6 +111,52 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.cancel(Integer.parseInt(section.call_number));
         }
 
+        /*
+        * //Builds a notification
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("Section " + sectionNumber + " of " + courseTitle
+                                            + " has opened")
+                                    .setBigContentTitle(r.getSemester().toString() + " - " + courseTitle))
+                            .setSmallIcon(R.drawable.ic_notification)
+                            .setWhen(System.currentTimeMillis())
+                            .setPriority(NotificationCompat.PRIORITY_MAX)
+                            .setColor(ContextCompat.getColor(mContext, R.color.green))
+                            .setAutoCancel(true)
+                            .setGroup(SECTION_NOTIFICATION_GROUP)
+                            .setSound(getSound())
+                            .setContentTitle("A section has opened!")
+                            .setContentText("Section " + sectionNumber + " of " + courseTitle
+                                    + " has opened");
+
+            //Intent to start web browser
+            Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
+            openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
+            PendingIntent pOpenInBrowser = PendingIntent.getActivity(RequestService.this, 0, openInBrowser, 0);
+            mBuilder.addAction(R.drawable.ic_open_in_browser_white_24dp, "Webreg", pOpenInBrowser);
+
+            //Intent open the app.
+            Intent openTracked = new Intent(RequestService.this, DatabaseReceiver.class);
+            openTracked.putExtra(TrackedSectionsView.REQUEST, r);
+            openTracked.putExtra(CourseInfoView.SELECTED_SECTION, section);
+            //The intent that will be when the user clicks stop tracking in the notification bar.
+            PendingIntent pOpenTracked = PendingIntent.getBroadcast(RequestService.this,
+                    Integer.valueOf(r.getIndex()), openTracked, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.addAction(R.drawable.ic_close_white_24dp, "Stop Tracking", pOpenTracked);
+
+            //When you click on the notification itself.
+            mBuilder.setContentIntent(pOpenInBrowser);
+
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            //Builds the intent and sends it to notification manager with a unique ID.
+            // The id is the index number of the section since those are also unique.
+            // It also allows me to easily update the notication in the future.
+            Notification n = mBuilder.build();
+            mNotifyMgr.notify(Integer.valueOf(r.getIndex()), n);*/
+
         Log.d("FCM message", message);
     }
 }

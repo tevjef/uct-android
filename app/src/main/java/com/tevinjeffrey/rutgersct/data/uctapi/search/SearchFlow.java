@@ -7,30 +7,17 @@ import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
 
 public class SearchFlow {
-    private String universityTopic;
-    private String season;
-    private int year;
-    private String subjectTopic;
-    private String courseTopic;
-    private String sectionTopic;
-
     public University university;
     public Semester semester;
     public Subject subject;
     public Course course;
     public Section section;
 
-    private SearchFlow() {
-        // no op
+    public SearchFlow() {
     }
 
     private SearchFlow(SearchFlow searchFlow) {
-        universityTopic = searchFlow.universityTopic;
-        season = searchFlow.season;
-        year = searchFlow.year;
-        subjectTopic = searchFlow.subjectTopic;
-        courseTopic = searchFlow.courseTopic;
-        sectionTopic = searchFlow.sectionTopic;
+
     }
 
     public University getUniversity() {
@@ -53,32 +40,8 @@ public class SearchFlow {
         return section;
     }
 
-    public String getUniversityTopic() {
-        return universityTopic;
-    }
-
-    public String getSeason() {
-        return season;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public String getSubjectTopic() {
-        return subjectTopic;
-    }
-
-    public String getCourseTopic() {
-        return courseTopic;
-    }
-
-    public String getSectionTopic() {
-        return sectionTopic;
-    }
-
     public UCTSubscription buildSubscription() {
-        UCTSubscription UCTSubscription = new UCTSubscription(sectionTopic);
+        UCTSubscription UCTSubscription = new UCTSubscription(section.topic_name);
 
         Course.Builder courseBuilder = getCourse().newBuilder();
         courseBuilder.sections.clear();
@@ -106,33 +69,45 @@ public class SearchFlow {
         public Builder() {
         }
 
-        public Builder university(String universityTopic) {
-            searchFlow.universityTopic = universityTopic;
+        public Builder university(University university) {
+            searchFlow.university = university;
             return this;
         }
 
-        public Builder subject(String subjectTopic) {
-            searchFlow.subjectTopic = subjectTopic;
+        public Builder subject(Subject subject) {
+            searchFlow.subject = subject;
             return this;
         }
 
-        public Builder season(String season) {
-            searchFlow.season = season;
+        public Builder semester(Semester semester) {
+            searchFlow.semester = semester;
             return this;
         }
 
-        public Builder year(int year) {
-            searchFlow.year = year;
+        public Builder course(Course course) {
+            searchFlow.course = course;
             return this;
         }
 
-        public Builder course(String courseTopic) {
-            searchFlow.courseTopic = courseTopic;
+        public Builder section(Section section) {
+            searchFlow.section = section;
             return this;
         }
+
 
         public SearchFlow compile() {
             return new SearchFlow(searchFlow);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "SearchFlow{" +
+                "university=" + university +
+                ", semester=" + semester +
+                ", subject=" + subject +
+                ", course=" + course +
+                ", section=" + section +
+                '}';
     }
 }

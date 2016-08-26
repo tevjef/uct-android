@@ -25,7 +25,6 @@ import com.google.gson.reflect.TypeToken;
 import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.services.Alarm;
 import com.tevinjeffrey.rutgersct.ui.utils.AppCompatPreferenceActivity;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 import com.tevinjeffrey.rutgersct.utils.Utils;
@@ -51,12 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private void setToolbar() {
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -90,7 +84,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            setupIntervalPref();
             setupAboutPref();
             setupLicensesPref();
 
@@ -128,35 +121,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             .customView(tv, true)
                             .positiveText("OK")
                             .show();
-                    return true;
-                }
-            });
-        }
-
-        private void setupIntervalPref() {
-            syncInterval = findPreference(getString(R.string.pref_sync_interval_key));
-            setSummary(syncInterval, getResources().getStringArray(R.array.intervals)[getInterval()]);
-            syncInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-
-                    new MaterialDialog.Builder(getParentActivity())
-                            .title("Set sync interval")
-                            .items(R.array.intervals).alwaysCallSingleChoiceCallback()
-                            .itemsCallbackSingleChoice(getInterval(), new MaterialDialog.ListCallbackSingleChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
-                                    setInterval(which);
-                                    setSummary(syncInterval, String.format("%s",
-                                            getResources().getStringArray(R.array.intervals)[getInterval()]));
-                                    RutgersCTApp.getObjectGraph(getParentActivity()).get(Alarm.class).setAlarm();
-                                    return true;
-                                }
-                            })
-                            .positiveColorRes(R.color.accent)
-                            .positiveText("DONE")
-                            .show();
-
                     return true;
                 }
             });

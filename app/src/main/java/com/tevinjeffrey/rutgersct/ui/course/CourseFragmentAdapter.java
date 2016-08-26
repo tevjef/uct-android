@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class CourseFragmentAdapter extends RecyclerView.Adapter<CourseVH> {
 
     @Override
     public long getItemId(int position) {
-        return Long.valueOf(courseList.get(position).getCourseNumber());
+        return Long.valueOf(courseList.get(position).topic_name);
     }
 
     @Override

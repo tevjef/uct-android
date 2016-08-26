@@ -4,8 +4,8 @@ import com.tevinjeffrey.rutgersct.TestModule;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
-import com.tevinjeffrey.rutgersct.utils.TestConts;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
+import com.tevinjeffrey.rutgersct.utils.TestConts;
 
 import org.junit.Before;
 import org.junit.Test;

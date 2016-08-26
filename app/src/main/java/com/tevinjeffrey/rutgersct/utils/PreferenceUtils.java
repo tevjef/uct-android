@@ -3,7 +3,6 @@ package com.tevinjeffrey.rutgersct.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 

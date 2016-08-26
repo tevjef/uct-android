@@ -5,9 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
-
-import org.apache.commons.lang3.text.WordUtils;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 
 import butterknife.ButterKnife;
 
@@ -30,8 +28,8 @@ public final class SubjectVH extends RecyclerView.ViewHolder {
     }
 
     public void setSubjectTitle(Subject subject) {
-        String text = subject.getCode() + " | " + subject.getDescription();
-        mSubjectTitle.setText(WordUtils.capitalize(text.toLowerCase()));
+        String text = subject.number + ": " + subject.name;
+        mSubjectTitle.setText(text);
     }
 
     public void setOnClickListener(View.OnClickListener listener) {

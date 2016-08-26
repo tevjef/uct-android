@@ -24,19 +24,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
-import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SectionUtils;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
+import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
+import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +48,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icicle;
+import icepick.State;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -148,10 +148,10 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
-    @Icicle
+    @State
     Course.Section selectedSection;
 
-    @Icicle
+    @State
     SectionInfoViewState mViewState = new SectionInfoViewState();
 
     @Inject
@@ -164,9 +164,14 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     Bus mBus;
 
     @Inject
-    OkHttpClient mClient;
+    SearchManager searchManager;
 
     public SectionInfoFragment() {
+    }
+
+    @Override
+    public void injectTargets() {
+        RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
     }
 
     @Override
@@ -204,7 +209,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SectionInfoPresenterImpl(selectedSection);
+            mBasePresenter = new SectionInfoPresenterImpl(searchManager.getSearchFlow());
             RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
@@ -507,12 +512,11 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         return (SectionInfoPresenter) mBasePresenter;
     }
 
-    public static SectionInfoFragment newInstance(Course.Section selectedSection) {
+    public static SectionInfoFragment newInstance(UCTSubscription selectedSection) {
         final SectionInfoFragment newInstance = new SectionInfoFragment();
 
         final Bundle arguments = new Bundle();
         arguments.putParcelable(CourseInfoView.SELECTED_SECTION, selectedSection);
-        arguments.putParcelable(TrackedSectionsView.REQUEST, selectedSection.getRequest());
 
         newInstance.setArguments(arguments);
         return newInstance;

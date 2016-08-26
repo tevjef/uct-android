@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.ui.base.StatefulPresenter;
 
 public interface SectionInfoPresenter extends StatefulPresenter {

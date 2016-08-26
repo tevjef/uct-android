@@ -1,86 +1,68 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.CheckBox;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Semester;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment;
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import com.tevinjeffrey.stringpicker.StringPicker;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnLongClick;
-import icepick.Icicle;
+import icepick.State;
+import timber.log.Timber;
 
 public class ChooserFragment extends MVPFragment implements ChooserView {
-
-    @Bind(R.id.systemMessage)
-    TextView mSystemMessage;
 
     @Bind(R.id.semester_radiogroup)
     RadioGroup mSemesterRadiogroup;
 
-    @Bind(R.id.location1)
-    CheckBox mLocation1;
-
-    @Bind(R.id.location2)
-    CheckBox mLocation2;
-
-    @Bind(R.id.location3)
-    CheckBox mLocation3;
-
-    @Bind(R.id.level1)
-    CheckBox mLevel1;
-
-    @Bind(R.id.level2)
-    CheckBox mLevel2;
-
     @Bind(R.id.search_btn)
     TextView mSearchButton;
-
-    @Bind(R.id.primarySemester)
-    RadioButton mPrimarySemester;
-
-    @Bind(R.id.secondarySemester)
-    RadioButton mSecondarySemester;
-
-    @Bind(R.id.otherSemester)
-    RadioButton mOtherSemester;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Icicle
+    @State
     ChooserViewState mViewState = new ChooserViewState();
+
+    @Bind(R.id.university_spinner)
+    Spinner universitySpinner;
+
+    @Inject
+    SearchManager searchManager;
+
+    List<University> universities;
+    List<Semester> semesters;
 
     public ChooserFragment() {
     }
@@ -98,6 +80,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         LayoutInflater themedInflator = inflater.cloneInContext(Utils.wrapContextTheme(getActivity(), R.style.RutgersCT));
         final View rootView = themedInflator.inflate(R.layout.fragment_chooser, container, false);
         ButterKnife.bind(this, rootView);
+
         return rootView;
     }
 
@@ -120,10 +103,6 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         if (mIsInitialLoad) {
             mSemesterRadiogroup.clearCheck();
         }
-        //Silently refresh tracked sections
-        if (!getPresenter().isLoading()) {
-            getPresenter().loadSystemMessage();
-        }
     }
 
     @Override
@@ -135,40 +114,6 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     @Override
     public void initToolbar() {
         setToolbar(mToolbar);
-    }
-
-    @Override
-    public void showMessage(SystemMessage systemMessage) {
-        if (systemMessage.getMessageText().length() > 0) {
-            mViewState.systemMessage = systemMessage;
-            mSystemMessage.setText(Html.fromHtml(systemMessage.getMessageText()));
-        }
-    }
-
-    @Override
-    public void initPicker() {
-        final SemesterUtils utils = new SemesterUtils(Calendar.getInstance());
-        mPrimarySemester.setText(utils.getPrimarySemester());
-        mPrimarySemester.setTag(utils.resolvePrimarySemester());
-
-        mSecondarySemester.setText(utils.getSecondarySemester());
-        mSecondarySemester.setTag(utils.resolveSecondarySemester());
-
-        mOtherSemester.setOnClickListener(new OnOtherSemesterClick(utils));
-
-        mSearchButton.setOnClickListener(new OnSearchButtonClick());
-    }
-
-    @Override
-    public void restoreOtherSemester(String text, Semester tag) {
-        mOtherSemester.setText(text);
-        mOtherSemester.setTag(tag);
-    }
-
-    @OnLongClick(R.id.systemMessage)
-    public boolean onSystemMessageLongClick(View view) {
-        mSystemMessage.setVisibility(View.GONE);
-        return true;
     }
 
     private void startSubjectFragment(Bundle b) {
@@ -185,14 +130,13 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
             sf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
             ft.addSharedElement(mToolbar, getString(R.string.transition_name_tool_background));
         } else {
-            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            ft.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
         }
         startFragment(this, sf, ft);
     }
 
     private Bundle createArgs(Parcelable p) {
         Bundle args = new Bundle();
-        args.putParcelable(TrackedSectionsView.REQUEST, p);
         return args;
     }
 
@@ -218,168 +162,81 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         return newInstance;
     }
 
-    private class OnOtherSemesterClick implements View.OnClickListener {
+    @Override
+    public void initSpinner() {
+        mSearchButton.setOnClickListener(new OnSearchButtonClick());
 
-        private final SemesterUtils su;
-        String currentYear;
-        String currentSeason;
+        universitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getPresenter().updateDefaultUniversity(universities.get(position));
+                getPresenter().loadAvailableSemesters(universities.get(position).topic_name);
+                mSemesterRadiogroup.clearCheck();
+            }
 
-        View pickerRoot;
+            @Override public void onNothingSelected(AdapterView<?> parent) {
 
-        public OnOtherSemesterClick(SemesterUtils su) {
-            this.su = su;
-            currentYear = su.resolveCurrentSemester().getYear();
-            currentSeason = su.resolveCurrentSemester().getSeason().toString();
+            }
+        });
+
+
+        getPresenter().loadUniversities();
+    }
+
+    @Override
+    public void setUniversities(List<University> universities) {
+        this.universities = universities;
+        List<String> universityString = new ArrayList<>();
+        for (University uni: universities) {
+            universityString.add(uni.name);
         }
 
-        @Override
-        public void onClick(View v) {
-            pickerRoot = createPicker(su);
-            new MaterialDialog.Builder(getParentActivity())
-                    .title("Choose a semester")
-                    .customView(pickerRoot, false)
-                    .positiveText("Done")
-                    .negativeText("Cancel")
-                    .dismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            if (mOtherSemester.getTag() == null) mSemesterRadiogroup.clearCheck();
-                        }
-                    })
-                    .showListener(new DialogInterface.OnShowListener() {
-                        @Override
-                        public void onShow(DialogInterface dialog) {
-                            Semester sm =
-                                    mOtherSemester.getTag() == null ? su.resolveCurrentSemester() :
-                                            (Semester) mOtherSemester.getTag();
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getParentActivity(), R.layout.spinner_item, universityString);
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        universitySpinner.setAdapter(arrayAdapter);
+    }
 
-                            currentSeason = sm.getSeason().toString();
-                            currentYear = sm.getYear();
+    @Override
+    public void setAvailableSemesters(List<Semester> semesters) {
+        this.semesters = semesters;
+        mSearchButton.setEnabled(true);
 
-                            StringPicker yearPicker = (StringPicker) pickerRoot.findViewById(R.id.yearPicker);
-                            StringPicker seasonPicker = (StringPicker) pickerRoot.findViewById(R.id.seasonPicker);
-
-                            yearPicker.setCurrent(su.getListOfYears().indexOf(currentYear));
-                            seasonPicker.setCurrent(sm.getSeason().ordinal());
-
-                        }
-
-                    })
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            StringPicker yearPicker = (StringPicker) pickerRoot.findViewById(R.id.yearPicker);
-                            StringPicker seasonPicker = (StringPicker) pickerRoot.findViewById(R.id.seasonPicker);
-                            currentYear = yearPicker.getCurrentValue();
-                            currentSeason = seasonPicker.getCurrentValue();
-                            Semester semester = new Semester(currentSeason, currentYear);
-
-                            mViewState.otherSemesterText = semester.toString();
-                            mViewState.otherSemesterTag = semester;
-
-                            mOtherSemester.setText(semester.toString());
-                            mOtherSemester.setTag(semester);
-
-                            super.onPositive(dialog);
-                        }
-                    })
-                    .show();
-        }
-
-        private View createPicker(SemesterUtils su) {
-            final LinearLayout pickerRoot = (LinearLayout) getParentActivity().getLayoutInflater().inflate(R.layout.picker, null);
-
-            final StringPicker seasonPicker = (StringPicker) pickerRoot.findViewById(R.id.seasonPicker);
-            seasonPicker.setValues(su.getListOfSeasons());
-
-            final StringPicker yearPicker = (StringPicker) pickerRoot.findViewById(R.id.yearPicker);
-            yearPicker.setValues(su.getListOfYears());
-
-            return pickerRoot;
-        }
-
-        @Override
-        public String toString() {
-            return "OnOtherSemesterClick{" +
-                    "su=" + su +
-                    ", currentYear='" + currentYear + '\'' +
-                    ", currentSeason='" + currentSeason + '\'' +
-                    ", pickerRoot=" + pickerRoot +
-                    '}';
+        mSemesterRadiogroup.removeAllViewsInLayout();
+        for (Semester semester : semesters) {
+            RadioButton radioButton = (RadioButton) LayoutInflater.from(this.getParentActivity()).inflate(R.layout.radio_button, null);
+            radioButton.setText(WordUtils.capitalize(semester.season) + " " + semester.year);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mSemesterRadiogroup.addView(radioButton, layoutParams);
         }
     }
+
+
+    @Override
+    public void injectTargets() {
+        RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    }
+
 
     private class OnSearchButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (isValidInputs()) {
-                Answers.getInstance().logCustom(new CustomEvent("Search")
-                        .putCustomAttribute("Location", Request.toStringList(getLocations()))
-                        .putCustomAttribute("Level", Request.toStringList(getLevels()))
-                        .putCustomAttribute("Semester", getSemester().toString()));
+            int rawIndex = mSemesterRadiogroup.getCheckedRadioButtonId() - 1;
+            int selectedIndex = rawIndex % semesters.size();
 
-                startSubjectFragment(createArgs(createRequest()));
-            }
-        }
-
-        public Parcelable createRequest() {
-            return new Request(null, getSemester(), getLocations(), getLevels());
-        }
-
-
-
-        private boolean isValidInputs() {
-            int checkedButton = mSemesterRadiogroup.getCheckedRadioButtonId();
-            RadioButton selectedButton = (RadioButton) getParentActivity().findViewById(checkedButton);
-            if (selectedButton == null) {
-                makeToast(getParentActivity().getString(R.string.select_a_semester));
-                return false;
-            } else if (!mLocation1.isChecked() && !mLocation2.isChecked() && !mLocation3.isChecked()) {
-                makeToast(getParentActivity().getString(R.string.select_a_location));
-                return false;
-            } else if (!mLevel1.isChecked() && !mLevel2.isChecked()) {
-                makeToast(getParentActivity().getString(R.string.select_a_level));
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        private void makeToast(CharSequence s) {
-            Toast.makeText(getParentActivity().getApplicationContext(), s, Toast.LENGTH_LONG).show();
-        }
-
-        private Semester getSemester() {
-            int checkedButton = mSemesterRadiogroup.getCheckedRadioButtonId();
-            RadioButton selectedButton = (RadioButton) getParentActivity().findViewById(checkedButton);
-            return (Semester) selectedButton.getTag();
-        }
-
-        private ArrayList<String> getLocations() {
-            ArrayList<String> locations = new ArrayList<>();
-            if (mLocation1.isChecked()) {
-                locations.add(mLocation1.getText().toString());
-            }
-            if (mLocation2.isChecked()) {
-                locations.add(mLocation2.getText().toString());
-            }
-            if (mLocation3.isChecked()) {
-                locations.add(mLocation3.getText().toString());
+            if (selectedIndex < 0) {
+                Toast.makeText(getParentActivity(), "Please select a term", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            return locations;
-        }
+            searchManager.newSearch();
+            Semester selectedSemester = semesters.get(selectedIndex);
+            University selectedUniversity = getPresenter().getDefaultUniversity();
 
-        private ArrayList<String> getLevels() {
-            ArrayList<String> levels = new ArrayList<>();
-            if (mLevel1.isChecked()) {
-                levels.add(mLevel1.getText().toString());
-            }
-            if (mLevel2.isChecked()) {
-                levels.add(mLevel2.getText().toString());
-            }
+            searchManager.getSearchFlow().university = selectedUniversity;
+            searchManager.getSearchFlow().semester = selectedSemester;
 
-            return levels;
+            Timber.d(searchManager.getSearchFlow().toString());
+            Timber.i("rawindex=%s selectedIndex=%s", rawIndex, selectedIndex);
         }
     }
 }

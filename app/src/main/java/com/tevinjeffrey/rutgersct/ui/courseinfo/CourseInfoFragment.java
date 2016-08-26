@@ -8,7 +8,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.transition.Fade;
 import android.transition.Transition;
@@ -18,28 +17,30 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.ui.course.CourseView;
-import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
-import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.RutgersCTApp;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
+import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
+import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import icepick.Icicle;
+import icepick.State;
 import timber.log.Timber;
 
 @SuppressWarnings("ClassWithTooManyMethods")
@@ -74,30 +75,26 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     @Bind(R.id.totalSections_text)
     TextView mTotalSectionsText;
 
-    @Icicle
-    Request mRequest;
-
-    @Icicle
+    @State
     Course mSelectedCourse;
 
-    @Icicle
+    @State
     CourseInfoViewState mViewState = new CourseInfoViewState();
+
+    @Inject
+    SearchManager searchManager;
 
     private List<View> mHeaderViews = new ArrayList<>();
 
     public CourseInfoFragment() {
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if (getArguments() != null) {
-            mSelectedCourse = getArguments().getParcelable(CourseView.SELECTED_COURSE);
-            if (mSelectedCourse != null) {
-                mRequest = mSelectedCourse.getRequest();
-            }
-        }
+        mSelectedCourse = searchManager.getSearchFlow().course;
     }
 
     @Override
@@ -126,15 +123,13 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     @Override
     public void onItemClicked(Section section, View view) {
         Timber.i("Selected section: %s", section);
-        setIndexInRequestObject(section.getIndex());
+        searchManager.getSearchFlow().section = section;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SELECTED_SECTION, section);
         startSectionInfoFragment(bundle, view);
     }
 
     public void initViews() {
         setCourseTitle();
-        setCredits();
         setShortenedCourseInfo();
         setOpenSections();
         setTotalSections();
@@ -147,7 +142,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
         mRecyclerView.setHasFixedSize(true);
         if (mRecyclerView.getAdapter() == null) {
             mRecyclerView.setAdapter(new CourseInfoFragmentAdapter(mHeaderViews,
-                    mSelectedCourse.getSections(), this));
+                    mSelectedCourse.sections, this));
         }
     }
 
@@ -157,82 +152,39 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     }
 
     private void setCourseTitle() {
-        mCourseTitleText.setText(mSelectedCourse.getTrueTitle());
+        mCourseTitleText.setText(mSelectedCourse.name);
     }
 
     private void setShortenedCourseInfo() {
         //String offeringUnitCode = mSelectedCourse.getOfferingUnitCode();
-
-        Subject subject = mSelectedCourse.getEnclosingSubject();
-        String courseNumber = mSelectedCourse.getCourseNumber();
+        Subject subject = searchManager.getSearchFlow().subject;
+        Course course = searchManager.getSearchFlow().course;
         if (subject != null) {
-            String shortenedCourseInfo = subject.getTitle() + " › " + courseNumber;
+            String shortenedCourseInfo = subject.number+ " › " + course.number;
             mShortenedCourseInfo.setText(shortenedCourseInfo);
-        } else {
-            Timber.i("http://crashes.to/s/0397fd79332 Selected course: %s\n" +
-                    " Course number: %s\n" +
-                    " Request: %s", mSelectedCourse, courseNumber, mSelectedCourse.getRequest());
         }
     }
 
-    private void setCredits() {
-        mCreditsText.setText(String.valueOf(mSelectedCourse.getCredits()));
-    }
-
     private void setOpenSections() {
-        mOpenSectionsText.setText(String.valueOf(mSelectedCourse.getOpenSections()));
+        mOpenSectionsText.setText(String.valueOf(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.CourseUtils.getOpenSections(mSelectedCourse)));
     }
 
     private void setTotalSections() {
-        mTotalSectionsText.setText(String.valueOf(mSelectedCourse.getSectionsTotal()));
+        mTotalSectionsText.setText(String.valueOf(mSelectedCourse.sections.size()));
     }
 
     private View createCourseMetaDataView() {
         ViewGroup root = (ViewGroup) getParentActivity().getLayoutInflater().inflate(R.layout.course_info_metadata, null);
-        setPreReqNotes(root, mSelectedCourse);
-        setCourseNotes(root, mSelectedCourse);
-        setSubjectNotes(root, mSelectedCourse);
+        for (Metadata data: mSelectedCourse.metadata) {
+            ViewGroup metadata = (ViewGroup) LayoutInflater.from(getParentActivity()).inflate(R.layout.metadata, null);
+            TextView title = ButterKnife.findById(metadata, R.id.metadata_title);
+            TextView description = ButterKnife.findById(metadata, R.id.metadata_text);
+            description.setMovementMethod(new LinkMovementMethod());
+            title.setText(data.title);
+            description.setText(data.content);
+            root.addView(metadata);
+        }
         return root;
-    }
-
-    private void setPreReqNotes(View root, Course course) {
-        TextView prereqText = ButterKnife.findById(root, R.id.course_prereq_text);
-        RelativeLayout prereqContainer = ButterKnife.findById(root, R.id.course_prereq_layout);
-
-        if (course.getPreReqNotes() == null) {
-            prereqContainer.setVisibility(View.GONE);
-        } else {
-            prereqText.setText(Html.fromHtml(course.getPreReqNotes()));
-            prereqText.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-    }
-
-    private void setCourseNotes(View root, Course course) {
-        TextView courseNotesText = ButterKnife.findById(root, R.id.course_notes_text);
-        RelativeLayout courseNotesContainer = ButterKnife.findById(root, R.id.course_notes_layout);
-
-        if (course.getCourseNotes() == null) {
-            courseNotesContainer.setVisibility(View.GONE);
-        } else {
-            courseNotesText.setText(Html.fromHtml(course.getCourseNotes()));
-            courseNotesText.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-    }
-
-    private void setSubjectNotes(View root, Course course) {
-        TextView subjectNotesText = ButterKnife.findById(root, R.id.course_subject_notes_text);
-        RelativeLayout subjectNotesContainer = ButterKnife.findById(root, R.id.course_subject_notes_layout);
-
-        if (course.getSubjectNotes() == null) {
-            subjectNotesContainer.setVisibility(View.GONE);
-        } else {
-            subjectNotesText.setText(Html.fromHtml(course.getSubjectNotes()));
-            subjectNotesText.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-    }
-
-    private void setIndexInRequestObject(String index) {
-        mRequest.setIndex(index);
     }
 
     private void startSectionInfoFragment(Bundle b, View clickedView) {
@@ -289,7 +241,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
 
 
         } else {
-            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            ft.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
         }
 
         sectionInfoFragment.setArguments(b);
@@ -305,5 +257,11 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     public void initToolbar() {
         setToolbar(mToolbar);
         getParentActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+
+    @Override
+    public void injectTargets() {
+        RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
     }
 }

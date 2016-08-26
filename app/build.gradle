@@ -1,6 +1,6 @@
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
 buildscript {
@@ -18,7 +18,7 @@ repositories {
 }
 
 def isProguarded = false;
-def vName = '0.9.5.' + (isProguarded ? '1' : '0')
+def vName = '1.0.0' + (isProguarded ? '1' : '0')
 
 android {
     testOptions {
@@ -64,7 +64,6 @@ android {
             shrinkResources true
             proguardFiles 'proguard-rules.pro'
             versionNameSuffix 'D'
-            applicationIdSuffix '.debug'
         }
     }
 
@@ -88,29 +87,28 @@ android {
 }
 
 retrolambda {
-    jdk System.getenv("JAVA8_HOME")
-    oldJdk System.getenv("JAVA7_HOME")
+    jdk rootProject.ext.JAVA8_HOME
+    oldJdk rootProject.ext.JAVA7_HOME
+    javaVersion JavaVersion.VERSION_1_7
     defaultMethods true
     incremental true
 }
 
 dependencies {
     fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':libraries:stringpicker')
     compile project(':libraries:ratemyprofessors')
 
     compile 'com.squareup.wire:wire-runtime:2.2.0'
 
     //UI
     //Boilerplate reduction
-    apt 'frankiesardo:icepick-processor:3.0.2'
+    apt ('frankiesardo:icepick-processor:3.2.0')
+
     apt 'com.squareup.dagger:dagger-compiler:1.2.5'
     //Debuging
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
         transitive = true;
     }
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     //Android
     compile "com.android.support:design:${rootProject.ext.supportVersion}"
     compile "com.android.support:support-v4:${rootProject.ext.supportVersion}"
@@ -123,31 +121,33 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.google.firebase:firebase-core:9.0.2'
-    compile "com.google.firebase:firebase-messaging:9.0.2"
-    compile "com.google.firebase:firebase-crash:9.0.2"
+    compile 'com.google.firebase:firebase-core:9.4.0'
+    compile "com.google.firebase:firebase-messaging:9.4.0"
     compile 'com.github.orhanobut:hawk:1.23'
 
     compile 'com.jenzz:materialpreference:1.3'
     compile 'com.nispok:snackbar:2.11.0'
-    compile 'net.steamcrafted:materialiconlib:1.0.4'
-    compile 'com.github.paolorotolo:appintro:3.2.0'
-    compile 'com.jonathanfinerty.once:once:0.4.0'
-    compile 'frankiesardo:icepick:3.0.2'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'com.github.satyan:sugar:1.4'
+    compile 'net.steamcrafted:materialiconlib:1.1.1'
+    compile 'com.github.paolorotolo:appintro:3.4.0'
+    compile 'com.jonathanfinerty.once:once:1.2.1'
+    compile 'frankiesardo:icepick:3.2.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.github.satyan:sugar:1.5'
     compile 'io.reactivex:rxjava:1.1.9'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile group: 'com.squareup.retrofit', name: 'converter-protobuf', version: '1.9.0'
+
+    // Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+// http://mvnrepository.com/artifact/com.squareup.retrofit2/converter-wire
+    compile group: 'com.squareup.retrofit2', name: 'converter-wire', version: '2.0.2'
+
 
     compile 'com.squareup:otto:1.3.8'
     compile 'com.squareup.dagger:dagger:1.2.5'
-    compile 'com.jakewharton.timber:timber:3.1.0'
-    compile 'com.splunk.mint:mint:4.3.0'
-    compile 'com.facebook.stetho:stetho:1.2.0'
-    compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
+    compile 'com.jakewharton.timber:timber:4.3.0'
 }
 
+apply plugin: 'com.google.gms.google-services'

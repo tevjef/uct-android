@@ -14,9 +14,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 
 import java.io.BufferedReader;
 import java.io.IOException;

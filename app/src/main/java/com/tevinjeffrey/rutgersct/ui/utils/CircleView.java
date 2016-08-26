@@ -15,7 +15,7 @@ import android.view.View;
 import com.tevinjeffrey.rutgersct.R;
 
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 
 public class CircleView extends View {
 
@@ -31,29 +31,29 @@ public class CircleView extends View {
 
     final int DEFAULT_VIEW_SIZE = 96;
 
-    @Icicle
+    @State
     int mTitleColor = DEFAULT_TITLE_COLOR;
 
-    @Icicle
+    @State
     int mBackgroundColor = DEFAULT_BACKGROUND_COLOR;
 
-    @Icicle
+    @State
     String mTitleText = DEFAULT_TITLE;
 
-    @Icicle
+    @State
     float mTitleSize = DEFAULT_TITLE_SIZE;
 
-    @Icicle
+    @State
     boolean mShowTitle = DEFAULT_SHOW_TITLE;
 
     TextPaint mTitleTextPaint;
 
     Paint mBackgroundPaint;
 
-    @Icicle
+    @State
     RectF mInnerRectF;
 
-    @Icicle
+    @State
     int mViewSize;
 
     public CircleView(Context context) {

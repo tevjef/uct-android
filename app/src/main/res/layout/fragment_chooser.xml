@@ -41,21 +41,76 @@
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/accent">
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_toggle_selector"
+            android:elevation="0dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/next_text"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/relativeLayout2"
-        android:layout_below="@+id/toolbar"
         android:transitionGroup="true"
         android:paddingLeft="16dp"
-        android:paddingTop="24dp">
+        android:paddingTop="24dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_location_city_white_24dp"
+            android:id="@+id/ic_university" />
+
+        <TextView
+            android:id="@+id/university_title"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:text="UNIVERSITY"
+            android:textAllCaps="true"
+            style="@style/PrimaryTextStyle"
+            android:layout_toEndOf="@id/ic_university"
+            android:layout_toRightOf="@id/ic_university"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentLeft="false"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/university_spinner"
+            android:layout_below="@+id/university_title"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="-8dp"
+            android:layout_alignLeft="@+id/university_title"
+            android:layout_alignStart="@+id/university_title" />
 
         <RelativeLayout
             android:id="@+id/term_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical">
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/university_spinner">
 
             <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
                 android:layout_width="24dp"
@@ -87,213 +142,11 @@
                 android:layout_marginLeft="-4dp"
                 android:layout_below="@+id/semester_title">
 
-                <RadioButton
-                    android:id="@+id/primarySemester"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Spring 2015"
-                    tools:checked="true"
-                    style="@style/TwoStateTextStyle"
-                    android:textColor="@color/secondary_text"
-                    android:paddingLeft="10dp"
-                    tools:ignore="HardcodedText"
-                    android:textSize="13sp" />
-
-                <RadioButton
-                    android:id="@+id/secondarySemester"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="Summer 2015"
-                    tools:checked="true"
-                    style="@style/TwoStateTextStyle"
-                    android:textColor="@color/secondary_text"
-                    tools:ignore="HardcodedText"
-                    />
-
-                <RadioButton
-                    android:id="@+id/otherSemester"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="Choose other"
-                    tools:checked="true"
-                    style="@style/TwoStateTextStyle"
-                    android:textColor="@color/secondary_text"
-                    tools:ignore="HardcodedText"
-                    android:textStyle="italic"
-                    />
 
             </RadioGroup>
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_marginTop="16dp"
-            android:id="@+id/level_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/term_layout"
-            android:layout_below="@+id/term_layout">
-
-            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_hat"
-                android:id="@+id/ic_level" />
-
-            <TextView
-                android:id="@+id/level_title"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:text="Level"
-                android:textAllCaps="true"
-                style="@style/PrimaryTextStyle"
-                android:layout_toEndOf="@id/ic_level"
-                android:layout_toRightOf="@id/ic_level"
-                android:layout_alignParentStart="false"
-                android:layout_alignParentLeft="false"
-                android:gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"  />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/check_group"
-                android:layout_below="@+id/level_title"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="-4dp">
-                <CheckBox
-                    android:id="@+id/level1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/firstLevel"
-                    style="@style/TwoStateTextStyle"
-                    android:textColor="@color/secondary_text"
-                    />
-
-                <CheckBox
-                    android:id="@+id/level2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/secondLevel"
-                    style="@style/TwoStateTextStyle"
-                    android:textColor="@color/secondary_text"
-                    />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/location_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="28dp"
-            android:layout_toRightOf="@+id/level_layout"
-            android:orientation="vertical">
-
-
-            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_location_city_white_24dp"
-                android:id="@+id/ic_location" />
-
-            <TextView
-                android:id="@+id/location_title"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:text="Campus"
-                android:textAllCaps="true"
-                style="@style/PrimaryTextStyle"
-                android:layout_toEndOf="@id/ic_location"
-                android:layout_toRightOf="@id/ic_location"
-                android:layout_alignParentStart="false"
-                android:layout_alignParentLeft="false"
-                android:gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"  />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/location_check_group"
-            android:layout_below="@+id/ic_location"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="-4dp">
-
-            <CheckBox
-                android:id="@+id/location1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/firstLocation"
-                style="@style/TwoStateTextStyle"
-                android:textColor="@color/secondary_text"
-                />
-
-            <CheckBox
-                android:id="@+id/location2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/secondLocation"
-                style="@style/TwoStateTextStyle"
-                android:textColor="@color/secondary_text"
-                />
-
-            <CheckBox
-                android:id="@+id/location3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/thirdLocation"
-                style="@style/TwoStateTextStyle"
-                android:textColor="@color/secondary_text"
-                />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/systemMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:textColor="@color/accent"
-            android:textSize="12sp"
-            android:textStyle="italic" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@color/accent">
-
-        <Button
-            android:id="@+id/search_btn"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_toggle_selector"
-            android:elevation="0dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/next_text"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
     </RelativeLayout>
 
 </RelativeLayout>

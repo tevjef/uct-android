@@ -33,3 +33,6 @@ captures/
 *.alloc
 *.hprof
 *.index
+
+
+app/google-services.json

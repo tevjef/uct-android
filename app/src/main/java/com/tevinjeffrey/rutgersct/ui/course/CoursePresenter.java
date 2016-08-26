@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.course;
 
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.StatefulPresenter;
 
 public interface CoursePresenter extends StatefulPresenter {

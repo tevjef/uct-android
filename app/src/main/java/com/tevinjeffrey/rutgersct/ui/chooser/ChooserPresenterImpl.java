@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class ChooserPresenterImpl extends BasePresenter implements ChooserPresenter {
 
@@ -29,10 +30,14 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
     @BackgroundThread
     Scheduler mBackgroundThread;
 
+    @Inject
+    RetroUCT retroUCT;
+
     private Subscription mSubsciption;
     private boolean isLoading;
 
     public ChooserPresenterImpl() {
+
     }
 
 
@@ -42,8 +47,19 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
 
 
     @Override
+    public University getDefaultUniversity() {
+        return retroUCT.getDefaultUniversity();
+    }
+
+    @Override
+    public void updateDefaultUniversity(University university) {
+        retroUCT.setDefaultUniversity(university);
+    }
+
+    @Override
     public void loadUniversities() {
         mSubsciption = mRetroUCT.getUniversities()
+                .observeOn(mMainThread)
                 .subscribe(new Subscriber<List<University>>() {
                     @Override
                     public void onCompleted() {
@@ -53,6 +69,7 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
                     @Override
                     public void onError(Throwable e) {
 
+                        e.printStackTrace();
 
                     }
 
@@ -68,7 +85,9 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
     @Override
     public void loadAvailableSemesters(String universityTopicName) {
         cancePreviousSubscription();
-        mSubsciption = mRetroUCT.getUniversity(universityTopicName).map(university -> university.available_semesters)
+        mSubsciption = mRetroUCT.getUniversity(universityTopicName)
+                .map(university -> university.available_semesters)
+                .observeOn(mMainThread)
                 .subscribe(new Subscriber<List<Semester>>() {
             @Override
             public void onCompleted() {
@@ -77,7 +96,10 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
 
             @Override
             public void onError(Throwable e) {
-
+                if (getView() != null) {
+                    //Show error in view getView().showError(e);
+                    e.printStackTrace();
+                }
             }
 
             @Override

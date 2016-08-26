@@ -2,29 +2,28 @@ package com.tevinjeffrey.rutgersct;
 
 import android.content.Context;
 
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.RMPModule;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
 import com.tevinjeffrey.rutgersct.modules.RetroRutgersModule;
 import com.tevinjeffrey.rutgersct.modules.RetroUCTModule;
-import com.tevinjeffrey.rutgersct.receivers.BootReceiver;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
-import com.tevinjeffrey.rutgersct.services.Alarm;
-import com.tevinjeffrey.rutgersct.services.RequestService;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
+import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
+import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
+import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment;
+import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity.SettingsFragment;
+import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
-import com.tevinjeffrey.rutgersct.utils.AndroidSchedulerTransformer;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
-import com.tevinjeffrey.rutgersct.utils.SchedulerTransformer;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,18 +33,23 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @Module(
         injects = {
-        Alarm.class,
-        RequestService.class,
         SettingsFragment.class,
         MainActivity.class,
-        BootReceiver.class,
         DatabaseReceiver.class,
+                TrackedSectionsFragment.class,
+                ChooserFragment.class,
+                SubjectFragment.class,
+                CourseFragment.class,
+                CourseInfoFragment.class,
+                SectionInfoFragment.class,
         SectionInfoPresenterImpl.class,
 },
         includes = {RetroRutgersModule.class, RetroUCTModule.class,
@@ -96,6 +100,12 @@ public class RutgersCTModule {
 
     @Provides
     @Singleton
+    public SearchManager providesSearchManager() {
+        return new SearchManager();
+    }
+
+    @Provides
+    @Singleton
     public Gson providesGson() {
         return new GsonBuilder()
                 .serializeNulls()
@@ -112,15 +122,15 @@ public class RutgersCTModule {
     @Provides
     @Singleton
     public OkHttpClient providesOkHttpClient(Context context) {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.setReadTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        client.networkInterceptors().add(new StethoInterceptor());
+        OkHttpClient.Builder client = new OkHttpClient.Builder()
+                .readTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+                .connectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 
         File httpCacheDir = new File(context.getCacheDir(), context.getString(R.string.application_name));
         long httpCacheSize = 50 * 1024 * 1024; // 50 MiB
         Cache cache = new Cache(httpCacheDir, httpCacheSize);
-        client.setCache(cache);
+        client.cache(cache);
+
         if (BuildConfig.DEBUG) {
             try {
                 cache.evictAll();
@@ -128,6 +138,6 @@ public class RutgersCTModule {
                 e.printStackTrace();
             }
         }
-        return client;
+        return client.build();
     }
 }

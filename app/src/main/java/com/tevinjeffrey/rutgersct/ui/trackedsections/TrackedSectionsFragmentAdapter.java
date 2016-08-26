@@ -8,17 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
 
 import java.util.List;
 
 public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<TrackedSectionVH> {
 
-    private final List<Section> sectionList;
-    private final ItemClickListener<Section, View> itemClickListener;
+    private final List<UCTSubscription> sectionList;
+    private final ItemClickListener<UCTSubscription, View> itemClickListener;
 
-    public TrackedSectionsFragmentAdapter(List<Section> sectionList, @NonNull ItemClickListener<Section, View> listener) {
+    public TrackedSectionsFragmentAdapter(List<UCTSubscription> sectionList, @NonNull ItemClickListener<UCTSubscription, View> listener) {
         this.sectionList = sectionList;
         this.itemClickListener = listener;
         setHasStableIds(true);
@@ -35,25 +35,20 @@ public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<Tracked
     @Override
     public void onBindViewHolder(final TrackedSectionVH holder, int position) {
 
-        final Section section = sectionList.get(position);
+        final UCTSubscription subscription = sectionList.get(position);
 
-        holder.setCourseTitle(section.getCourse());
-        holder.setOpenStatus(section);
-        holder.setSectionNumber(section);
-        holder.setInstructors(section);
-        holder.setTimes(section);
+        holder.setCourseTitle(subscription.getSubject().number, subscription.getCourse().name);
+        holder.setOpenStatus(subscription.getSection());
+        holder.setSectionNumber(subscription.getSection());
+        holder.setInstructors(subscription.getSection());
+        holder.setTimes(subscription.getSection());
 
-        holder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemClickListener.onItemClicked(section, v);
-            }
-        });
+        holder.setOnClickListener(v -> itemClickListener.onItemClicked(subscription, v));
     }
 
     @Override
     public long getItemId(int position) {
-        return Long.valueOf(sectionList.get(position).getIndex());
+        return Long.valueOf(sectionList.get(position).getSection().topic_name);
     }
 
     @Override

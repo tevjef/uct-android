@@ -26,10 +26,12 @@ public abstract class MVPFragment extends Fragment implements View {
 
     public BasePresenter mBasePresenter;
 
+    public abstract void injectTargets();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        injectTargets();
         setHasOptionsMenu(true);
         Icepick.restoreInstanceState(this, savedInstanceState);
         Timber.d("%s started with savedIntanceState %s and arguments %s",
@@ -111,12 +113,7 @@ public abstract class MVPFragment extends Fragment implements View {
         toolbar.setSubtitleTextAppearance(getParentActivity(), R.style.ToolbarSubtitleStyle_TextApperance);
 
         getParentActivity().setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View v) {
-                getParentActivity().onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> getParentActivity().onBackPressed());
 
         ActionBar actionBar = getParentActivity().getSupportActionBar();
 

@@ -16,8 +16,6 @@
 
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
-import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoViewState;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

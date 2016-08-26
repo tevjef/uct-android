@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Meeting;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section.MeetingTimes;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -41,19 +40,18 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
         this.mSectionTimeContainer = mSectionTimeContainer;
     }
 
-    public void setTimes(Course.Section section) {
+    public void setTimes(Section section) {
         TextView mDayText;
         TextView mSectionLocationText;
         TextView mTimeText;
 
-        final List<MeetingTimes> meetingTimes = section.getMeetingTimes();
+        final List<Meeting> meetingTimes = section.meetings;
         //sort times so that Monday > Tuesday and Lecture > Recitation
-        Collections.sort(meetingTimes);
 
         for (int i = 0; i < mSectionTimeContainer.getChildCount(); i++) {
             View timeLayout = mSectionTimeContainer.getChildAt(i);
 
-            MeetingTimes time = null;
+            Meeting time = null;
             if (meetingTimes.size() > 0 && meetingTimes.size() - 1 >= i) {
                 time = meetingTimes.get(i);
             }
@@ -70,35 +68,27 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
                 //This is a reused layout that contains inforation not to be shown at this time.
                 // The class location is not to be shown in the Tracked Section Fragment
                 //timeLayout.findViewById(R.id.section_item_time_info_meeting_type).setVisibility(View.GONE);
-                if (time.isByArrangement()) {
-                    mDayText.setText(SectionUtils.getMeetingDayName(time));
-                    mTimeText.setText(SectionUtils.getMeetingHours(time));
-                    mSectionLocationText.setText("");
-                } else {
-                    mDayText.setText(SectionUtils.getMeetingDayName(time));
-                    mTimeText.setText(SectionUtils.getMeetingHours(time));
-                    mSectionLocationText.setText(SectionUtils.getClassLocation(time));
-                }
+                mDayText.setText(time.day);
+                mTimeText.setText(time.start_time + " - " + time.end_time);
+                mSectionLocationText.setText(time.room + " " + time.class_type);
             }
-
         }
-
     }
 
-    public void setSectionNumber(Course.Section section) {
-        mSectionNumberBackground.setTitleText(section.getNumber());
-        mSectionNumberBackground.setTag(section.getIndex());
+    public void setSectionNumber(Section section) {
+        mSectionNumberBackground.setTitleText(section.number);
+        mSectionNumberBackground.setTag(section.topic_name);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            mSectionNumberBackground.setTransitionName(section.getIndex());
+            mSectionNumberBackground.setTransitionName(section.topic_name);
     }
 
-    public void setInstructors(Course.Section section) {
-        mInstructors.setText(section.getToStringInstructors(" | "));
+    public void setInstructors(Section section) {
+        mInstructors.setText(Utils.InstructorUtils.toString(section.instructors));
     }
 
-    public void setOpenStatus(Course.Section section) {
-        if (section.isOpenStatus()) {
+    public void setOpenStatus(Section section) {
+        if (section.status.equals("Open")) {
             mSectionNumberBackground.setBackgroundColor(ContextCompat.getColor(mParent.getContext(), R.color.green));
         } else {
             mSectionNumberBackground.setBackgroundColor(ContextCompat.getColor(mParent.getContext(), R.color.red));

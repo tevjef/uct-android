@@ -29,16 +29,15 @@ import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.ui.subject.SubjectView;
-import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-
+import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
-
-import org.apache.commons.lang3.text.WordUtils;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -50,10 +49,9 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icicle;
+import icepick.State;
 import timber.log.Timber;
 
-@SuppressWarnings("ClassWithTooManyMethods")
 public class CourseFragment extends MVPFragment implements CourseView, SwipeRefreshLayout.OnRefreshListener,
         ItemClickListener<Course, View> {
 
@@ -71,17 +69,16 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     @Bind(R.id.error_view)
     ViewGroup mErrorView;
 
-    @Icicle
-    Request mRequest;
-
-    @Icicle
+    @State
     ArrayList<Course> mListDataset;
 
-    @Icicle
+    @State
     CourseViewState mViewState = new CourseViewState();
 
     @Inject
-    RetroRutgers mRetroRutgers;
+    SearchManager searchManager;
+
+    private Subject selectedSubject;
 
     public CourseFragment() {
     }
@@ -89,8 +86,8 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        selectedSubject = searchManager.getSearchFlow().subject;
         setRetainInstance(true);
-        mRequest = getArguments().getParcelable(TrackedSectionsView.REQUEST);
     }
 
     @Override
@@ -107,8 +104,8 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new CoursePresenterImpl(mRequest);
             RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+            mBasePresenter = new CoursePresenterImpl(searchManager.getSearchFlow());
         }
     }
 
@@ -237,7 +234,8 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     @Override
     public void onItemClicked(Course course, View view) {
         Timber.i("Selected course: %s", course);
-        startCourseInfoFragment(createArgs(mRequest, course));
+        searchManager.getSearchFlow().course = course;
+        startCourseInfoFragment(createArgs(course));
     }
 
     private boolean adapterHasItems() {
@@ -348,10 +346,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     }
 
     private void setToolbarTitle() {
-        Subject selectedSubject = getArguments().getParcelable(SubjectView.SELECTED_SUBJECT);
-        super.setToolbarTitle(mToolbar, (selectedSubject != null ? selectedSubject.getCode() : "")
-                + " | " + WordUtils.capitalize(selectedSubject != null ?
-                selectedSubject.getDescription().toLowerCase() : ""));
+        super.setToolbarTitle(mToolbar, selectedSubject.number + ": " + selectedSubject.name);
     }
 
     private CoursePresenter getPresenter() {
@@ -376,21 +371,20 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
 
             ft.addSharedElement(mToolbar, getString(R.string.transition_name_tool_background));
         } else {
-            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            ft.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
         }
         courseInfoFragment.setArguments(b);
         startFragment(this, courseInfoFragment, ft);
     }
 
-    private Bundle createArgs(Request request, Course selectedCourse) {
+    private Bundle createArgs(Course selectedCourse) {
         Bundle bundle = new Bundle();
-        selectedCourse.setRequest(request);
         bundle.putParcelable(SELECTED_COURSE, selectedCourse);
         return bundle;
     }
 
     @Override
-    public String toString() {
-        return TAG;
+    public void injectTargets() {
+        RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
     }
 }

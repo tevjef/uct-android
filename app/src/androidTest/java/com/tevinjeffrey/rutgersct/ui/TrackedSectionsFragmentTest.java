@@ -2,20 +2,16 @@ package com.tevinjeffrey.rutgersct.ui;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTTestModule;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.testUtils.RutgersApiConts;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,16 +22,15 @@ import javax.inject.Inject;
 import dagger.ObjectGraph;
 import jonathanfinerty.once.Once;
 
+import static android.support.test.espresso.Espresso.*;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeDown;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
 import static android.support.test.espresso.contrib.RecyclerViewActions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static android.support.test.espresso.Espresso.*;
 import static com.tevinjeffrey.rutgersct.testUtils.OrientationChangeAction.orientationLandscape;
 import static com.tevinjeffrey.rutgersct.testUtils.OrientationChangeAction.orientationPortrait;
-import static org.hamcrest.CoreMatchers.*;
-
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 

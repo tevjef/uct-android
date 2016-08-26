@@ -5,9 +5,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoVH;
+import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
 
 import butterknife.ButterKnife;
 
@@ -29,7 +28,7 @@ public final class TrackedSectionVH extends SectionInfoVH {
         this.mCourseTitleText = courseTitleText;
     }
 
-    public void setCourseTitle(Course course) {
-        mCourseTitleText.setText(course.getSubject() + " | " + course.getTrueTitle());
+    public void setCourseTitle(String subjectNumber, String courseName) {
+        mCourseTitleText.setText(subjectNumber + " | " + courseName);
     }
 }

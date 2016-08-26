@@ -1,23 +1,24 @@
 package com.tevinjeffrey.rmp.client.module;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.OkHttpClient;
+
 import com.tevinjeffrey.rmp.client.ClientService;
 import com.tevinjeffrey.rmp.client.RMPClient;
 
-import java.net.SocketTimeoutException;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit.ErrorHandler;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.wire.WireConverterFactory;
+import rx.schedulers.Schedulers;
+
 
 @Module(    complete = false,
         library = true )
@@ -29,19 +30,18 @@ public class ClientModule {
 
     @Provides
     @Singleton
-    public RMPClient providesRMPClient(OkHttpClient client, Gson gson) {
-        OkHttpClient okClient = client.clone();
+    public RMPClient providesRMPClient(Gson gson) {
 
-        okClient.setConnectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        okClient.setReadTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+                .connectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS).build();
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://rutgersapp.tevindev.me:8080/")
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setConverter(new GsonConverter(gson))
-                .setClient(new OkClient(okClient))
-                .build();
-
-        return new RMPClient(restAdapter.create(ClientService.class));
+        return new RMPClient(new Retrofit.Builder()
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .baseUrl("http://rutgersapp.tevindev.me:8080/")
+                .build()
+                .create(ClientService.class));
     }
 }

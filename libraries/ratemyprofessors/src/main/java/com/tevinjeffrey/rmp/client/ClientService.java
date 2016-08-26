@@ -4,9 +4,8 @@ import com.tevinjeffrey.rmp.common.Professor;
 
 import java.util.Map;
 
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.QueryMap;
+import retrofit2.http.GET;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 public interface ClientService {

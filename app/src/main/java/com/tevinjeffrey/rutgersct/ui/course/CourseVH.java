@@ -5,7 +5,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
 
 import butterknife.ButterKnife;
 
@@ -31,11 +32,11 @@ public final class CourseVH extends RecyclerView.ViewHolder {
     }
 
     public void setCourseTitle(Course course) {
-        mCourseTitle.setText(course.getCourseNumber() + " | " + course.getTrueTitle());
+        mCourseTitle.setText(course.number + ":  " + course.name);
     }
 
     public void setSectionsInfo(Course course) {
-        mSectionInfo.setText(course.getOpenSections() + " open sections of " + course.getSectionsTotal());
+        mSectionInfo.setText(Utils.CourseUtils.getOpenSections(course) + " open sections of " + course.sections.size());
     }
 
     public void setOnClickListener(View.OnClickListener listener) {

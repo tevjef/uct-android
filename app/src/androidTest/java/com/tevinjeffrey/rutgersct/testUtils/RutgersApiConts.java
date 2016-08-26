@@ -2,9 +2,9 @@ package com.tevinjeffrey.rutgersct.testUtils;
 
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Response;
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import java.io.IOException;

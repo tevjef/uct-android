@@ -1,7 +1,5 @@
 package com.tevinjeffrey.rutgersct.data.uctapi;
 
-import android.util.Log;
-
 import com.orhanobut.hawk.Hawk;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
@@ -10,28 +8,33 @@ import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
 import com.tevinjeffrey.rutgersct.data.uctapi.notifications.SubscriptionManager;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.SimpleObserver;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 import rx.Scheduler;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
+@Singleton
 public class RetroUCT {
 
+    private final String DEFAULT_UNIVERSITY = "default_university";
     private final String TRACKED_SECTIONS = "trackedsections";
     private final SubscriptionManager subscriptionManager;
 
     RetroUCTService uctService;
     Scheduler backgroundThread;
 
-    public RetroUCT(RetroUCTService retroUCTService, Scheduler backgroundThread, SubscriptionManager subscriptionManager) {
+    @Inject
+    public RetroUCT(RetroUCTService retroUCTService, @BackgroundThread Scheduler backgroundThread, SubscriptionManager subscriptionManager) {
         this.uctService = retroUCTService;
         this.backgroundThread = backgroundThread;
         this.subscriptionManager = subscriptionManager;
@@ -48,20 +51,20 @@ public class RetroUCT {
     }
 
     public Observable<List<Subject>> getSubjects(SearchFlow searchFlow) {
-        return uctService.getSubjects(searchFlow.getUniversityTopic(), searchFlow.getSeason(),
-                searchFlow.getYear()).map(response -> response.data.subjects);
+        return uctService.getSubjects(searchFlow.university.topic_name, searchFlow.semester.season,
+                String.valueOf(searchFlow.semester.year)).map(response -> response.data.subjects);
     }
 
     public Observable<Subject> getSubject(SearchFlow searchFlow) {
-        return uctService.getSubject(searchFlow.getSubjectTopic()).map(response -> response.data.subject);
+        return uctService.getSubject(searchFlow.subject.topic_name).map(response -> response.data.subject);
     }
 
     public Observable<List<Course>> getCourses(SearchFlow searchFlow) {
-        return uctService.getCourses(searchFlow.getSubjectTopic()).map(response -> response.data.courses);
+        return uctService.getCourses(searchFlow.subject.topic_name).map(response -> response.data.courses);
     }
 
     public Observable<Course> getCourse(SearchFlow searchFlow) {
-        return uctService.getCourse(searchFlow.getCourseTopic()).map(response -> response.data.course);
+        return uctService.getCourse(searchFlow.course.topic_name).map(response -> response.data.course);
     }
 
     public Observable<Section> getSection(SearchFlow searchFlow) {
@@ -162,5 +165,12 @@ public class RetroUCT {
         return topics;
     }
 
+    public void setDefaultUniversity(University university) {
+        Hawk.put(DEFAULT_UNIVERSITY, university);
+    }
+
+    public University getDefaultUniversity() {
+        return Hawk.get(DEFAULT_UNIVERSITY);
+    }
 
 }

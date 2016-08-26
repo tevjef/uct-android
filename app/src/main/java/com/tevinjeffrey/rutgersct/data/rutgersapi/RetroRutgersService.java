@@ -7,8 +7,8 @@ import com.tevinjeffrey.rutgersct.data.rutgersapi.model.SystemMessage;
 import java.util.List;
 import java.util.Map;
 
-import retrofit.http.GET;
-import retrofit.http.QueryMap;
+import retrofit2.http.GET;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 public interface RetroRutgersService {

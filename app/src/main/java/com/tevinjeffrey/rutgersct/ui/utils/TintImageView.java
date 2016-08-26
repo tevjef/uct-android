@@ -30,6 +30,7 @@ import android.widget.ImageView;
 
 import com.tevinjeffrey.rutgersct.R;
 
+@SuppressWarnings("ResourceType")
 public class TintImageView extends ImageView {
     private static final int[] TINT_ATTRS = {
             android.R.attr.background,

@@ -30,16 +30,16 @@ import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
-import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
-import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
-import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
-import com.tevinjeffrey.rutgersct.utils.Utils;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersDataIOException;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
+import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
+import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
+import com.tevinjeffrey.rutgersct.utils.Utils;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -51,7 +51,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icicle;
+import icepick.State;
 import timber.log.Timber;
 
 public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
@@ -70,17 +70,20 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     @Bind(R.id.error_view)
     ViewGroup mErrorView;
 
-    @Icicle
+    @State
     Request mRequest;
 
-    @Icicle
+    @State
     ArrayList<Subject> mListDataset;
 
-    @Icicle
+    @State
     SubjectViewState mViewState = new SubjectViewState();
 
     @Inject
     RetroRutgers mRetroRutgers;
+
+    @Inject
+    SearchManager searchManager;
 
     public SubjectFragment() {
     }
@@ -89,9 +92,6 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if (getArguments() != null) {
-            mRequest = getArguments().getParcelable(TrackedSectionsView.REQUEST);
-        }
     }
 
     @Override
@@ -108,8 +108,8 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SubjectPresenterImpl(mRequest);
             RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+            mBasePresenter = new SubjectPresenterImpl(searchManager.getSearchFlow());
         }
     }
 
@@ -172,15 +172,14 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         }
 
         if (mRecyclerView.getAdapter() == null) {
-            mRecyclerView.setAdapter(new SubjectFragmentAdapter(mListDataset,
-                    this));
+            mRecyclerView.setAdapter(new SubjectFragmentAdapter(mListDataset, this));
         }
     }
 
     @Override
     public void onItemClicked(Subject subject, View view) {
         Timber.i("Selected subject: %s", subject);
-        setSubjectInRequestObject(subject.getCode());
+        searchManager.getSearchFlow().subject = subject;
         startCourseFragement(createArgs(subject, mRequest));
     }
 
@@ -193,12 +192,9 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     @Override
     public void showLoading(final boolean pullToRefresh) {
         mViewState.isRefreshing = pullToRefresh;
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mSwipeRefreshLayout != null) {
-                    mSwipeRefreshLayout.setRefreshing(pullToRefresh);
-                }
+        mSwipeRefreshLayout.post(() -> {
+            if (mSwipeRefreshLayout != null) {
+                mSwipeRefreshLayout.setRefreshing(pullToRefresh);
             }
         });
     }
@@ -383,7 +379,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
             setExitTransition(sfTransition.excludeTarget(Toolbar.class, true));
             courseFragment.setAllowEnterTransitionOverlap(false);
         } else {
-            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            ft.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
         }
 
         startFragment(this, courseFragment, ft);
@@ -391,9 +387,13 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
 
     private Bundle createArgs(Parcelable selectedSubject, Parcelable request) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(SELECTED_SUBJECT, selectedSubject);
-        bundle.putParcelable(TrackedSectionsView.REQUEST, request);
         return bundle;
+    }
+
+
+    @Override
+    public void injectTargets() {
+        RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
     }
 
     private SubjectPresenter getPresenter() {

@@ -1,10 +1,6 @@
 package com.tevinjeffrey.rmp.scraper;
 
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.tevinjeffrey.rmp.client.module.ClientModule$$ModuleAdapter;
+
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
@@ -18,6 +14,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -156,7 +156,7 @@ public class RMPScraper {
 
 
     private Observable<String> mapResponseToString(final Response response) {
-        System.out.println(response.request().urlString());
+        System.out.println(response.request().toString());
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -172,7 +172,7 @@ public class RMPScraper {
         });
     }
 
-    private Observable<Call> makeGetCall(final com.squareup.okhttp.Request request) {
+    private Observable<Call> makeGetCall(final Request request) {
         return Observable.create(new Observable.OnSubscribe<Call>() {
             @Override
             public void call(Subscriber<? super Call> subscriber) {

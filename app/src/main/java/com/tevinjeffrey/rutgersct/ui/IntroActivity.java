@@ -42,6 +42,16 @@ public class IntroActivity extends AppIntro2 {
         startMainActivity();
     }
 
+    @Override
+    public void onNextPressed() {
+
+    }
+
+    @Override
+    public void onSlideChanged() {
+
+    }
+
     public void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

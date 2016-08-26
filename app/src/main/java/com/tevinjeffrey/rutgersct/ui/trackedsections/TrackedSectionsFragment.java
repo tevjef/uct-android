@@ -34,16 +34,16 @@ import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
-import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
+import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
+import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
+import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.ui.utils.RecyclerSimpleScrollListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -53,7 +53,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icicle;
+import icepick.State;
 import rx.functions.Action1;
 import timber.log.Timber;
 
@@ -62,7 +62,7 @@ import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.LIST;
 
 @SuppressWarnings({"ClassWithTooManyMethods"})
 public class TrackedSectionsFragment extends MVPFragment implements TrackedSectionsView, SwipeRefreshLayout.OnRefreshListener,
-        ItemClickListener<Section, View> {
+        ItemClickListener<UCTSubscription, View> {
 
     public static final String TAG = TrackedSectionsFragment.class.getSimpleName();
 
@@ -84,10 +84,15 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     @Bind(R.id.error_view)
     ViewGroup mErrorView;
 
-    @Icicle
+    @State
     TrackedSectionsViewState mViewState = new TrackedSectionsViewState();
 
-    private ArrayList<Section> mListDataset;
+    private ArrayList<UCTSubscription> mListDataset;
+
+    @Override
+    public void injectTargets() {
+        RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -180,7 +185,8 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         });
     }
 
-    public void setData(List<Section> data) {
+    @Override
+    public void setData(List<UCTSubscription> data) {
         mViewState.data = data;
         mListDataset.clear();
         mListDataset.addAll(data);
@@ -353,9 +359,9 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     }
 
     @Override
-    public void onItemClicked(Section section, View view) {
-        Timber.i("Selected tracked section: %s", section);
-        startSectionInfoFragment(SectionInfoFragment.newInstance(section), view);
+    public void onItemClicked(UCTSubscription subscription, View view) {
+        Timber.i("Selected subscription: %s", subscription);
+        startSectionInfoFragment(SectionInfoFragment.newInstance(subscription), view);
     }
 
     private void showSnackBar(CharSequence message) {
@@ -431,7 +437,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
             chooserFragment.setAllowEnterTransitionOverlap(false);
             chooserFragment.setAllowReturnTransitionOverlap(false);
         } else {
-            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            ft.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
         }
         startFragment(TrackedSectionsFragment.this, chooserFragment, ft);
     }
@@ -482,7 +488,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
             sharedElementsEnter.addListener(sharedelementCallback.getTransitionCallback());
 
         } else {
-            ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            ft.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
         }
         startFragment(this, sectionInfoFragment, ft);
     }

@@ -3,7 +3,7 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
 import com.tevinjeffrey.rutgersct.ui.base.View.LayoutType;
 
@@ -14,7 +14,7 @@ public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView>
 
     public boolean isRefreshing = false;
     public LayoutType layoutType = LayoutType.LIST;
-    public List<Course.Section> data = new ArrayList<>(10);
+    public List<UCTSubscription> data = new ArrayList<>(10);
     public boolean snackBarShowing = false;
     public String errorMessage;
 
@@ -57,7 +57,7 @@ public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView>
         this.isRefreshing = in.readByte() != 0;
         int tmpLayoutType = in.readInt();
         this.layoutType = tmpLayoutType == -1 ? LayoutType.LIST : LayoutType.values()[tmpLayoutType];
-        this.data = in.createTypedArrayList(Course.Section.CREATOR);
+        this.data = in.createTypedArrayList(UCTSubscription.CREATOR);
         this.snackBarShowing = in.readByte() != 0;
         this.errorMessage = in.readString();
     }

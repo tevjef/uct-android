@@ -13,12 +13,10 @@ import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Instructor;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
-import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
+import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
@@ -35,7 +33,6 @@ import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 public class SectionInfoPresenterImpl extends BasePresenter implements SectionInfoPresenter {
@@ -67,13 +64,13 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     public void setFabState(boolean animate) {
         if (getView() != null) {
-            boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.getSectionTopic());
+            boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.section.topic_name);
             getView().showSectionTracked(sectionTracked, animate);
         }
     }
 
     public void toggleFab() {
-        boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.getSectionTopic());
+        boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.section.topic_name);
         if (sectionTracked) {
             removeSection();
         } else {
@@ -87,7 +84,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     @Override
     public void removeSection() {
-        mRetroUCT.unsubscribe(searchFlow.getSectionTopic());
+        mRetroUCT.unsubscribe(searchFlow.section.topic_name);
     }
 
     @Override

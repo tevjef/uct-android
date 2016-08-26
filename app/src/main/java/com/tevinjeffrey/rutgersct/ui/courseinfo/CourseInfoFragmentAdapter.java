@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.ui.utils.HeaderVH;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course.Section;
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 
 import java.util.List;
 
@@ -59,12 +59,7 @@ public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView
             courseInfoVH.setInstructors(section);
             courseInfoVH.setTimes(section);
 
-            courseInfoVH.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClicked(section, v);
-                }
-            });
+            courseInfoVH.setOnClickListener(v -> itemClickListener.onItemClicked(section, v));
         }
 
     }
@@ -81,7 +76,7 @@ public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public long getItemId(int position) {
         if (position != 0)
-            return Long.valueOf(sectionList.get(position - 1).getIndex());
+            return Long.valueOf(sectionList.get(position - 1).topic_id);
         else
             return 0;
     }

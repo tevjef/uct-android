@@ -1,4 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
+
+import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersDataIOException;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
@@ -7,8 +9,6 @@ import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersDataIOException;
-
 
 import java.util.List;
 

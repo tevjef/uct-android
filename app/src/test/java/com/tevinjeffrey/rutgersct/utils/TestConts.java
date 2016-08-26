@@ -1,8 +1,8 @@
 package com.tevinjeffrey.rutgersct.utils;
 
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
+import com.tevinjeffrey.rutgersct.database.TrackedSections;
 
 import java.util.ArrayList;
 import java.util.Arrays;

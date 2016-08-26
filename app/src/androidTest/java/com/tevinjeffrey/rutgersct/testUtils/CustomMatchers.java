@@ -2,9 +2,9 @@ package com.tevinjeffrey.rutgersct.testUtils;
 
 import android.support.test.espresso.matcher.BoundedMatcher;
 
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionVH;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionVH;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
