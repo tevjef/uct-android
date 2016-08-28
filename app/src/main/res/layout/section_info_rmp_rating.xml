@@ -7,9 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
-    <RelativeLayout
-        style="@style/section_metadata_containers"
-        >
+    <RelativeLayout style="@style/section_metadata_containers" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -48,175 +46,124 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rmp_prof_info_container"
             android:layout_centerHorizontal="true">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/other_rating_container"
-                android:layout_weight="1"
-                android:layout_gravity="center">
-
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/easiness_container">
-
-                    <TextView
-                        android:text="@string/easiness"
-                        android:layout_toRightOf="@+id/wheel_easiness_rating"
-                        android:layout_marginLeft="8dp"
-                        style="@style/SecondaryTextStyle"
-                        android:layout_centerVertical="true"/>
-
-                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
-                        android:layout_width="@dimen/mini_wheel"
-                        android:layout_height="@dimen/mini_wheel"
-                        android:id="@+id/wheel_easiness_rating"
-                        app:itemsLineWidth="3dp"
-                        app:backgroundColor="@android:color/white" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/clarity_container"
-                    android:layout_marginTop="8dp"
-                    android:layout_below="@+id/easiness_container" >
-
-                    <TextView
-                        android:text="@string/clarity"
-                        android:layout_toRightOf="@+id/wheel_clarity_rating"
-                        android:layout_marginLeft="8dp"
-                        style="@style/SecondaryTextStyle"
-                        android:layout_centerVertical="true"
-                        />
-
-                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
-                        android:layout_width="@dimen/mini_wheel"
-                        android:layout_height="@dimen/mini_wheel"
-                        android:id="@+id/wheel_clarity_rating"
-                        app:itemsLineWidth="3dp"
-                        app:backgroundColor="@android:color/white"
-                        />
-
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/helpfullness_container"
-                    android:layout_marginTop="8dp"
-                    android:layout_below="@+id/clarity_container" >
-
-                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
-                        android:layout_width="@dimen/mini_wheel"
-                        android:layout_height="@dimen/mini_wheel"
-                        android:id="@+id/wheel_helpfullness_rating"
-                        app:itemsLineWidth="3dp"
-                        app:backgroundColor="@android:color/white" />
-
-                    <TextView
-                        android:text="@string/helpfullness"
-                        android:layout_toRightOf="@+id/wheel_helpfullness_rating"
-                        android:layout_marginLeft="8dp"
-                        style="@style/SecondaryTextStyle"
-                        android:layout_centerVertical="true" />
-
-                </RelativeLayout>
-            </RelativeLayout>
-
+                android:layout_centerInParent="true">
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/overall_container"
                 android:layout_weight="1">
 
-
-                <com.dlazaro66.wheelindicatorview.WheelIndicatorView
-                    android:layout_width="124dp"
-                    android:layout_height="124dp"
-                    android:id="@+id/wheel_quality_rating"
-                    app:itemsLineWidth="7dp"
-                    app:backgroundColor="@android:color/white"
-                    android:layout_centerHorizontal="true" />
-
-                <LinearLayout
-                    android:orientation="vertical"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                    android:id="@+id/wheel_quality_container"
+                    android:layout_centerHorizontal="true">
 
-                    <TextView
-                        android:text="@string/overall_rating"
-                        android:id="@+id/rmp_overall_rating_title"
-                        style="@style/SecondaryTextStyle" />
+                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:id="@+id/wheel_quality_rating"
+                        app:itemsLineWidth="6dp"
+                        android:layout_gravity="center"
+                        app:backgroundColor="@android:color/white"
+                        />
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="3.2"
-                        android:id="@+id/rmp_overall_rating_number"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
                         android:layout_gravity="center"
-                        style="@style/PrimaryTextStyle" />
+                        android:id="@+id/linearLayout">
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="3.2"
+                            android:id="@+id/rmp_overall_rating_number"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            style="@style/PrimaryTextStyle" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+
+
+
+                <TextView
+                    android:text="@string/overall_rating"
+                    android:id="@+id/rmp_overall_rating_title"
+                    style="@style/SecondaryTextStyle"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="4dp"
+                    android:layout_below="@id/wheel_quality_container"/>
 
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/tSection"
+            <RelativeLayout
+                android:layout_marginLeft="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginLeft="4dp">
+                android:id="@+id/easiness_container"
+                android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/rmp_average_grade_title"
-                    style="@style/SecondaryTextStyle"
-                    android:text="@string/average_grade"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal" />
-
-                <TextView
-                    android:id="@+id/rmp_average_grade_text"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="3"
-                    tools:text="B"
-                    android:textSize="28sp"
-                    style="@style/PrimaryTextStyle"
-                    android:layout_gravity="center_horizontal" />
+                    android:id="@+id/wheel_easiness_container"
+                    android:layout_centerHorizontal="true">
+
+                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:id="@+id/wheel_easiness_rating"
+                        app:itemsLineWidth="6dp"
+                        android:layout_gravity="center"
+                        app:backgroundColor="@android:color/white"
+                        />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="3.2"
+                            android:id="@+id/rmp_easiness_rating_number"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            style="@style/PrimaryTextStyle" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
 
                 <TextView
-                    android:id="@+id/rmp_rating_count_title"
+                    android:text="@string/easiness"
+                    android:id="@+id/rmp_easiness_rating_title"
                     style="@style/SecondaryTextStyle"
-                    android:text="@string/rating_count"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp" />
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="4dp"
+                    android:layout_below="@id/wheel_easiness_container"/>
 
-                <TextView
-                    android:id="@+id/rmp_rating_count_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="3"
-                    tools:text="123"
-                    android:textSize="28sp"
-                    style="@style/PrimaryTextStyle"
-                    android:layout_gravity="center_horizontal" />
+            </RelativeLayout>
 
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>

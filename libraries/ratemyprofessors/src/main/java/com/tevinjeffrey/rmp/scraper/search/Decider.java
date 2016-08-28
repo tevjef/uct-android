@@ -16,14 +16,18 @@ public class Decider {
         Collections.sort(listings, comparators.getNameComparator());
 
         for(final Iterator<ScrapeProfessor> iterator = listings.iterator(); iterator.hasNext();) {
-            if(!iterator.next().getLocation().getCity().equals(params.location)) {
+            ScrapeProfessor  scrapeProfessor  = iterator.next();
+            if(!params.location.contains(scrapeProfessor.getLocation().getCity())) {
+                System.out.println("Decider: removing on location" +  scrapeProfessor.toString());
                 iterator.remove();
             }
         }
 
         if (params.firstName != null && params.firstName != "") {
             for (final Iterator<ScrapeProfessor> iterator = listings.iterator(); iterator.hasNext(); ) {
-                if (!(iterator.next().getFirstName().charAt(0) == params.firstName.charAt(0))) {
+                ScrapeProfessor  scrapeProfessor  = iterator.next();
+                if (!(scrapeProfessor.getFirstName().charAt(0) == params.firstName.charAt(0))) {
+                    System.out.println("Decider: removing on firstname" +  scrapeProfessor.toString());
                     iterator.remove();
                 }
             }

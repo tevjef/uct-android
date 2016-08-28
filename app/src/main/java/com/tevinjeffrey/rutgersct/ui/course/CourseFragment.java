@@ -104,8 +104,8 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
             mBasePresenter = new CoursePresenterImpl(searchManager.getSearchFlow());
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
 

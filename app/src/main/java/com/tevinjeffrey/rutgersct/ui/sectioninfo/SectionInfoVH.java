@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
             if (time == null) {
                 timeLayout.setVisibility(View.GONE);
             } else {
+
                 mDayText = (TextView) timeLayout.findViewById(R.id.section_item_time_info_day_text);
                 mSectionLocationText = (TextView) timeLayout.findViewById(R.id.section_item_time_info_location_text);
                 mTimeText = (TextView) timeLayout.findViewById(R.id.section_item_time_info_meeting_time_text);
@@ -68,9 +70,21 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
                 //This is a reused layout that contains inforation not to be shown at this time.
                 // The class location is not to be shown in the Tracked Section Fragment
                 //timeLayout.findViewById(R.id.section_item_time_info_meeting_type).setVisibility(View.GONE);
-                mDayText.setText(time.day);
-                mTimeText.setText(time.start_time + " - " + time.end_time);
-                mSectionLocationText.setText(time.room + " " + time.class_type);
+
+                if (TextUtils.isEmpty(time.day)) {
+                    mDayText.setText(time.class_type);
+                } else {
+                    mDayText.setText(time.day);
+                }
+
+                if (!TextUtils.isEmpty(time.start_time)) {
+                    mTimeText.setText(time.start_time + " - " + time.end_time);
+                }
+
+                if (!TextUtils.isEmpty(time.room)) {
+                    mSectionLocationText.setText(time.room + "  " + time.class_type);
+                }
+
             }
         }
     }

@@ -69,7 +69,7 @@
     <string name="easiness">Easiness</string>
     <string name="clarity">Clarity</string>
     <string name="helpfullness">Helpfullness</string>
-    <string name="overall_rating">Overall Rating</string>
+    <string name="overall_rating">Overall Quality</string>
     <string name="average_grade">Average Grade</string>
     <string name="course_notes">Course Notes</string>
     <string name="subject_notes">Subject Notes</string>

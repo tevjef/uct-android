@@ -49,4 +49,17 @@ public class Rating {
         return RMP_BASE_URL + ratingUrl;
     }
 
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "overall=" + overall +
+                ", helpfulness=" + helpfulness +
+                ", clarity=" + clarity +
+                ", easiness=" + easiness +
+                ", ratingsCount=" + ratingsCount +
+                ", isHotness=" + isHotness +
+                ", ratingUrl='" + ratingUrl + '\'' +
+                ", averageGrade='" + averageGrade + '\'' +
+                '}';
+    }
 }

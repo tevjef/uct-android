@@ -11,6 +11,7 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<TrackedSectionVH> {
@@ -48,7 +49,7 @@ public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<Tracked
 
     @Override
     public long getItemId(int position) {
-        return Long.valueOf(sectionList.get(position).getSection().topic_name);
+        return new BigInteger(sectionList.get(position).getSection().topic_id).longValue();
     }
 
     @Override

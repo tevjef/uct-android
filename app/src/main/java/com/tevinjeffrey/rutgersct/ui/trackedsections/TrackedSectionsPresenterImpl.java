@@ -51,7 +51,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
         if (getView() != null)
             getView().showLoading(pullToRefresh);
 
-        cancePreviousSubscription();
+        if (isLoading) return;
 
         trackedSectinsSubscriber = new Subscriber<List<UCTSubscription>>() {
             @Override
@@ -74,16 +74,14 @@ public class TrackedSectionsPresenterImpl extends BasePresenter implements Track
             public void onNext(List<UCTSubscription> subscriptions) {
                 if (getView() != null) {
                     getView().setData(subscriptions);
-                }
+                 }
             }
         };
 
-        mSubscription = Observable.defer(() -> Observable.from(mRetroUCT.getTopics()))
-                .flatMap(subscription -> mRetroUCT.refreshSubscription(subscription))
+        mSubscription = Observable.defer(() -> mRetroUCT.refreshSubscriptions())
                 .doOnSubscribe(() -> isLoading = true)
                 .doOnTerminate(() -> isLoading = false)
-                //.toSortedList()
-                .toList()
+                .toSortedList()
                 .subscribeOn(mBackgroundThread)
                 .observeOn(mMainThread)
                 .subscribe(trackedSectinsSubscriber);

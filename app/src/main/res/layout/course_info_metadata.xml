@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/course_metadata"
@@ -11,9 +11,10 @@
     android:paddingRight="@dimen/default_margin"
     android:paddingTop="4dp"
     android:paddingBottom="8dp"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/start_keyline"
     tools:background="@android:color/white">
 
 
-</RelativeLayout>
+</LinearLayout>
 

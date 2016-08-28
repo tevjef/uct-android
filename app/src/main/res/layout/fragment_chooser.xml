@@ -94,10 +94,9 @@
 
         <Spinner
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
             android:id="@+id/university_spinner"
             android:layout_below="@+id/university_title"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="-8dp"
             android:layout_alignLeft="@+id/university_title"
             android:layout_alignStart="@+id/university_title" />
@@ -109,7 +108,7 @@
             android:layout_alignParentLeft="false"
             android:layout_alignParentTop="false"
             android:orientation="vertical"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_below="@+id/university_spinner">
 
             <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
@@ -140,6 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="-4dp"
+                android:animateLayoutChanges="true"
                 android:layout_below="@+id/semester_title">
 
 

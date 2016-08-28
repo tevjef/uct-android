@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
+import android.animation.LayoutTransition;
 import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,6 +81,10 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         LayoutInflater themedInflator = inflater.cloneInContext(Utils.wrapContextTheme(getActivity(), R.style.RutgersCT));
         final View rootView = themedInflator.inflate(R.layout.fragment_chooser, container, false);
         ButterKnife.bind(this, rootView);
+
+        LayoutTransition layoutTransition = new LayoutTransition();
+        layoutTransition.setDuration(100);
+        mSemesterRadiogroup.setLayoutTransition(layoutTransition);
 
         return rootView;
     }
@@ -171,7 +176,6 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 getPresenter().updateDefaultUniversity(universities.get(position));
                 getPresenter().loadAvailableSemesters(universities.get(position).topic_name);
-                mSemesterRadiogroup.clearCheck();
             }
 
             @Override public void onNothingSelected(AdapterView<?> parent) {
@@ -186,14 +190,27 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     @Override
     public void setUniversities(List<University> universities) {
         this.universities = universities;
+
         List<String> universityString = new ArrayList<>();
+        University defaultUni = getPresenter().getDefaultUniversity();
+
+        int index = 0;
+        int select = 0;
         for (University uni: universities) {
             universityString.add(uni.name);
+
+            if (defaultUni != null) {
+                if (defaultUni.topic_name.equals(uni.topic_name)) {
+                    select = index;
+                }
+            }
+            index++;
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getParentActivity(), R.layout.spinner_item, universityString);
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         universitySpinner.setAdapter(arrayAdapter);
+        universitySpinner.setSelection(select);
     }
 
     @Override
@@ -202,12 +219,26 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         mSearchButton.setEnabled(true);
 
         mSemesterRadiogroup.removeAllViewsInLayout();
+
         for (Semester semester : semesters) {
             RadioButton radioButton = (RadioButton) LayoutInflater.from(this.getParentActivity()).inflate(R.layout.radio_button, null);
-            radioButton.setText(WordUtils.capitalize(semester.season) + " " + semester.year);
+            radioButton.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(semester));
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            radioButton.setTag(semester);
             mSemesterRadiogroup.addView(radioButton, layoutParams);
+
+            radioButton.setChecked(semester.equals(getPresenter().getDefaultSemester()));
         }
+
+        mSemesterRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId != -1) {
+                    Semester semester = (Semester) group.findViewById(checkedId).getTag();
+                    getPresenter().updateSemester(semester);
+                }
+            }
+        });
     }
 
 
@@ -224,16 +255,17 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
             int selectedIndex = rawIndex % semesters.size();
 
             if (selectedIndex < 0) {
-                Toast.makeText(getParentActivity(), "Please select a term", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getParentActivity(), getParentActivity().getString(R.string.select_a_semester), Toast.LENGTH_SHORT).show();
                 return;
             }
 
             searchManager.newSearch();
             Semester selectedSemester = semesters.get(selectedIndex);
-            University selectedUniversity = getPresenter().getDefaultUniversity();
 
-            searchManager.getSearchFlow().university = selectedUniversity;
+            searchManager.getSearchFlow().university = getPresenter().getDefaultUniversity();
             searchManager.getSearchFlow().semester = selectedSemester;
+
+            startSubjectFragment(new Bundle());
 
             Timber.d(searchManager.getSearchFlow().toString());
             Timber.i("rawindex=%s selectedIndex=%s", rawIndex, selectedIndex);

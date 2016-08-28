@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.transition.Fade;
 import android.transition.Transition;
@@ -42,6 +43,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.State;
 import timber.log.Timber;
+
+import static android.text.Html.FROM_HTML_MODE_COMPACT;
 
 @SuppressWarnings("ClassWithTooManyMethods")
 public class CourseInfoFragment extends MVPFragment implements CourseInfoView, ItemClickListener<Section, View> {
@@ -119,7 +122,6 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
         inflater.inflate(R.menu.menu_fragment_info, menu);
     }
 
-
     @Override
     public void onItemClicked(Section section, View view) {
         Timber.i("Selected section: %s", section);
@@ -160,7 +162,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
         Subject subject = searchManager.getSearchFlow().subject;
         Course course = searchManager.getSearchFlow().course;
         if (subject != null) {
-            String shortenedCourseInfo = subject.number+ " › " + course.number;
+            String shortenedCourseInfo = subject.number + ": " + subject.name + " › " + course.number;
             mShortenedCourseInfo.setText(shortenedCourseInfo);
         }
     }
@@ -181,7 +183,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
             TextView description = ButterKnife.findById(metadata, R.id.metadata_text);
             description.setMovementMethod(new LinkMovementMethod());
             title.setText(data.title);
-            description.setText(data.content);
+            description.setText(Html.fromHtml(data.content));
             root.addView(metadata);
         }
         return root;

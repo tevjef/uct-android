@@ -46,6 +46,8 @@ public class RMPScraper {
                 .takeFirst(new Func1<Professor, Boolean>() {
                     @Override
                     public Boolean call(Professor professor) {
+                        System.out.println("RMPScraper: findBestProfessor" +  professor.toString());
+
                         return true;
                     }
                 });

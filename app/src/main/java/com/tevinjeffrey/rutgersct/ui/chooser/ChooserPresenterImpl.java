@@ -57,6 +57,16 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
     }
 
     @Override
+    public Semester getDefaultSemester() {
+        return retroUCT.getDefaultSemester();
+    }
+
+    @Override
+    public void updateSemester(Semester semester) {
+        retroUCT.setDefaultSemester(semester);
+    }
+
+    @Override
     public void loadUniversities() {
         mSubsciption = mRetroUCT.getUniversities()
                 .observeOn(mMainThread)

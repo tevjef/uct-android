@@ -38,4 +38,16 @@ public class Professor {
         return location;
     }
 
+    @Override
+    public String toString() {
+        return "Professor{" +
+                "lastName='" + lastName + '\'' +
+                ", title='" + title + '\'' +
+                ", email='" + email + '\'' +
+                ", department='" + department + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", rating=" + rating +
+                ", location=" + location +
+                '}';
+    }
 }

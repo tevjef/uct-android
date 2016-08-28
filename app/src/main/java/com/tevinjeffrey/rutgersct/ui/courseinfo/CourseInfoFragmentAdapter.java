@@ -13,6 +13,7 @@ import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.ui.utils.HeaderVH;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -76,7 +77,7 @@ public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public long getItemId(int position) {
         if (position != 0)
-            return Long.valueOf(sectionList.get(position - 1).topic_id);
+            return new BigInteger(sectionList.get(position - 1).topic_id).longValue();
         else
             return 0;
     }

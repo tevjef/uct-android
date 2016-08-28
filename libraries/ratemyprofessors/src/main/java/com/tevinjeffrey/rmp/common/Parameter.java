@@ -17,4 +17,16 @@ public class Parameter {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    @Override
+    public String toString() {
+        return "Parameter{" +
+                "university='" + university + '\'' +
+                ", department='" + department + '\'' +
+                ", location='" + location + '\'' +
+                ", courseNumber='" + courseNumber + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

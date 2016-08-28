@@ -35,6 +35,7 @@ import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
@@ -49,6 +50,8 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -86,6 +89,9 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
 
     @State
     TrackedSectionsViewState mViewState = new TrackedSectionsViewState();
+
+    @Inject
+    SearchManager searchManager;
 
     private ArrayList<UCTSubscription> mListDataset;
 
@@ -361,7 +367,8 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     @Override
     public void onItemClicked(UCTSubscription subscription, View view) {
         Timber.i("Selected subscription: %s", subscription);
-        startSectionInfoFragment(SectionInfoFragment.newInstance(subscription), view);
+        searchManager.setSearchFlow(subscription.getSearchFlow());
+        startSectionInfoFragment(SectionInfoFragment.newInstance(), view);
     }
 
     private void showSnackBar(CharSequence message) {

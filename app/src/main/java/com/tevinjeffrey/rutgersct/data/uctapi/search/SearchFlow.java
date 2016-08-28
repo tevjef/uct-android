@@ -16,10 +16,6 @@ public class SearchFlow {
     public SearchFlow() {
     }
 
-    private SearchFlow(SearchFlow searchFlow) {
-
-    }
-
     public University getUniversity() {
         return university;
     }
@@ -41,7 +37,7 @@ public class SearchFlow {
     }
 
     public UCTSubscription buildSubscription() {
-        UCTSubscription UCTSubscription = new UCTSubscription(section.topic_name);
+        UCTSubscription uctSubscription = new UCTSubscription(section.topic_name);
 
         Course.Builder courseBuilder = getCourse().newBuilder();
         courseBuilder.sections.clear();
@@ -59,8 +55,11 @@ public class SearchFlow {
         universityBuilder.subjects.clear();
         universityBuilder.subjects.add(newSubject);
 
-        UCTSubscription.university = universityBuilder.build();
-        return UCTSubscription;
+        universityBuilder.available_semesters.clear();
+        universityBuilder.available_semesters.add(getSemester());
+
+        uctSubscription.setUniversity(universityBuilder.build());
+        return uctSubscription;
     }
 
     public static class Builder {
@@ -96,7 +95,7 @@ public class SearchFlow {
 
 
         public SearchFlow compile() {
-            return new SearchFlow(searchFlow);
+            return searchFlow;
         }
     }
 

@@ -61,38 +61,32 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="60dp"
-                android:paddingBottom="28dp"
-                android:paddingRight="16dp">
+                android:paddingBottom="35dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
 
                 <LinearLayout
                     android:id="@+id/termContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_alignParentEnd="false"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="32dp"
                     android:paddingRight="16dp">
-
-                    <TextView
-                        android:id="@+id/semesterTitle"
-                        android:singleLine="true"
-                        android:text="@string/term"
-                        style="@style/ToolbarSubtitleStyle.Normal" />
 
                     <TextView
                         android:id="@+id/semesterText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="4dp"
-                        android:fontFamily="sans-serif-condensed"
-                        android:singleLine="true"
                         tools:text="Summer 2012"
                         android:textColor="@android:color/white"
+                        android:textStyle="bold"
                         android:transitionName="instructor_name"
                         android:alpha="1"
-                        style="@style/ToolbarSubtitleStyle.Normal"/>
+                        style="@style/ToolbarSubtitleStyle.Normal"
+                        android:maxLines="1" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -100,58 +94,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingRight="16dp"
+                    android:paddingRight="35dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@+id/termContainer"
-                    android:layout_toEndOf="@+id/termContainer">
-
-                    <TextView
-                        android:id="@+id/instructors_title"
-                        android:singleLine="true"
-                        android:text="@string/instructor"
-                        style="@style/ToolbarSubtitleStyle.Normal" />
+                    android:layout_alignParentRight="true">
 
                     <TextView
                         android:id="@+id/instructors_text"
-                        android:fontFamily="sans-serif-condensed"
                         android:maxWidth="115dp"
-                        android:singleLine="false"
                         tools:text="MAELLO | CAROLLA "
                         android:textColor="@android:color/white"
                         android:paddingLeft="4dp"
                         android:alpha="1"
-                        style="@style/ToolbarSubtitleStyle.Normal"/>
+                        android:textStyle="bold"
+                        style="@style/ToolbarSubtitleStyle.Normal"
+                        android:maxLines="1" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/termContainer"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
                     android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:transitionGroup="false"
-                    android:weightSum="4">
+                    android:weightSum="3"
+                    android:layout_above="@+id/termContainer"
+                    android:layout_marginBottom="16dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
 
                     <LinearLayout
                         android:id="@+id/tSection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/shortenedCourseInfo"
-                            android:text="@string/section"
-                            android:layout_marginBottom="-4dp"
-                            style="@style/ToolbarSubtitleStyle.Normal" />
 
                         <TextView
                             android:id="@+id/sectionNumber_text"
                             tools:text="Q2"
                             style="@style/SectionInfoDataText" />
+
+                        <TextView
+                            android:id="@+id/shortenedCourseInfo"
+                            android:text="@string/section"
+                            style="@style/ToolbarSubtitleStyle.Normal" />
 
                     </LinearLayout>
 
@@ -160,18 +148,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/indexNumber_title"
-                            android:text="@string/index"
-                            android:layout_marginBottom="-4dp"
-                            style="@style/ToolbarSubtitleStyle.Normal" />
 
                         <TextView
                             android:id="@+id/indexNumber_text"
                             tools:text="34562"
                             style="@style/SectionInfoDataText" />
+
+                        <TextView
+                            android:id="@+id/indexNumber_title"
+                            android:text="@string/index"
+                            style="@style/ToolbarSubtitleStyle.Normal" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -179,41 +168,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/credits_title"
-                            android:text="@string/credits"
-                            android:layout_marginBottom="-4dp"
-                            style="@style/ToolbarSubtitleStyle.Normal" />
 
                         <TextView
                             android:id="@+id/subtitle"
                             tools:text="4"
                             style="@style/SectionInfoDataText" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tSeats"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/exam_code_title"
-                            android:singleLine="true"
-                            android:text="@string/exam_code"
-                            android:layout_marginBottom="-4dp"
+                            android:id="@+id/credits_title"
+                            android:text="@string/credits"
                             style="@style/ToolbarSubtitleStyle.Normal" />
-
-                        <TextView
-                            android:id="@+id/exam_code_text"
-                            tools:text="A"
-                            style="@style/SectionInfoDataText"/>
                     </LinearLayout>
 
                 </LinearLayout>
+
+
+
             </RelativeLayout>
 
 

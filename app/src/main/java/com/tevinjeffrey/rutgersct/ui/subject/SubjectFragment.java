@@ -35,6 +35,7 @@ import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersDataIOExcept
 import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
@@ -71,9 +72,6 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     ViewGroup mErrorView;
 
     @State
-    Request mRequest;
-
-    @State
     ArrayList<Subject> mListDataset;
 
     @State
@@ -108,8 +106,8 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
             mBasePresenter = new SubjectPresenterImpl(searchManager.getSearchFlow());
+            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
 
@@ -180,7 +178,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     public void onItemClicked(Subject subject, View view) {
         Timber.i("Selected subject: %s", subject);
         searchManager.getSearchFlow().subject = subject;
-        startCourseFragement(createArgs(subject, mRequest));
+        startCourseFragement(new Bundle());
     }
 
     public void initSwipeLayout() {
@@ -215,14 +213,6 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         Resources resources = getContext().getResources();
         if (t instanceof UnknownHostException) {
             message = resources.getString(R.string.no_internet);
-        } else if (t instanceof JsonParseException || t instanceof RutgersServerIOException) {
-            message = resources.getString(R.string.server_down);
-        } else if (t instanceof RutgersDataIOException) {
-            notifySectionNotOpen();
-            getParentActivity().onBackPressed();
-            return;
-        } else if (t instanceof SocketTimeoutException) {
-            message = resources.getString(R.string.timed_out);
         } else {
             message = t.getMessage();
         }
@@ -273,13 +263,6 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         return mRecyclerView.getAdapter().getItemCount() > 0;
     }
 
-    private void notifySectionNotOpen() {
-        Toast.makeText(getParentActivity().getApplicationContext(),
-                mRequest.getSemester().toString() + getParentActivity()
-                        .getString(R.string.section_has_not_opened),
-                Toast.LENGTH_LONG).show();
-    }
-
     private void showRecyclerView(int visibility) {
         if (mRecyclerView.getVisibility() != visibility)
             mRecyclerView.setVisibility(visibility);
@@ -296,19 +279,11 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
                         .type(SnackbarType.MULTI_LINE)
                         .text(message)
                         .actionLabel(R.string.snackbar_retry)// text to display
-                        .actionListener(new ActionClickListener() {
-                            @Override
-                            public void onActionClicked(Snackbar snackbar) {
-                                onRefresh();
-                                mViewState.snackBarShowing = false;
-                            }
+                        .actionListener(snackbar -> {
+                            onRefresh();
+                            mViewState.snackBarShowing = false;
                         })
-                        .swipeListener(new ActionSwipeListener() {
-                            @Override
-                            public void onSwipeToDismiss() {
-                                mViewState.snackBarShowing = false;
-                            }
-                        })
+                        .swipeListener(() -> mViewState.snackBarShowing = false)
                         .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
                         .color(ContextCompat.getColor(getParentActivity(), R.color.accent))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
@@ -360,13 +335,9 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     }
 
     private void setToolbarTitle() {
-        super.setToolbarTitle(mToolbar, mRequest.getSemester().toString());
-        super.setToolbarSubtitle(mToolbar, mRequest.getLocationsString() + " - "
-                + mRequest.getlevelsString());
-    }
-
-    private void setSubjectInRequestObject(String code) {
-        mRequest.setSubject(code);
+        SearchFlow searchFlow = searchManager.getSearchFlow();
+        String title = searchFlow.getUniversity().abbr + " " + com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(searchFlow.semester);
+        super.setToolbarTitle(mToolbar, title);
     }
 
     private void startCourseFragement(Bundle b) {
@@ -383,11 +354,6 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         }
 
         startFragment(this, courseFragment, ft);
-    }
-
-    private Bundle createArgs(Parcelable selectedSubject, Parcelable request) {
-        Bundle bundle = new Bundle();
-        return bundle;
     }
 
 

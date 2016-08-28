@@ -5,15 +5,16 @@ import android.os.Parcelable;
 
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Semester;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
 
-public class UCTSubscription implements Parcelable {
+public class UCTSubscription implements Parcelable, Comparable {
 
     public static final String SUBSCRIPTION = "UCTSubscription";
 
-    String sectionTopicName;
-    University university;
+    private String sectionTopicName;
+    private University university;
 
     public UCTSubscription(String sectionTopicName) {
         this.sectionTopicName = sectionTopicName;
@@ -39,7 +40,22 @@ public class UCTSubscription implements Parcelable {
         return getCourse().sections.get(0);
     }
 
-    public UCTSubscription updateSection(Section section) {
+    public Semester getSemester() {
+        return getUniversity().available_semesters.get(0);
+    }
+
+    public SearchFlow getSearchFlow() {
+        SearchFlow.Builder searchFlowBuilder = new SearchFlow.Builder();
+        searchFlowBuilder.university(getUniversity())
+                .subject(getSubject())
+                .course(getCourse())
+                .section(getSection())
+                .semester(getSemester());
+
+        return searchFlowBuilder.compile();
+    }
+
+    public University updateSection(Section section) {
         Course.Builder courseBuilder = getCourse().newBuilder();
         courseBuilder.sections.clear();
         courseBuilder.sections.add(section);
@@ -56,9 +72,17 @@ public class UCTSubscription implements Parcelable {
         universityBuilder.subjects.clear();
         universityBuilder.subjects.add(newSubject);
 
-        university = universityBuilder.build();
+        this.university = universityBuilder.build();
 
-        return this;
+        return university;
+    }
+
+    public void setSectionTopicName(String sectionTopicName) {
+        this.sectionTopicName = sectionTopicName;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
     }
 
     @Override
@@ -78,6 +102,31 @@ public class UCTSubscription implements Parcelable {
     }
 
     @Override
+    public int compareTo(Object o) {
+        if (o == null)  return 1;
+        UCTSubscription s = (UCTSubscription) o;
+
+        Subject subjectLHS = getSubject();
+        Course courseLHS = getCourse();
+        Section sectionLHS = getSection();
+        String compLHS = subjectLHS.name + courseLHS.number + sectionLHS.number;
+        
+        Subject subjectRHS = s.getSubject();
+        Course courseRHS = s.getCourse();
+        Section sectionRHS = s.getSection();
+        String compRHS = subjectRHS.name + courseRHS.number + sectionRHS.number;
+
+        return compLHS.compareTo(compRHS);
+    }
+
+    @Override
+    public String toString() {
+        return "UCTSubscription{" +sectionTopicName +
+                '}';
+    }
+
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -85,7 +134,7 @@ public class UCTSubscription implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.sectionTopicName);
-        dest.writeParcelable(this.university, flags);
+        dest.writeParcelable(this.university, 0);
     }
 
     protected UCTSubscription(Parcel in) {
@@ -93,7 +142,7 @@ public class UCTSubscription implements Parcelable {
         this.university = in.readParcelable(University.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<UCTSubscription> CREATOR = new Parcelable.Creator<UCTSubscription>() {
+    public static final Creator<UCTSubscription> CREATOR = new Creator<UCTSubscription>() {
         @Override
         public UCTSubscription createFromParcel(Parcel source) {
             return new UCTSubscription(source);

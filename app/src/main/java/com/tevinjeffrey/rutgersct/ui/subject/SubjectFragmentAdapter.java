@@ -11,6 +11,7 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
@@ -43,7 +44,7 @@ public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
 
     @Override
     public long getItemId(int position) {
-        return Long.valueOf(subjectList.get(position).topic_name);
+        return new BigInteger(subjectList.get(position).topic_id).longValue();
     }
 
     @Override

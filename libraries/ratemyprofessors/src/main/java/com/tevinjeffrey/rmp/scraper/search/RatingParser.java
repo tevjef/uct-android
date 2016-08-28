@@ -111,8 +111,8 @@ public class RatingParser {
     }
 
     public static String findEasiness(String html) {
-        String dirty = StringUtils.substringAfter(html, "<div class=\"label\">Easiness</div>");
-        String dirty2 = StringUtils.substringAfter(dirty, "<div class=\"rating\">");
+        String dirty = StringUtils.substringAfter(html, "Level of Difficulty");
+        String dirty2 = StringUtils.substringAfter(dirty, "<div class=\"grade\">");
         return StringUtils.substringBefore(dirty2, "<").trim();
     }
 

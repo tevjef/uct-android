@@ -16,8 +16,8 @@ import com.dlazaro66.wheelindicatorview.WheelIndicatorItem;
 import com.dlazaro66.wheelindicatorview.WheelIndicatorView;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 
 import butterknife.ButterKnife;
 
@@ -40,10 +40,6 @@ public class RatingLayoutInflater {
         setSubtitle(root);
         setOverall(root);
         setEasiness(root);
-        setClarity(root);
-        setHelpfulness(root);
-        setAverageGrade(root);
-        setRatingCount(root);
         tagView(root);
 
         return root;
@@ -53,7 +49,7 @@ public class RatingLayoutInflater {
         root.setTag("http://www.ratemyprofessors.com" + mProfessor.getRating().getRatingUrl());
     }
 
-    public View getErrorLayout(String professorName, Course.Section s) {
+    public View getErrorLayout(String professorName, Section s) {
         TextView message = (TextView) ((LayoutInflater) mContext.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.no_professor, null);
 
@@ -103,40 +99,12 @@ public class RatingLayoutInflater {
         return " - " + str;
     }
 
-    private void setAverageGrade(ViewGroup root) {
-        String averageGrade = mProfessor.getRating().getAverageGrade();
-        TextView averageGradeText = ButterKnife.findById(root, R.id.rmp_average_grade_text);
-        averageGradeText.setText(averageGrade);
-    }
-
-    private void setRatingCount(ViewGroup root) {
-        String ratingCount = String.valueOf(mProfessor.getRating().getRatingsCount());
-        TextView ratingCountText = ButterKnife.findById(root, R.id.rmp_rating_count_text);
-        ratingCountText.setText(ratingCount);
-    }
-
-    private void setHelpfulness(ViewGroup root) {
-        double rating = mProfessor.getRating().getHelpfulness() / 5;
-        double percentage = rating * 100;
-        WheelIndicatorView helpfulnessWheel = ButterKnife.findById(root, R.id.wheel_helpfullness_rating);
-        helpfulnessWheel.setFilledPercent((int) percentage);
-        helpfulnessWheel.addWheelIndicatorItem(getItem(percentage));
-        helpfulnessWheel.startItemsAnimation();
-    }
-
-    private void setClarity(ViewGroup root) {
-        double rating = mProfessor.getRating().getClarity() / 5;
-        double percentage = rating * 100;
-        WheelIndicatorView clarityWheel = ButterKnife.findById(root, R.id.wheel_clarity_rating);
-        clarityWheel.setFilledPercent((int) percentage);
-        clarityWheel.addWheelIndicatorItem(getItem(percentage));
-        clarityWheel.startItemsAnimation();
-    }
-
     private void setEasiness(ViewGroup root) {
-        double rating = mProfessor.getRating().getEasiness() / 5;
+        double rating = Math.abs(mProfessor.getRating().getEasiness() - 5) / 5;
         double percentage = rating * 100;
         WheelIndicatorView easinessWheel = ButterKnife.findById(root, R.id.wheel_easiness_rating);
+        TextView overallEasinessText = ButterKnife.findById(root, R.id.rmp_easiness_rating_number);
+        overallEasinessText.setText(String.valueOf(Math.round(Math.abs(mProfessor.getRating().getEasiness() - 5) * 100.0) / 100.0));
         easinessWheel.setFilledPercent((int) percentage);
         easinessWheel.addWheelIndicatorItem(getItem(percentage));
         easinessWheel.startItemsAnimation();
@@ -164,6 +132,10 @@ public class RatingLayoutInflater {
     }
 
     private WheelIndicatorItem getItem(double percentage) {
-        return new WheelIndicatorItem(1.8f, getRatingColor(percentage));
+        return getItem(1.0f, percentage);
+    }
+
+    private WheelIndicatorItem getItem(float weight, double percentage) {
+        return new WheelIndicatorItem(weight, getRatingColor(percentage));
     }
 }

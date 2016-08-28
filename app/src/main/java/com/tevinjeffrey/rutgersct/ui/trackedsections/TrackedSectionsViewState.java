@@ -40,39 +40,6 @@ public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView>
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte(isRefreshing ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.layoutType == null ? -1 : this.layoutType.ordinal());
-        dest.writeTypedList(data);
-        dest.writeByte(snackBarShowing ? (byte) 1 : (byte) 0);
-        dest.writeString(this.errorMessage);
-    }
-
-    protected TrackedSectionsViewState(Parcel in) {
-        this.isRefreshing = in.readByte() != 0;
-        int tmpLayoutType = in.readInt();
-        this.layoutType = tmpLayoutType == -1 ? LayoutType.LIST : LayoutType.values()[tmpLayoutType];
-        this.data = in.createTypedArrayList(UCTSubscription.CREATOR);
-        this.snackBarShowing = in.readByte() != 0;
-        this.errorMessage = in.readString();
-    }
-
-    public static final Creator<TrackedSectionsViewState> CREATOR = new Creator<TrackedSectionsViewState>() {
-        public TrackedSectionsViewState createFromParcel(Parcel source) {
-            return new TrackedSectionsViewState(source);
-        }
-
-        public TrackedSectionsViewState[] newArray(int size) {
-            return new TrackedSectionsViewState[size];
-        }
-    };
-
-    @Override
     public String toString() {
         return "TrackedSectionsViewState{" +
                 "isRefreshing=" + isRefreshing +
@@ -82,4 +49,39 @@ public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView>
                 ", errorMessage='" + errorMessage + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte(this.isRefreshing ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.layoutType == null ? -1 : this.layoutType.ordinal());
+        dest.writeTypedList(this.data);
+        dest.writeByte(this.snackBarShowing ? (byte) 1 : (byte) 0);
+        dest.writeString(this.errorMessage);
+    }
+
+    protected TrackedSectionsViewState(Parcel in) {
+        this.isRefreshing = in.readByte() != 0;
+        int tmpLayoutType = in.readInt();
+        this.layoutType = tmpLayoutType == -1 ? null : LayoutType.values()[tmpLayoutType];
+        this.data = in.createTypedArrayList(UCTSubscription.CREATOR);
+        this.snackBarShowing = in.readByte() != 0;
+        this.errorMessage = in.readString();
+    }
+
+    public static final Creator<TrackedSectionsViewState> CREATOR = new Creator<TrackedSectionsViewState>() {
+        @Override
+        public TrackedSectionsViewState createFromParcel(Parcel source) {
+            return new TrackedSectionsViewState(source);
+        }
+
+        @Override
+        public TrackedSectionsViewState[] newArray(int size) {
+            return new TrackedSectionsViewState[size];
+        }
+    };
 }

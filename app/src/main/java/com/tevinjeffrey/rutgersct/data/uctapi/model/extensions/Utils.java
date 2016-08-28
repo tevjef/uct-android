@@ -3,9 +3,12 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model.extensions;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Instructor;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Semester;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
@@ -45,6 +48,14 @@ public class Utils {
             return str;
         }
 
+        public static String getToStringInstructors(List<Instructor> instructorList, String joiner) {
+            List<String> str = new ArrayList<>();
+            for (Instructor i : instructorList) {
+                str.add(i.name);
+            }
+            return StringUtils.join(str, joiner);
+        }
+
     }
 
     public static class CourseUtils {
@@ -56,6 +67,13 @@ public class Utils {
                 }
             }
             return open;
+        }
+
+    }
+
+    public static class SemesterUtils {
+        public static String readableString(Semester semester) {
+            return WordUtils.capitalize(semester.season) + " " + semester.year;
         }
 
     }

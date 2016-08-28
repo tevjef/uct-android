@@ -1,8 +1,9 @@
 package com.tevinjeffrey.rutgersct.data.rutgersapi.utils;
 
-
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -137,11 +138,11 @@ public class UrlUtils {
         }
     }
 
-    private static String createSearchUrl(String query, Course.Section s) {
-        return s.getToStringInstructors("+OR+") + query;
+    private static String createSearchUrl(String query, Section s) {
+        return Utils.InstructorUtils.getToStringInstructors(s.instructors, "+OR+") + query;
     }
 
-    public static String getGoogleUrl(Course.Section s) {
+    public static String getGoogleUrl(Section s) {
         String query = "+rutgers";
         return createSearchUrl(query, s);
     }

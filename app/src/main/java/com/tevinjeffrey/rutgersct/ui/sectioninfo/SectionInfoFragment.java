@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,9 +29,9 @@ import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SectionUtils;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Meeting;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
@@ -85,62 +86,11 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Bind(R.id.instructors_container)
     ViewGroup mInstructorsContainer;
 
-    @Bind(R.id.exam_code_text)
-    TextView mExamCodeText;
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.section_notes_text)
-    TextView mSectionNotesText;
-
-    @Bind(R.id.section_notes_layout)
-    RelativeLayout mSectionNotesLayout;
-
-
-    @Bind(R.id.section_comments_text)
-    TextView mSectionCommentsText;
-
-
-    @Bind(R.id.section_comments_layout)
-    RelativeLayout mSectionCommentsLayout;
-
-
-    @Bind(R.id.section_crosslist_text)
-    TextView mSectionCrossListText;
-
-
-    @Bind(R.id.section_crosslist_layout)
-    RelativeLayout mSectionCrossListLayout;
-
-
-    @Bind(R.id.section_subtitle_text)
-    TextView mSectionSubtitleText;
-
-
-    @Bind(R.id.section_subtitle_layout)
-    RelativeLayout mSectionSubtitleLayout;
-
-
-    @Bind(R.id.section_permission_text)
-    TextView mSectionPermissionText;
-
-
-    @Bind(R.id.section_permission_layout)
-    RelativeLayout mSectionPermissionLayout;
-
-
-    @Bind(R.id.section_open_to_text)
-    TextView mSectionOpenToText;
-
-
-    @Bind(R.id.section_open_to_layout)
-    RelativeLayout mSectionOpenLayout;
-
-
     @Bind(R.id.section_times_container)
     LinearLayout mSectionTimeContainer;
-
 
     @Bind(R.id.add_courses_fab)
     FloatingActionButton mFab;
@@ -148,14 +98,14 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
+    @Bind(R.id.section_metadata)
+    LinearLayout sectionMetadataContainer;
+
     @State
-    Course.Section selectedSection;
+    Section selectedSection;
 
     @State
     SectionInfoViewState mViewState = new SectionInfoViewState();
-
-    @Inject
-    RetroRutgers mRetroRutgers;
 
     @Inject
     DatabaseHandler mDatabaseHandler;
@@ -178,9 +128,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if (getArguments() != null) {
-            selectedSection = getArguments().getParcelable(CourseInfoView.SELECTED_SECTION);
-        }
+        selectedSection = searchManager.getSearchFlow().section;
     }
 
     @Override
@@ -189,7 +137,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
         final Context contextThemeWrapper;
         // create ContextThemeWrapper from the original Activity Context with the custom theme
-        if (selectedSection.isOpenStatus()) {
+        if (selectedSection.status.equals("Open")) {
             contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Green);
         } else {
             contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Red);
@@ -251,34 +199,34 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         final int ROTATION_ADDED = 225;
         final int DURATION = 500;
 
-            if (shouldAnimateView) {
-                if (sectionIsAdded != mViewState.isSectionAdded) {
-                    ViewCompat.animate(mFab).setDuration(DURATION).setInterpolator(new DecelerateInterpolator())
-                            .rotation(sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
-                    //I would much prefer to animate from the current coolor to the next but the fab has
-                    // no method to get the current color and I'm not desparate enough to manage it myself.
-                    // As for now, the fab will only animate on user click. Not from a db update.
-                    ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
-                            sectionIsAdded ? COLOR : COLOR_DARK,
-                            sectionIsAdded ? COLOR_DARK : COLOR
-                    );
-                    colorAnim.setDuration(500);
-                    colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            if (mFab != null)
-                                mFab.setBackgroundTintList(ColorStateList.valueOf((Integer) animation.getAnimatedValue()));
+        if (shouldAnimateView) {
+            if (sectionIsAdded != mViewState.isSectionAdded) {
+                ViewCompat.animate(mFab).setDuration(DURATION).setInterpolator(new DecelerateInterpolator())
+                        .rotation(sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
+                //I would much prefer to animate from the current coolor to the next but the fab has
+                // no method to get the current color and I'm not desparate enough to manage it myself.
+                // As for now, the fab will only animate on user click. Not from a db update.
+                ValueAnimator colorAnim = ObjectAnimator.ofInt(this, "backgroundColor",
+                        sectionIsAdded ? COLOR : COLOR_DARK,
+                        sectionIsAdded ? COLOR_DARK : COLOR
+                );
+                colorAnim.setDuration(500);
+                colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        if (mFab != null)
+                            mFab.setBackgroundTintList(ColorStateList.valueOf((Integer) animation.getAnimatedValue()));
 
-                        }
-                    });
-                    colorAnim.setEvaluator(new ArgbEvaluator());
-                    colorAnim.start();
-                }
-            } else {
-                //Using ViewCompat to set the tint list is bugged on pre lollipop.
-                mFab.setBackgroundTintList(ColorStateList.valueOf(sectionIsAdded ? COLOR_DARK : COLOR));
-                ViewCompat.setRotation(mFab, sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
+                    }
+                });
+                colorAnim.setEvaluator(new ArgbEvaluator());
+                colorAnim.start();
             }
+        } else {
+            //Using ViewCompat to set the tint list is bugged on pre lollipop.
+            mFab.setBackgroundTintList(ColorStateList.valueOf(sectionIsAdded ? COLOR_DARK : COLOR));
+            ViewCompat.setRotation(mFab, sectionIsAdded ? ROTATION_ADDED : ROTATION_NORMAL);
+        }
         mViewState.isSectionAdded = sectionIsAdded;
     }
 
@@ -336,13 +284,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         setSectionIndex();
         setSectionCredits();
         setCourseTitle();
-        setSectionNotes();
-        setSectionComments();
-        setSectionOpenTo();
-        setSectionPermission();
-        setSectionCrossList();
-        setSectionSubtitle();
-        setExamCode();
+        showSectionMetadata();
         setTimes();
         setInstructors();
         setSemester();
@@ -369,140 +311,73 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     }
 
     private void setSemester() {
-        mSemesterText.setText(selectedSection.getRequest().getSemester().toString());
+        mSemesterText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(searchManager.getSearchFlow().semester));
     }
 
     private void setSectionNumber() {
-        mSectionNumberText.setText(selectedSection.getNumber());
+        mSectionNumberText.setText(selectedSection.number);
     }
 
     private void setSectionIndex() {
-        mIndexNumberText.setText(selectedSection.getIndex());
+        mIndexNumberText.setText(selectedSection.call_number);
     }
 
     private void setSectionCredits() {
-        mCreditsText.setText(String.valueOf(selectedSection.getCourse().getCredits()));
+        mCreditsText.setText(String.valueOf(selectedSection.credits));
     }
 
     private void setCourseTitle() {
         mToolbar.setTitle("");
-        mCourseTitleText.setText(selectedSection.getCourse().getTrueTitle());
+        mCourseTitleText.setText(searchManager.getSearchFlow().course.name);
     }
 
-    private void setSectionNotes() {
-        if (!selectedSection.hasNotes()) {
-            mSectionNotesLayout.setVisibility(View.GONE);
-        } else {
-            mSectionNotesLayout.setVisibility(View.VISIBLE);
-            mSectionNotesText.setText(Html.fromHtml(selectedSection.getSectionNotes()));
-            mSectionNotesText.setMovementMethod(LinkMovementMethod.getInstance());
+
+    private void showSectionMetadata() {
+        for (Metadata data: selectedSection.metadata) {
+            ViewGroup metadata = (ViewGroup) LayoutInflater.from(getParentActivity()).inflate(R.layout.metadata, null);
+            TextView title = ButterKnife.findById(metadata, R.id.metadata_title);
+            TextView description = ButterKnife.findById(metadata, R.id.metadata_text);
+            description.setMovementMethod(new LinkMovementMethod());
+            title.setText(data.title);
+            description.setText(data.content);
+            sectionMetadataContainer.addView(metadata);
         }
-    }
-
-    private void setSectionComments() {
-        if (!selectedSection.hasComments()) {
-            mSectionCommentsLayout.setVisibility(View.GONE);
-        } else {
-            mSectionCommentsLayout.setVisibility(View.VISIBLE);
-            mSectionCommentsText.setText(Html.fromHtml(StringUtils.join(selectedSection.getComments(), ", ")));
-            mSectionCommentsText.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-    }
-
-    private void setSectionOpenTo() {
-        if (!selectedSection.hasMajors()) {
-            mSectionOpenLayout.setVisibility(View.GONE);
-        } else {
-            boolean isMajorHeaderSet = false;
-            boolean isUnitHeaderSet = false;
-            StringBuilder sb = new StringBuilder();
-            for (Course.Section.Majors i : selectedSection.getMajors()) {
-                if (i.isMajorCode()) {
-                    if (!isMajorHeaderSet) {
-                        isMajorHeaderSet = true;
-                        sb.append("MAJORS: ");
-                    }
-                    sb.append(i.getCode());
-                    sb.append(", ");
-                } else if (i.isUnitCode()) {
-                    if (!isUnitHeaderSet) {
-                        isUnitHeaderSet = true;
-                        sb.append("SCHOOLS: ");
-                    }
-                    sb.append(i.getCode());
-                    sb.append(", ");
-                }
-            }
-            mSectionOpenLayout.setVisibility(View.VISIBLE);
-            mSectionOpenToText.setText(Html.fromHtml(sb.toString()));
-        }
-    }
-
-    private void setSectionPermission() {
-        if (!selectedSection.hasSpecialPermission()) {
-            mSectionPermissionLayout.setVisibility(View.GONE);
-        } else {
-            mSectionPermissionLayout.setVisibility(View.VISIBLE);
-            mSectionPermissionText.setText(Html.fromHtml(selectedSection.getSpecialPermissionAddCodeDescription()));
-            mSectionPermissionText.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-    }
-
-    private void setSectionCrossList() {
-        if (!selectedSection.hasCrossListed()) {
-            mSectionCrossListLayout.setVisibility(View.GONE);
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (Course.Section.CrossListedSections i : selectedSection.getCrossListedSections()) {
-                sb.append(i.getFullCrossListedSection());
-                sb.append(", ");
-            }
-            mSectionCrossListLayout.setVisibility(View.VISIBLE);
-            mSectionCrossListText.setText(Html.fromHtml(sb.toString()));
-            mSectionCrossListText.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-    }
-
-    private void setSectionSubtitle() {
-        if (!selectedSection.hasSubtitle()) {
-            mSectionSubtitleLayout.setVisibility(View.GONE);
-        } else {
-            mSectionSubtitleLayout.setVisibility(View.VISIBLE);
-            mSectionSubtitleText.setText(Html.fromHtml(selectedSection.getSubtitle()));
-            mSectionSubtitleText.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-    }
-
-    private void setExamCode() {
-        mExamCodeText.setText(String.valueOf(selectedSection.getExamCode()));
     }
 
     private void setTimes() {
         LayoutInflater inflater = LayoutInflater.from(getParentActivity());
 
         //sort times so that Monday > Tuesday and Lecture > Recitation
-        Collections.sort(selectedSection.getMeetingTimes());
-        for (Course.Section.MeetingTimes time : selectedSection.getMeetingTimes()) {
+        for (Meeting time : selectedSection.meetings) {
 
             View timeLayout = inflater.inflate(R.layout.section_item_time, mSectionTimeContainer, false);
 
             TextView dayText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_day_text);
             TextView timeText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_meeting_time_text);
-            TextView locationText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_location_text);
             TextView meetingTimeText = ButterKnife.findById(timeLayout, R.id.section_item_time_info_meeting_type);
 
-            dayText.setText(SectionUtils.getMeetingDayName(time));
-            timeText.setText(SectionUtils.getMeetingHours(time));
-            locationText.setText(SectionUtils.getClassLocation(time));
-            meetingTimeText.setText(time.getMeetingModeDesc());
+            if (TextUtils.isEmpty(time.day)) {
+                dayText.setText(time.class_type);
+            } else {
+                dayText.setText(time.day);
+            }
+
+            if (!TextUtils.isEmpty(time.start_time)) {
+                timeText.setText(time.start_time + " - " + time.end_time);
+            }
+
+            if (!TextUtils.isEmpty(time.room)) {
+                meetingTimeText.setText(time.room + "  " + time.class_type);
+            }
+
 
             mSectionTimeContainer.addView(timeLayout);
         }
     }
 
     private void setInstructors() {
-        if (selectedSection.getInstructors().size() != 0) {
-            mInstructorsText.setText(selectedSection.getToStringInstructors(" | "));
+        if (selectedSection.instructors.size() != 0) {
+            mInstructorsText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.InstructorUtils.toString(selectedSection.instructors));
         } else {
             mInstructorsContainer.setVisibility(View.GONE);
         }
@@ -512,18 +387,19 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         return (SectionInfoPresenter) mBasePresenter;
     }
 
-    public static SectionInfoFragment newInstance(UCTSubscription selectedSection) {
+    public static SectionInfoFragment newInstance() {
         final SectionInfoFragment newInstance = new SectionInfoFragment();
-
-        final Bundle arguments = new Bundle();
-        arguments.putParcelable(CourseInfoView.SELECTED_SECTION, selectedSection);
-
-        newInstance.setArguments(arguments);
         return newInstance;
     }
 
     @Override
     public String toString() {
         return TAG;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

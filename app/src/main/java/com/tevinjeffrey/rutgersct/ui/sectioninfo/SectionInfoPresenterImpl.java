@@ -33,7 +33,9 @@ import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func1;
+import timber.log.Timber;
 
 public class SectionInfoPresenterImpl extends BasePresenter implements SectionInfoPresenter {
 
@@ -84,12 +86,46 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     @Override
     public void removeSection() {
-        mRetroUCT.unsubscribe(searchFlow.section.topic_name);
+        mRetroUCT.unsubscribe(searchFlow.section.topic_name)
+                .observeOn(mMainThread)
+                .subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e);
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                setFabState(true);
+            }
+        });
     }
 
     @Override
     public void addSection() {
-        mRetroUCT.subscribe(searchFlow.buildSubscription());
+        mRetroUCT.subscribe(searchFlow.buildSubscription())
+                .observeOn(mMainThread)
+                .subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e);
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                setFabState(true);
+            }
+        });
     }
 
     public void loadRMP() {
@@ -104,7 +140,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                Timber.e(e);
             }
 
             @Override
@@ -169,11 +205,6 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     private void cancePreviousSubscription() {
         RxUtils.unsubscribeIfNotNull(mSubscription);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

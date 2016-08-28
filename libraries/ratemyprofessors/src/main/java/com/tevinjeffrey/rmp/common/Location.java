@@ -1,7 +1,5 @@
 package com.tevinjeffrey.rmp.common;
 
-import java.util.Comparator;
-
 public class Location {
 
     public String university;
@@ -28,5 +26,16 @@ public class Location {
 
     public String getAddress() {
         return address;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "university='" + university + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", room='" + room + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }
