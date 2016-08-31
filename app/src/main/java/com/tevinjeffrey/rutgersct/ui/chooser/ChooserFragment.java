@@ -30,8 +30,6 @@ import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 

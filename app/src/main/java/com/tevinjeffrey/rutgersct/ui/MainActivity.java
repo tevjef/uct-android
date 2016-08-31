@@ -15,19 +15,15 @@ import android.widget.ImageView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import icepick.Icepick;
 import icepick.State;
 import jonathanfinerty.once.Once;
-import rx.Observer;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {

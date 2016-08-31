@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class ChooserPresenterImpl extends BasePresenter implements ChooserPresenter {
 

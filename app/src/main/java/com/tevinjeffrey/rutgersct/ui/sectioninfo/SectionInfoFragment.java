@@ -12,7 +12,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.otto.Bus;
@@ -31,19 +29,12 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Meeting;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
-import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Collections;
 
 import javax.inject.Inject;
 

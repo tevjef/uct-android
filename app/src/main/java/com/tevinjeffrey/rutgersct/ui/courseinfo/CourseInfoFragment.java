@@ -45,8 +45,6 @@ import butterknife.ButterKnife;
 import icepick.State;
 import timber.log.Timber;
 
-import static android.text.Html.FROM_HTML_MODE_COMPACT;
-
 @SuppressWarnings("ClassWithTooManyMethods")
 public class CourseInfoFragment extends MVPFragment implements CourseInfoView, ItemClickListener<Section, View> {
 

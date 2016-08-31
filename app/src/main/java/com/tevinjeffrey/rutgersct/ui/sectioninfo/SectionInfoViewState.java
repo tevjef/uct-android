@@ -3,8 +3,6 @@ package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
 
 public class SectionInfoViewState extends BaseViewState<SectionInfoView> implements Parcelable {

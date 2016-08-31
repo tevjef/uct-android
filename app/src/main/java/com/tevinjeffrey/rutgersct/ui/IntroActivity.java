@@ -15,6 +15,7 @@ public class IntroActivity extends AppIntro2 {
 
     @Override
     public void init(Bundle bundle) {
+        showStatusBar(false);
         addSlide(AppIntroFragment.newInstance(
                 "View course info!",
                 "Get an comprehensive view of all sections and view information about course requirements.",

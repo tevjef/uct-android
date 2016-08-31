@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -33,7 +32,6 @@ import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import timber.log.Timber;
 

@@ -28,7 +28,6 @@ import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
@@ -43,7 +42,6 @@ import javax.net.ssl.X509TrustManager;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

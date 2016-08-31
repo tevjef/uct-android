@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.data.rutgersapi.utils;
 
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;

@@ -36,9 +36,6 @@ import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.UCTNotification;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
-import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
-import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoView;
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.io.IOException;
