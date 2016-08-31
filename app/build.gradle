@@ -39,7 +39,7 @@ android {
         applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 26
+        versionCode 27
         versionName vName
         signingConfig signingConfigs.release
     }
