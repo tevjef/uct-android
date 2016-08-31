@@ -145,6 +145,7 @@ public class RutgersCTModule {
         if (BuildConfig.DEBUG) {
             client = getUnsafeOkHttpClient();
         }
+
         client.addNetworkInterceptor(userAgentInterceptor);
         return client.build();
     }
@@ -157,12 +158,13 @@ public class RutgersCTModule {
         StringBuilder sb = new StringBuilder();
                 sb.append(str)
                         .append("/")
-                .append(BuildConfig.APPLICATION_ID)
-                .append(" ")
-                .append("(")
-                .append(BuildConfig.VERSION_NAME)
-                .append(" ")
-                .append(Build.VERSION.SDK_INT + ")");
+                        .append(BuildConfig.APPLICATION_ID)
+                        .append(" ")
+                        .append("(")
+                        .append(BuildConfig.VERSION_NAME)
+                        .append("; Android ")
+                        .append(Build.VERSION.SDK_INT)
+                        .append(")");
         return new UserAgentInterceptor(sb.toString());
     }
 

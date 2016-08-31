@@ -38,8 +38,6 @@ public class RegistrationIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         RutgersCTApp.getObjectGraph(this).inject(this);
-
-        // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(SubscriptionManager.REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }

@@ -42,6 +42,7 @@ import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import javax.inject.Inject;
 
@@ -89,15 +90,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Course course = subject.courses.get(0);
         Section section = course.sections.get(0);
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder;
 
-        String title = "";
-        String body = "";
-        int color = 0;
+        String title;
+        String body;
+        int color;
         if (uctNotification.status.equals("Open")) {
             title = "A section has opened!";
             body = "Section " + section.number + " of " + course.name + " has opened!";
@@ -112,7 +111,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this)
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(body)
-                                .setBigContentTitle(course.number + " - " + course.name))
+                                .setBigContentTitle(course.name))
                         .setSmallIcon(R.drawable.ic_notification)
                         .setWhen(System.currentTimeMillis())
                         .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -123,8 +122,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentTitle(title)
                         .setContentText(body);
 
-
-
         //Intent to start web browser
         Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
         openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
@@ -132,7 +129,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         mBuilder.addAction(R.drawable.ic_open_in_browser_white_24dp, "Webreg", pOpenInBrowser);
         mBuilder.setContentIntent(pOpenInBrowser);
 
-        notificationManager.notify(Integer.parseInt(section.call_number) /* ID of notification */, mBuilder.build());
+        notificationManager.notify(new BigInteger(String.valueOf(System.currentTimeMillis())).intValue(), mBuilder.build());
 
         Log.d("FCM message", message);
     }

@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.JsonParseException;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
@@ -57,6 +58,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
+import jonathanfinerty.once.Once;
 import rx.functions.Action1;
 import timber.log.Timber;
 
@@ -67,7 +69,9 @@ import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.LIST;
 public class TrackedSectionsFragment extends MVPFragment implements TrackedSectionsView, SwipeRefreshLayout.OnRefreshListener,
         ItemClickListener<UCTSubscription, View> {
 
+
     public static final String TAG = TrackedSectionsFragment.class.getSimpleName();
+    public static final String CORRUPT_SECTIONS = "corrupt_sections";
 
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -112,6 +116,18 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         LayoutInflater themedInflator = inflater.cloneInContext(Utils.wrapContextTheme(getActivity(), R.style.RutgersCT));
         ViewGroup rootView = (ViewGroup) themedInflator.inflate(R.layout.fragment_tracked_sections, container, false);
         ButterKnife.bind(this, rootView);
+
+        if (!Once.beenDone(CORRUPT_SECTIONS)) {
+            // Show alert
+            new MaterialDialog.Builder(getParentActivity())
+                    .title("Oops!")
+                    .titleColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
+                    .positiveText("Ok")
+                    .content("We were unable to restore your tracked sections after the latest update. We are sorry for the inconvenience.")
+                    .positiveColor(ContextCompat.getColor(getParentActivity(), R.color.primary))
+                    .show();
+            Once.markDone(CORRUPT_SECTIONS);
+        }
         return rootView;
     }
 

@@ -226,8 +226,10 @@ public class RetroUCT {
 
     public Semester getDefaultSemester() {
         Semester semester = Hawk.get(DEFAULT_SEMESTER);
+        if (semester == null) {
+            return null;
+        }
         Timber.d("Getting semester: %s", semester);
-
         return semester.newBuilder().build();
     }
 
