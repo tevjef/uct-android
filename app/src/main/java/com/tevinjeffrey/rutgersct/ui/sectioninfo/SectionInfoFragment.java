@@ -32,6 +32,7 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Meeting;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
@@ -102,7 +103,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     LinearLayout sectionMetadataContainer;
 
     @State
-    Section selectedSection;
+    SearchFlow searchFlow;
 
     @State
     SectionInfoViewState mViewState = new SectionInfoViewState();
@@ -128,7 +129,12 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        selectedSection = searchManager.getSearchFlow().section;
+
+        if (searchManager.getSearchFlow() != null) {
+            searchFlow = searchManager.getSearchFlow();
+        } else {
+            searchManager.setSearchFlow(searchFlow);
+        }
     }
 
     @Override
@@ -137,7 +143,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
         final Context contextThemeWrapper;
         // create ContextThemeWrapper from the original Activity Context with the custom theme
-        if (selectedSection.status.equals("Open")) {
+        if (searchFlow.getSection().status.equals("Open")) {
             contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Green);
         } else {
             contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Red);
@@ -157,7 +163,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SectionInfoPresenterImpl(searchManager.getSearchFlow());
+            mBasePresenter = new SectionInfoPresenterImpl(searchFlow);
             RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
@@ -244,7 +250,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Override
     public void addErrorProfessor(String name) {
         addRMPView(new RatingLayoutInflater(getParentActivity(), null)
-                .getErrorLayout(name, selectedSection));
+                .getErrorLayout(name, searchFlow.getSection()));
     }
 
     @Override
@@ -311,29 +317,29 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     }
 
     private void setSemester() {
-        mSemesterText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(searchManager.getSearchFlow().semester));
+        mSemesterText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(searchFlow.semester));
     }
 
     private void setSectionNumber() {
-        mSectionNumberText.setText(selectedSection.number);
+        mSectionNumberText.setText(searchFlow.getSection().number);
     }
 
     private void setSectionIndex() {
-        mIndexNumberText.setText(selectedSection.call_number);
+        mIndexNumberText.setText(searchFlow.getSection().call_number);
     }
 
     private void setSectionCredits() {
-        mCreditsText.setText(String.valueOf(selectedSection.credits));
+        mCreditsText.setText(String.valueOf(searchFlow.getSection().credits));
     }
 
     private void setCourseTitle() {
         mToolbar.setTitle("");
-        mCourseTitleText.setText(searchManager.getSearchFlow().course.name);
+        mCourseTitleText.setText(searchFlow.getCourse().name);
     }
 
 
     private void showSectionMetadata() {
-        for (Metadata data: selectedSection.metadata) {
+        for (Metadata data: searchFlow.getSection().metadata) {
             ViewGroup metadata = (ViewGroup) LayoutInflater.from(getParentActivity()).inflate(R.layout.metadata, null);
             TextView title = ButterKnife.findById(metadata, R.id.metadata_title);
             TextView description = ButterKnife.findById(metadata, R.id.metadata_text);
@@ -348,7 +354,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         LayoutInflater inflater = LayoutInflater.from(getParentActivity());
 
         //sort times so that Monday > Tuesday and Lecture > Recitation
-        for (Meeting time : selectedSection.meetings) {
+        for (Meeting time : searchFlow.getSection().meetings) {
 
             View timeLayout = inflater.inflate(R.layout.section_item_time, mSectionTimeContainer, false);
 
@@ -376,8 +382,8 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     }
 
     private void setInstructors() {
-        if (selectedSection.instructors.size() != 0) {
-            mInstructorsText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.InstructorUtils.toString(selectedSection.instructors));
+        if (searchFlow.getSection().instructors.size() != 0) {
+            mInstructorsText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.InstructorUtils.toString(searchFlow.getSection().instructors));
         } else {
             mInstructorsContainer.setVisibility(View.GONE);
         }

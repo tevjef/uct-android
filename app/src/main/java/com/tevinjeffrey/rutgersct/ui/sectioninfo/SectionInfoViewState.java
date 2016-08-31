@@ -3,6 +3,8 @@ package com.tevinjeffrey.rutgersct.ui.sectioninfo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
 
 public class SectionInfoViewState extends BaseViewState<SectionInfoView> implements Parcelable {
@@ -28,8 +30,8 @@ public class SectionInfoViewState extends BaseViewState<SectionInfoView> impleme
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte(shouldAnimateFabIn ? (byte) 1 : (byte) 0);
-        dest.writeByte(isSectionAdded ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.shouldAnimateFabIn ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isSectionAdded ? (byte) 1 : (byte) 0);
     }
 
     protected SectionInfoViewState(Parcel in) {
@@ -38,10 +40,12 @@ public class SectionInfoViewState extends BaseViewState<SectionInfoView> impleme
     }
 
     public static final Creator<SectionInfoViewState> CREATOR = new Creator<SectionInfoViewState>() {
+        @Override
         public SectionInfoViewState createFromParcel(Parcel source) {
             return new SectionInfoViewState(source);
         }
 
+        @Override
         public SectionInfoViewState[] newArray(int size) {
             return new SectionInfoViewState[size];
         }

@@ -1,11 +1,14 @@
 package com.tevinjeffrey.rutgersct;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.RMPModule;
+import com.tevinjeffrey.rutgersct.data.uctapi.notifications.MyFirebaseMessagingService;
+import com.tevinjeffrey.rutgersct.data.uctapi.notifications.RegistrationIntentService;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
@@ -41,7 +44,10 @@ import javax.net.ssl.X509TrustManager;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
@@ -52,12 +58,14 @@ import rx.schedulers.Schedulers;
         SettingsFragment.class,
         MainActivity.class,
         DatabaseReceiver.class,
-                TrackedSectionsFragment.class,
-                ChooserFragment.class,
-                SubjectFragment.class,
-                CourseFragment.class,
-                CourseInfoFragment.class,
-                SectionInfoFragment.class,
+        TrackedSectionsFragment.class,
+        ChooserFragment.class,
+        SubjectFragment.class,
+        CourseFragment.class,
+        CourseInfoFragment.class,
+        SectionInfoFragment.class,
+        MyFirebaseMessagingService.class,
+                RegistrationIntentService.class,
         SectionInfoPresenterImpl.class,
 },
         includes = {RetroRutgersModule.class, RetroUCTModule.class,
@@ -129,18 +137,37 @@ public class RutgersCTModule {
 
     @Provides
     @Singleton
-    public OkHttpClient providesOkHttpClient(Context context) {
+    public OkHttpClient providesOkHttpClient(UserAgentInterceptor userAgentInterceptor) {
         OkHttpClient.Builder client = new OkHttpClient.Builder()
                 .readTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 
         if (BuildConfig.DEBUG) {
-            return getUnsafeOkHttpClient();
+            client = getUnsafeOkHttpClient();
         }
+        client.addNetworkInterceptor(userAgentInterceptor);
         return client.build();
     }
 
-    private static OkHttpClient getUnsafeOkHttpClient() {
+
+    @Provides
+    @Singleton
+    public UserAgentInterceptor providesUserAgentInterceptor(Context context) {
+        String str = context.getString(context.getApplicationInfo().labelRes);
+        StringBuilder sb = new StringBuilder();
+                sb.append(str)
+                        .append("/")
+                .append(BuildConfig.APPLICATION_ID)
+                .append(" ")
+                .append("(")
+                .append(BuildConfig.VERSION_NAME)
+                .append(" ")
+                .append(Build.VERSION.SDK_INT + ")");
+        return new UserAgentInterceptor(sb.toString());
+    }
+
+
+    private static OkHttpClient.Builder getUnsafeOkHttpClient() {
         try {
             // Create a trust manager that does not validate certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[] {
@@ -179,10 +206,28 @@ public class RutgersCTModule {
             interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
             builder.addInterceptor(interceptor);
 
-            OkHttpClient okHttpClient = builder.build();
-            return okHttpClient;
+            return builder;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /* This interceptor adds a custom User-Agent. */
+    public class UserAgentInterceptor implements Interceptor {
+
+        private final String userAgent;
+
+        public UserAgentInterceptor(String userAgent) {
+            this.userAgent = userAgent;
+        }
+
+        @Override
+        public Response intercept(Interceptor.Chain chain) throws IOException {
+            Request originalRequest = chain.request();
+            Request requestWithUserAgent = originalRequest.newBuilder()
+                    .header("User-Agent", userAgent)
+                    .build();
+            return chain.proceed(requestWithUserAgent);
         }
     }
 }

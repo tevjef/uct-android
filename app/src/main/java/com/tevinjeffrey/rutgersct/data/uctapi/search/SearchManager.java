@@ -18,6 +18,7 @@ public class SearchManager {
         return searchFlow;
     }
 
+
     @Override
     public String toString() {
         return searchFlow.toString();

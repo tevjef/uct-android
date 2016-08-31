@@ -75,6 +75,9 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     ArrayList<Subject> mListDataset;
 
     @State
+    SearchFlow searchFlow;
+
+    @State
     SubjectViewState mViewState = new SubjectViewState();
 
     @Inject
@@ -90,6 +93,13 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        if (searchManager.getSearchFlow() != null) {
+            searchFlow = searchManager.getSearchFlow();
+        } else {
+            searchManager.setSearchFlow(searchFlow);
+        }
+
     }
 
     @Override
@@ -106,7 +116,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new SubjectPresenterImpl(searchManager.getSearchFlow());
+            mBasePresenter = new SubjectPresenterImpl(searchFlow);
             RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }
@@ -335,7 +345,6 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     }
 
     private void setToolbarTitle() {
-        SearchFlow searchFlow = searchManager.getSearchFlow();
         String title = searchFlow.getUniversity().abbr + " " + com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(searchFlow.semester);
         super.setToolbarTitle(mToolbar, title);
     }

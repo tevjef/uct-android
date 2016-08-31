@@ -67,8 +67,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Inject
         PreferenceUtils mPreferenceUtils;
 
-        private Preference syncInterval;
-
         private SettingsActivity getParentActivity() {
             return (SettingsActivity) getActivity();
         }

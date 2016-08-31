@@ -216,7 +216,7 @@ public class RetroUCT {
             return null;
         }
         Timber.d("Getting university: %s", university.topic_name);
-        return university;
+        return university.newBuilder().build();
     }
 
     public void setDefaultSemester(Semester semester) {
@@ -228,7 +228,7 @@ public class RetroUCT {
         Semester semester = Hawk.get(DEFAULT_SEMESTER);
         Timber.d("Getting semester: %s", semester);
 
-        return semester;
+        return semester.newBuilder().build();
     }
 
 }

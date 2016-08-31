@@ -2,18 +2,24 @@ package com.tevinjeffrey.rutgersct;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
+import com.orhanobut.hawk.Parser;
 import com.orm.SugarContext;
+import com.squareup.wire.AndroidMessage;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.reflect.Type;
 import java.util.UUID;
 
 import dagger.ObjectGraph;
@@ -31,6 +37,7 @@ public class RutgersCTApp extends Application {
         super.onCreate();
 
         Hawk.init(this)
+                .setParser(new GsonParser(new Gson()))
                 .setEncryptionMethod(HawkBuilder.EncryptionMethod.NO_ENCRYPTION)
                 .setStorage(HawkBuilder.newSqliteStorage(this))
                 .setLogLevel(LogLevel.FULL)
@@ -113,6 +120,26 @@ public class RutgersCTApp extends Application {
                 }
             }
             Crashlytics.log(priority, tag, message);
+        }
+    }
+
+    public final class GsonParser implements Parser {
+        private final Gson gson;
+
+        public GsonParser(Gson gson) {
+            this.gson = gson;
+        }
+
+        public <T> T fromJson(String content, Type type) throws JsonSyntaxException {
+            T fromJson = TextUtils.isEmpty(content)?null:this.gson.fromJson(content, type);
+            if  (fromJson instanceof AndroidMessage) {
+                Timber.d("Is instance %s", fromJson);
+            }
+            return TextUtils.isEmpty(content)?null:this.gson.fromJson(content, type);
+        }
+
+        public String toJson(Object body) {
+            return this.gson.toJson(body);
         }
     }
 }

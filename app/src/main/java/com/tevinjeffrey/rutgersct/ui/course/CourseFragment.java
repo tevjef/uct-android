@@ -32,6 +32,7 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment;
@@ -75,6 +76,9 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     @State
     CourseViewState mViewState = new CourseViewState();
 
+    @State
+    SearchFlow searchFlow;
+
     @Inject
     SearchManager searchManager;
 
@@ -86,8 +90,15 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        selectedSubject = searchManager.getSearchFlow().subject;
         setRetainInstance(true);
+
+        if (searchManager.getSearchFlow() != null) {
+            searchFlow = searchManager.getSearchFlow();
+        } else {
+            searchManager.setSearchFlow(searchFlow);
+        }
+
+        selectedSubject = searchFlow.getSubject();
     }
 
     @Override
@@ -104,7 +115,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
         super.onViewCreated(view, savedInstanceState);
         //Recreate presenter if necessary.
         if (mBasePresenter == null) {
-            mBasePresenter = new CoursePresenterImpl(searchManager.getSearchFlow());
+            mBasePresenter = new CoursePresenterImpl(searchFlow);
             RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
         }
     }

@@ -7,16 +7,6 @@
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
 
-
-    <PreferenceCategory android:title="Sync &amp; Data">
-
-        <Preference
-            android:key="@string/pref_sync_interval_key"
-            android:summary="Material Summary"
-            android:title="@string/sync_interval" />
-
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="Notifications">
 
         <CheckBoxPreference

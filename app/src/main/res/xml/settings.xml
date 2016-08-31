@@ -7,16 +7,6 @@
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
 
-
-    <com.jenzz.materialpreference.PreferenceCategory android:title="Sync &amp; Data">
-
-        <com.jenzz.materialpreference.Preference
-            android:key="@string/pref_sync_interval_key"
-            android:summary="Material Summary"
-            android:title="@string/sync_interval" />
-
-    </com.jenzz.materialpreference.PreferenceCategory>
-
     <com.jenzz.materialpreference.PreferenceCategory android:title="Notifications">
 
         <com.jenzz.materialpreference.CheckBoxPreference

@@ -61,7 +61,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="35dp"
+                android:paddingBottom="16dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true">
@@ -94,16 +94,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingRight="35dp"
+                    android:layout_marginRight="85dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true">
 
                     <TextView
                         android:id="@+id/instructors_text"
-                        android:maxWidth="115dp"
                         tools:text="MAELLO | CAROLLA "
                         android:textColor="@android:color/white"
-                        android:paddingLeft="4dp"
                         android:alpha="1"
                         android:textStyle="bold"
                         style="@style/ToolbarSubtitleStyle.Normal"

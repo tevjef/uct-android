@@ -26,6 +26,7 @@ import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
@@ -79,7 +80,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     TextView mTotalSectionsText;
 
     @State
-    Course mSelectedCourse;
+    SearchFlow searchFlow;
 
     @State
     CourseInfoViewState mViewState = new CourseInfoViewState();
@@ -88,6 +89,7 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     SearchManager searchManager;
 
     private List<View> mHeaderViews = new ArrayList<>();
+    private Course mSelectedCourse;
 
     public CourseInfoFragment() {
     }
@@ -97,7 +99,14 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mSelectedCourse = searchManager.getSearchFlow().course;
+
+        if (searchManager.getSearchFlow() != null) {
+            searchFlow = searchManager.getSearchFlow();
+        } else {
+            searchManager.setSearchFlow(searchFlow);
+        }
+
+        mSelectedCourse = searchFlow.getCourse();
     }
 
     @Override
@@ -159,8 +168,8 @@ public class CourseInfoFragment extends MVPFragment implements CourseInfoView, I
 
     private void setShortenedCourseInfo() {
         //String offeringUnitCode = mSelectedCourse.getOfferingUnitCode();
-        Subject subject = searchManager.getSearchFlow().subject;
-        Course course = searchManager.getSearchFlow().course;
+        Subject subject = searchFlow.getSubject();
+        Course course = searchFlow.getCourse();
         if (subject != null) {
             String shortenedCourseInfo = subject.number + ": " + subject.name + " › " + course.number;
             mShortenedCourseInfo.setText(shortenedCourseInfo);

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
@@ -22,6 +23,7 @@ import javax.inject.Inject;
 import icepick.Icepick;
 import icepick.State;
 import jonathanfinerty.once.Once;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+        Timber.d("Token %s", FirebaseInstanceId.getInstance().getToken());
 
         RutgersCTApp.getObjectGraph(this).inject(this);
 
