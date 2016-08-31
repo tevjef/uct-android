@@ -148,6 +148,18 @@ public class RutgersCTModule {
         return client.build();
     }
 
+    @Provides
+    @Singleton
+    public OkHttpClient.Builder providesOkHttpClientBuilder(UserAgentInterceptor userAgentInterceptor) {
+        OkHttpClient.Builder client = new OkHttpClient.Builder();
+
+        if (BuildConfig.DEBUG) {
+            client = getUnsafeOkHttpClient();
+        }
+
+        client.addNetworkInterceptor(userAgentInterceptor);
+        return client;
+    }
 
     @Provides
     @Singleton

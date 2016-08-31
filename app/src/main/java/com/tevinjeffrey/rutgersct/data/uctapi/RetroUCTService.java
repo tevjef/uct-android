@@ -8,22 +8,22 @@ import rx.Observable;
 
 public interface RetroUCTService {
 
-    @GET("/api/v2/universities") Observable<Response> getUniversities();
+    @GET("/api/v4/universities") Observable<Response> getUniversities();
 
-    @GET("/api/v2/university/{topic}") Observable<Response> getUniversity(@Path("topic") String topic);
+    @GET("/api/v4/university/{topic}") Observable<Response> getUniversity(@Path("topic") String topic);
 
-    @GET("/api/v2/subjects/{topic}/{season}/{year}")
+    @GET("/api/v4/subjects/{topic}/{season}/{year}")
     Observable<Response> getSubjects(@Path("topic") String universityTopic, @Path("season") String season, @Path("year") String year);
 
-    @GET("/api/v2/subject/{topic}")
+    @GET("/api/v4/subject/{topic}")
     Observable<Response> getSubject(@Path("topic") String subjectTopic);
 
-    @GET("/api/v2/courses/{topic}")
+    @GET("/api/v4/courses/{topic}")
     Observable<Response> getCourses(@Path("topic") String subjectTopic);
 
-    @GET("/api/v2/course/{topic}")
+    @GET("/api/v4/course/{topic}")
     Observable<Response> getCourse(@Path("topic") String courseTopic);
 
-    @GET("/api/v2/section/{topic}")
+    @GET("/api/v4/section/{topic}")
     Observable<Response> getSection(@Path("topic") String sectionTopic);
 }

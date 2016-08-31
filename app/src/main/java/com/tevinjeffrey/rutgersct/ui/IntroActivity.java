@@ -12,6 +12,7 @@ import jonathanfinerty.once.Once;
 
 public class IntroActivity extends AppIntro2 {
 
+    public final static String TOUR_STARTED = "tour_started";
 
     @Override
     public void init(Bundle bundle) {
@@ -54,6 +55,7 @@ public class IntroActivity extends AppIntro2 {
     }
 
     public void startMainActivity() {
+        Once.markDone(TOUR_STARTED);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

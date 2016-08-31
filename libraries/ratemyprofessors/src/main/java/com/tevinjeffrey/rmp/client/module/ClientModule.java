@@ -30,9 +30,9 @@ public class ClientModule {
 
     @Provides
     @Singleton
-    public RMPClient providesRMPClient(Gson gson) {
+    public RMPClient providesRMPClient(Gson gson, OkHttpClient.Builder clientBuilder) {
 
-        OkHttpClient client = new OkHttpClient.Builder()
+        OkHttpClient client = clientBuilder
                 .readTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS).build();
 
@@ -40,7 +40,7 @@ public class ClientModule {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                .baseUrl("http://rutgersapp.tevindev.me:8080/")
+                .baseUrl("http://rutgersapp.tevindev.me/api/")
                 .build()
                 .create(ClientService.class));
     }

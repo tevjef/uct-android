@@ -38,6 +38,7 @@ import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.ui.IntroActivity;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
@@ -62,6 +63,7 @@ import jonathanfinerty.once.Once;
 import rx.functions.Action1;
 import timber.log.Timber;
 
+import static com.tevinjeffrey.rutgersct.ui.MainActivity.SHOW_TOUR;
 import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.EMPTY;
 import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.LIST;
 
@@ -117,7 +119,7 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
         ViewGroup rootView = (ViewGroup) themedInflator.inflate(R.layout.fragment_tracked_sections, container, false);
         ButterKnife.bind(this, rootView);
 
-        if (!Once.beenDone(CORRUPT_SECTIONS)) {
+        if (!Once.beenDone(CORRUPT_SECTIONS) && !Once.beenDone(IntroActivity.TOUR_STARTED)) {
             // Show alert
             new MaterialDialog.Builder(getParentActivity())
                     .title("Oops!")
