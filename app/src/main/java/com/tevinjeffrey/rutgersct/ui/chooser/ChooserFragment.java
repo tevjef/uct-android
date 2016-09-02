@@ -249,6 +249,11 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     private class OnSearchButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if (semesters == null) {
+                Toast.makeText(getParentActivity(), getParentActivity().getString(R.string.select_a_semester), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             int rawIndex = mSemesterRadiogroup.getCheckedRadioButtonId() - 1;
             int selectedIndex = rawIndex % semesters.size();
 
