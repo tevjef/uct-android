@@ -18,7 +18,7 @@ repositories {
 }
 
 def isProguarded = false;
-def vName = '1.0.2.' + (isProguarded ? '1' : '0')
+def vName = '1.0.3.' + (isProguarded ? '1' : '0')
 
 android {
     testOptions {
