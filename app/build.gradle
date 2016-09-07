@@ -18,7 +18,7 @@ repositories {
 }
 
 def isProguarded = false;
-def vName = '1.0.1.' + (isProguarded ? '1' : '0')
+def vName = '1.0.2.' + (isProguarded ? '1' : '0')
 
 android {
     testOptions {
@@ -39,7 +39,7 @@ android {
         applicationId 'com.tevinjeffrey.rutgersct'
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 28
+        versionCode 29
         versionName vName
         signingConfig signingConfigs.release
     }
