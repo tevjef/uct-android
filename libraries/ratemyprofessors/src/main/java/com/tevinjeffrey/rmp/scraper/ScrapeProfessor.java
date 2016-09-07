@@ -4,6 +4,7 @@ import com.tevinjeffrey.rmp.common.Location;
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.Rating;
+import com.tevinjeffrey.rmp.common.utils.FuzzyDistance;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -105,11 +106,11 @@ public class ScrapeProfessor extends Professor {
 
             @Override
             public int compare(ScrapeProfessor prof1, ScrapeProfessor prof2) {
-                if (StringUtils.getFuzzyDistance(prof1.getDepartment(), mDepartment, Locale.ENGLISH) >
-                        StringUtils.getFuzzyDistance(prof2.getDepartment(), mDepartment, Locale.ENGLISH)) {
+                if (FuzzyDistance.compare(prof1.getDepartment(), mDepartment, Locale.ENGLISH) >
+                        FuzzyDistance.compare(prof2.getDepartment(), mDepartment, Locale.ENGLISH)) {
                     return -1;
-                } else if (StringUtils.getFuzzyDistance(prof1.getDepartment(), mDepartment, Locale.ENGLISH) <
-                        StringUtils.getFuzzyDistance(prof2.getDepartment(), mDepartment, Locale.ENGLISH)) {
+                } else if (FuzzyDistance.compare(prof1.getDepartment(), mDepartment, Locale.ENGLISH) <
+                        FuzzyDistance.compare(prof2.getDepartment(), mDepartment, Locale.ENGLISH)) {
                     return 1;
                 } else {
                     return 0;

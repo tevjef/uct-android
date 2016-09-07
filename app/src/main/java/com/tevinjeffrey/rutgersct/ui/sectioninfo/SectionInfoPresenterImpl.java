@@ -10,6 +10,7 @@ import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
+import com.tevinjeffrey.rmp.common.utils.JaroWinklerDistance;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Instructor;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
@@ -154,8 +155,8 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
                 .doOnNext(professor -> {
                     for (final Iterator<Instructor> iterator = professorsNotFound.iterator(); iterator.hasNext(); ) {
                         Instructor i = iterator.next();
-                        if (StringUtils.getJaroWinklerDistance(Utils.InstructorUtils.getLastName(i), professor.getLastName()) > .70
-                                || StringUtils.getJaroWinklerDistance(Utils.InstructorUtils.getLastName(i), professor.getFirstName()) > .70) {
+                        if (JaroWinklerDistance.getDistance(Utils.InstructorUtils.getLastName(i), professor.getLastName(), 0.70f) > .30
+                                || JaroWinklerDistance.getDistance(Utils.InstructorUtils.getLastName(i), professor.getFirstName(), 0.70f) > .30) {
                             iterator.remove();
                         }
                     }

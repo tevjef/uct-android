@@ -8,7 +8,8 @@
     style="@style/ToolbarStyle.Big"
     android:clickable="true"
     android:theme="@style/RutgersCT.ToolbarTheme"
-    android:transitionGroup="true">
+    android:transitionGroup="true"
+    app:layout_collapseParallaxMultiplier="1.0">
 
     <android.support.design.widget.CollapsingToolbarLayout
         android:id="@+id/collapsing_toolbar"
@@ -44,7 +45,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:transitionName="@string/transition_name_circle_view"
-                android:id="@+id/frameLayout">
+                android:id="@+id/hidden_transition">
 
                 <com.tevinjeffrey.rutgersct.ui.utils.CircleView
                     android:id="@+id/hidden_circle_view"
@@ -66,48 +67,38 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true">
 
-                <LinearLayout
-                    android:id="@+id/termContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="32dp"
-                    android:paddingRight="16dp">
 
-                    <TextView
-                        android:id="@+id/semesterText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="4dp"
-                        tools:text="Summer 2012"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:transitionName="instructor_name"
-                        android:alpha="1"
-                        style="@style/ToolbarSubtitleStyle.Normal"
-                        android:maxLines="1" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/instructors_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                <TextView
+                    android:id="@+id/instructors_text"
+                    tools:text="MAELLO | CAROLLA "
+                    android:textColor="@android:color/white"
+                    android:alpha="1"
+                    android:textStyle="bold"
+                    style="@style/ToolbarSubtitleStyle.Normal"
+                    android:maxLines="1"
                     android:layout_marginRight="85dp"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true">
+                    android:elevation="21dp" />
 
-                    <TextView
-                        android:id="@+id/instructors_text"
-                        tools:text="MAELLO | CAROLLA "
-                        android:textColor="@android:color/white"
-                        android:alpha="1"
-                        android:textStyle="bold"
-                        style="@style/ToolbarSubtitleStyle.Normal"
-                        android:maxLines="1" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/semester_text"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    tools:text="Summer 2012"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:transitionName="instructor_name"
+                    android:alpha="1"
+                    style="@style/ToolbarSubtitleStyle.Normal"
+                    android:maxLines="1"
+                    android:paddingRight="16dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/instructors_text" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -116,7 +107,7 @@
                     android:orientation="horizontal"
                     android:transitionGroup="false"
                     android:weightSum="3"
-                    android:layout_above="@+id/termContainer"
+                    android:layout_above="@+id/semester_text"
                     android:layout_marginBottom="16dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true">
@@ -181,7 +172,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
 
 
             </RelativeLayout>

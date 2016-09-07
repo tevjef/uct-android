@@ -26,6 +26,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -127,6 +129,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         mBuilder.setContentIntent(pOpenInBrowser);
 
         notificationManager.notify(new BigInteger(String.valueOf(System.currentTimeMillis())).intValue(), mBuilder.build());
+
+        Answers.getInstance()
+                .logCustom(new CustomEvent("receive_notification")
+                        .putCustomAttribute("status", section.status)
+                        .putCustomAttribute("topic", section.topic_name));
 
         Log.d("FCM message", message);
     }

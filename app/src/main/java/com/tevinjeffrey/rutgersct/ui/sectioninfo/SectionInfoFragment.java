@@ -57,7 +57,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Bind(R.id.prof_ratings_root)
     ViewGroup ratingsRoot;
 
-    @Bind(R.id.semesterText)
+    @Bind(R.id.semester_text)
     TextView mSemesterText;
 
     @Bind(R.id.course_title_text)
@@ -74,9 +74,6 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
     @Bind(R.id.instructors_text)
     TextView mInstructorsText;
-
-    @Bind(R.id.instructors_container)
-    ViewGroup mInstructorsContainer;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -376,7 +373,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         if (searchFlow.getSection().instructors.size() != 0) {
             mInstructorsText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.InstructorUtils.toString(searchFlow.getSection().instructors));
         } else {
-            mInstructorsContainer.setVisibility(View.GONE);
+            mInstructorsText.setVisibility(View.GONE);
         }
     }
 
