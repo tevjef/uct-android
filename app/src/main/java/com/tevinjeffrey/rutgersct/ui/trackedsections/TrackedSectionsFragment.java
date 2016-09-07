@@ -60,6 +60,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
 import jonathanfinerty.once.Once;
+import rx.exceptions.CompositeException;
 import rx.functions.Action1;
 import timber.log.Timber;
 
@@ -226,10 +227,8 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
     public void showError(Throwable t) {
         String message;
         Resources resources = getContext().getResources();
-        if (t instanceof UnknownHostException) {
+        if (t instanceof UnknownHostException || t instanceof CompositeException) {
             message = resources.getString(R.string.no_internet);
-        } else if (t instanceof JsonParseException || t instanceof RutgersServerIOException) {
-            message = resources.getString(R.string.server_down);
         } else if (t instanceof SocketTimeoutException) {
             message = resources.getString(R.string.timed_out);
         } else {
@@ -345,8 +344,14 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
             //The animation up and down takes into account if he snackbar is showing or not.
             private void animateFabIn() {
                 ViewCompat.animate(mFab).alpha(1).setStartDelay(50).start();
-                ViewCompat.animate(mFab).translationY(mViewState.snackBarShowing?
-                        -SnackbarManager.getCurrentSnackbar().getHeight():0).setStartDelay(50).start();
+
+                if (mViewState.snackBarShowing) {
+                    if (SnackbarManager.getCurrentSnackbar() != null) {
+                        ViewCompat.animate(mFab).translationY(-SnackbarManager.getCurrentSnackbar().getHeight()).setStartDelay(50).start();
+                    }
+                } else {
+                    ViewCompat.animate(mFab).translationY(0);
+                }
             }
 
             private void animateFabOut() {
@@ -396,19 +401,11 @@ public class TrackedSectionsFragment extends MVPFragment implements TrackedSecti
                         .type(SnackbarType.MULTI_LINE)
                         .text(message)
                         .actionLabel("RETRY")// text to display
-                        .actionListener(new ActionClickListener() {
-                            @Override
-                            public void onActionClicked(Snackbar snackbar) {
-                                onRefresh();
-                                mViewState.snackBarShowing = false;
-                            }
+                        .actionListener(snackbar -> {
+                            onRefresh();
+                            mViewState.snackBarShowing = false;
                         })
-                        .swipeListener(new ActionSwipeListener() {
-                            @Override
-                            public void onSwipeToDismiss() {
-                                mViewState.snackBarShowing = false;
-                            }
-                        })
+                        .swipeListener(() -> mViewState.snackBarShowing = false)
                         .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
                         .color(ContextCompat.getColor(getParentActivity(), R.color.accent))// action button label color
                         .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
