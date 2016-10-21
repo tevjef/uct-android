@@ -10,7 +10,7 @@ import rx.Observable;
 
 public interface RetroUCTService {
     String ACCEPT_PROTOBUF = "Accept: application/x-protobuf";
-    
+
     @Headers({ACCEPT_PROTOBUF})
     @GET("/v2/universities") Observable<Response> getUniversities();
 
