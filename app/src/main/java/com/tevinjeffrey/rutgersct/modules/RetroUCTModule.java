@@ -41,7 +41,7 @@ public class RetroUCTModule {
                 .client(client)
                 .addConverterFactory(WireConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                .baseUrl("https://uct.tevindev.me/")
+                .baseUrl("https://api.coursetrakr.io/")
                 .build()
                 .create(RetroUCTService.class);
     }
