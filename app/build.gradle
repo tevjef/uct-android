@@ -61,7 +61,7 @@ android {
         debug {
             debuggable true
             minifyEnabled isProguarded
-            shrinkResources true
+            shrinkResources false
             proguardFiles 'proguard-rules.pro'
             versionNameSuffix 'D'
             applicationIdSuffix '.debug'
