@@ -216,7 +216,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
         this.semesters = semesters;
         mSearchButton.setEnabled(true);
 
-        mSemesterRadiogroup.removeAllViewsInLayout();
+        mSemesterRadiogroup.removeAllViews();
 
         for (Semester semester : semesters) {
             RadioButton radioButton = (RadioButton) LayoutInflater.from(this.getParentActivity()).inflate(R.layout.radio_button, null);
@@ -228,13 +228,10 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
             radioButton.setChecked(semester.equals(getPresenter().getDefaultSemester()));
         }
 
-        mSemesterRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId != -1) {
-                    Semester semester = (Semester) group.findViewById(checkedId).getTag();
-                    getPresenter().updateSemester(semester);
-                }
+        mSemesterRadiogroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId != -1) {
+                Semester semester = (Semester) group.findViewById(checkedId).getTag();
+                getPresenter().updateSemester(semester);
             }
         });
     }
@@ -254,24 +251,23 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
                 return;
             }
 
-            int rawIndex = mSemesterRadiogroup.getCheckedRadioButtonId() - 1;
-            int selectedIndex = rawIndex % semesters.size();
+            Object tag = mSemesterRadiogroup.findViewById(mSemesterRadiogroup.getCheckedRadioButtonId()).getTag();
 
-            if (selectedIndex < 0) {
+            if (tag == null) {
                 Toast.makeText(getParentActivity(), getParentActivity().getString(R.string.select_a_semester), Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            searchManager.newSearch();
-            Semester selectedSemester = semesters.get(selectedIndex);
+            Semester semester = (Semester) tag;
+            Timber.d("%d %s", mSemesterRadiogroup.getCheckedRadioButtonId(), semester);
 
+            searchManager.newSearch();
             searchManager.getSearchFlow().university = getPresenter().getDefaultUniversity();
-            searchManager.getSearchFlow().semester = selectedSemester;
+            searchManager.getSearchFlow().semester = semester;
 
             startSubjectFragment(new Bundle());
 
             Timber.d(searchManager.getSearchFlow().toString());
-            Timber.i("rawindex=%s selectedIndex=%s", rawIndex, selectedIndex);
         }
     }
 }

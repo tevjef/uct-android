@@ -39,7 +39,103 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/relativeLayout2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:transitionGroup="true"
+            android:paddingLeft="16dp"
+            android:paddingTop="24dp"
+            android:orientation="@integer/layout_direction">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_location_city_white_24dp"
+                    android:id="@+id/ic_university" />
+
+                <TextView
+                    android:id="@+id/university_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:text="UNIVERSITY"
+                    android:textAllCaps="true"
+                    style="@style/PrimaryTextStyle"
+                    android:layout_toEndOf="@id/ic_university"
+                    android:layout_toRightOf="@id/ic_university"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentLeft="false"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="16dp" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/dropdownListPreferredItemHeight"
+                    android:id="@+id/university_spinner"
+                    android:layout_below="@+id/university_title"
+                    android:layout_marginLeft="-8dp"
+                    android:layout_alignLeft="@+id/university_title"
+                    android:layout_alignStart="@+id/university_title" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_today_white_24dp"
+                    android:id="@+id/ic_today" />
+
+
+                <TextView
+                    android:id="@+id/semester_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:text="Semester"
+                    android:textAllCaps="true"
+                    style="@style/PrimaryTextStyle"
+                    android:layout_toEndOf="@id/ic_today"
+                    android:layout_toRightOf="@id/ic_today"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentLeft="false"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/semester_radiogroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="-4dp"
+                    android:animateLayoutChanges="true"
+                    android:layout_below="@+id/semester_title">
+
+
+                </RadioGroup>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -51,101 +147,12 @@
             android:id="@+id/search_btn"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:background="@drawable/btn_toggle_selector"
-            android:elevation="0dp"
+            android:layout_gravity="right"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/next_text"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:transitionGroup="true"
-        android:paddingLeft="16dp"
-        android:paddingTop="24dp"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_location_city_white_24dp"
-            android:id="@+id/ic_university" />
-
-        <TextView
-            android:id="@+id/university_title"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:text="UNIVERSITY"
-            android:textAllCaps="true"
-            style="@style/PrimaryTextStyle"
-            android:layout_toEndOf="@id/ic_university"
-            android:layout_toRightOf="@id/ic_university"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentLeft="false"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="16dp" />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="?attr/dropdownListPreferredItemHeight"
-            android:id="@+id/university_spinner"
-            android:layout_below="@+id/university_title"
-            android:layout_marginLeft="-8dp"
-            android:layout_alignLeft="@+id/university_title"
-            android:layout_alignStart="@+id/university_title" />
-
-        <RelativeLayout
-            android:id="@+id/term_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_below="@+id/university_spinner">
-
-            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_today_white_24dp"
-                android:id="@+id/ic_today" />
-
-
-            <TextView
-                android:id="@+id/semester_title"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:text="Term"
-                android:textAllCaps="true"
-                style="@style/PrimaryTextStyle"
-                android:layout_toEndOf="@id/ic_today"
-                android:layout_toRightOf="@id/ic_today"
-                android:layout_alignParentStart="false"
-                android:layout_alignParentLeft="false"
-                android:gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp" />
-
-            <RadioGroup
-                android:id="@+id/semester_radiogroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="-4dp"
-                android:animateLayoutChanges="true"
-                android:layout_below="@+id/semester_title">
-
-
-            </RadioGroup>
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+    </FrameLayout>
 
 </RelativeLayout>
