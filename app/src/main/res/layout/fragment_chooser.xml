@@ -138,15 +138,16 @@
     <FrameLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/accent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/accent">
+        android:layout_alignParentStart="true">
 
         <Button
             android:id="@+id/search_btn"
             android:layout_width="100dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:background="@drawable/btn_toggle_selector"
             android:layout_gravity="right"
             android:gravity="center_vertical|center_horizontal"
