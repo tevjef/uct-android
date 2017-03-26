@@ -40,6 +40,8 @@ import butterknife.ButterKnife;
 import icepick.State;
 import timber.log.Timber;
 
+import static com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString;
+
 public class ChooserFragment extends MVPFragment implements ChooserView {
 
     @Bind(R.id.semester_radiogroup)
@@ -176,7 +178,8 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
                 getPresenter().loadAvailableSemesters(universities.get(position).topic_name);
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -194,7 +197,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
         int index = 0;
         int select = 0;
-        for (University uni: universities) {
+        for (University uni : universities) {
             universityString.add(uni.name);
 
             if (defaultUni != null) {
@@ -220,7 +223,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
         for (Semester semester : semesters) {
             RadioButton radioButton = (RadioButton) LayoutInflater.from(this.getParentActivity()).inflate(R.layout.radio_button, null);
-            radioButton.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(semester));
+            radioButton.setText(readableString(semester));
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             radioButton.setTag(semester);
             mSemesterRadiogroup.addView(radioButton, layoutParams);
@@ -246,12 +249,14 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     private class OnSearchButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (semesters == null) {
+            RadioButton radioButton = (RadioButton) mSemesterRadiogroup.findViewById(mSemesterRadiogroup.getCheckedRadioButtonId());
+
+            if (semesters == null || radioButton == null) {
                 Toast.makeText(getParentActivity(), getParentActivity().getString(R.string.select_a_semester), Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Object tag = mSemesterRadiogroup.findViewById(mSemesterRadiogroup.getCheckedRadioButtonId()).getTag();
+            Object tag = radioButton.getTag();
 
             if (tag == null) {
                 Toast.makeText(getParentActivity(), getParentActivity().getString(R.string.select_a_semester), Toast.LENGTH_SHORT).show();

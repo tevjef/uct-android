@@ -1,43 +1,27 @@
-apply plugin: 'com.github.ben-manes.versions'
-
 buildscript {
     repositories {
         jcenter()
-    }
-    dependencies {
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
-        classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.google.gms:google-services:3.0.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
-    }
-}
-
-buildscript {
-    repositories {
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://clojars.org/repo/" }
+        maven { url "https://jitpack.io" }
     }
-
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath 'io.fabric.tools:gradle:1.22.1'
+
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url "https://mint.splunk.com/gradle/"
-        }
-        maven {
-            url "https://clojars.org/repo/"
-        }
+        maven { url "https://clojars.org/repo/" }
         maven { url "https://jitpack.io" }
-
+        maven { url 'https://maven.fabric.io/public' }
     }
 }
-
-
 
 ext {
     Properties properties = new Properties()
@@ -52,7 +36,7 @@ ext {
     storePassword = properties.storePassword
     storeFile = properties.storeFile == null? "/":properties.storeFile
 
-    supportVersion = '24.2.0'
+    supportVersion = '25.3.0'
 
     // Adding reference to Java Home, RetroLambda needs this
     JAVA7_HOME = getJavaHome('1.7')

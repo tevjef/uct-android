@@ -4,8 +4,10 @@ import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -72,6 +74,9 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     @Bind(R.id.subtitle)
     TextView mCreditsText;
 
+    @Bind(R.id.tCredits)
+    ViewGroup mCreditsViewGroup;
+
     @Bind(R.id.instructors_text)
     TextView mInstructorsText;
 
@@ -133,9 +138,25 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
         // create ContextThemeWrapper from the original Activity Context with the custom theme
         if (searchFlow.getSection().status.equals("Open")) {
             contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Green);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().setTaskDescription(
+                    new ActivityManager.TaskDescription(
+                        null, null,
+                        ContextCompat.getColor(container.getContext(), R.color.green))
+                );
+            }
         } else {
             contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Red);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().setTaskDescription(
+                    new ActivityManager.TaskDescription(
+                        null, null,
+                        ContextCompat.getColor(container.getContext(), R.color.red))
+                );
+            }
         }
+
         // clone the inflater using the ContextThemeWrapper
         LayoutInflater themedInflator = inflater.cloneInContext(contextThemeWrapper);
 
@@ -317,7 +338,12 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     }
 
     private void setSectionCredits() {
-        mCreditsText.setText(String.valueOf(searchFlow.getSection().credits));
+        String credits = searchFlow.getSection().credits;
+
+        if (TextUtils.isEmpty(credits) || credits.equals("-1")) {
+            mCreditsViewGroup.setVisibility(View.GONE);
+        }
+        mCreditsText.setText(credits);
     }
 
     private void setCourseTitle() {
@@ -361,9 +387,14 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
             }
 
             if (!TextUtils.isEmpty(time.room)) {
-                meetingTimeText.setText(time.room + "  " + time.class_type);
-            }
+                String locationText = time.room;
 
+                if (!TextUtils.isEmpty(time.class_type)) {
+                    locationText = locationText + "  " + time.class_type;
+                }
+
+                meetingTimeText.setText(locationText);
+            }
 
             mSectionTimeContainer.addView(timeLayout);
         }

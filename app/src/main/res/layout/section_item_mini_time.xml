@@ -25,11 +25,12 @@
 
     <TextView
         android:id="@+id/section_item_time_info_location_text"
-        style="@style/SecondaryTextStyle"
-        tools:text="ENG-102  NWK"
         android:layout_weight="1"
-        android:gravity="right"
         android:ellipsize="none"
-        android:singleLine="true"/>
+        android:gravity="right"
+        android:singleLine="true"
+        tools:text="ENG-102  NWK"
+        style="@style/SecondaryTextStyle"
+        />
 
 </LinearLayout>

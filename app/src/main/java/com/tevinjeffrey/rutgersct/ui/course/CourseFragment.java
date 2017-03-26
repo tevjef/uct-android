@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -179,6 +180,7 @@ public class CourseFragment extends MVPFragment implements CourseView, SwipeRefr
         LinearLayoutManager layoutManager = new LinearLayoutManager(getParentActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setSmoothScrollbarEnabled(true);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 

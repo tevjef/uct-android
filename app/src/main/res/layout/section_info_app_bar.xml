@@ -106,7 +106,6 @@
                     android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:transitionGroup="false"
-                    android:weightSum="3"
                     android:layout_above="@+id/semester_text"
                     android:layout_marginBottom="16dp"
                     android:layout_alignParentLeft="true"
@@ -158,17 +157,20 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        >
 
                         <TextView
                             android:id="@+id/subtitle"
                             tools:text="4"
-                            style="@style/SectionInfoDataText" />
+                            style="@style/SectionInfoDataText"
+                            />
 
                         <TextView
                             android:id="@+id/credits_title"
                             android:text="@string/credits"
-                            style="@style/ToolbarSubtitleStyle.Normal" />
+                            style="@style/ToolbarSubtitleStyle.Normal"
+                            />
                     </LinearLayout>
 
                 </LinearLayout>

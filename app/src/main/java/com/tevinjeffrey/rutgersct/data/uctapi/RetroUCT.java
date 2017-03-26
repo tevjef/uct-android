@@ -21,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import retrofit2.HttpException;
 import rx.Observable;
 import rx.Scheduler;
 import rx.functions.Func1;
@@ -78,7 +79,18 @@ public class RetroUCT {
     }
 
     public Observable<Section> getSection(String topicName) {
-        return uctService.getSection(topicName).map(response -> response.data.section);
+        return uctService.getSection(topicName).map(response -> response.data.section)
+            .onErrorResumeNext(throwable -> {
+                // Catch 404 exceptions
+                if (throwable instanceof HttpException) {
+                    HttpException exception = (HttpException) throwable;
+                    if (exception.code() == 404) {
+                        return Observable.empty();
+                    }
+                }
+
+                return Observable.error(throwable);
+            });
     }
 
     public Observable<UCTSubscription> refreshSubscriptions() {

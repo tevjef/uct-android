@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +46,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
 import timber.log.Timber;
+
+import static com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString;
 
 public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
 
@@ -164,6 +167,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setSmoothScrollbarEnabled(true);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setHasFixedSize(true);
 
         if (mListDataset == null) {
@@ -336,7 +340,7 @@ public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRe
     }
 
     private void setToolbarTitle() {
-        String title = searchFlow.getUniversity().abbr + " " + com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString(searchFlow.semester);
+        String title = searchFlow.getUniversity().abbr + " " + readableString(searchFlow.semester);
         super.setToolbarTitle(mToolbar, title);
     }
 

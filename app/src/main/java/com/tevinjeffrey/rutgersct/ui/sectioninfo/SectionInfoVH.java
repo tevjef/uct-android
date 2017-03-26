@@ -82,7 +82,13 @@ public class SectionInfoVH extends RecyclerView.ViewHolder {
                 }
 
                 if (!TextUtils.isEmpty(time.room)) {
-                    mSectionLocationText.setText(time.room + "  " + time.class_type);
+                    String locationText = time.room;
+
+                    if (!TextUtils.isEmpty(time.class_type)) {
+                        locationText = locationText + "  " + time.class_type;
+                    }
+
+                    mSectionLocationText.setText(locationText);
                 }
 
             }
