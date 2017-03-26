@@ -6,42 +6,48 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="false"
     android:layout_below="@+id/fsl_divider"
-    tools:showIn="@layout/section_layout_with_title">
+    tools:showIn="@layout/section_layout_with_title"
+    >
 
 
-    <include
-        layout="@layout/section_item_mini_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stub_section_item_time_info_0" />
+  <include
+      layout="@layout/section_item_mini_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/stub_section_item_time_info_0"
+      />
 
-    <include
-        layout="@layout/section_item_mini_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stub_section_item_time_info_1"
-        android:layout_below="@+id/stub_section_item_time_info_0" />
+  <include
+      layout="@layout/section_item_mini_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/stub_section_item_time_info_1"
+      android:layout_below="@+id/stub_section_item_time_info_0"
+      />
 
-    <include
-        layout="@layout/section_item_mini_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stub_section_item_time_info_2"
-        android:layout_below="@+id/stub_section_item_time_info_1" />
+  <include
+      layout="@layout/section_item_mini_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/stub_section_item_time_info_2"
+      android:layout_below="@+id/stub_section_item_time_info_1"
+      />
 
-    <include
-        layout="@layout/section_item_mini_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stub_section_item_time_info_3"
-        android:layout_below="@+id/stub_section_item_time_info_2" />
+  <include
+      layout="@layout/section_item_mini_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/stub_section_item_time_info_3"
+      android:layout_below="@+id/stub_section_item_time_info_2"
+      />
 
-    <include
-        layout="@layout/section_item_mini_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stub_section_item_time_info_4"
-        android:layout_below="@+id/stub_section_item_time_info_3" />
+  <include
+      layout="@layout/section_item_mini_time"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/stub_section_item_time_info_4"
+      android:layout_below="@+id/stub_section_item_time_info_3"
+      />
 
 
 </RelativeLayout>

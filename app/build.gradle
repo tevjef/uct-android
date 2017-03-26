@@ -6,124 +6,145 @@ def isProguarded = false;
 def vName = '1.0.7.' + (isProguarded ? '1' : '0')
 
 android {
-    testOptions {
-        unitTests.returnDefaultValues = true
+  testOptions {
+    unitTests.returnDefaultValues = true
+  }
+  signingConfigs {
+    release {
+      keyAlias rootProject.ext.keyAlias
+      keyPassword rootProject.ext.keyPassword
+      storeFile file(rootProject.ext.storeFile)
+      storePassword rootProject.ext.storePassword
     }
-    signingConfigs {
-        release {
-            keyAlias rootProject.ext.keyAlias
-            keyPassword rootProject.ext.keyPassword
-            storeFile file(rootProject.ext.storeFile)
-            storePassword rootProject.ext.storePassword
-        }
-    }
+  }
 
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
-    defaultConfig {
-        applicationId 'com.tevinjeffrey.rutgersct'
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 33
-        versionName vName
-        signingConfig signingConfigs.release
-    }
+  compileSdkVersion 25
+  buildToolsVersion '25.0.2'
+  defaultConfig {
+    applicationId 'com.tevinjeffrey.rutgersct'
+    minSdkVersion 15
+    targetSdkVersion 25
+    versionCode 33
+    versionName vName
+    signingConfig signingConfigs.release
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-            debuggable false
-            shrinkResources true
-            minifyEnabled isProguarded
-            proguardFiles 'proguard-rules.pro'
-            versionNameSuffix 'R'
-        }
-        debug {
-            debuggable true
-            minifyEnabled isProguarded
-            shrinkResources false
-            proguardFiles 'proguard-rules.pro'
-            versionNameSuffix 'D'
-            applicationIdSuffix '.debug'
-        }
+  buildTypes {
+    release {
+      signingConfig signingConfigs.release
+      debuggable false
+      shrinkResources false
+      minifyEnabled isProguarded
+      proguardFiles 'proguard-rules.pro'
+      versionNameSuffix 'R'
     }
+    debug {
+      debuggable true
+      minifyEnabled isProguarded
+      shrinkResources false
+      proguardFiles 'proguard-rules.pro'
+      versionNameSuffix 'D'
+      applicationIdSuffix '.debug'
+    }
+  }
 
-    defaultConfig {
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
+  defaultConfig {
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
 
-    packagingOptions {
-        exclude 'LICENSE.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-    }
+  packagingOptions {
+    exclude 'LICENSE.txt'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/NOTICE.txt'
+  }
 
-    productFlavors {
-    }
+  productFlavors {}
 
-    lintOptions {
-        abortOnError false
-        textOutput 'stdout'
-    }
+  lintOptions {
+    abortOnError false
+    textOutput 'stdout'
+  }
 }
 
 retrolambda {
-    jdk rootProject.ext.JAVA8_HOME
-    oldJdk rootProject.ext.JAVA7_HOME
-    javaVersion JavaVersion.VERSION_1_7
+  jdk rootProject.ext.JAVA8_HOME
+  oldJdk rootProject.ext.JAVA7_HOME
+  javaVersion JavaVersion.VERSION_1_7
 }
 
 dependencies {
-    fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':libraries:ratemyprofessors')
-    compile 'com.squareup.wire:wire-runtime:2.2.0'
-    //UI
-    //Boilerplate reduction
-    annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
-    annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.5'
-    //Debuging
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
-        transitive = true;
-    }
-    //Android
-    compile "com.android.support:design:${rootProject.supportVersion}"
-    compile "com.android.support:support-v4:${rootProject.supportVersion}"
-    compile "com.android.support:appcompat-v7:${rootProject.supportVersion}"
-    compile "com.android.support:recyclerview-v7:${rootProject.supportVersion}"
-    compile "com.android.support:support-annotations:${rootProject.supportVersion}"
-    compile 'com.dlazaro66.wheelindicatorview:WheelIndicatorView:1.0.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
-        transitive = true
-    }
-    compile 'com.google.firebase:firebase-core:9.4.0'
-    compile 'com.google.firebase:firebase-messaging:9.4.0'
-    compile 'com.github.orhanobut:hawk:1.23'
-    compile 'com.jenzz:materialpreference:1.3'
-    compile 'com.nispok:snackbar:2.11.0'
-    compile 'net.steamcrafted:materialiconlib:1.1.1'
-    compile 'com.github.paolorotolo:appintro:3.4.0'
-    compile 'com.jonathanfinerty.once:once:1.2.1'
-    compile 'frankiesardo:icepick:3.2.0'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.github.satyan:sugar:1.5'
-    compile 'io.reactivex:rxjava:1.2.9'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    // Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    // http://mvnrepository.com/artifact/com.squareup.retrofit2/converter-wire
-    compile 'com.squareup.retrofit2:converter-wire:2.2.0'
-    compile 'com.squareup:otto:1.3.8'
-    compile 'com.squareup.dagger:dagger:1.2.5'
-    compile 'com.jakewharton.timber:timber:4.3.0'
+  fileTree(include: ['*.jar'], dir: 'libs')
+
+  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+
+  androidTestCompile(
+      'org.mockito:mockito-core:1.9.5',
+      'com.google.dexmaker:dexmaker-mockito:1.0',
+      'com.google.dexmaker:dexmaker:1.0',
+      'com.google.guava:guava:14.0.1',
+      'org.hamcrest:hamcrest-core:1.3',
+      'org.hamcrest:hamcrest-integration:1.3',
+      'org.hamcrest:hamcrest-library:1.3'
+  )
+
+  testCompile(
+      'org.mockito:mockito-core:1.9.5',
+      'junit:junit:4.12',
+      'com.squareup.retrofit2:retrofit:2.2.0',
+      'com.squareup.okhttp3:okhttp:3.6.0'
+  )
+
+  compile project(':libraries:ratemyprofessors')
+  compile 'com.squareup.wire:wire-runtime:2.2.0'
+  //UI
+  //Boilerplate reduction
+  annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
+  annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.5'
+  //Debuging
+  compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
+    transitive = true;
+  }
+  //Android
+  compile "com.android.support:design:${rootProject.supportVersion}"
+  compile "com.android.support:support-v4:${rootProject.supportVersion}"
+  compile "com.android.support:appcompat-v7:${rootProject.supportVersion}"
+  compile "com.android.support:recyclerview-v7:${rootProject.supportVersion}"
+  compile "com.android.support:support-annotations:${rootProject.supportVersion}"
+  compile 'com.dlazaro66.wheelindicatorview:WheelIndicatorView:1.0.0'
+  compile 'com.jakewharton:butterknife:7.0.1'
+  compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') {
+    transitive = true
+  }
+  compile 'com.google.firebase:firebase-core:9.4.0'
+  compile 'com.google.firebase:firebase-messaging:9.4.0'
+  compile 'com.github.orhanobut:hawk:1.23'
+  compile 'com.jenzz:materialpreference:1.3'
+  compile 'com.nispok:snackbar:2.11.0'
+  compile 'net.steamcrafted:materialiconlib:1.1.1'
+  compile 'com.github.paolorotolo:appintro:3.4.0'
+  compile 'com.jonathanfinerty.once:once:1.2.1'
+  compile 'frankiesardo:icepick:3.2.0'
+  compile 'com.google.code.gson:gson:2.8.0'
+  compile 'com.github.satyan:sugar:1.5'
+  compile 'io.reactivex:rxjava:1.2.9'
+  compile 'io.reactivex:rxandroid:1.2.1'
+  // Retrofit
+  compile 'com.squareup.retrofit2:retrofit:2.2.0'
+  compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+  compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
+  compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+  // http://mvnrepository.com/artifact/com.squareup.retrofit2/converter-wire
+  compile 'com.squareup.retrofit2:converter-wire:2.2.0'
+  compile 'com.squareup:otto:1.3.8'
+  compile 'com.squareup.dagger:dagger:1.2.5'
+  compile 'com.jakewharton.timber:timber:4.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

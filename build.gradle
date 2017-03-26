@@ -1,46 +1,45 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven { url 'https://maven.fabric.io/public' }
-        maven { url "https://clojars.org/repo/" }
-        maven { url "https://jitpack.io" }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
-        classpath 'com.google.gms:google-services:3.0.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
-        classpath 'io.fabric.tools:gradle:1.22.1'
-
-    }
+  repositories {
+    jcenter()
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://clojars.org/repo/" }
+    maven { url "https://jitpack.io" }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.3.1'
+    classpath 'com.google.gms:google-services:3.0.0'
+    classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+    classpath 'io.fabric.tools:gradle:1.22.1'
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
-        maven { url "https://clojars.org/repo/" }
-        maven { url "https://jitpack.io" }
-        maven { url 'https://maven.fabric.io/public' }
-    }
+  repositories {
+    jcenter()
+    maven { url "https://clojars.org/repo/" }
+    maven { url "https://jitpack.io" }
+    maven { url 'https://maven.fabric.io/public' }
+  }
 }
 
 ext {
-    Properties properties = new Properties()
-    File propertiesFile = file('local.properties')
-    propertiesFile.createNewFile()
-    propertiesFile.withInputStream {
-        properties.load(it)
-    }
+  Properties properties = new Properties()
+  File propertiesFile = file('local.properties')
+  propertiesFile.createNewFile()
+  propertiesFile.withInputStream {
+    properties.load(it)
+  }
 
-    keyAlias = properties.keyAlias
-    keyPassword = properties.keyPassword
-    storePassword = properties.storePassword
-    storeFile = properties.storeFile == null? "/":properties.storeFile
+  keyAlias = properties.keyAlias
+  keyPassword = properties.keyPassword
+  storePassword = properties.storePassword
+  storeFile = properties.storeFile == null ? "/" : properties.storeFile
 
-    supportVersion = '25.3.0'
+  supportVersion = '25.3.0'
 
-    // Adding reference to Java Home, RetroLambda needs this
-    JAVA7_HOME = getJavaHome('1.7')
-    JAVA8_HOME = getJavaHome('1.8')
+  // Adding reference to Java Home, RetroLambda needs this
+  JAVA7_HOME = getJavaHome('1.7')
+  JAVA8_HOME = getJavaHome('1.8')
 }
 
 /**
@@ -59,21 +58,21 @@ ext {
  * The absolute path to the Java home directory.
  */
 def getJavaHome(version) {
-    def cmd
+  def cmd
 
-    if (System.properties['os.name'].toLowerCase().contains('windows')) {
-        int dotIndex = version.indexOf(".") + 1
-        def majorVersion = version.getAt(dotIndex)
-        cmd = "cmd /c \"echo %JAVA${majorVersion}_HOME%\""
-        println "Attempting to use Windows env vars JAVA7_HOME and JAVA8_HOME to determine java locations"
-    } else {
-        cmd = "/usr/libexec/java_home -v ${version}"
-    }
+  if (System.properties['os.name'].toLowerCase().contains('windows')) {
+    int dotIndex = version.indexOf(".") + 1
+    def majorVersion = version.getAt(dotIndex)
+    cmd = "cmd /c \"echo %JAVA${majorVersion}_HOME%\""
+    println "Attempting to use Windows env vars JAVA7_HOME and JAVA8_HOME to determine java locations"
+  } else {
+    cmd = "/usr/libexec/java_home -v ${version}"
+  }
 
-    def proc = cmd.execute()
+  def proc = cmd.execute()
 
-    def javaHome = proc.text.trim()
-    println "JavaHome for ${version} is \"${javaHome}\""
+  def javaHome = proc.text.trim()
+  println "JavaHome for ${version} is \"${javaHome}\""
 
-    return javaHome
+  return javaHome
 }

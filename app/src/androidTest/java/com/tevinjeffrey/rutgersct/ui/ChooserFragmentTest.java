@@ -4,15 +4,12 @@ import android.content.res.Configuration;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-
 import com.tevinjeffrey.rutgersct.R;
-
+import jonathanfinerty.once.Once;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import jonathanfinerty.once.Once;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -35,85 +32,85 @@ import static org.junit.Assert.assertThat;
 @LargeTest
 public class ChooserFragmentTest {
 
-    private MainActivity mActivity;
+  private MainActivity mActivity;
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(
-            MainActivity.class);
+  @Rule
+  public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(
+      MainActivity.class);
 
-    @Before
-    public void setUp() throws Exception {
-        // Espresso does not start the Activity for you we need to do this manually here.
-        mActivity = mActivityRule.getActivity();
-        Once.markDone(MainActivity.SHOW_TOUR);
+  @Before
+  public void setUp() throws Exception {
+    // Espresso does not start the Activity for you we need to do this manually here.
+    mActivity = mActivityRule.getActivity();
+    Once.markDone(MainActivity.SHOW_TOUR);
 
-        assertThat(mActivity, notNullValue());
+    assertThat(mActivity, notNullValue());
 
-        navigateToFragment();
+    navigateToFragment();
+  }
+
+  public void navigateToFragment() {
+    onView(withId(R.id.add_courses_fab)).perform(click());
+  }
+
+  @Test
+  public void testChooserFragmentInteractivity() {
+    viewInteractivity(R.id.primarySemester);
+    onView(withId(R.id.primarySemester)).perform(click()).check(matches(isChecked()));
+
+    viewInteractivity(R.id.otherSemester);
+    onView(withId(R.id.otherSemester)).perform(click());
+    pressBack();
+
+    viewInteractivity(R.id.secondarySemester);
+    onView(withId(R.id.secondarySemester)).perform(click()).check(matches(isChecked()));
+
+    viewInteractivity(R.id.location1);
+    onView(withId(R.id.location1)).perform(click()).check(matches(isChecked()));
+
+    viewInteractivity(R.id.location2);
+    onView(withId(R.id.location2)).perform(click()).check(matches(isChecked()));
+
+    viewInteractivity(R.id.location3);
+    onView(withId(R.id.location3)).perform(click()).check(matches(isChecked()));
+
+    viewInteractivity(R.id.level1);
+    onView(withId(R.id.level1)).perform(click()).check(matches(isChecked()));
+
+    viewInteractivity(R.id.level2);
+    onView(withId(R.id.level2)).perform(click()).check(matches(isChecked()));
+
+    onView(withText(R.string.next_text)).check(matches(isCompletelyDisplayed()));
+    onView(withText(R.string.next_text)).check(matches(isEnabled()));
+    onView(withText(R.string.next_text)).check(matches(isClickable()));
+    onView(withText(R.string.next_text)).perform(click());
+  }
+
+  @Test
+  public void testClickNextInChooserFragment() {
+    onView(withId(R.id.primarySemester)).perform(click()).check(matches(isChecked()));
+    onView(withId(R.id.location1)).perform(click()).check(matches(isChecked()));
+    onView(withId(R.id.level1)).perform(click()).check(matches(isChecked()));
+
+    onView(withText(R.string.next_text)).perform(click());
+
+    pressBack();
+  }
+
+  public void viewInteractivity(int viewId) {
+    onView(withId(viewId)).check(matches(isDisplayed()));
+    onView(withId(viewId)).check(matches(isEnabled()));
+    onView(withId(viewId)).check(matches(isClickable()));
+  }
+
+  @Test
+  public void testOrientationChange() {
+    if (mActivity.getResources().getConfiguration().orientation
+        == Configuration.ORIENTATION_PORTRAIT) {
+      onView(isRoot()).perform(orientationLandscape());
+    } else if (mActivity.getResources().getConfiguration().orientation
+        == Configuration.ORIENTATION_LANDSCAPE) {
+      onView(isRoot()).perform(orientationPortrait());
     }
-
-    public void navigateToFragment() {
-        onView(withId(R.id.add_courses_fab)).perform(click());
-    }
-
-    @Test
-    public void testChooserFragmentInteractivity() {
-        viewInteractivity(R.id.primarySemester);
-        onView(withId(R.id.primarySemester)).perform(click()).check(matches(isChecked()));
-
-        viewInteractivity(R.id.otherSemester);
-        onView(withId(R.id.otherSemester)).perform(click());
-        pressBack();
-
-        viewInteractivity(R.id.secondarySemester);
-        onView(withId(R.id.secondarySemester)).perform(click()).check(matches(isChecked()));
-
-        viewInteractivity(R.id.location1);
-        onView(withId(R.id.location1)).perform(click()).check(matches(isChecked()));
-
-        viewInteractivity(R.id.location2);
-        onView(withId(R.id.location2)).perform(click()).check(matches(isChecked()));
-
-        viewInteractivity(R.id.location3);
-        onView(withId(R.id.location3)).perform(click()).check(matches(isChecked()));
-
-        viewInteractivity(R.id.level1);
-        onView(withId(R.id.level1)).perform(click()).check(matches(isChecked()));
-
-        viewInteractivity(R.id.level2);
-        onView(withId(R.id.level2)).perform(click()).check(matches(isChecked()));
-
-        onView(withText(R.string.next_text)).check(matches(isCompletelyDisplayed()));
-        onView(withText(R.string.next_text)).check(matches(isEnabled()));
-        onView(withText(R.string.next_text)).check(matches(isClickable()));
-        onView(withText(R.string.next_text)).perform(click());
-
-    }
-
-    @Test
-    public void testClickNextInChooserFragment() {
-        onView(withId(R.id.primarySemester)).perform(click()).check(matches(isChecked()));
-        onView(withId(R.id.location1)).perform(click()).check(matches(isChecked()));
-        onView(withId(R.id.level1)).perform(click()).check(matches(isChecked()));
-
-        onView(withText(R.string.next_text)).perform(click());
-
-        pressBack();
-    }
-
-    public void viewInteractivity(int viewId) {
-        onView(withId(viewId)).check(matches(isDisplayed()));
-        onView(withId(viewId)).check(matches(isEnabled()));
-        onView(withId(viewId)).check(matches(isClickable()));
-    }
-
-    @Test
-    public void testOrientationChange() {
-        if (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            onView(isRoot()).perform(orientationLandscape());
-        } else if (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            onView(isRoot()).perform(orientationPortrait());
-        }
-    }
-
+  }
 }

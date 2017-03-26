@@ -8,4 +8,5 @@
     android:ellipsize="marquee"
     android:textColor="@color/secondary_text"
     android:textSize="13sp"
-    android:maxLines="1" />
+    android:maxLines="1"
+    />

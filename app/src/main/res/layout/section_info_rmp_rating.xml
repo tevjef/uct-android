@@ -5,165 +5,179 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    >
 
-    <RelativeLayout style="@style/section_metadata_containers" >
+  <RelativeLayout style="@style/section_metadata_containers">
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/rmp_prof_info_container"
+        >
+
+      <TextView
+          android:layout_width="wrap_content"
+          tools:text="Joyce Carolla"
+          style="@style/PrimaryTextStyle"
+          android:id="@+id/rmp_prof_name"
+          />
+
+      <TextView
+          android:layout_width="wrap_content"
+          tools:text="Mathematics"
+          android:id="@+id/rmp_subtitle"
+          android:layout_below="@+id/rmp_prof_name"
+          style="@style/SecondaryTextStyle"
+          />
+
+      <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+          android:id="@+id/open_in_browser"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:src="@drawable/ic_open_in_browser_white_24dp"
+          android:layout_alignParentEnd="true"
+          android:layout_alignBottom="@+id/rmp_subtitle"
+          android:layout_alignParentTop="true"
+          android:scaleType="fitEnd"
+          android:tint="@color/accent"
+          android:paddingTop="5dp"
+          android:paddingBottom="5dp"
+          android:layout_alignParentRight="true"
+          />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rmp_prof_info_container"
+        android:layout_centerHorizontal="true"
+        >
+
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          >
         <RelativeLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:id="@+id/rmp_prof_info_container"
+            android:id="@+id/overall_container"
+            android:layout_weight="1"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                tools:text="Joyce Carolla"
-                style="@style/PrimaryTextStyle"
-                android:id="@+id/rmp_prof_name" />
+          <FrameLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/wheel_quality_container"
+              android:layout_centerHorizontal="true"
+              >
 
-            <TextView
-                android:layout_width="wrap_content"
-                tools:text="Mathematics"
-                android:id="@+id/rmp_subtitle"
-                android:layout_below="@+id/rmp_prof_name"
-                style="@style/SecondaryTextStyle" />
+            <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:id="@+id/wheel_quality_rating"
+                app:itemsLineWidth="6dp"
+                android:layout_gravity="center"
+                app:backgroundColor="@android:color/white"
+                />
 
-            <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-                android:id="@+id/open_in_browser"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_open_in_browser_white_24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignBottom="@+id/rmp_subtitle"
-                android:layout_alignParentTop="true"
-                android:scaleType="fitEnd"
-                android:tint="@color/accent"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_alignParentRight="true" />
+                android:layout_gravity="center"
+                android:id="@+id/linearLayout"
+                >
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  tools:text="3.2"
+                  android:id="@+id/rmp_overall_rating_number"
+                  android:textSize="28sp"
+                  android:textStyle="bold"
+                  style="@style/PrimaryTextStyle"
+                  />
+
+            </LinearLayout>
+
+          </FrameLayout>
+
+
+          <TextView
+              android:text="@string/overall_rating"
+              android:id="@+id/rmp_overall_rating_title"
+              style="@style/SecondaryTextStyle"
+              android:layout_centerHorizontal="true"
+              android:paddingTop="4dp"
+              android:layout_below="@id/wheel_quality_container"
+              />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rmp_prof_info_container"
-            android:layout_centerHorizontal="true">
+            android:id="@+id/easiness_container"
+            android:layout_weight="1"
+            >
+
+          <FrameLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/wheel_easiness_container"
+              android:layout_centerHorizontal="true"
+              >
+
+            <com.dlazaro66.wheelindicatorview.WheelIndicatorView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:id="@+id/wheel_easiness_rating"
+                app:itemsLineWidth="6dp"
+                android:layout_gravity="center"
+                app:backgroundColor="@android:color/white"
+                />
 
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/overall_container"
-                android:layout_weight="1">
+                android:layout_gravity="center"
+                >
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/wheel_quality_container"
-                    android:layout_centerHorizontal="true">
-
-                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:id="@+id/wheel_quality_rating"
-                        app:itemsLineWidth="6dp"
-                        android:layout_gravity="center"
-                        app:backgroundColor="@android:color/white"
-                        />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:id="@+id/linearLayout">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="3.2"
-                            android:id="@+id/rmp_overall_rating_number"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            style="@style/PrimaryTextStyle" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-
-
-
-                <TextView
-                    android:text="@string/overall_rating"
-                    android:id="@+id/rmp_overall_rating_title"
-                    style="@style/SecondaryTextStyle"
-                    android:layout_centerHorizontal="true"
-                    android:paddingTop="4dp"
-                    android:layout_below="@id/wheel_quality_container"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/easiness_container"
-                android:layout_weight="1">
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/wheel_easiness_container"
-                    android:layout_centerHorizontal="true">
-
-                    <com.dlazaro66.wheelindicatorview.WheelIndicatorView
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:id="@+id/wheel_easiness_rating"
-                        app:itemsLineWidth="6dp"
-                        android:layout_gravity="center"
-                        app:backgroundColor="@android:color/white"
-                        />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="3.2"
-                            android:id="@+id/rmp_easiness_rating_number"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            style="@style/PrimaryTextStyle" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-
-                <TextView
-                    android:text="@string/easiness"
-                    android:id="@+id/rmp_easiness_rating_title"
-                    style="@style/SecondaryTextStyle"
-                    android:layout_centerHorizontal="true"
-                    android:paddingTop="4dp"
-                    android:layout_below="@id/wheel_easiness_container"/>
-
-            </RelativeLayout>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  tools:text="3.2"
+                  android:id="@+id/rmp_easiness_rating_number"
+                  android:textSize="28sp"
+                  android:textStyle="bold"
+                  style="@style/PrimaryTextStyle"
+                  />
 
             </LinearLayout>
+
+          </FrameLayout>
+
+
+          <TextView
+              android:text="@string/easiness"
+              android:id="@+id/rmp_easiness_rating_title"
+              style="@style/SecondaryTextStyle"
+              android:layout_centerHorizontal="true"
+              android:paddingTop="4dp"
+              android:layout_below="@id/wheel_easiness_container"
+              />
+
         </RelativeLayout>
+
+      </LinearLayout>
     </RelativeLayout>
+  </RelativeLayout>
 </FrameLayout>

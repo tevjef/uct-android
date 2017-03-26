@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,9 +12,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
 import okio.ByteString;
 
 public final class Response extends AndroidMessage<Response, Response.Builder> {
@@ -60,8 +57,12 @@ public final class Response extends AndroidMessage<Response, Response.Builder> {
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Response)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Response)) {
+      return false;
+    }
     Response o = (Response) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(meta, o.meta)
@@ -83,8 +84,12 @@ public final class Response extends AndroidMessage<Response, Response.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (meta != null) builder.append(", meta=").append(meta);
-    if (data != null) builder.append(", data=").append(data);
+    if (meta != null) {
+      builder.append(", meta=").append(meta);
+    }
+    if (data != null) {
+      builder.append(", data=").append(data);
+    }
     return builder.replace(0, 2, "Response{").append('}').toString();
   }
 
@@ -126,8 +131,12 @@ public final class Response extends AndroidMessage<Response, Response.Builder> {
 
     @Override
     public void encode(ProtoWriter writer, Response value) throws IOException {
-      if (value.meta != null) Meta.ADAPTER.encodeWithTag(writer, 1, value.meta);
-      if (value.data != null) Data.ADAPTER.encodeWithTag(writer, 2, value.data);
+      if (value.meta != null) {
+        Meta.ADAPTER.encodeWithTag(writer, 1, value.meta);
+      }
+      if (value.data != null) {
+        Data.ADAPTER.encodeWithTag(writer, 2, value.data);
+      }
       writer.writeBytes(value.unknownFields());
     }
 
@@ -135,10 +144,14 @@ public final class Response extends AndroidMessage<Response, Response.Builder> {
     public Response decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.meta(Meta.ADAPTER.decode(reader)); break;
-          case 2: builder.data(Data.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.meta(Meta.ADAPTER.decode(reader));
+            break;
+          case 2:
+            builder.data(Data.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -153,8 +166,12 @@ public final class Response extends AndroidMessage<Response, Response.Builder> {
     @Override
     public Response redact(Response value) {
       Builder builder = value.newBuilder();
-      if (builder.meta != null) builder.meta = Meta.ADAPTER.redact(builder.meta);
-      if (builder.data != null) builder.data = Data.ADAPTER.redact(builder.data);
+      if (builder.meta != null) {
+        builder.meta = Meta.ADAPTER.redact(builder.meta);
+      }
+      if (builder.data != null) {
+        builder.data = Data.ADAPTER.redact(builder.data);
+      }
       builder.clearUnknownFields();
       return builder.build();
     }

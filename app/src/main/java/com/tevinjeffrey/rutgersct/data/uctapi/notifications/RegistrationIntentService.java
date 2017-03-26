@@ -19,28 +19,24 @@ package com.tevinjeffrey.rutgersct.data.uctapi.notifications;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-
 import javax.inject.Inject;
 
 public class RegistrationIntentService extends IntentService {
 
-    private static final String TAG = "RegIntentService";
+  private static final String TAG = "RegIntentService";
 
-    public RegistrationIntentService() {
-        super(TAG);
-    }
+  public RegistrationIntentService() {
+    super(TAG);
+  }
 
-    @Inject
-    SubscriptionManager subscriptionManager;
+  @Inject
+  SubscriptionManager subscriptionManager;
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        RutgersCTApp.getObjectGraph(this).inject(this);
-        Intent registrationComplete = new Intent(SubscriptionManager.REGISTRATION_COMPLETE);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
-    }
-
-
+  @Override
+  protected void onHandleIntent(Intent intent) {
+    RutgersCTApp.getObjectGraph(this).inject(this);
+    Intent registrationComplete = new Intent(SubscriptionManager.REGISTRATION_COMPLETE);
+    LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+  }
 }

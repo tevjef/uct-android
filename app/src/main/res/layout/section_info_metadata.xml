@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
-    tools:showIn="@layout/fragment_section_info">
+    tools:showIn="@layout/fragment_section_info"
+    >
 
 </LinearLayout>

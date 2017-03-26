@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+  <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+  <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+  <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+       dismiss it. -->
+  <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
 
-    <com.jenzz.materialpreference.PreferenceCategory android:title="Notifications">
+  <com.jenzz.materialpreference.PreferenceCategory android:title="Notifications">
 
-        <com.jenzz.materialpreference.CheckBoxPreference
-            android:key="app_notification"
-            android:title="Notifications"
-            android:defaultValue="true"
-            android:summary="Notify me when a section opens"/>
-        <com.jenzz.materialpreference.CheckBoxPreference
-            android:key="@string/pref_sound_key"
-            android:title="Sound"
-            android:summary="Play sound on notification"
-            android:defaultValue="@bool/pref_sound_default_value"
-            android:dependency="app_notification"
-            />
+    <com.jenzz.materialpreference.CheckBoxPreference
+        android:key="app_notification"
+        android:title="Notifications"
+        android:defaultValue="true"
+        android:summary="Notify me when a section opens"
+        />
+    <com.jenzz.materialpreference.CheckBoxPreference
+        android:key="@string/pref_sound_key"
+        android:title="Sound"
+        android:summary="Play sound on notification"
+        android:defaultValue="@bool/pref_sound_default_value"
+        android:dependency="app_notification"
+        />
 
-    </com.jenzz.materialpreference.PreferenceCategory>
+  </com.jenzz.materialpreference.PreferenceCategory>
 
-    <com.jenzz.materialpreference.PreferenceCategory android:title="Developer">
+  <com.jenzz.materialpreference.PreferenceCategory android:title="Developer">
 
-        <com.jenzz.materialpreference.Preference
-            android:key="licenses"
-            android:title="Open Source Licenses" />
-        <com.jenzz.materialpreference.Preference
-            android:key="about"
-            android:title="About" />
+    <com.jenzz.materialpreference.Preference
+        android:key="licenses"
+        android:title="Open Source Licenses"
+        />
+    <com.jenzz.materialpreference.Preference
+        android:key="about"
+        android:title="About"
+        />
 
-    </com.jenzz.materialpreference.PreferenceCategory>
+  </com.jenzz.materialpreference.PreferenceCategory>
 
 </PreferenceScreen>

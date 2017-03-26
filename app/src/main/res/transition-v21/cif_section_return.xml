@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
     android:transitionOrdering="together"
-    android:interpolator="@android:interpolator/fast_out_linear_in">
-    <transitionSet android:transitionOrdering="together">
-        <transition
-            class="com.tevinjeffrey.rutgersct.ui.utils.RevealTransition"
-            android:transitionVisibilityMode="mode_out">
-            <targets>
-                <target android:targetId="@id/app_bar_layout"/>
-                <target android:targetName="@string/transition_name_tool_background"/>
+    android:interpolator="@android:interpolator/fast_out_linear_in"
+    >
+  <transitionSet android:transitionOrdering="together">
+    <transition
+        class="com.tevinjeffrey.rutgersct.ui.utils.RevealTransition"
+        android:transitionVisibilityMode="mode_out"
+        >
+      <targets>
+        <target android:targetId="@id/app_bar_layout"/>
+        <target android:targetName="@string/transition_name_tool_background"/>
 
-                <target android:excludeName="@string/transition_name_fab"/>
-                <target android:excludeId="@id/add_courses_fab"/>
+        <target android:excludeName="@string/transition_name_fab"/>
+        <target android:excludeId="@id/add_courses_fab"/>
 
-                <target android:excludeId="@id/scrollView"/>
+        <target android:excludeId="@id/scrollView"/>
 
-            </targets>
-        </transition>
-    </transitionSet>
+      </targets>
+    </transition>
+  </transitionSet>
 
-    <transitionSet android:transitionOrdering="together">
-        <fade
-            android:fadingMode="fade_out">
-            <targets>
-                <target android:excludeName="@string/transition_name_tool_background"/>
-                <target android:excludeName="@string/transition_name_fab"/>
-            </targets>
-        </fade>
-    </transitionSet>
+  <transitionSet android:transitionOrdering="together">
+    <fade
+        android:fadingMode="fade_out">
+      <targets>
+        <target android:excludeName="@string/transition_name_tool_background"/>
+        <target android:excludeName="@string/transition_name_fab"/>
+      </targets>
+    </fade>
+  </transitionSet>
 
 </transitionSet>

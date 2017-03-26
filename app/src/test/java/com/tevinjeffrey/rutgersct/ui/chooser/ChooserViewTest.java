@@ -27,19 +27,19 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ChooserViewTest {
 
-    @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
-    ChooserView chooserView;
-    ChooserViewState viewState;
+  @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
+      ChooserView chooserView;
+  ChooserViewState viewState;
 
-    @Before
-    public void setUp() throws Exception {
-        viewState = new ChooserViewState();
-    }
+  @Before
+  public void setUp() throws Exception {
+    viewState = new ChooserViewState();
+  }
 
-    @Test
-    public void TestEssentialViewInit() throws Exception {
-        viewState.apply(chooserView, true);
-        verify(chooserView).initPicker();
-        verify(chooserView).initToolbar();
-    }
+  @Test
+  public void TestEssentialViewInit() throws Exception {
+    viewState.apply(chooserView, true);
+    verify(chooserView).initPicker();
+    verify(chooserView).initToolbar();
+  }
 }

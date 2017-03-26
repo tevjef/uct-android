@@ -5,47 +5,48 @@ import android.os.Parcelable;
 
 public class SystemMessage implements Parcelable {
 
-    private String messageText;
+  private String messageText;
 
-    public SystemMessage() {
-    }
+  public SystemMessage() {
+  }
 
-    public String getMessageText() {
-        return messageText;
-    }
+  public String getMessageText() {
+    return messageText;
+  }
 
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
-    }
+  public void setMessageText(String messageText) {
+    this.messageText = messageText;
+  }
 
-    @Override
-    public String toString() {
-        return "SystemMessage{" +
-                "messageText='" + messageText + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "SystemMessage{" +
+        "messageText='" + messageText + '\'' +
+        '}';
+  }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+  @Override
+  public int describeContents() {
+    return 0;
+  }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.messageText);
-    }
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.messageText);
+  }
 
-    protected SystemMessage(Parcel in) {
-        this.messageText = in.readString();
-    }
+  protected SystemMessage(Parcel in) {
+    this.messageText = in.readString();
+  }
 
-    public static final Parcelable.Creator<SystemMessage> CREATOR = new Parcelable.Creator<SystemMessage>() {
+  public static final Parcelable.Creator<SystemMessage> CREATOR =
+      new Parcelable.Creator<SystemMessage>() {
         public SystemMessage createFromParcel(Parcel source) {
-            return new SystemMessage(source);
+          return new SystemMessage(source);
         }
 
         public SystemMessage[] newArray(int size) {
-            return new SystemMessage[size];
+          return new SystemMessage[size];
         }
-    };
+      };
 }

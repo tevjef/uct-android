@@ -5,4 +5,5 @@
     android:layout_toRightOf="@+id/section_number_background"
     android:layout_toEndOf="@+id/section_number_background"
     android:layout_marginBottom="4dp"
-    style="@style/divider" />
+    style="@style/divider"
+    />

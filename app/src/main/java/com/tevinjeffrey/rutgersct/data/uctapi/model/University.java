@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,10 +12,8 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
 import java.util.List;
-
 import okio.ByteString;
 
 public final class University extends AndroidMessage<University, University.Builder> {
@@ -142,11 +139,56 @@ public final class University extends AndroidMessage<University, University.Buil
   )
   public final List<Metadata> metadata;
 
-  public University(@Nullable Long id, @Nullable String name, @Nullable String abbr, @Nullable String home_page, @Nullable String registration_page, @Nullable String main_color, @Nullable String accent_color, @Nullable String topic_name, @Nullable String topic_id, @Nullable ResolvedSemester resolved_semesters, List<Subject> subjects, List<Semester> available_semesters, List<Registration> registrations, List<Metadata> metadata) {
-    this(id, name, abbr, home_page, registration_page, main_color, accent_color, topic_name, topic_id, resolved_semesters, subjects, available_semesters, registrations, metadata, ByteString.EMPTY);
+  public University(
+      @Nullable Long id,
+      @Nullable String name,
+      @Nullable String abbr,
+      @Nullable String home_page,
+      @Nullable String registration_page,
+      @Nullable String main_color,
+      @Nullable String accent_color,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      @Nullable ResolvedSemester resolved_semesters,
+      List<Subject> subjects,
+      List<Semester> available_semesters,
+      List<Registration> registrations,
+      List<Metadata> metadata) {
+    this(
+        id,
+        name,
+        abbr,
+        home_page,
+        registration_page,
+        main_color,
+        accent_color,
+        topic_name,
+        topic_id,
+        resolved_semesters,
+        subjects,
+        available_semesters,
+        registrations,
+        metadata,
+        ByteString.EMPTY
+    );
   }
 
-  public University(@Nullable Long id, @Nullable String name, @Nullable String abbr, @Nullable String home_page, @Nullable String registration_page, @Nullable String main_color, @Nullable String accent_color, @Nullable String topic_name, @Nullable String topic_id, @Nullable ResolvedSemester resolved_semesters, List<Subject> subjects, List<Semester> available_semesters, List<Registration> registrations, List<Metadata> metadata, ByteString unknownFields) {
+  public University(
+      @Nullable Long id,
+      @Nullable String name,
+      @Nullable String abbr,
+      @Nullable String home_page,
+      @Nullable String registration_page,
+      @Nullable String main_color,
+      @Nullable String accent_color,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      @Nullable ResolvedSemester resolved_semesters,
+      List<Subject> subjects,
+      List<Semester> available_semesters,
+      List<Registration> registrations,
+      List<Metadata> metadata,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.name = name;
@@ -187,8 +229,12 @@ public final class University extends AndroidMessage<University, University.Buil
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof University)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof University)) {
+      return false;
+    }
     University o = (University) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -234,20 +280,48 @@ public final class University extends AndroidMessage<University, University.Buil
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (name != null) builder.append(", name=").append(name);
-    if (abbr != null) builder.append(", abbr=").append(abbr);
-    if (home_page != null) builder.append(", home_page=").append(home_page);
-    if (registration_page != null) builder.append(", registration_page=").append(registration_page);
-    if (main_color != null) builder.append(", main_color=").append(main_color);
-    if (accent_color != null) builder.append(", accent_color=").append(accent_color);
-    if (topic_name != null) builder.append(", topic_name=").append(topic_name);
-    if (topic_id != null) builder.append(", topic_id=").append(topic_id);
-    if (resolved_semesters != null) builder.append(", resolved_semesters=").append(resolved_semesters);
-    if (!subjects.isEmpty()) builder.append(", subjects=").append(subjects);
-    if (!available_semesters.isEmpty()) builder.append(", available_semesters=").append(available_semesters);
-    if (!registrations.isEmpty()) builder.append(", registrations=").append(registrations);
-    if (!metadata.isEmpty()) builder.append(", metadata=").append(metadata);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (name != null) {
+      builder.append(", name=").append(name);
+    }
+    if (abbr != null) {
+      builder.append(", abbr=").append(abbr);
+    }
+    if (home_page != null) {
+      builder.append(", home_page=").append(home_page);
+    }
+    if (registration_page != null) {
+      builder.append(", registration_page=").append(registration_page);
+    }
+    if (main_color != null) {
+      builder.append(", main_color=").append(main_color);
+    }
+    if (accent_color != null) {
+      builder.append(", accent_color=").append(accent_color);
+    }
+    if (topic_name != null) {
+      builder.append(", topic_name=").append(topic_name);
+    }
+    if (topic_id != null) {
+      builder.append(", topic_id=").append(topic_id);
+    }
+    if (resolved_semesters != null) {
+      builder.append(", resolved_semesters=").append(resolved_semesters);
+    }
+    if (!subjects.isEmpty()) {
+      builder.append(", subjects=").append(subjects);
+    }
+    if (!available_semesters.isEmpty()) {
+      builder.append(", available_semesters=").append(available_semesters);
+    }
+    if (!registrations.isEmpty()) {
+      builder.append(", registrations=").append(registrations);
+    }
+    if (!metadata.isEmpty()) {
+      builder.append(", metadata=").append(metadata);
+    }
     return builder.replace(0, 2, "University{").append('}').toString();
   }
 
@@ -363,7 +437,23 @@ public final class University extends AndroidMessage<University, University.Buil
 
     @Override
     public University build() {
-      return new University(id, name, abbr, home_page, registration_page, main_color, accent_color, topic_name, topic_id, resolved_semesters, subjects, available_semesters, registrations, metadata, super.buildUnknownFields());
+      return new University(
+          id,
+          name,
+          abbr,
+          home_page,
+          registration_page,
+          main_color,
+          accent_color,
+          topic_name,
+          topic_id,
+          resolved_semesters,
+          subjects,
+          available_semesters,
+          registrations,
+          metadata,
+          super.buildUnknownFields()
+      );
     }
   }
 
@@ -377,13 +467,25 @@ public final class University extends AndroidMessage<University, University.Buil
       return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
           + (value.name != null ? ProtoAdapter.STRING.encodedSizeWithTag(2, value.name) : 0)
           + (value.abbr != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.abbr) : 0)
-          + (value.home_page != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.home_page) : 0)
-          + (value.registration_page != null ? ProtoAdapter.STRING.encodedSizeWithTag(5, value.registration_page) : 0)
-          + (value.main_color != null ? ProtoAdapter.STRING.encodedSizeWithTag(6, value.main_color) : 0)
-          + (value.accent_color != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.accent_color) : 0)
-          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(8, value.topic_name) : 0)
+          + (value.home_page != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.home_page)
+                                     : 0)
+          + (value.registration_page != null ? ProtoAdapter.STRING.encodedSizeWithTag(
+          5,
+          value.registration_page
+      ) : 0)
+          + (value.main_color != null ? ProtoAdapter.STRING.encodedSizeWithTag(6, value.main_color)
+                                      : 0)
+          + (value.accent_color != null ? ProtoAdapter.STRING.encodedSizeWithTag(
+          7,
+          value.accent_color
+      ) : 0)
+          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(8, value.topic_name)
+                                      : 0)
           + (value.topic_id != null ? ProtoAdapter.STRING.encodedSizeWithTag(9, value.topic_id) : 0)
-          + (value.resolved_semesters != null ? ResolvedSemester.ADAPTER.encodedSizeWithTag(10, value.resolved_semesters) : 0)
+          + (value.resolved_semesters != null ? ResolvedSemester.ADAPTER.encodedSizeWithTag(
+          10,
+          value.resolved_semesters
+      ) : 0)
           + Subject.ADAPTER.asRepeated().encodedSizeWithTag(11, value.subjects)
           + Semester.ADAPTER.asRepeated().encodedSizeWithTag(12, value.available_semesters)
           + Registration.ADAPTER.asRepeated().encodedSizeWithTag(13, value.registrations)
@@ -393,16 +495,36 @@ public final class University extends AndroidMessage<University, University.Buil
 
     @Override
     public void encode(ProtoWriter writer, University value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.name != null) ProtoAdapter.STRING.encodeWithTag(writer, 2, value.name);
-      if (value.abbr != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.abbr);
-      if (value.home_page != null) ProtoAdapter.STRING.encodeWithTag(writer, 4, value.home_page);
-      if (value.registration_page != null) ProtoAdapter.STRING.encodeWithTag(writer, 5, value.registration_page);
-      if (value.main_color != null) ProtoAdapter.STRING.encodeWithTag(writer, 6, value.main_color);
-      if (value.accent_color != null) ProtoAdapter.STRING.encodeWithTag(writer, 7, value.accent_color);
-      if (value.topic_name != null) ProtoAdapter.STRING.encodeWithTag(writer, 8, value.topic_name);
-      if (value.topic_id != null) ProtoAdapter.STRING.encodeWithTag(writer, 9, value.topic_id);
-      if (value.resolved_semesters != null) ResolvedSemester.ADAPTER.encodeWithTag(writer, 10, value.resolved_semesters);
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 2, value.name);
+      }
+      if (value.abbr != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.abbr);
+      }
+      if (value.home_page != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 4, value.home_page);
+      }
+      if (value.registration_page != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 5, value.registration_page);
+      }
+      if (value.main_color != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 6, value.main_color);
+      }
+      if (value.accent_color != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 7, value.accent_color);
+      }
+      if (value.topic_name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 8, value.topic_name);
+      }
+      if (value.topic_id != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 9, value.topic_id);
+      }
+      if (value.resolved_semesters != null) {
+        ResolvedSemester.ADAPTER.encodeWithTag(writer, 10, value.resolved_semesters);
+      }
       Subject.ADAPTER.asRepeated().encodeWithTag(writer, 11, value.subjects);
       Semester.ADAPTER.asRepeated().encodeWithTag(writer, 12, value.available_semesters);
       Registration.ADAPTER.asRepeated().encodeWithTag(writer, 13, value.registrations);
@@ -414,22 +536,50 @@ public final class University extends AndroidMessage<University, University.Buil
     public University decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.name(ProtoAdapter.STRING.decode(reader)); break;
-          case 3: builder.abbr(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.home_page(ProtoAdapter.STRING.decode(reader)); break;
-          case 5: builder.registration_page(ProtoAdapter.STRING.decode(reader)); break;
-          case 6: builder.main_color(ProtoAdapter.STRING.decode(reader)); break;
-          case 7: builder.accent_color(ProtoAdapter.STRING.decode(reader)); break;
-          case 8: builder.topic_name(ProtoAdapter.STRING.decode(reader)); break;
-          case 9: builder.topic_id(ProtoAdapter.STRING.decode(reader)); break;
-          case 10: builder.resolved_semesters(ResolvedSemester.ADAPTER.decode(reader)); break;
-          case 11: builder.subjects.add(Subject.ADAPTER.decode(reader)); break;
-          case 12: builder.available_semesters.add(Semester.ADAPTER.decode(reader)); break;
-          case 13: builder.registrations.add(Registration.ADAPTER.decode(reader)); break;
-          case 14: builder.metadata.add(Metadata.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 3:
+            builder.abbr(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.home_page(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 5:
+            builder.registration_page(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 6:
+            builder.main_color(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 7:
+            builder.accent_color(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 8:
+            builder.topic_name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 9:
+            builder.topic_id(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 10:
+            builder.resolved_semesters(ResolvedSemester.ADAPTER.decode(reader));
+            break;
+          case 11:
+            builder.subjects.add(Subject.ADAPTER.decode(reader));
+            break;
+          case 12:
+            builder.available_semesters.add(Semester.ADAPTER.decode(reader));
+            break;
+          case 13:
+            builder.registrations.add(Registration.ADAPTER.decode(reader));
+            break;
+          case 14:
+            builder.metadata.add(Metadata.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -444,7 +594,9 @@ public final class University extends AndroidMessage<University, University.Buil
     @Override
     public University redact(University value) {
       Builder builder = value.newBuilder();
-      if (builder.resolved_semesters != null) builder.resolved_semesters = ResolvedSemester.ADAPTER.redact(builder.resolved_semesters);
+      if (builder.resolved_semesters != null) {
+        builder.resolved_semesters = ResolvedSemester.ADAPTER.redact(builder.resolved_semesters);
+      }
       Internal.redactElements(builder.subjects, Subject.ADAPTER);
       Internal.redactElements(builder.available_semesters, Semester.ADAPTER);
       Internal.redactElements(builder.registrations, Registration.ADAPTER);

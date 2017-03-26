@@ -1,32 +1,35 @@
 apply plugin: 'java'
 
 configurations {
-    provided
+  provided
 }
 
 sourceSets {
-    main {
-        java.srcDir file('src/main')
-        compileClasspath += configurations.provided
-    }
-    test {
-        java.srcDir file('src/test')
-        compileClasspath += configurations.provided
-    }
+  main {
+    java.srcDir file('src/main')
+    compileClasspath += configurations.provided
+  }
+  test {
+    java.srcDir file('src/test')
+    compileClasspath += configurations.provided
+  }
 }
 
+targetCompatibility = '1.7'
+sourceCompatibility = '1.7'
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'io.reactivex:rxjava:1.1.9'
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  testCompile 'junit:junit:4.12'
+  compile 'org.apache.commons:commons-lang3:3.4'
+  compile 'io.reactivex:rxjava:1.1.9'
 
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    compile group: 'com.squareup.retrofit2', name: 'converter-wire', version: '2.2.0'
+  compile 'com.squareup.retrofit2:retrofit:2.0.2'
+  compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+  compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+  compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+  compile group: 'com.squareup.retrofit2', name: 'converter-wire', version: '2.0.2'
 
-    provided 'com.squareup.dagger:dagger-compiler:1.2.5'
-    compile 'com.squareup.dagger:dagger:1.2.5'
+  provided 'com.squareup.dagger:dagger-compiler:1.2.5'
+  compile 'com.squareup.dagger:dagger:1.2.5'
 }

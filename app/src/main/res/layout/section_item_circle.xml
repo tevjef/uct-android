@@ -17,4 +17,5 @@
     android:minWidth="@dimen/default_circle_view_size"
     android:layout_marginLeft="@dimen/default_margin"
     android:visibility="visible"
-    tools:showIn="@layout/section_layout_with_title"/>
+    tools:showIn="@layout/section_layout_with_title"
+    />

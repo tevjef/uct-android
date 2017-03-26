@@ -18,34 +18,31 @@ package com.tevinjeffrey.rutgersct.data.uctapi.notifications;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.google.firebase.messaging.FirebaseMessaging;
-
 import java.io.IOException;
-
 import javax.inject.Inject;
 
 public class SubscriptionManager {
 
-    public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
-    public static final String REGISTRATION_COMPLETE = "registrationComplete";
+  public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
+  public static final String REGISTRATION_COMPLETE = "registrationComplete";
 
-    public final Context context;
+  public final Context context;
 
-    @Inject
-    public SubscriptionManager(Context context) {
-        this.context = context;
-    }
+  @Inject
+  public SubscriptionManager(Context context) {
+    this.context = context;
+  }
 
-    public void subscribe(String topicName) throws IOException {
-        FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
-        Log.d("SubscriptionManager", "Subscribing: " +topicName);
-        pubSub.subscribeToTopic(topicName);
-    }
+  public void subscribe(String topicName) throws IOException {
+    FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
+    Log.d("SubscriptionManager", "Subscribing: " + topicName);
+    pubSub.subscribeToTopic(topicName);
+  }
 
-    public void unsubscribe(String topicName) throws IOException {
-        FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
-        Log.d("SubscriptionManager", "Unsubscribing: " +topicName);
-        pubSub.unsubscribeFromTopic(topicName);
-    }
+  public void unsubscribe(String topicName) throws IOException {
+    FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
+    Log.d("SubscriptionManager", "Unsubscribing: " + topicName);
+    pubSub.unsubscribeFromTopic(topicName);
+  }
 }

@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,15 +12,15 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
 import okio.ByteString;
 
-public final class ResolvedSemester extends AndroidMessage<ResolvedSemester, ResolvedSemester.Builder> {
+public final class ResolvedSemester
+    extends AndroidMessage<ResolvedSemester, ResolvedSemester.Builder> {
   public static final ProtoAdapter<ResolvedSemester> ADAPTER = new ProtoAdapter_ResolvedSemester();
 
-  public static final Parcelable.Creator<ResolvedSemester> CREATOR = AndroidMessage.newCreator(ADAPTER);
+  public static final Parcelable.Creator<ResolvedSemester> CREATOR =
+      AndroidMessage.newCreator(ADAPTER);
 
   private static final long serialVersionUID = 0L;
 
@@ -46,11 +45,18 @@ public final class ResolvedSemester extends AndroidMessage<ResolvedSemester, Res
   @Nullable
   public final Semester next;
 
-  public ResolvedSemester(@Nullable Semester current, @Nullable Semester last, @Nullable Semester next) {
+  public ResolvedSemester(
+      @Nullable Semester current,
+      @Nullable Semester last,
+      @Nullable Semester next) {
     this(current, last, next, ByteString.EMPTY);
   }
 
-  public ResolvedSemester(@Nullable Semester current, @Nullable Semester last, @Nullable Semester next, ByteString unknownFields) {
+  public ResolvedSemester(
+      @Nullable Semester current,
+      @Nullable Semester last,
+      @Nullable Semester next,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.current = current;
     this.last = last;
@@ -69,8 +75,12 @@ public final class ResolvedSemester extends AndroidMessage<ResolvedSemester, Res
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof ResolvedSemester)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof ResolvedSemester)) {
+      return false;
+    }
     ResolvedSemester o = (ResolvedSemester) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(current, o.current)
@@ -94,9 +104,15 @@ public final class ResolvedSemester extends AndroidMessage<ResolvedSemester, Res
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (current != null) builder.append(", current=").append(current);
-    if (last != null) builder.append(", last=").append(last);
-    if (next != null) builder.append(", next=").append(next);
+    if (current != null) {
+      builder.append(", current=").append(current);
+    }
+    if (last != null) {
+      builder.append(", last=").append(last);
+    }
+    if (next != null) {
+      builder.append(", next=").append(next);
+    }
     return builder.replace(0, 2, "ResolvedSemester{").append('}').toString();
   }
 
@@ -146,9 +162,15 @@ public final class ResolvedSemester extends AndroidMessage<ResolvedSemester, Res
 
     @Override
     public void encode(ProtoWriter writer, ResolvedSemester value) throws IOException {
-      if (value.current != null) Semester.ADAPTER.encodeWithTag(writer, 1, value.current);
-      if (value.last != null) Semester.ADAPTER.encodeWithTag(writer, 2, value.last);
-      if (value.next != null) Semester.ADAPTER.encodeWithTag(writer, 3, value.next);
+      if (value.current != null) {
+        Semester.ADAPTER.encodeWithTag(writer, 1, value.current);
+      }
+      if (value.last != null) {
+        Semester.ADAPTER.encodeWithTag(writer, 2, value.last);
+      }
+      if (value.next != null) {
+        Semester.ADAPTER.encodeWithTag(writer, 3, value.next);
+      }
       writer.writeBytes(value.unknownFields());
     }
 
@@ -156,11 +178,17 @@ public final class ResolvedSemester extends AndroidMessage<ResolvedSemester, Res
     public ResolvedSemester decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.current(Semester.ADAPTER.decode(reader)); break;
-          case 2: builder.last(Semester.ADAPTER.decode(reader)); break;
-          case 3: builder.next(Semester.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.current(Semester.ADAPTER.decode(reader));
+            break;
+          case 2:
+            builder.last(Semester.ADAPTER.decode(reader));
+            break;
+          case 3:
+            builder.next(Semester.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -175,9 +203,15 @@ public final class ResolvedSemester extends AndroidMessage<ResolvedSemester, Res
     @Override
     public ResolvedSemester redact(ResolvedSemester value) {
       Builder builder = value.newBuilder();
-      if (builder.current != null) builder.current = Semester.ADAPTER.redact(builder.current);
-      if (builder.last != null) builder.last = Semester.ADAPTER.redact(builder.last);
-      if (builder.next != null) builder.next = Semester.ADAPTER.redact(builder.next);
+      if (builder.current != null) {
+        builder.current = Semester.ADAPTER.redact(builder.current);
+      }
+      if (builder.last != null) {
+        builder.last = Semester.ADAPTER.redact(builder.last);
+      }
+      if (builder.next != null) {
+        builder.next = Semester.ADAPTER.redact(builder.next);
+      }
       builder.clearUnknownFields();
       return builder.build();
     }

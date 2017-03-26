@@ -4,44 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="6">
+    android:weightSum="6"
+    >
 
-    <TextView
-        android:id="@+id/section_item_time_info_day_text"
-        style="@style/SecondaryTextStyle"
-        tools:text="Wednesday"
-        android:layout_weight="1"
-        android:ellipsize="none"
-        android:singleLine="true"
-        android:minWidth="60dp" />
+  <TextView
+      android:id="@+id/section_item_time_info_day_text"
+      style="@style/SecondaryTextStyle"
+      tools:text="Wednesday"
+      android:layout_weight="1"
+      android:ellipsize="none"
+      android:singleLine="true"
+      android:minWidth="60dp"
+      />
 
-    <TextView
-        android:id="@+id/section_item_time_info_meeting_time_text"
-        style="@style/SecondaryTextStyle"
-        tools:text="10:00 AM - 11:20 AM"
-        android:layout_weight="3"
-        android:ellipsize="none"
-        android:singleLine="true"
-        android:layout_gravity="center"
-        android:gravity="center" />
+  <TextView
+      android:id="@+id/section_item_time_info_meeting_time_text"
+      style="@style/SecondaryTextStyle"
+      tools:text="10:00 AM - 11:20 AM"
+      android:layout_weight="3"
+      android:ellipsize="none"
+      android:singleLine="true"
+      android:layout_gravity="center"
+      android:gravity="center"
+      />
 
-    <TextView
-        android:id="@+id/section_item_time_info_location_text"
-        style="@style/SecondaryTextStyle"
-        tools:text="ENG-102  NWK"
-        android:layout_weight="1"
-        android:gravity="left"
-        android:ellipsize="none"
-        android:singleLine="true"/>
+  <TextView
+      android:id="@+id/section_item_time_info_location_text"
+      style="@style/SecondaryTextStyle"
+      tools:text="ENG-102  NWK"
+      android:layout_weight="1"
+      android:gravity="left"
+      android:ellipsize="none"
+      android:singleLine="true"
+      />
 
-    <TextView
-        android:id="@+id/section_item_time_info_meeting_type"
-        style="@style/SecondaryTextStyle"
-        android:minWidth="50dp"
-        tools:text="STUDIO"
-        android:layout_weight="1"
-        android:gravity="right|end"
-        android:ellipsize="none"
-        android:singleLine="true"/>
+  <TextView
+      android:id="@+id/section_item_time_info_meeting_type"
+      style="@style/SecondaryTextStyle"
+      android:minWidth="50dp"
+      tools:text="STUDIO"
+      android:layout_weight="1"
+      android:gravity="right|end"
+      android:ellipsize="none"
+      android:singleLine="true"
+      />
 
 </LinearLayout>

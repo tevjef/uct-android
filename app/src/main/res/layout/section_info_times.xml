@@ -5,30 +5,34 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:id="@+id/section_times_layout"
-   >
+    >
 
-        <LinearLayout
-            android:id="@+id/section_times_wrapper"
-            style="@style/section_metadata_containers"
-            android:orientation="vertical">
+  <LinearLayout
+      android:id="@+id/section_times_wrapper"
+      style="@style/section_metadata_containers"
+      android:orientation="vertical"
+      >
 
-            <TextView
-                android:id="@+id/sectionNumber"
-                style="@style/PrimaryTextStyle"
-                android:text="@string/time_and_location" />
+    <TextView
+        android:id="@+id/sectionNumber"
+        style="@style/PrimaryTextStyle"
+        android:text="@string/time_and_location"
+        />
 
-            <LinearLayout
-                android:id="@+id/section_times_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                style="@style/SecondaryMetadataTextStyle">
-            </LinearLayout>
+    <LinearLayout
+        android:id="@+id/section_times_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/SecondaryMetadataTextStyle"
+        >
+    </LinearLayout>
 
-        </LinearLayout>
+  </LinearLayout>
 
-    <View
-        style="@style/divider.metadata"
-        android:layout_below="@+id/section_times_wrapper" />
+  <View
+      style="@style/divider.metadata"
+      android:layout_below="@+id/section_times_wrapper"
+      />
 
 </RelativeLayout>

@@ -13,7 +13,8 @@
     android:paddingBottom="8dp"
     android:orientation="vertical"
     android:paddingLeft="@dimen/start_keyline"
-    tools:background="@android:color/white">
+    tools:background="@android:color/white"
+    >
 
 
 </LinearLayout>

@@ -10,51 +10,59 @@
     android:paddingTop="16dp"
     android:paddingBottom="4dp"
     android:paddingRight="@dimen/default_margin"
-    tools:background="@android:color/white">
+    tools:background="@android:color/white"
+    >
 
-    <include layout="@layout/section_item_circle"
-        android:id="@+id/section_number_background" />
+  <include
+      layout="@layout/section_item_circle"
+      android:id="@+id/section_number_background"
+      />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="@dimen/start_keyline"
+      >
+
+    <include
+        layout="@layout/section_item_time_container"
+        android:id="@+id/section_item_time_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/start_keyline">
+        android:layout_below="@+id/fsl_divider"
+        />
 
-        <include
-            layout="@layout/section_item_time_container"
-            android:id="@+id/section_item_time_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fsl_divider" />
+    <TextView
+        android:id="@+id/course_title_text"
+        android:text="Computer Science | Computer &amp; Programming I"
+        tools:ignore="HardcodedText"
+        style="@style/PrimaryTextStyle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:paddingBottom="4dp"
+        />
 
-        <TextView
-            android:id="@+id/course_title_text"
-            android:text="Computer Science | Computer &amp; Programming I"
-            tools:ignore="HardcodedText"
-            style="@style/PrimaryTextStyle"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentLeft="false"
-            android:paddingBottom="4dp" />
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fsl_divider"
+        android:layout_below="@+id/course_title_text"
+        android:layout_marginBottom="4dp"
+        style="@style/divider"
+        />
 
-        <View xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/fsl_divider"
-            android:layout_below="@+id/course_title_text"
-            android:layout_marginBottom="4dp"
-            style="@style/divider" />
-
-        <TextView
-            android:id="@+id/prof_text"
-            android:text="A EXAMPLE OF VERY LONG TEXT"
-            android:textColor="@color/secondary_text"
-            style="@style/SecondaryTextStyle"
-            android:layout_marginTop="2dp"
-            tools:ignore="HardcodedText"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/section_item_time_container"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/prof_text"
+        android:text="A EXAMPLE OF VERY LONG TEXT"
+        android:textColor="@color/secondary_text"
+        style="@style/SecondaryTextStyle"
+        android:layout_marginTop="2dp"
+        tools:ignore="HardcodedText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/section_item_time_container"
+        android:textStyle="bold"
+        />
+  </RelativeLayout>
 
 </RelativeLayout>

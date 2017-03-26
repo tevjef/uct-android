@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,10 +12,8 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
 import java.util.List;
-
 import okio.ByteString;
 
 public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
@@ -105,11 +102,41 @@ public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
   )
   public final List<Metadata> metadata;
 
-  public Meeting(@Nullable Long id, @Nullable Long section_id, @Nullable String room, @Nullable String day, @Nullable String start_time, @Nullable String end_time, @Nullable String class_type, @Nullable Integer index, List<Metadata> metadata) {
-    this(id, section_id, room, day, start_time, end_time, class_type, index, metadata, ByteString.EMPTY);
+  public Meeting(
+      @Nullable Long id,
+      @Nullable Long section_id,
+      @Nullable String room,
+      @Nullable String day,
+      @Nullable String start_time,
+      @Nullable String end_time,
+      @Nullable String class_type,
+      @Nullable Integer index,
+      List<Metadata> metadata) {
+    this(
+        id,
+        section_id,
+        room,
+        day,
+        start_time,
+        end_time,
+        class_type,
+        index,
+        metadata,
+        ByteString.EMPTY
+    );
   }
 
-  public Meeting(@Nullable Long id, @Nullable Long section_id, @Nullable String room, @Nullable String day, @Nullable String start_time, @Nullable String end_time, @Nullable String class_type, @Nullable Integer index, List<Metadata> metadata, ByteString unknownFields) {
+  public Meeting(
+      @Nullable Long id,
+      @Nullable Long section_id,
+      @Nullable String room,
+      @Nullable String day,
+      @Nullable String start_time,
+      @Nullable String end_time,
+      @Nullable String class_type,
+      @Nullable Integer index,
+      List<Metadata> metadata,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.section_id = section_id;
@@ -140,8 +167,12 @@ public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Meeting)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Meeting)) {
+      return false;
+    }
     Meeting o = (Meeting) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -177,15 +208,33 @@ public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (section_id != null) builder.append(", section_id=").append(section_id);
-    if (room != null) builder.append(", room=").append(room);
-    if (day != null) builder.append(", day=").append(day);
-    if (start_time != null) builder.append(", start_time=").append(start_time);
-    if (end_time != null) builder.append(", end_time=").append(end_time);
-    if (class_type != null) builder.append(", class_type=").append(class_type);
-    if (index != null) builder.append(", index=").append(index);
-    if (!metadata.isEmpty()) builder.append(", metadata=").append(metadata);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (section_id != null) {
+      builder.append(", section_id=").append(section_id);
+    }
+    if (room != null) {
+      builder.append(", room=").append(room);
+    }
+    if (day != null) {
+      builder.append(", day=").append(day);
+    }
+    if (start_time != null) {
+      builder.append(", start_time=").append(start_time);
+    }
+    if (end_time != null) {
+      builder.append(", end_time=").append(end_time);
+    }
+    if (class_type != null) {
+      builder.append(", class_type=").append(class_type);
+    }
+    if (index != null) {
+      builder.append(", index=").append(index);
+    }
+    if (!metadata.isEmpty()) {
+      builder.append(", metadata=").append(metadata);
+    }
     return builder.replace(0, 2, "Meeting{").append('}').toString();
   }
 
@@ -260,7 +309,18 @@ public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
 
     @Override
     public Meeting build() {
-      return new Meeting(id, section_id, room, day, start_time, end_time, class_type, index, metadata, super.buildUnknownFields());
+      return new Meeting(
+          id,
+          section_id,
+          room,
+          day,
+          start_time,
+          end_time,
+          class_type,
+          index,
+          metadata,
+          super.buildUnknownFields()
+      );
     }
   }
 
@@ -272,12 +332,15 @@ public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
     @Override
     public int encodedSize(Meeting value) {
       return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
-          + (value.section_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.section_id) : 0)
+          + (value.section_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.section_id)
+                                      : 0)
           + (value.room != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.room) : 0)
           + (value.day != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.day) : 0)
-          + (value.start_time != null ? ProtoAdapter.STRING.encodedSizeWithTag(5, value.start_time) : 0)
+          + (value.start_time != null ? ProtoAdapter.STRING.encodedSizeWithTag(5, value.start_time)
+                                      : 0)
           + (value.end_time != null ? ProtoAdapter.STRING.encodedSizeWithTag(6, value.end_time) : 0)
-          + (value.class_type != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.class_type) : 0)
+          + (value.class_type != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.class_type)
+                                      : 0)
           + (value.index != null ? ProtoAdapter.INT32.encodedSizeWithTag(8, value.index) : 0)
           + Metadata.ADAPTER.asRepeated().encodedSizeWithTag(9, value.metadata)
           + value.unknownFields().size();
@@ -285,14 +348,30 @@ public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
 
     @Override
     public void encode(ProtoWriter writer, Meeting value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.section_id != null) ProtoAdapter.INT64.encodeWithTag(writer, 2, value.section_id);
-      if (value.room != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.room);
-      if (value.day != null) ProtoAdapter.STRING.encodeWithTag(writer, 4, value.day);
-      if (value.start_time != null) ProtoAdapter.STRING.encodeWithTag(writer, 5, value.start_time);
-      if (value.end_time != null) ProtoAdapter.STRING.encodeWithTag(writer, 6, value.end_time);
-      if (value.class_type != null) ProtoAdapter.STRING.encodeWithTag(writer, 7, value.class_type);
-      if (value.index != null) ProtoAdapter.INT32.encodeWithTag(writer, 8, value.index);
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.section_id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 2, value.section_id);
+      }
+      if (value.room != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.room);
+      }
+      if (value.day != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 4, value.day);
+      }
+      if (value.start_time != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 5, value.start_time);
+      }
+      if (value.end_time != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 6, value.end_time);
+      }
+      if (value.class_type != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 7, value.class_type);
+      }
+      if (value.index != null) {
+        ProtoAdapter.INT32.encodeWithTag(writer, 8, value.index);
+      }
       Metadata.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.metadata);
       writer.writeBytes(value.unknownFields());
     }
@@ -301,17 +380,35 @@ public final class Meeting extends AndroidMessage<Meeting, Meeting.Builder> {
     public Meeting decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.section_id(ProtoAdapter.INT64.decode(reader)); break;
-          case 3: builder.room(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.day(ProtoAdapter.STRING.decode(reader)); break;
-          case 5: builder.start_time(ProtoAdapter.STRING.decode(reader)); break;
-          case 6: builder.end_time(ProtoAdapter.STRING.decode(reader)); break;
-          case 7: builder.class_type(ProtoAdapter.STRING.decode(reader)); break;
-          case 8: builder.index(ProtoAdapter.INT32.decode(reader)); break;
-          case 9: builder.metadata.add(Metadata.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.section_id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 3:
+            builder.room(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.day(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 5:
+            builder.start_time(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 6:
+            builder.end_time(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 7:
+            builder.class_type(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 8:
+            builder.index(ProtoAdapter.INT32.decode(reader));
+            break;
+          case 9:
+            builder.metadata.add(Metadata.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -1,44 +1,49 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!-- SearchManager, should appear as action button -->
-    <!--    <item android:id="@+id/action_add"
-            android:icon="@drawable/ic_add_white"
-            android:title="@string/add_section"
-            android:titleCondensed="@string/add_section"
-            app:showAsAction="withText|ifRoom" />-->
-    <item
-        android:id="@+id/action_webreg"
-        android:title="@string/action_webreg"
-        android:titleCondensed="@string/action_webreg"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_refresh_white_24dp"
-        android:title="@string/action_refresh"
-        android:titleCondensed="@string/action_refresh"
-        app:showAsAction="ifRoom" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+  <!-- SearchManager, should appear as action button -->
+  <!--    <item android:id="@+id/action_add"
+          android:icon="@drawable/ic_add_white"
+          android:title="@string/add_section"
+          android:titleCondensed="@string/add_section"
+          app:showAsAction="withText|ifRoom" />-->
+  <item
+      android:id="@+id/action_webreg"
+      android:title="@string/action_webreg"
+      android:titleCondensed="@string/action_webreg"
+      app:showAsAction="never"
+      />
+  <item
+      android:id="@+id/action_refresh"
+      android:icon="@drawable/ic_refresh_white_24dp"
+      android:title="@string/action_refresh"
+      android:titleCondensed="@string/action_refresh"
+      app:showAsAction="ifRoom"
+      />
 
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_white"
-        android:title="@string/action_settings"
-        android:titleCondensed="@string/action_settings"
-        app:showAsAction="never" />
+  <item
+      android:id="@+id/action_settings"
+      android:icon="@drawable/ic_settings_white"
+      android:title="@string/action_settings"
+      android:titleCondensed="@string/action_settings"
+      app:showAsAction="never"
+      />
 
-    <item
-        android:id="@+id/action_rate"
-        android:title="@string/action_rate"
-        android:titleCondensed="@string/action_rate"
-        app:showAsAction="never" />
-
-
-    <!--   <item android:id="@+id/action_feedback"
-           android:title="@string/action_feedback"
-           android:titleCondensed="@string/action_feedback"
-           app:showAsAction="never" />-->
+  <item
+      android:id="@+id/action_rate"
+      android:title="@string/action_rate"
+      android:titleCondensed="@string/action_rate"
+      app:showAsAction="never"
+      />
 
 
-    <!-- Settings, should always be in the overflow -->
+  <!--   <item android:id="@+id/action_feedback"
+         android:title="@string/action_feedback"
+         android:titleCondensed="@string/action_feedback"
+         app:showAsAction="never" />-->
+
+
+  <!-- Settings, should always be in the overflow -->
 
 
 </menu>

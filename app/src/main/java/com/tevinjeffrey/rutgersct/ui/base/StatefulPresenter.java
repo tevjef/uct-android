@@ -5,12 +5,11 @@ import android.support.annotation.NonNull;
 
 public interface StatefulPresenter {
 
-    void onActivityCreated(Bundle savedInstanceState);
+  void onActivityCreated(Bundle savedInstanceState);
 
-    void onPause();
+  void onPause();
 
-    void onResume();
+  void onResume();
 
-    void onSaveInstanceState(@NonNull Bundle bundle);
-
+  void onSaveInstanceState(@NonNull Bundle bundle);
 }

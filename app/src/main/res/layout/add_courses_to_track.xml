@@ -7,24 +7,27 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     tools:visibility="visible"
-    android:visibility="gone">
+    android:visibility="gone"
+    >
 
-    <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-        android:id="@+id/imageView2"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:tint="@color/accent_light"
-        android:contentDescription="@string/content_description_large_tracking_icon"
-        android:src="@drawable/ic_track_changes_large_black" />
+  <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+      android:id="@+id/imageView2"
+      android:layout_width="160dp"
+      android:layout_height="160dp"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:tint="@color/accent_light"
+      android:contentDescription="@string/content_description_large_tracking_icon"
+      android:src="@drawable/ic_track_changes_large_black"
+      />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_below="@+id/imageView2"
-        android:layout_centerHorizontal="true"
-        android:text="Add some courses to track"
-        style="@style/SecondaryTextStyle"/>
+  <TextView
+      android:id="@+id/textView"
+      android:layout_below="@+id/imageView2"
+      android:layout_centerHorizontal="true"
+      android:text="Add some courses to track"
+      style="@style/SecondaryTextStyle"
+      />
 </RelativeLayout>
 
 

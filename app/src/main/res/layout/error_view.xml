@@ -10,36 +10,40 @@
     android:visibility="gone"
     tools:visibility="visible"
     tools:showIn="@layout/fragment_tracked_sections"
-    android:gravity="center">
+    android:gravity="center"
+    >
 
-    <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/error_icon"
-        android:layout_centerInParent="true"
-        android:tint="?attr/colorPrimary"
-        android:src="@drawable/ic_cloud_error" />
+  <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/error_icon"
+      android:layout_centerInParent="true"
+      android:tint="?attr/colorPrimary"
+      android:src="@drawable/ic_cloud_error"
+      />
 
-    <TextView
-        android:text="@string/empty_view"
-        android:id="@+id/text"
-        style="@style/SecondaryTextStyle"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/error_icon"
-        android:layout_alignParentStart="false"
-        android:layout_marginTop="-12dp" />
+  <TextView
+      android:text="@string/empty_view"
+      android:id="@+id/text"
+      style="@style/SecondaryTextStyle"
+      android:layout_centerHorizontal="true"
+      android:layout_below="@+id/error_icon"
+      android:layout_alignParentStart="false"
+      android:layout_marginTop="-12dp"
+      />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="TRY AGAIN"
-        android:id="@+id/try_again"
-        android:layout_below="@+id/text"
-        android:layout_centerHorizontal="true"
-        android:textColor="?attr/colorAccent"
-        android:textStyle="bold"
-        android:padding="@dimen/default_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_alignParentBottom="false" />
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:text="TRY AGAIN"
+      android:id="@+id/try_again"
+      android:layout_below="@+id/text"
+      android:layout_centerHorizontal="true"
+      android:textColor="?attr/colorAccent"
+      android:textStyle="bold"
+      android:padding="@dimen/default_margin"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:layout_alignParentBottom="false"
+      />
 </LinearLayout>

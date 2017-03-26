@@ -15,7 +15,6 @@ package com.tevinjeffrey.rutgersct.ui.utils;
  * limitations under the License.
  */
 
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
@@ -30,133 +29,138 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
 public class RevealTransition extends Visibility {
-    public RevealTransition() {
-    }
+  public RevealTransition() {
+  }
 
-    public RevealTransition(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+  public RevealTransition(Context context, AttributeSet attrs) {
+    super(context, attrs);
+  }
 
-    static float calculateMaxRadius(View view) {
-        float widthSquared = view.getWidth() * view.getWidth();
-        float heightSquared = view.getHeight() * view.getHeight();
-        float radius = (float) (Math.sqrt(widthSquared + heightSquared) / 2);
-        return radius;
+  static float calculateMaxRadius(View view) {
+    float widthSquared = view.getWidth() * view.getWidth();
+    float heightSquared = view.getHeight() * view.getHeight();
+    float radius = (float) (Math.sqrt(widthSquared + heightSquared) / 2);
+    return radius;
+  }
+
+  @Override
+  public Animator onAppear(
+      ViewGroup sceneRoot, final View view, TransitionValues startValues,
+      TransitionValues endValues) {
+    float radius = calculateMaxRadius(view);
+    final float originalAlpha = view.getAlpha();
+    view.setAlpha(0f);
+
+    float startRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+        40,
+        view.getContext().getResources().getDisplayMetrics()
+    );
+
+    Animator reveal = createAnimator(view, startRadius, radius);
+    reveal.addListener(new AnimatorListenerAdapter() {
+      @Override
+      public void onAnimationStart(Animator animation) {
+        view.setAlpha(originalAlpha);
+      }
+    });
+    return reveal;
+  }
+
+  @Override
+  public Animator onDisappear(
+      ViewGroup sceneRoot, View view, TransitionValues startValues,
+      TransitionValues endValues) {
+    float radius = calculateMaxRadius(view);
+    return createAnimator(view, radius, 0);
+  }
+
+  private Animator createAnimator(View view, float startRadius, float endRadius) {
+    int centerX = view.getWidth() / 2;
+    int centerY = view.getHeight() / 2;
+
+    Animator reveal = ViewAnimationUtils.createCircularReveal(view, centerX, centerY,
+        startRadius, endRadius
+    );
+    return new NoPauseAnimator(reveal);
+  }
+
+  private static class NoPauseAnimator extends Animator {
+    private final Animator mAnimator;
+    private final ArrayMap<AnimatorListener, AnimatorListener> mListeners =
+        new ArrayMap<AnimatorListener, AnimatorListener>();
+
+    public NoPauseAnimator(Animator animator) {
+      mAnimator = animator;
     }
 
     @Override
-    public Animator onAppear(ViewGroup sceneRoot, final View view, TransitionValues startValues,
-                             TransitionValues endValues) {
-        float radius = calculateMaxRadius(view);
-        final float originalAlpha = view.getAlpha();
-        view.setAlpha(0f);
-
-        float startRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, view.getContext().getResources().getDisplayMetrics());
-
-        Animator reveal = createAnimator(view, startRadius, radius);
-        reveal.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                view.setAlpha(originalAlpha);
-            }
-        });
-        return reveal;
+    public void addListener(AnimatorListener listener) {
+      AnimatorListener wrapper = new AnimatorListenerWrapper(this, listener);
+      if (!mListeners.containsKey(listener)) {
+        mListeners.put(listener, wrapper);
+        mAnimator.addListener(wrapper);
+      }
     }
 
     @Override
-    public Animator onDisappear(ViewGroup sceneRoot, View view, TransitionValues startValues,
-                                TransitionValues endValues) {
-        float radius = calculateMaxRadius(view);
-        return createAnimator(view, radius, 0);
+    public void cancel() {
+      mAnimator.cancel();
     }
 
-    private Animator createAnimator(View view, float startRadius, float endRadius) {
-        int centerX = view.getWidth() / 2;
-        int centerY = view.getHeight() / 2;
-
-        Animator reveal = ViewAnimationUtils.createCircularReveal(view, centerX, centerY,
-                startRadius, endRadius);
-        return new NoPauseAnimator(reveal);
+    @Override
+    public void end() {
+      mAnimator.end();
     }
 
-    private static class NoPauseAnimator extends Animator {
-        private final Animator mAnimator;
-        private final ArrayMap<AnimatorListener, AnimatorListener> mListeners =
-                new ArrayMap<AnimatorListener, AnimatorListener>();
+    @Override
+    public long getDuration() {
+      return mAnimator.getDuration();
+    }
 
-        public NoPauseAnimator(Animator animator) {
-            mAnimator = animator;
-        }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @Override
+    public TimeInterpolator getInterpolator() {
+      return mAnimator.getInterpolator();
+    }
 
-        @Override
-        public void addListener(AnimatorListener listener) {
-            AnimatorListener wrapper = new AnimatorListenerWrapper(this, listener);
-            if (!mListeners.containsKey(listener)) {
-                mListeners.put(listener, wrapper);
-                mAnimator.addListener(wrapper);
-            }
-        }
+    @Override
+    public void setInterpolator(TimeInterpolator timeInterpolator) {
+      mAnimator.setInterpolator(timeInterpolator);
+    }
 
-        @Override
-        public void cancel() {
-            mAnimator.cancel();
-        }
+    @Override
+    public ArrayList<AnimatorListener> getListeners() {
+      return new ArrayList<AnimatorListener>(mListeners.keySet());
+    }
 
-        @Override
-        public void end() {
-            mAnimator.end();
-        }
+    @Override
+    public long getStartDelay() {
+      return mAnimator.getStartDelay();
+    }
 
-        @Override
-        public long getDuration() {
-            return mAnimator.getDuration();
-        }
+    @Override
+    public void setStartDelay(long delayMS) {
+      mAnimator.setStartDelay(delayMS);
+    }
 
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-        @Override
-        public TimeInterpolator getInterpolator() {
-            return mAnimator.getInterpolator();
-        }
+    @Override
+    public boolean isPaused() {
+      return mAnimator.isPaused();
+    }
 
-        @Override
-        public void setInterpolator(TimeInterpolator timeInterpolator) {
-            mAnimator.setInterpolator(timeInterpolator);
-        }
+    @Override
+    public boolean isRunning() {
+      return mAnimator.isRunning();
+    }
 
-        @Override
-        public ArrayList<AnimatorListener> getListeners() {
-            return new ArrayList<AnimatorListener>(mListeners.keySet());
-        }
-
-        @Override
-        public long getStartDelay() {
-            return mAnimator.getStartDelay();
-        }
-
-        @Override
-        public void setStartDelay(long delayMS) {
-            mAnimator.setStartDelay(delayMS);
-        }
-
-        @Override
-        public boolean isPaused() {
-            return mAnimator.isPaused();
-        }
-
-        @Override
-        public boolean isRunning() {
-            return mAnimator.isRunning();
-        }
-
-        @Override
-        public boolean isStarted() {
-            return mAnimator.isStarted();
-        }
+    @Override
+    public boolean isStarted() {
+      return mAnimator.isStarted();
+    }
 
 
 /* We don't want to override pause or resume methods because we don't want them
@@ -170,76 +174,76 @@ public class RevealTransition extends Visibility {
         public void removePauseListener(AnimatorPauseListener mListener);
         */
 
-        @Override
-        public void removeAllListeners() {
-            mListeners.clear();
-            mAnimator.removeAllListeners();
-        }
-
-        @Override
-        public void removeListener(AnimatorListener listener) {
-            AnimatorListener wrapper = mListeners.get(listener);
-            if (wrapper != null) {
-                mListeners.remove(listener);
-                mAnimator.removeListener(wrapper);
-            }
-        }
-
-        @Override
-        public Animator setDuration(long durationMS) {
-            mAnimator.setDuration(durationMS);
-            return this;
-        }
-
-        @Override
-        public void setTarget(Object target) {
-            mAnimator.setTarget(target);
-        }
-
-        @Override
-        public void setupEndValues() {
-            mAnimator.setupEndValues();
-        }
-
-        @Override
-        public void setupStartValues() {
-            mAnimator.setupStartValues();
-        }
-
-        @Override
-        public void start() {
-            mAnimator.start();
-        }
+    @Override
+    public void removeAllListeners() {
+      mListeners.clear();
+      mAnimator.removeAllListeners();
     }
 
-    private static class AnimatorListenerWrapper implements Animator.AnimatorListener {
-        private final Animator mAnimator;
-        private final Animator.AnimatorListener mListener;
-
-        public AnimatorListenerWrapper(Animator animator, Animator.AnimatorListener listener) {
-            mAnimator = animator;
-            mListener = listener;
-        }
-
-        @Override
-        public void onAnimationStart(Animator animator) {
-            mListener.onAnimationStart(mAnimator);
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animator) {
-            mListener.onAnimationEnd(mAnimator);
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animator) {
-            mListener.onAnimationCancel(mAnimator);
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animator) {
-            mListener.onAnimationRepeat(mAnimator);
-        }
+    @Override
+    public void removeListener(AnimatorListener listener) {
+      AnimatorListener wrapper = mListeners.get(listener);
+      if (wrapper != null) {
+        mListeners.remove(listener);
+        mAnimator.removeListener(wrapper);
+      }
     }
+
+    @Override
+    public Animator setDuration(long durationMS) {
+      mAnimator.setDuration(durationMS);
+      return this;
+    }
+
+    @Override
+    public void setTarget(Object target) {
+      mAnimator.setTarget(target);
+    }
+
+    @Override
+    public void setupEndValues() {
+      mAnimator.setupEndValues();
+    }
+
+    @Override
+    public void setupStartValues() {
+      mAnimator.setupStartValues();
+    }
+
+    @Override
+    public void start() {
+      mAnimator.start();
+    }
+  }
+
+  private static class AnimatorListenerWrapper implements Animator.AnimatorListener {
+    private final Animator mAnimator;
+    private final Animator.AnimatorListener mListener;
+
+    public AnimatorListenerWrapper(Animator animator, Animator.AnimatorListener listener) {
+      mAnimator = animator;
+      mListener = listener;
+    }
+
+    @Override
+    public void onAnimationStart(Animator animator) {
+      mListener.onAnimationStart(mAnimator);
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animator) {
+      mListener.onAnimationEnd(mAnimator);
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animator) {
+      mListener.onAnimationCancel(mAnimator);
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animator) {
+      mListener.onAnimationRepeat(mAnimator);
+    }
+  }
 }
 

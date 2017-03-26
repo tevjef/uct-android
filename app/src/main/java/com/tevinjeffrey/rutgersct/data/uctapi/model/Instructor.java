@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,9 +12,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
 import okio.ByteString;
 
 public final class Instructor extends AndroidMessage<Instructor, Instructor.Builder> {
@@ -61,11 +58,20 @@ public final class Instructor extends AndroidMessage<Instructor, Instructor.Buil
   @Nullable
   public final Integer index;
 
-  public Instructor(@Nullable Long id, @Nullable Long section_id, @Nullable String name, @Nullable Integer index) {
+  public Instructor(
+      @Nullable Long id,
+      @Nullable Long section_id,
+      @Nullable String name,
+      @Nullable Integer index) {
     this(id, section_id, name, index, ByteString.EMPTY);
   }
 
-  public Instructor(@Nullable Long id, @Nullable Long section_id, @Nullable String name, @Nullable Integer index, ByteString unknownFields) {
+  public Instructor(
+      @Nullable Long id,
+      @Nullable Long section_id,
+      @Nullable String name,
+      @Nullable Integer index,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.section_id = section_id;
@@ -86,8 +92,12 @@ public final class Instructor extends AndroidMessage<Instructor, Instructor.Buil
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Instructor)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Instructor)) {
+      return false;
+    }
     Instructor o = (Instructor) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -113,10 +123,18 @@ public final class Instructor extends AndroidMessage<Instructor, Instructor.Buil
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (section_id != null) builder.append(", section_id=").append(section_id);
-    if (name != null) builder.append(", name=").append(name);
-    if (index != null) builder.append(", index=").append(index);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (section_id != null) {
+      builder.append(", section_id=").append(section_id);
+    }
+    if (name != null) {
+      builder.append(", name=").append(name);
+    }
+    if (index != null) {
+      builder.append(", index=").append(index);
+    }
     return builder.replace(0, 2, "Instructor{").append('}').toString();
   }
 
@@ -166,7 +184,8 @@ public final class Instructor extends AndroidMessage<Instructor, Instructor.Buil
     @Override
     public int encodedSize(Instructor value) {
       return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
-          + (value.section_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.section_id) : 0)
+          + (value.section_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.section_id)
+                                      : 0)
           + (value.name != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.name) : 0)
           + (value.index != null ? ProtoAdapter.INT32.encodedSizeWithTag(4, value.index) : 0)
           + value.unknownFields().size();
@@ -174,10 +193,18 @@ public final class Instructor extends AndroidMessage<Instructor, Instructor.Buil
 
     @Override
     public void encode(ProtoWriter writer, Instructor value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.section_id != null) ProtoAdapter.INT64.encodeWithTag(writer, 2, value.section_id);
-      if (value.name != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.name);
-      if (value.index != null) ProtoAdapter.INT32.encodeWithTag(writer, 4, value.index);
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.section_id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 2, value.section_id);
+      }
+      if (value.name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.name);
+      }
+      if (value.index != null) {
+        ProtoAdapter.INT32.encodeWithTag(writer, 4, value.index);
+      }
       writer.writeBytes(value.unknownFields());
     }
 
@@ -185,12 +212,20 @@ public final class Instructor extends AndroidMessage<Instructor, Instructor.Buil
     public Instructor decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.section_id(ProtoAdapter.INT64.decode(reader)); break;
-          case 3: builder.name(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.index(ProtoAdapter.INT32.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.section_id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 3:
+            builder.name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.index(ProtoAdapter.INT32.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -6,18 +6,18 @@ import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
 public abstract class RxBus<T> {
-    private Subject<T, T> bus;
+  private Subject<T, T> bus;
 
-    public RxBus() {
-        final PublishSubject<T> publishSubject = PublishSubject.create();
-        bus = new SerializedSubject<>(publishSubject);
-    }
+  public RxBus() {
+    final PublishSubject<T> publishSubject = PublishSubject.create();
+    bus = new SerializedSubject<>(publishSubject);
+  }
 
-    public void send(T event) {
-        bus.onNext(event);
-    }
+  public void send(T event) {
+    bus.onNext(event);
+  }
 
-    public Observable<T> asObservable() {
-        return bus.asObservable();
-    }
+  public Observable<T> asObservable() {
+    return bus.asObservable();
+  }
 }

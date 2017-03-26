@@ -8,95 +8,98 @@ import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-
 import java.util.List;
-
 import javax.inject.Inject;
-
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 
 public class CoursePresenterImpl extends BasePresenter implements CoursePresenter {
 
-    private static final String TAG = CoursePresenterImpl.class.getSimpleName();
-    private final SearchFlow searchFlow;
+  private static final String TAG = CoursePresenterImpl.class.getSimpleName();
+  private final SearchFlow searchFlow;
 
-    @Inject
-    RetroUCT mRetroUCT;
-    @Inject
-    @AndroidMainThread
-    Scheduler mMainThread;
-    @Inject
-    @BackgroundThread
-    Scheduler mBackgroundThread;
+  @Inject
+  RetroUCT mRetroUCT;
+  @Inject
+  @AndroidMainThread
+  Scheduler mMainThread;
+  @Inject
+  @BackgroundThread
+  Scheduler mBackgroundThread;
 
-    private Subscription mSubscription;
-    private boolean isLoading;
+  private Subscription mSubscription;
+  private boolean isLoading;
 
-    public CoursePresenterImpl(SearchFlow searchFlow) {
-        this.searchFlow = searchFlow;
+  public CoursePresenterImpl(SearchFlow searchFlow) {
+    this.searchFlow = searchFlow;
+  }
+
+  @Override
+  public void loadCourses(boolean pullToRefresh) {
+    if (getView() != null) {
+      getView().showLoading(pullToRefresh);
     }
 
-    @Override
-    public void loadCourses(boolean pullToRefresh) {
-        if (getView() != null)
-            getView().showLoading(pullToRefresh);
+    cancePreviousSubscription();
 
-        cancePreviousSubscription();
+    Subscriber<List<Course>> mSubscriber = new Subscriber<List<Course>>() {
+      @Override
+      public void onCompleted() {
+        if (getView() != null) {
+          getView().showLoading(false);
+        }
+      }
 
-        Subscriber<List<Course>> mSubscriber = new Subscriber<List<Course>>() {
-            @Override
-            public void onCompleted() {
-                if (getView() != null)
-                    getView().showLoading(false);
-            }
+      @Override
+      public void onError(Throwable e) {
+        //Removes the animated loading drawable
+        if (getView() != null) {
+          getView().showLoading(false);
+        }
+        //Lets the view decide what to display depending on what type of exception it is.
+        if (getView() != null) {
+          getView().showError(e);
+        }
+      }
 
-            @Override
-            public void onError(Throwable e) {
-                //Removes the animated loading drawable
-                if (getView() != null)
-                    getView().showLoading(false);
-                //Lets the view decide what to display depending on what type of exception it is.
-                if (getView() != null)
-                    getView().showError(e);
-            }
+      @Override
+      public void onNext(List<Course> courseList) {
+        if (getView() != null) {
+          getView().setData(courseList);
+        }
 
-            @Override
-            public void onNext(List<Course> courseList) {
-                if (getView() != null)
-                    getView().setData(courseList);
+        if (courseList.size() > 0) {
+          if (getView() != null) {
+            getView().showLayout(View.LayoutType.LIST);
+          }
+        }
+      }
+    };
 
-                if (courseList.size() > 0) {
-                    if (getView() != null)
-                        getView().showLayout(View.LayoutType.LIST);
-                }
-            }
-        };
+    mSubscription = mRetroUCT.getCourses(searchFlow)
+        .doOnSubscribe(() -> isLoading = true)
+        .doOnTerminate(() -> isLoading = false)
+        .subscribeOn(mBackgroundThread)
+        .observeOn(mMainThread)
+        .subscribe(mSubscriber);
+  }
 
-        mSubscription = mRetroUCT.getCourses(searchFlow)
-                .doOnSubscribe(() -> isLoading = true)
-                .doOnTerminate(() -> isLoading = false)
-                .subscribeOn(mBackgroundThread)
-                .observeOn(mMainThread)
-                .subscribe(mSubscriber);
-    }
+  private void cancePreviousSubscription() {
+    RxUtils.unsubscribeIfNotNull(mSubscription);
+  }
 
-    private void cancePreviousSubscription() {
-        RxUtils.unsubscribeIfNotNull(mSubscription);
-    }
+  public CourseView getView() {
+    return (CourseView) super.getView();
+  }
 
-    public CourseView getView() {
-        return (CourseView) super.getView();
-    }
+  @Override
+  public boolean isLoading() {
+    return isLoading;
+  }
 
-    @Override
-    public boolean isLoading() {
-        return isLoading;
-    }
-
-    @Override
-    public String toString() {
-        return TAG;
-    }
+  @Override
+  public String toString() {
+    return TAG;
+  }
 }

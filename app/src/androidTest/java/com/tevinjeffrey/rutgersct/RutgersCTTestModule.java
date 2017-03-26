@@ -7,30 +7,28 @@ import com.tevinjeffrey.rutgersct.ui.ChooserFragmentTest;
 import com.tevinjeffrey.rutgersct.ui.CourseFragmentTest;
 import com.tevinjeffrey.rutgersct.ui.SubjectFragmentTest;
 import com.tevinjeffrey.rutgersct.ui.TrackedSectionsFragmentTest;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Singleton;
 
 @Module(
-        injects = {
-                TrackedSectionsFragmentTest.class,
-                SubjectFragmentTest.class,
-                CourseFragmentTest.class,
-                ChooserFragmentTest.class
-}, overrides = true, library = true)
+    injects = {
+        TrackedSectionsFragmentTest.class,
+        SubjectFragmentTest.class,
+        CourseFragmentTest.class,
+        ChooserFragmentTest.class
+    }, overrides = true, library = true)
 
 public class RutgersCTTestModule {
-    @Provides
-    @Singleton
-    public DatabaseHandler providesDatabaseHandler(Bus bus) {
-        return new DatabaseHandlerImpl(bus);
-    }
+  @Provides
+  @Singleton
+  public DatabaseHandler providesDatabaseHandler(Bus bus) {
+    return new DatabaseHandlerImpl(bus);
+  }
 
-    @Provides
-    @Singleton
-    public Bus providesEventBus() {
-        return new Bus();
-    }
+  @Provides
+  @Singleton
+  public Bus providesEventBus() {
+    return new Bus();
+  }
 }

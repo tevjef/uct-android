@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,9 +12,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
 import okio.ByteString;
 
 public final class Semester extends AndroidMessage<Semester, Semester.Builder> {
@@ -64,8 +61,12 @@ public final class Semester extends AndroidMessage<Semester, Semester.Builder> {
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Semester)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Semester)) {
+      return false;
+    }
     Semester o = (Semester) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(year, o.year)
@@ -87,8 +88,12 @@ public final class Semester extends AndroidMessage<Semester, Semester.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (year != null) builder.append(", year=").append(year);
-    if (season != null) builder.append(", season=").append(season);
+    if (year != null) {
+      builder.append(", year=").append(year);
+    }
+    if (season != null) {
+      builder.append(", season=").append(season);
+    }
     return builder.replace(0, 2, "Semester{").append('}').toString();
   }
 
@@ -130,8 +135,12 @@ public final class Semester extends AndroidMessage<Semester, Semester.Builder> {
 
     @Override
     public void encode(ProtoWriter writer, Semester value) throws IOException {
-      if (value.year != null) ProtoAdapter.INT32.encodeWithTag(writer, 1, value.year);
-      if (value.season != null) ProtoAdapter.STRING.encodeWithTag(writer, 2, value.season);
+      if (value.year != null) {
+        ProtoAdapter.INT32.encodeWithTag(writer, 1, value.year);
+      }
+      if (value.season != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 2, value.season);
+      }
       writer.writeBytes(value.unknownFields());
     }
 
@@ -139,10 +148,14 @@ public final class Semester extends AndroidMessage<Semester, Semester.Builder> {
     public Semester decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.year(ProtoAdapter.INT32.decode(reader)); break;
-          case 2: builder.season(ProtoAdapter.STRING.decode(reader)); break;
+          case 1:
+            builder.year(ProtoAdapter.INT32.decode(reader));
+            break;
+          case 2:
+            builder.season(ProtoAdapter.STRING.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

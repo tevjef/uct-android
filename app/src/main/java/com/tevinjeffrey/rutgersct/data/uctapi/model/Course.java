@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,10 +12,8 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
 import java.util.List;
-
 import okio.ByteString;
 
 public final class Course extends AndroidMessage<Course, Course.Builder> {
@@ -103,11 +100,41 @@ public final class Course extends AndroidMessage<Course, Course.Builder> {
   )
   public final List<Metadata> metadata;
 
-  public Course(@Nullable Long id, @Nullable Long subject_id, @Nullable String name, @Nullable String number, @Nullable String synopsis, @Nullable String topic_name, @Nullable String topic_id, List<Section> sections, List<Metadata> metadata) {
-    this(id, subject_id, name, number, synopsis, topic_name, topic_id, sections, metadata, ByteString.EMPTY);
+  public Course(
+      @Nullable Long id,
+      @Nullable Long subject_id,
+      @Nullable String name,
+      @Nullable String number,
+      @Nullable String synopsis,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      List<Section> sections,
+      List<Metadata> metadata) {
+    this(
+        id,
+        subject_id,
+        name,
+        number,
+        synopsis,
+        topic_name,
+        topic_id,
+        sections,
+        metadata,
+        ByteString.EMPTY
+    );
   }
 
-  public Course(@Nullable Long id, @Nullable Long subject_id, @Nullable String name, @Nullable String number, @Nullable String synopsis, @Nullable String topic_name, @Nullable String topic_id, List<Section> sections, List<Metadata> metadata, ByteString unknownFields) {
+  public Course(
+      @Nullable Long id,
+      @Nullable Long subject_id,
+      @Nullable String name,
+      @Nullable String number,
+      @Nullable String synopsis,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      List<Section> sections,
+      List<Metadata> metadata,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.subject_id = subject_id;
@@ -138,8 +165,12 @@ public final class Course extends AndroidMessage<Course, Course.Builder> {
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Course)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Course)) {
+      return false;
+    }
     Course o = (Course) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -175,15 +206,33 @@ public final class Course extends AndroidMessage<Course, Course.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (subject_id != null) builder.append(", subject_id=").append(subject_id);
-    if (name != null) builder.append(", name=").append(name);
-    if (number != null) builder.append(", number=").append(number);
-    if (synopsis != null) builder.append(", synopsis=").append(synopsis);
-    if (topic_name != null) builder.append(", topic_name=").append(topic_name);
-    if (topic_id != null) builder.append(", topic_id=").append(topic_id);
-    if (!sections.isEmpty()) builder.append(", sections=").append(sections);
-    if (!metadata.isEmpty()) builder.append(", metadata=").append(metadata);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (subject_id != null) {
+      builder.append(", subject_id=").append(subject_id);
+    }
+    if (name != null) {
+      builder.append(", name=").append(name);
+    }
+    if (number != null) {
+      builder.append(", number=").append(number);
+    }
+    if (synopsis != null) {
+      builder.append(", synopsis=").append(synopsis);
+    }
+    if (topic_name != null) {
+      builder.append(", topic_name=").append(topic_name);
+    }
+    if (topic_id != null) {
+      builder.append(", topic_id=").append(topic_id);
+    }
+    if (!sections.isEmpty()) {
+      builder.append(", sections=").append(sections);
+    }
+    if (!metadata.isEmpty()) {
+      builder.append(", metadata=").append(metadata);
+    }
     return builder.replace(0, 2, "Course{").append('}').toString();
   }
 
@@ -260,7 +309,18 @@ public final class Course extends AndroidMessage<Course, Course.Builder> {
 
     @Override
     public Course build() {
-      return new Course(id, subject_id, name, number, synopsis, topic_name, topic_id, sections, metadata, super.buildUnknownFields());
+      return new Course(
+          id,
+          subject_id,
+          name,
+          number,
+          synopsis,
+          topic_name,
+          topic_id,
+          sections,
+          metadata,
+          super.buildUnknownFields()
+      );
     }
   }
 
@@ -272,11 +332,13 @@ public final class Course extends AndroidMessage<Course, Course.Builder> {
     @Override
     public int encodedSize(Course value) {
       return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
-          + (value.subject_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.subject_id) : 0)
+          + (value.subject_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.subject_id)
+                                      : 0)
           + (value.name != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.name) : 0)
           + (value.number != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.number) : 0)
           + (value.synopsis != null ? ProtoAdapter.STRING.encodedSizeWithTag(5, value.synopsis) : 0)
-          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(6, value.topic_name) : 0)
+          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(6, value.topic_name)
+                                      : 0)
           + (value.topic_id != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.topic_id) : 0)
           + Section.ADAPTER.asRepeated().encodedSizeWithTag(8, value.sections)
           + Metadata.ADAPTER.asRepeated().encodedSizeWithTag(9, value.metadata)
@@ -285,13 +347,27 @@ public final class Course extends AndroidMessage<Course, Course.Builder> {
 
     @Override
     public void encode(ProtoWriter writer, Course value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.subject_id != null) ProtoAdapter.INT64.encodeWithTag(writer, 2, value.subject_id);
-      if (value.name != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.name);
-      if (value.number != null) ProtoAdapter.STRING.encodeWithTag(writer, 4, value.number);
-      if (value.synopsis != null) ProtoAdapter.STRING.encodeWithTag(writer, 5, value.synopsis);
-      if (value.topic_name != null) ProtoAdapter.STRING.encodeWithTag(writer, 6, value.topic_name);
-      if (value.topic_id != null) ProtoAdapter.STRING.encodeWithTag(writer, 7, value.topic_id);
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.subject_id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 2, value.subject_id);
+      }
+      if (value.name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.name);
+      }
+      if (value.number != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 4, value.number);
+      }
+      if (value.synopsis != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 5, value.synopsis);
+      }
+      if (value.topic_name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 6, value.topic_name);
+      }
+      if (value.topic_id != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 7, value.topic_id);
+      }
       Section.ADAPTER.asRepeated().encodeWithTag(writer, 8, value.sections);
       Metadata.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.metadata);
       writer.writeBytes(value.unknownFields());
@@ -301,17 +377,35 @@ public final class Course extends AndroidMessage<Course, Course.Builder> {
     public Course decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.subject_id(ProtoAdapter.INT64.decode(reader)); break;
-          case 3: builder.name(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.number(ProtoAdapter.STRING.decode(reader)); break;
-          case 5: builder.synopsis(ProtoAdapter.STRING.decode(reader)); break;
-          case 6: builder.topic_name(ProtoAdapter.STRING.decode(reader)); break;
-          case 7: builder.topic_id(ProtoAdapter.STRING.decode(reader)); break;
-          case 8: builder.sections.add(Section.ADAPTER.decode(reader)); break;
-          case 9: builder.metadata.add(Metadata.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.subject_id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 3:
+            builder.name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.number(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 5:
+            builder.synopsis(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 6:
+            builder.topic_name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 7:
+            builder.topic_id(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 8:
+            builder.sections.add(Section.ADAPTER.decode(reader));
+            break;
+          case 9:
+            builder.metadata.add(Metadata.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

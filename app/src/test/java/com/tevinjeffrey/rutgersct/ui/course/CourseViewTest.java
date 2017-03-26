@@ -18,14 +18,12 @@ package com.tevinjeffrey.rutgersct.ui.course;
 
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.List;
 
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.mock;
@@ -34,57 +32,56 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class CourseViewTest {
 
-    @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
-    CourseView courseView;
+  @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
+      CourseView courseView;
 
-    CourseViewState viewState;
+  CourseViewState viewState;
 
-    @Before
-    public void setUp() throws Exception {
-        viewState = new CourseViewState();
-    }
+  @Before
+  public void setUp() throws Exception {
+    viewState = new CourseViewState();
+  }
 
-    @Test
-    public void TestEssentialViewInit() throws Exception {
-        viewState.apply(courseView, true);
-        verify(courseView).initRecyclerView();
-        verify(courseView).initSwipeLayout();
-        verify(courseView).initToolbar();
-    }
+  @Test
+  public void TestEssentialViewInit() throws Exception {
+    viewState.apply(courseView, true);
+    verify(courseView).initRecyclerView();
+    verify(courseView).initSwipeLayout();
+    verify(courseView).initToolbar();
+  }
 
-    @Test
-    public void ShowLoading_GivenIsLoading() throws Exception {
-        viewState.isRefreshing = true;
-        viewState.apply(courseView, true);
-        verify(courseView).showLoading(true);
-    }
+  @Test
+  public void ShowLoading_GivenIsLoading() throws Exception {
+    viewState.isRefreshing = true;
+    viewState.apply(courseView, true);
+    verify(courseView).showLoading(true);
+  }
 
-    @Test
-    public void ShowData_GivenSomeData() throws Exception {
-        viewState.data = mock(List.class);
-        viewState.apply(courseView, true);
-        verify(courseView).setData(anyListOf(Course.class));
-    }
+  @Test
+  public void ShowData_GivenSomeData() throws Exception {
+    viewState.data = mock(List.class);
+    viewState.apply(courseView, true);
+    verify(courseView).setData(anyListOf(Course.class));
+  }
 
-    @Test
-    public void ShowLayout_Empty() throws Exception {
-        viewState.layoutType = View.LayoutType.EMPTY;
-        viewState.apply(courseView, true);
-        verify(courseView).showLayout(View.LayoutType.EMPTY);
-    }
+  @Test
+  public void ShowLayout_Empty() throws Exception {
+    viewState.layoutType = View.LayoutType.EMPTY;
+    viewState.apply(courseView, true);
+    verify(courseView).showLayout(View.LayoutType.EMPTY);
+  }
 
-    @Test
-    public void ShowLayout_List() throws Exception {
-        viewState.layoutType = View.LayoutType.LIST;
-        viewState.apply(courseView, true);
-        verify(courseView).showLayout(View.LayoutType.LIST);
-    }
+  @Test
+  public void ShowLayout_List() throws Exception {
+    viewState.layoutType = View.LayoutType.LIST;
+    viewState.apply(courseView, true);
+    verify(courseView).showLayout(View.LayoutType.LIST);
+  }
 
-    @Test
-    public void ShowLayout_Error() throws Exception {
-        viewState.layoutType = View.LayoutType.ERROR;
-        viewState.apply(courseView, true);
-        verify(courseView).showLayout(View.LayoutType.ERROR);
-    }
-
+  @Test
+  public void ShowLayout_Error() throws Exception {
+    viewState.layoutType = View.LayoutType.ERROR;
+    viewState.apply(courseView, true);
+    verify(courseView).showLayout(View.LayoutType.ERROR);
+  }
 }

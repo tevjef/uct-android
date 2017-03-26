@@ -27,106 +27,106 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.ImageView;
-
 import com.tevinjeffrey.rutgersct.R;
 
 @SuppressWarnings("ResourceType")
 public class TintImageView extends ImageView {
-    private static final int[] TINT_ATTRS = {
-            android.R.attr.background,
-            android.R.attr.src,
-            android.R.attr.tint,
-    };
-    @ColorInt
-    private int color;
+  private static final int[] TINT_ATTRS = {
+      android.R.attr.background,
+      android.R.attr.src,
+      android.R.attr.tint,
+  };
+  @ColorInt
+  private int color;
 
-    public TintImageView(Context context) {
-        this(context, null);
-    }
+  public TintImageView(Context context) {
+    this(context, null);
+  }
 
-    public TintImageView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
+  public TintImageView(Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
 
-    public TintImageView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        TypedArray a = getContext().obtainStyledAttributes(attrs, TINT_ATTRS,
-                defStyleAttr, 0);
+  public TintImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    TypedArray a = getContext().obtainStyledAttributes(attrs, TINT_ATTRS,
+        defStyleAttr, 0
+    );
 
-        color = fetchAccentColor();
+    color = fetchAccentColor();
 
-        Drawable drawable;
-        if (a.length() > 0) {
-            if (a.hasValue(2)) {
-                color = a.getColor(2, 0);
-            }
-            if (a.hasValue(0)) {
-                drawable = a.getDrawable(0);
-                tintDrawable(drawable, color);
-                setBackgroundDrawable(drawable);
-            }
-            if (a.hasValue(1)) {
-                drawable = a.getDrawable(1);
-                tintDrawable(drawable, color);
-                setImageDrawable(drawable);
-            }
-        }
-        a.recycle();
-    }
-
-    @Override
-    public void setBackgroundDrawable(Drawable background) {
-        setBackgroundDrawable(background, color);
-    }
-
-    public void setBackgroundDrawable(Drawable background, int color) {
-        setImageDrawable(background, color);
-    }
-
-    @Override
-    public void setImageResource(@DrawableRes int resId) {
-        Drawable drawable = getDrawable(resId);
-        setImageDrawable(drawable, color);
-    }
-
-    public void setImageResource(@DrawableRes int resId, @ColorInt int color) {
-        Drawable drawable = getDrawable(resId);
-        setImageDrawable(drawable, color);
-    }
-
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        setImageDrawable(drawable, color);
-    }
-
-    public void setImageDrawable(Drawable drawable, @ColorInt int color) {
+    Drawable drawable;
+    if (a.length() > 0) {
+      if (a.hasValue(2)) {
+        color = a.getColor(2, 0);
+      }
+      if (a.hasValue(0)) {
+        drawable = a.getDrawable(0);
         tintDrawable(drawable, color);
-        super.setImageDrawable(drawable);
+        setBackgroundDrawable(drawable);
+      }
+      if (a.hasValue(1)) {
+        drawable = a.getDrawable(1);
+        tintDrawable(drawable, color);
+        setImageDrawable(drawable);
+      }
+    }
+    a.recycle();
+  }
+
+  @Override
+  public void setBackgroundDrawable(Drawable background) {
+    setBackgroundDrawable(background, color);
+  }
+
+  public void setBackgroundDrawable(Drawable background, int color) {
+    setImageDrawable(background, color);
+  }
+
+  @Override
+  public void setImageResource(@DrawableRes int resId) {
+    Drawable drawable = getDrawable(resId);
+    setImageDrawable(drawable, color);
+  }
+
+  public void setImageResource(@DrawableRes int resId, @ColorInt int color) {
+    Drawable drawable = getDrawable(resId);
+    setImageDrawable(drawable, color);
+  }
+
+  @Override
+  public void setImageDrawable(Drawable drawable) {
+    setImageDrawable(drawable, color);
+  }
+
+  public void setImageDrawable(Drawable drawable, @ColorInt int color) {
+    tintDrawable(drawable, color);
+    super.setImageDrawable(drawable);
+  }
+
+  private Drawable getDrawable(int resId) {
+    return ContextCompat.getDrawable(getContext(), resId);
+  }
+
+  public Drawable tintDrawable(Drawable drawable, @ColorInt int color) {
+    Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+    DrawableCompat.setTint(wrappedDrawable, color);
+    DrawableCompat.setTintMode(wrappedDrawable, PorterDuff.Mode.SRC_IN);
+    return wrappedDrawable;
+  }
+
+  private int fetchAccentColor() {
+    int color = Color.DKGRAY;
+    try {
+      TypedValue typedValue = new TypedValue();
+      TypedArray a =
+          getContext().obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorAccent });
+      color = a.getColor(0, 0);
+      a.recycle();
+    } catch (Resources.NotFoundException e) {
+      e.printStackTrace();
     }
 
-    private Drawable getDrawable(int resId) {
-        return ContextCompat.getDrawable(getContext(), resId);
-    }
-
-    public Drawable tintDrawable(Drawable drawable, @ColorInt int color) {
-        Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTint(wrappedDrawable, color);
-        DrawableCompat.setTintMode(wrappedDrawable, PorterDuff.Mode.SRC_IN);
-        return wrappedDrawable;
-    }
-
-    private int fetchAccentColor() {
-        int color = Color.DKGRAY;
-        try {
-            TypedValue typedValue = new TypedValue();
-            TypedArray a = getContext().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
-            color = a.getColor(0, 0);
-            a.recycle();
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return color;
-    }
-
+    return color;
+  }
 }

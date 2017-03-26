@@ -7,4 +7,5 @@
     android:id="@+id/message"
     android:layout_centerInParent="true"
     android:padding="16dp"
-    android:gravity="center" />
+    android:gravity="center"
+    />

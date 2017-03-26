@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:ordering="together"
-    android:zAdjustment="top">
-    <objectAnimator
-        android:duration="@android:integer/config_mediumAnimTime"
-        android:interpolator="@android:interpolator/decelerate_quint"
-        android:propertyName="translationX"
-        android:valueFrom="400dp"
-        android:valueTo="0dp"
-        android:valueType="floatType" />
+    android:zAdjustment="top"
+    >
+  <objectAnimator
+      android:duration="@android:integer/config_mediumAnimTime"
+      android:interpolator="@android:interpolator/decelerate_quint"
+      android:propertyName="translationX"
+      android:valueFrom="400dp"
+      android:valueTo="0dp"
+      android:valueType="floatType"
+      />
 
 </set>

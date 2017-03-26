@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -39,113 +38,111 @@ import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.UCTNotification;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
-
 import java.io.IOException;
 import java.math.BigInteger;
-
 import javax.inject.Inject;
-
 import timber.log.Timber;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String SECTION_NOTIFICATION_GROUP = "SECTION_NOTIFICATION_GROUP";
+  private static final String SECTION_NOTIFICATION_GROUP = "SECTION_NOTIFICATION_GROUP";
 
-    @Inject
-    Gson gson;
+  @Inject
+  Gson gson;
 
-    @Inject
-    PreferenceUtils mPreferenceUtils;
+  @Inject
+  PreferenceUtils mPreferenceUtils;
 
-    private static final String TAG = "FirebaseMessagingSer";
+  private static final String TAG = "FirebaseMessagingSer";
 
+  public void onMessageReceived(RemoteMessage message) {
+    RutgersCTApp.getObjectGraph(this).inject(this);
 
-    public void onMessageReceived(RemoteMessage message) {
-        RutgersCTApp.getObjectGraph(this).inject(this);
+    String data = message.getData().get("message");
+    Timber.d(new StringBuilder().append("From: ").append(message.getFrom()).toString());
+    Timber.d(new StringBuilder().append("Message: ").append(data).toString());
 
-        String data = message.getData().get("message");
-        Timber.d(new StringBuilder().append("From: ").append(message.getFrom()).toString());
-        Timber.d(new StringBuilder().append("Message: ").append(data).toString());
-
-        if (data == null) {
-            handleGenericNotification(message);
-            return;
-        }
-
-        sendNotification(data);
+    if (data == null) {
+      handleGenericNotification(message);
+      return;
     }
 
+    sendNotification(data);
+  }
 
-    private void sendNotification(String message) {
-        UCTNotification uctNotification = null;
-        try {
-            uctNotification = gson.getAdapter(UCTNotification.class).fromJson(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        University university = uctNotification.university;
-        Subject subject = university.subjects.get(0);
-        Course course = subject.courses.get(0);
-        Section section = course.sections.get(0);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder;
-
-        String title;
-        String body;
-        int color;
-        if (uctNotification.status.equals("Open")) {
-            title = "A section has opened!";
-            body = "Section " + section.number + " of " + course.name + " has opened!";
-            color = R.color.green;
-        } else {
-            title = "A section has closed!";
-            body = "Section " + section.number + " of " + course.name + " has closed!";
-            color = R.color.red;
-        }
-
-        mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(body)
-                                .setBigContentTitle(course.name))
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setWhen(System.currentTimeMillis())
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setGroup(SECTION_NOTIFICATION_GROUP)
-                        .setColor(ContextCompat.getColor(this, color))
-                        .setAutoCancel(true)
-                        .setSound(getSound())
-                        .setContentTitle(title)
-                        .setContentText(body);
-
-        //Intent to start web browser
-        Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
-        openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
-        PendingIntent pOpenInBrowser = PendingIntent.getActivity(this, 0, openInBrowser, 0);
-        mBuilder.addAction(R.drawable.ic_open_in_browser_white_24dp, "Webreg", pOpenInBrowser);
-        mBuilder.setContentIntent(pOpenInBrowser);
-
-        notificationManager.notify(new BigInteger(String.valueOf(System.currentTimeMillis())).intValue(), mBuilder.build());
-
-        Answers.getInstance()
-                .logCustom(new CustomEvent("receive_notification")
-                        .putCustomAttribute("status", section.status)
-                        .putCustomAttribute("topic", section.topic_name));
-
-        Log.d("FCM message", message);
+  private void sendNotification(String message) {
+    UCTNotification uctNotification = null;
+    try {
+      uctNotification = gson.getAdapter(UCTNotification.class).fromJson(message);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    private void handleGenericNotification(RemoteMessage message) {
+    University university = uctNotification.university;
+    Subject subject = university.subjects.get(0);
+    Course course = subject.courses.get(0);
+    Section section = course.sections.get(0);
+
+    NotificationManager notificationManager =
+        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    NotificationCompat.Builder mBuilder;
+
+    String title;
+    String body;
+    int color;
+    if (uctNotification.status.equals("Open")) {
+      title = "A section has opened!";
+      body = "Section " + section.number + " of " + course.name + " has opened!";
+      color = R.color.green;
+    } else {
+      title = "A section has closed!";
+      body = "Section " + section.number + " of " + course.name + " has closed!";
+      color = R.color.red;
     }
 
-    private Uri getSound() {
-        if (mPreferenceUtils.getCanPlaySound()) {
-            return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        } else {
-            return null;
-        }
+    mBuilder =
+        new NotificationCompat.Builder(this)
+            .setStyle(new NotificationCompat.BigTextStyle()
+                .bigText(body)
+                .setBigContentTitle(course.name))
+            .setSmallIcon(R.drawable.ic_notification)
+            .setWhen(System.currentTimeMillis())
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setGroup(SECTION_NOTIFICATION_GROUP)
+            .setColor(ContextCompat.getColor(this, color))
+            .setAutoCancel(true)
+            .setSound(getSound())
+            .setContentTitle(title)
+            .setContentText(body);
+
+    //Intent to start web browser
+    Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
+    openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
+    PendingIntent pOpenInBrowser = PendingIntent.getActivity(this, 0, openInBrowser, 0);
+    mBuilder.addAction(R.drawable.ic_open_in_browser_white_24dp, "Webreg", pOpenInBrowser);
+    mBuilder.setContentIntent(pOpenInBrowser);
+
+    notificationManager.notify(
+        new BigInteger(String.valueOf(System.currentTimeMillis())).intValue(),
+        mBuilder.build()
+    );
+
+    Answers.getInstance()
+        .logCustom(new CustomEvent("receive_notification")
+            .putCustomAttribute("status", section.status)
+            .putCustomAttribute("topic", section.topic_name));
+
+    Log.d("FCM message", message);
+  }
+
+  private void handleGenericNotification(RemoteMessage message) {
+  }
+
+  private Uri getSound() {
+    if (mPreferenceUtils.getCanPlaySound()) {
+      return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    } else {
+      return null;
     }
+  }
 }

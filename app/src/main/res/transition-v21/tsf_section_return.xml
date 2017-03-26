@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
     android:transitionOrdering="together"
-    android:interpolator="@android:interpolator/fast_out_linear_in">
-    <transitionSet android:transitionOrdering="together">
-        <transition
-            class="com.tevinjeffrey.rutgersct.ui.utils.RevealTransition"
-            android:transitionVisibilityMode="mode_out">
-        </transition>
-        <targets>
-            <target android:targetId="@id/app_bar_layout"/>
-            <target android:targetName="@string/transition_name_tool_background"/>
+    android:interpolator="@android:interpolator/fast_out_linear_in"
+    >
+  <transitionSet android:transitionOrdering="together">
+    <transition
+        class="com.tevinjeffrey.rutgersct.ui.utils.RevealTransition"
+        android:transitionVisibilityMode="mode_out"
+        >
+    </transition>
+    <targets>
+      <target android:targetId="@id/app_bar_layout"/>
+      <target android:targetName="@string/transition_name_tool_background"/>
 
-            <target android:excludeId="@id/scrollView"/>
-        </targets>
-    </transitionSet>
+      <target android:excludeId="@id/scrollView"/>
+    </targets>
+  </transitionSet>
 
-    <transitionSet android:transitionOrdering="together">
-        <fade
-            android:fadingMode="fade_out"
-            android:duration="50">
-            <targets>
-                <target android:excludeId="@id/app_bar_layout"/>
-                <target android:excludeName="@string/transition_name_tool_background"/>
-            </targets>
-        </fade>
-    </transitionSet>
+  <transitionSet android:transitionOrdering="together">
+    <fade
+        android:fadingMode="fade_out"
+        android:duration="50"
+        >
+      <targets>
+        <target android:excludeId="@id/app_bar_layout"/>
+        <target android:excludeName="@string/transition_name_tool_background"/>
+      </targets>
+    </fade>
+  </transitionSet>
 
 </transitionSet>

@@ -9,178 +9,195 @@
     android:clickable="true"
     android:theme="@style/RutgersCT.ToolbarTheme"
     android:transitionGroup="true"
-    app:layout_collapseParallaxMultiplier="1.0">
+    app:layout_collapseParallaxMultiplier="1.0"
+    >
 
-    <android.support.design.widget.CollapsingToolbarLayout
-        android:id="@+id/collapsing_toolbar"
+  <android.support.design.widget.CollapsingToolbarLayout
+      android:id="@+id/collapsing_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_scrollFlags="scroll"
+      >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="parallax"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+    <RelativeLayout
+        android:id="@+id/course_header_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_scrollFlags="scroll">
+        app:layout_collapseMode="parallax"
+        >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="parallax"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+      <TextView
+          android:id="@+id/course_title_text"
+          android:gravity="center_vertical"
+          style="@style/ToolbarTitleStyle"
+          android:minHeight="?attr/actionBarSize"
+          tools:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
+          android:paddingRight="60dp"
+          android:paddingLeft="60dp"
+          />
 
-        <RelativeLayout
-            android:id="@+id/course_header_container"
+      <FrameLayout
+          android:layout_width="@dimen/default_circle_view_size"
+          android:layout_height="@dimen/default_circle_view_size"
+          android:layout_centerHorizontal="true"
+          android:layout_centerVertical="true"
+          android:transitionName="@string/transition_name_circle_view"
+          android:id="@+id/hidden_transition"
+          >
+
+        <com.tevinjeffrey.rutgersct.ui.utils.CircleView
+            android:id="@+id/hidden_circle_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_collapseMode="parallax">
+            app:backgroundColorValue="@color/accent"
+            app:titleColor="@android:color/white"
+            app:titleSize="13sp"
+            app:titleText="Q1"
+            android:visibility="invisible"
+            />
+
+      </FrameLayout>
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="16dp"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          >
+
+
+        <TextView
+            android:id="@+id/instructors_text"
+            tools:text="MAELLO | CAROLLA "
+            android:textColor="@android:color/white"
+            android:alpha="1"
+            android:textStyle="bold"
+            style="@style/ToolbarSubtitleStyle.Normal"
+            android:maxLines="1"
+            android:layout_marginRight="85dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:elevation="21dp"
+            />
+
+        <TextView
+            android:id="@+id/semester_text"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            tools:text="Summer 2012"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:transitionName="instructor_name"
+            android:alpha="1"
+            style="@style/ToolbarSubtitleStyle.Normal"
+            android:maxLines="1"
+            android:paddingRight="16dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/instructors_text"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:transitionGroup="false"
+            android:layout_above="@+id/semester_text"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            >
+
+          <LinearLayout
+              android:id="@+id/tSection"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical"
+              >
 
             <TextView
-                android:id="@+id/course_title_text"
-                android:gravity="center_vertical"
-                style="@style/ToolbarTitleStyle"
-                android:minHeight="?attr/actionBarSize"
-                tools:text="COMPUTERS &amp; PROGRAMMING TEST OF A LONGER COURSE TITLE"
-                android:paddingRight="60dp"
-                android:paddingLeft="60dp" />
+                android:id="@+id/sectionNumber_text"
+                tools:text="Q2"
+                style="@style/SectionInfoDataText"
+                />
 
-            <FrameLayout
-                android:layout_width="@dimen/default_circle_view_size"
-                android:layout_height="@dimen/default_circle_view_size"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:transitionName="@string/transition_name_circle_view"
-                android:id="@+id/hidden_transition">
+            <TextView
+                android:id="@+id/shortenedCourseInfo"
+                android:text="@string/section"
+                style="@style/ToolbarSubtitleStyle.Normal"
+                />
 
-                <com.tevinjeffrey.rutgersct.ui.utils.CircleView
-                    android:id="@+id/hidden_circle_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:backgroundColorValue="@color/accent"
-                    app:titleColor="@android:color/white"
-                    app:titleSize="13sp"
-                    app:titleText="Q1"
-                    android:visibility="invisible" />
+          </LinearLayout>
 
-            </FrameLayout>
+          <LinearLayout
+              android:id="@+id/tIndex"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical"
+              >
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+            <TextView
+                android:id="@+id/indexNumber_text"
+                tools:text="34562"
+                style="@style/SectionInfoDataText"
+                />
 
+            <TextView
+                android:id="@+id/indexNumber_title"
+                android:text="@string/index"
+                style="@style/ToolbarSubtitleStyle.Normal"
+                />
 
-                <TextView
-                    android:id="@+id/instructors_text"
-                    tools:text="MAELLO | CAROLLA "
-                    android:textColor="@android:color/white"
-                    android:alpha="1"
-                    android:textStyle="bold"
-                    style="@style/ToolbarSubtitleStyle.Normal"
-                    android:maxLines="1"
-                    android:layout_marginRight="85dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:elevation="21dp" />
+          </LinearLayout>
 
-                <TextView
-                    android:id="@+id/semester_text"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    tools:text="Summer 2012"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:transitionName="instructor_name"
-                    android:alpha="1"
-                    style="@style/ToolbarSubtitleStyle.Normal"
-                    android:maxLines="1"
-                    android:paddingRight="16dp"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignTop="@+id/instructors_text" />
+          <LinearLayout
+              android:id="@+id/tCredits"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical"
+              >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:transitionGroup="false"
-                    android:layout_above="@+id/semester_text"
-                    android:layout_marginBottom="16dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true">
+            <TextView
+                android:id="@+id/subtitle"
+                tools:text="4"
+                style="@style/SectionInfoDataText"
+                />
 
-                    <LinearLayout
-                        android:id="@+id/tSection"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
+            <TextView
+                android:id="@+id/credits_title"
+                android:text="@string/credits"
+                style="@style/ToolbarSubtitleStyle.Normal"
+                />
+          </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/sectionNumber_text"
-                            tools:text="Q2"
-                            style="@style/SectionInfoDataText" />
-
-                        <TextView
-                            android:id="@+id/shortenedCourseInfo"
-                            android:text="@string/section"
-                            style="@style/ToolbarSubtitleStyle.Normal" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tIndex"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/indexNumber_text"
-                            tools:text="34562"
-                            style="@style/SectionInfoDataText" />
-
-                        <TextView
-                            android:id="@+id/indexNumber_title"
-                            android:text="@string/index"
-                            style="@style/ToolbarSubtitleStyle.Normal" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/tCredits"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        >
-
-                        <TextView
-                            android:id="@+id/subtitle"
-                            tools:text="4"
-                            style="@style/SectionInfoDataText"
-                            />
-
-                        <TextView
-                            android:id="@+id/credits_title"
-                            android:text="@string/credits"
-                            style="@style/ToolbarSubtitleStyle.Normal"
-                            />
-                    </LinearLayout>
-
-                </LinearLayout>
+        </LinearLayout>
 
 
-            </RelativeLayout>
+      </RelativeLayout>
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-    </android.support.design.widget.CollapsingToolbarLayout>
+  </android.support.design.widget.CollapsingToolbarLayout>
 
 </android.support.design.widget.AppBarLayout>

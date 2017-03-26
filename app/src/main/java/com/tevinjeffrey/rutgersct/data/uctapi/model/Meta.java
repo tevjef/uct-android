@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,9 +12,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
 import okio.ByteString;
 
 public final class Meta extends AndroidMessage<Meta, Meta.Builder> {
@@ -64,8 +61,12 @@ public final class Meta extends AndroidMessage<Meta, Meta.Builder> {
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Meta)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Meta)) {
+      return false;
+    }
     Meta o = (Meta) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(code, o.code)
@@ -87,8 +88,12 @@ public final class Meta extends AndroidMessage<Meta, Meta.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (code != null) builder.append(", code=").append(code);
-    if (message != null) builder.append(", message=").append(message);
+    if (code != null) {
+      builder.append(", code=").append(code);
+    }
+    if (message != null) {
+      builder.append(", message=").append(message);
+    }
     return builder.replace(0, 2, "Meta{").append('}').toString();
   }
 
@@ -130,8 +135,12 @@ public final class Meta extends AndroidMessage<Meta, Meta.Builder> {
 
     @Override
     public void encode(ProtoWriter writer, Meta value) throws IOException {
-      if (value.code != null) ProtoAdapter.INT32.encodeWithTag(writer, 1, value.code);
-      if (value.message != null) ProtoAdapter.STRING.encodeWithTag(writer, 2, value.message);
+      if (value.code != null) {
+        ProtoAdapter.INT32.encodeWithTag(writer, 1, value.code);
+      }
+      if (value.message != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 2, value.message);
+      }
       writer.writeBytes(value.unknownFields());
     }
 
@@ -139,10 +148,14 @@ public final class Meta extends AndroidMessage<Meta, Meta.Builder> {
     public Meta decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.code(ProtoAdapter.INT32.decode(reader)); break;
-          case 2: builder.message(ProtoAdapter.STRING.decode(reader)); break;
+          case 1:
+            builder.code(ProtoAdapter.INT32.decode(reader));
+            break;
+          case 2:
+            builder.message(ProtoAdapter.STRING.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

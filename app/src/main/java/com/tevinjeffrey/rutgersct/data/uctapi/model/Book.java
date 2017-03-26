@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,9 +12,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
 import okio.ByteString;
 
 public final class Book extends AndroidMessage<Book, Book.Builder> {
@@ -61,11 +58,20 @@ public final class Book extends AndroidMessage<Book, Book.Builder> {
   @Nullable
   public final String url;
 
-  public Book(@Nullable Long id, @Nullable Long section_id, @Nullable String title, @Nullable String url) {
+  public Book(
+      @Nullable Long id,
+      @Nullable Long section_id,
+      @Nullable String title,
+      @Nullable String url) {
     this(id, section_id, title, url, ByteString.EMPTY);
   }
 
-  public Book(@Nullable Long id, @Nullable Long section_id, @Nullable String title, @Nullable String url, ByteString unknownFields) {
+  public Book(
+      @Nullable Long id,
+      @Nullable Long section_id,
+      @Nullable String title,
+      @Nullable String url,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.section_id = section_id;
@@ -86,8 +92,12 @@ public final class Book extends AndroidMessage<Book, Book.Builder> {
 
   @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Book)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Book)) {
+      return false;
+    }
     Book o = (Book) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -113,10 +123,18 @@ public final class Book extends AndroidMessage<Book, Book.Builder> {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (section_id != null) builder.append(", section_id=").append(section_id);
-    if (title != null) builder.append(", title=").append(title);
-    if (url != null) builder.append(", url=").append(url);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (section_id != null) {
+      builder.append(", section_id=").append(section_id);
+    }
+    if (title != null) {
+      builder.append(", title=").append(title);
+    }
+    if (url != null) {
+      builder.append(", url=").append(url);
+    }
     return builder.replace(0, 2, "Book{").append('}').toString();
   }
 
@@ -166,7 +184,8 @@ public final class Book extends AndroidMessage<Book, Book.Builder> {
     @Override
     public int encodedSize(Book value) {
       return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
-          + (value.section_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.section_id) : 0)
+          + (value.section_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.section_id)
+                                      : 0)
           + (value.title != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.title) : 0)
           + (value.url != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.url) : 0)
           + value.unknownFields().size();
@@ -174,10 +193,18 @@ public final class Book extends AndroidMessage<Book, Book.Builder> {
 
     @Override
     public void encode(ProtoWriter writer, Book value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.section_id != null) ProtoAdapter.INT64.encodeWithTag(writer, 2, value.section_id);
-      if (value.title != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.title);
-      if (value.url != null) ProtoAdapter.STRING.encodeWithTag(writer, 4, value.url);
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.section_id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 2, value.section_id);
+      }
+      if (value.title != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.title);
+      }
+      if (value.url != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 4, value.url);
+      }
       writer.writeBytes(value.unknownFields());
     }
 
@@ -185,12 +212,20 @@ public final class Book extends AndroidMessage<Book, Book.Builder> {
     public Book decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.section_id(ProtoAdapter.INT64.decode(reader)); break;
-          case 3: builder.title(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.url(ProtoAdapter.STRING.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.section_id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 3:
+            builder.title(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.url(ProtoAdapter.STRING.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

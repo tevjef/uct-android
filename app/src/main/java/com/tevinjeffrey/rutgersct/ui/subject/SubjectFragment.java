@@ -19,7 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
@@ -34,339 +36,350 @@ import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-
+import icepick.State;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import icepick.State;
 import timber.log.Timber;
 
 import static com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString;
 
-public class SubjectFragment extends MVPFragment implements SubjectView, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
+public class SubjectFragment extends MVPFragment
+    implements SubjectView, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
 
-    private static final String TAG = SubjectFragment.class.getSimpleName();
+  private static final String TAG = SubjectFragment.class.getSimpleName();
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
+  @Bind(R.id.toolbar)
+  Toolbar mToolbar;
 
-    @Bind(R.id.list_view)
-    RecyclerView mRecyclerView;
+  @Bind(R.id.list_view)
+  RecyclerView mRecyclerView;
 
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.swipeRefreshLayout)
+  SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Bind(R.id.error_view)
-    ViewGroup mErrorView;
+  @Bind(R.id.error_view)
+  ViewGroup mErrorView;
 
-    @State
-    ArrayList<Subject> mListDataset;
+  @State
+  ArrayList<Subject> mListDataset;
 
-    @State
-    SearchFlow searchFlow;
+  @State
+  SearchFlow searchFlow;
 
-    @State
-    SubjectViewState mViewState = new SubjectViewState();
+  @State
+  SubjectViewState mViewState = new SubjectViewState();
 
-    @Inject
-    RetroRutgers mRetroRutgers;
+  @Inject
+  RetroRutgers mRetroRutgers;
 
-    @Inject
-    SearchManager searchManager;
+  @Inject
+  SearchManager searchManager;
 
-    public SubjectFragment() {
+  public SubjectFragment() {
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setRetainInstance(true);
+
+    if (searchManager.getSearchFlow() != null) {
+      searchFlow = searchManager.getSearchFlow();
+    } else {
+      searchManager.setSearchFlow(searchFlow);
+    }
+  }
+
+  @Override
+  public View onCreateView(
+      LayoutInflater inflater,
+      ViewGroup container,
+      Bundle savedInstanceState) {
+    LayoutInflater themedInflator = inflater.cloneInContext(Utils.wrapContextTheme(
+        getActivity(),
+        R.style.RutgersCT
+    ));
+    final View rootView = themedInflator.inflate(R.layout.fragment_subjects, container, false);
+    ButterKnife.bind(this, rootView);
+    return rootView;
+  }
+
+  @Override
+  public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    //Recreate presenter if necessary.
+    if (mBasePresenter == null) {
+      mBasePresenter = new SubjectPresenterImpl(searchFlow);
+      RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+    }
+  }
+
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    mViewState.apply(this, savedInstanceState != null);
+    //Attach view to presenter
+    mBasePresenter.attachView(this);
+
+    //Load data depending on if the view is currently refreshing
+    if (mIsInitialLoad) {
+      getPresenter().loadSubjects(true);
+    } else {
+      //Silently load tracked sections on a config change
+      if (!getPresenter().isLoading()) {
+        getPresenter().loadSubjects(false);
+      }
+    }
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    dismissSnackbar();
+  }
+
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    super.onCreateOptionsMenu(menu, inflater);
+    inflater.inflate(R.menu.menu_fragment_main, menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_refresh:
+        this.onRefresh();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
+  public void initToolbar() {
+    setToolbarTitle();
+    setToolbar(mToolbar);
+  }
+
+  public void initRecyclerView() {
+    LinearLayoutManager layoutManager = new LinearLayoutManager(getParentActivity());
+    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    layoutManager.setSmoothScrollbarEnabled(true);
+    mRecyclerView.setLayoutManager(layoutManager);
+    mRecyclerView.addItemDecoration(new DividerItemDecoration(
+        mRecyclerView.getContext(),
+        DividerItemDecoration.VERTICAL
+    ));
+    mRecyclerView.setHasFixedSize(true);
+
+    if (mListDataset == null) {
+      mListDataset = new ArrayList<>(10);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    if (mRecyclerView.getAdapter() == null) {
+      mRecyclerView.setAdapter(new SubjectFragmentAdapter(mListDataset, this));
+    }
+  }
 
-        if (searchManager.getSearchFlow() != null) {
-            searchFlow = searchManager.getSearchFlow();
-        } else {
-            searchManager.setSearchFlow(searchFlow);
-        }
+  @Override
+  public void onItemClicked(Subject subject, View view) {
+    Timber.i("Selected subject: %s", subject);
+    searchManager.getSearchFlow().subject = subject;
+    startCourseFragement(new Bundle());
+  }
 
+  public void initSwipeLayout() {
+    mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+    mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
+  }
+
+  @Override
+  public void showLoading(final boolean pullToRefresh) {
+    mViewState.isRefreshing = pullToRefresh;
+    mSwipeRefreshLayout.post(() -> {
+      if (mSwipeRefreshLayout != null) {
+        mSwipeRefreshLayout.setRefreshing(pullToRefresh);
+      }
+    });
+  }
+
+  @Override
+  public void setData(List<Subject> data) {
+    mViewState.data = data;
+    mListDataset.clear();
+    mListDataset.addAll(data);
+    if (mRecyclerView.getAdapter() != null) {
+      mRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+  }
+
+  @Override
+  public void showError(Throwable t) {
+    String message;
+    Resources resources = getContext().getResources();
+    if (t instanceof UnknownHostException) {
+      message = resources.getString(R.string.no_internet);
+    } else {
+      message = t.getMessage();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LayoutInflater themedInflator = inflater.cloneInContext(Utils.wrapContextTheme(getActivity(),
-                R.style.RutgersCT));
-        final View rootView = themedInflator.inflate(R.layout.fragment_subjects, container, false);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+    //error message finalized, now save it.
+    mViewState.errorMessage = message;
+
+    //Show the error layout if there's nothing in the adpater to show.
+    // Redirects the message that would usually be in the snackbar, to error layout.
+    if (!adapterHasItems()) {
+      showLayout(LayoutType.ERROR);
+      TextView textViewMessage = ButterKnife.findById(mErrorView, R.id.text);
+      textViewMessage.setText(message);
+    } else {
+      showSnackBar(message);
+    }
+  }
+
+  @OnClick(R.id.try_again)
+  public void onTryAgainClick(View view) {
+    onRefresh();
+  }
+
+  @Override
+  public void onRefresh() {
+    getPresenter().loadSubjects(true);
+  }
+
+  public void showLayout(LayoutType type) {
+    mViewState.layoutType = type;
+    switch (type) {
+      case ERROR:
+        showRecyclerView(View.GONE);
+        showErrorLayout(View.VISIBLE);
+        //enableSwipeRefreshLayout(true);
+        break;
+      case LIST:
+        showErrorLayout(View.GONE);
+        showRecyclerView(View.VISIBLE);
+        //enableSwipeRefreshLayout(true);
+        break;
+      default:
+        throw new RuntimeException("Unknown type: " + type);
+    }
+  }
+
+  private boolean adapterHasItems() {
+    return mRecyclerView.getAdapter().getItemCount() > 0;
+  }
+
+  private void showRecyclerView(int visibility) {
+    if (mRecyclerView.getVisibility() != visibility) {
+      mRecyclerView.setVisibility(visibility);
+    }
+  }
+
+  private void showErrorLayout(int visibility) {
+    if (mErrorView.getVisibility() != visibility) {
+      mErrorView.setVisibility(visibility);
+    }
+  }
+
+  private void showSnackBar(CharSequence message) {
+    SnackbarManager.show(
+        Snackbar.with(getParentActivity())
+            .type(SnackbarType.MULTI_LINE)
+            .text(message)
+            .actionLabel(R.string.snackbar_retry)// text to display
+            .actionListener(snackbar -> {
+              onRefresh();
+              mViewState.snackBarShowing = false;
+            })
+            .swipeListener(() -> mViewState.snackBarShowing = false)
+            .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
+            .color(ContextCompat.getColor(
+                getParentActivity(),
+                R.color.accent
+            ))// action button label color
+            .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
+            .eventListener(new EventListener() {
+              @Override
+              public void onShow(Snackbar snackbar) {
+                if (snackbar != null) {
+                  mViewState.snackBarShowing = true;
+                  if (snackbar.getText() != null) {
+                    mViewState.errorMessage = snackbar.getText().toString();
+                  }
+                }
+              }
+
+              @Override
+              public void onShowByReplace(Snackbar snackbar) {
+
+              }
+
+              @Override
+              public void onShown(Snackbar snackbar) {
+
+              }
+
+              @Override
+              public void onDismiss(Snackbar snackbar) {
+
+              }
+
+              @Override
+              public void onDismissByReplace(Snackbar snackbar) {
+
+              }
+
+              @Override
+              public void onDismissed(Snackbar snackbar) {
+
+              }
+            })
+
+        , getParentActivity()); // activity where it is displayed
+  }
+
+  private void dismissSnackbar() {
+    //It's only being dismissed to not leak the fragment
+    if (SnackbarManager.getCurrentSnackbar() != null) {
+      SnackbarManager.dismiss();
+    }
+  }
+
+  private void setToolbarTitle() {
+    String title = searchFlow.getUniversity().abbr + " " + readableString(searchFlow.semester);
+    super.setToolbarTitle(mToolbar, title);
+  }
+
+  private void startCourseFragement(Bundle b) {
+    CourseFragment courseFragment = new CourseFragment();
+    courseFragment.setArguments(b);
+    FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      Transition sfTransition =
+          TransitionInflater.from(getParentActivity()).inflateTransition(R.transition.sf_exit);
+      setExitTransition(sfTransition.excludeTarget(Toolbar.class, true));
+      courseFragment.setAllowEnterTransitionOverlap(false);
+    } else {
+      ft.setCustomAnimations(
+          R.animator.enter,
+          R.animator.exit,
+          R.animator.pop_enter,
+          R.animator.pop_exit
+      );
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //Recreate presenter if necessary.
-        if (mBasePresenter == null) {
-            mBasePresenter = new SubjectPresenterImpl(searchFlow);
-            RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
-        }
-    }
+    startFragment(this, courseFragment, ft);
+  }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewState.apply(this, savedInstanceState != null);
-        //Attach view to presenter
-        mBasePresenter.attachView(this);
+  @Override
+  public void injectTargets() {
+    RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+  }
 
-        //Load data depending on if the view is currently refreshing
-        if (mIsInitialLoad) {
-            getPresenter().loadSubjects(true);
-        } else {
-            //Silently load tracked sections on a config change
-            if (!getPresenter().isLoading()) {
-                getPresenter().loadSubjects(false);
-            }
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        dismissSnackbar();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_fragment_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                this.onRefresh();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-
-    public void initToolbar() {
-        setToolbarTitle();
-        setToolbar(mToolbar);
-    }
-
-    public void initRecyclerView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getParentActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        layoutManager.setSmoothScrollbarEnabled(true);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        mRecyclerView.setHasFixedSize(true);
-
-        if (mListDataset == null) {
-            mListDataset = new ArrayList<>(10);
-        }
-
-        if (mRecyclerView.getAdapter() == null) {
-            mRecyclerView.setAdapter(new SubjectFragmentAdapter(mListDataset, this));
-        }
-    }
-
-    @Override
-    public void onItemClicked(Subject subject, View view) {
-        Timber.i("Selected subject: %s", subject);
-        searchManager.getSearchFlow().subject = subject;
-        startCourseFragement(new Bundle());
-    }
-
-    public void initSwipeLayout() {
-        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-    }
-
-    @Override
-    public void showLoading(final boolean pullToRefresh) {
-        mViewState.isRefreshing = pullToRefresh;
-        mSwipeRefreshLayout.post(() -> {
-            if (mSwipeRefreshLayout != null) {
-                mSwipeRefreshLayout.setRefreshing(pullToRefresh);
-            }
-        });
-    }
-
-    @Override
-    public void setData(List<Subject> data) {
-        mViewState.data = data;
-        mListDataset.clear();
-        mListDataset.addAll(data);
-        if (mRecyclerView.getAdapter() != null) {
-            mRecyclerView.getAdapter().notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void showError(Throwable t) {
-        String message;
-        Resources resources = getContext().getResources();
-        if (t instanceof UnknownHostException) {
-            message = resources.getString(R.string.no_internet);
-        } else {
-            message = t.getMessage();
-        }
-
-        //error message finalized, now save it.
-        mViewState.errorMessage = message;
-
-        //Show the error layout if there's nothing in the adpater to show.
-        // Redirects the message that would usually be in the snackbar, to error layout.
-        if (!adapterHasItems()) {
-            showLayout(LayoutType.ERROR);
-            TextView textViewMessage = ButterKnife.findById(mErrorView, R.id.text);
-            textViewMessage.setText(message);
-        } else {
-            showSnackBar(message);
-        }
-    }
-
-    @OnClick(R.id.try_again)
-    public void onTryAgainClick(View view) {
-        onRefresh();
-    }
-
-    @Override
-    public void onRefresh() {
-        getPresenter().loadSubjects(true);
-    }
-
-    public void showLayout(LayoutType type) {
-        mViewState.layoutType = type;
-        switch (type) {
-            case ERROR:
-                showRecyclerView(View.GONE);
-                showErrorLayout(View.VISIBLE);
-                //enableSwipeRefreshLayout(true);
-                break;
-            case LIST:
-                showErrorLayout(View.GONE);
-                showRecyclerView(View.VISIBLE);
-                //enableSwipeRefreshLayout(true);
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + type);
-        }
-    }
-
-    private boolean adapterHasItems() {
-        return mRecyclerView.getAdapter().getItemCount() > 0;
-    }
-
-    private void showRecyclerView(int visibility) {
-        if (mRecyclerView.getVisibility() != visibility)
-            mRecyclerView.setVisibility(visibility);
-    }
-
-    private void showErrorLayout(int visibility) {
-        if (mErrorView.getVisibility() != visibility)
-            mErrorView.setVisibility(visibility);
-    }
-
-    private void showSnackBar(CharSequence message) {
-        SnackbarManager.show(
-                Snackbar.with(getParentActivity())
-                        .type(SnackbarType.MULTI_LINE)
-                        .text(message)
-                        .actionLabel(R.string.snackbar_retry)// text to display
-                        .actionListener(snackbar -> {
-                            onRefresh();
-                            mViewState.snackBarShowing = false;
-                        })
-                        .swipeListener(() -> mViewState.snackBarShowing = false)
-                        .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
-                        .color(ContextCompat.getColor(getParentActivity(), R.color.accent))// action button label color
-                        .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-                        .eventListener(new EventListener() {
-                            @Override
-                            public void onShow(Snackbar snackbar) {
-                                if (snackbar != null) {
-                                    mViewState.snackBarShowing = true;
-                                    if (snackbar.getText() != null) {
-                                        mViewState.errorMessage = snackbar.getText().toString();
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onShowByReplace(Snackbar snackbar) {
-
-                            }
-
-                            @Override
-                            public void onShown(Snackbar snackbar) {
-
-                            }
-
-                            @Override
-                            public void onDismiss(Snackbar snackbar) {
-
-                            }
-
-                            @Override
-                            public void onDismissByReplace(Snackbar snackbar) {
-
-                            }
-
-                            @Override
-                            public void onDismissed(Snackbar snackbar) {
-
-                            }
-                        })
-
-                , getParentActivity()); // activity where it is displayed
-    }
-
-    private void dismissSnackbar() {
-        //It's only being dismissed to not leak the fragment
-        if (SnackbarManager.getCurrentSnackbar() != null) {
-            SnackbarManager.dismiss();
-        }
-    }
-
-    private void setToolbarTitle() {
-        String title = searchFlow.getUniversity().abbr + " " + readableString(searchFlow.semester);
-        super.setToolbarTitle(mToolbar, title);
-    }
-
-    private void startCourseFragement(Bundle b) {
-        CourseFragment courseFragment = new CourseFragment();
-        courseFragment.setArguments(b);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Transition sfTransition = TransitionInflater.from(getParentActivity()).inflateTransition(R.transition.sf_exit);
-            setExitTransition(sfTransition.excludeTarget(Toolbar.class, true));
-            courseFragment.setAllowEnterTransitionOverlap(false);
-        } else {
-            ft.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
-        }
-
-        startFragment(this, courseFragment, ft);
-    }
-
-
-    @Override
-    public void injectTargets() {
-        RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
-    }
-
-    private SubjectPresenter getPresenter() {
-        return (SubjectPresenter) mBasePresenter;
-    }
+  private SubjectPresenter getPresenter() {
+    return (SubjectPresenter) mBasePresenter;
+  }
 }

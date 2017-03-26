@@ -5,17 +5,14 @@ import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
-
+import jonathanfinerty.once.Once;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import jonathanfinerty.once.Once;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -46,81 +43,85 @@ import static org.junit.Assert.assertThat;
 @LargeTest
 public class CourseFragmentTest {
 
-    private MainActivity mActivity;
+  private MainActivity mActivity;
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(
-            MainActivity.class);
+  @Rule
+  public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(
+      MainActivity.class);
 
-    @Before
-    public void setUp() throws Exception {
-        // Espresso does not start the Activity for you we need to do this manually here.
-        mActivity = mActivityRule.getActivity();
-        Once.markDone(MainActivity.SHOW_TOUR);
+  @Before
+  public void setUp() throws Exception {
+    // Espresso does not start the Activity for you we need to do this manually here.
+    mActivity = mActivityRule.getActivity();
+    Once.markDone(MainActivity.SHOW_TOUR);
 
-        assertThat(mActivity, notNullValue());
+    assertThat(mActivity, notNullValue());
 
-        navigateToFragment();
+    navigateToFragment();
+  }
+
+  public void navigateToFragment() {
+    onView(withId(R.id.add_courses_fab)).perform(click());
+
+    onView(withId(R.id.primarySemester)).perform(click()).check(matches(isChecked()));
+
+    onView(withId(R.id.location1)).perform(click()).check(matches(isChecked()));
+
+    onView(withId(R.id.level1)).perform(click()).check(matches(isChecked()));
+
+    onView(withText(R.string.next_text)).perform(click());
+
+    onData(allOf(
+        is(instanceOf(Subject.class)),
+        withSubjectNumber(equalTo("640"))
+    )).perform(click());
+  }
+
+  @Test
+  public void testCourseFragmentInteractivity() {
+    onView(withId(R.id.swipeRefreshLayout)).perform(swipeUp());
+
+    viewInteractivity(R.id.action_refresh);
+    onView(withId(R.id.action_refresh)).perform(click());
+  }
+
+  @Test
+  public void testClickNextInCourseFragment() {
+    onData(allOf(is(instanceOf(Course.class)), withCourseNumber(equalTo("135")))).perform(click());
+    pressBack();
+  }
+
+  public void viewInteractivity(int viewId) {
+    onView(withId(viewId)).check(matches(isCompletelyDisplayed()));
+    onView(withId(viewId)).check(matches(isEnabled()));
+    onView(withId(viewId)).check(matches(isClickable()));
+  }
+
+  @Test
+  public void testOrientationChange() {
+    if (mActivity.getResources().getConfiguration().orientation
+        == Configuration.ORIENTATION_PORTRAIT) {
+      onView(isRoot()).perform(orientationLandscape());
+    } else if (mActivity.getResources().getConfiguration().orientation
+        == Configuration.ORIENTATION_LANDSCAPE) {
+      onView(isRoot()).perform(orientationPortrait());
     }
+  }
 
-    public void navigateToFragment() {
-        onView(withId(R.id.add_courses_fab)).perform(click());
+  @Test
+  public void testClickRefresh() {
+    onView(withId(R.id.action_refresh)).perform(click());
+  }
 
-        onView(withId(R.id.primarySemester)).perform(click()).check(matches(isChecked()));
+  @Test
+  public void testSwipeToRefresh() {
+    onView(withId(R.id.swipeRefreshLayout)).perform(swipeDown());
+  }
 
-        onView(withId(R.id.location1)).perform(click()).check(matches(isChecked()));
-
-        onView(withId(R.id.level1)).perform(click()).check(matches(isChecked()));
-
-        onView(withText(R.string.next_text)).perform(click());
-
-        onData(allOf(is(instanceOf(Subject.class)), withSubjectNumber(equalTo("640")))).perform(click());
-    }
-
-    @Test
-    public void testCourseFragmentInteractivity() {
-        onView(withId(R.id.swipeRefreshLayout)).perform(swipeUp());
-
-        viewInteractivity(R.id.action_refresh);
-        onView(withId(R.id.action_refresh)).perform(click());
-    }
-
-    @Test
-    public void testClickNextInCourseFragment() {
-        onData(allOf(is(instanceOf(Course.class)), withCourseNumber(equalTo("135")))).perform(click());
-        pressBack();
-    }
-
-    public void viewInteractivity(int viewId) {
-        onView(withId(viewId)).check(matches(isCompletelyDisplayed()));
-        onView(withId(viewId)).check(matches(isEnabled()));
-        onView(withId(viewId)).check(matches(isClickable()));
-    }
-
-    @Test
-    public void testOrientationChange() {
-        if (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            onView(isRoot()).perform(orientationLandscape());
-        } else if (mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            onView(isRoot()).perform(orientationPortrait());
-        }
-    }
-
-    @Test
-    public void testClickRefresh() {
-        onView(withId(R.id.action_refresh)).perform(click());
-    }
-
-    @Test
-    public void testSwipeToRefresh() {
-        onView(withId(R.id.swipeRefreshLayout)).perform(swipeDown());
-    }
-
-    @Test
-    @FlakyTest
-    public void testTrackedSectionBackNavigation() {
-        viewInteractivity(R.id.action_track);
-        onView(withId(R.id.action_track)).perform(click());
-    }
-
+  @Test
+  @FlakyTest
+  public void testTrackedSectionBackNavigation() {
+    viewInteractivity(R.id.action_track);
+    onView(withId(R.id.action_track)).perform(click());
+  }
 }

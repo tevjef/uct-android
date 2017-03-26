@@ -6,21 +6,22 @@ import android.view.ViewGroup;
 
 public final class HeaderVH extends RecyclerView.ViewHolder {
 
-    private final ViewGroup parent;
+  private final ViewGroup parent;
 
-    public static HeaderVH newInstance(ViewGroup parent) {
-        return new HeaderVH(parent);
-    }
+  public static HeaderVH newInstance(ViewGroup parent) {
+    return new HeaderVH(parent);
+  }
 
-    private HeaderVH(ViewGroup itemView) {
-        super(itemView);
-        this.parent = itemView;
-    }
+  private HeaderVH(ViewGroup itemView) {
+    super(itemView);
+    this.parent = itemView;
+  }
 
-    public void setHeaders(Iterable<View> headers) {
-        for (View v : headers) {
-            if (v.getParent() == null)
-                parent.addView(v);
-        }
+  public void setHeaders(Iterable<View> headers) {
+    for (View v : headers) {
+      if (v.getParent() == null) {
+        parent.addView(v);
+      }
     }
+  }
 }
