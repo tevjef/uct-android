@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,35 +12,23 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
 import java.util.List;
-
 import okio.ByteString;
 
 public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
   public static final ProtoAdapter<Subject> ADAPTER = new ProtoAdapter_Subject();
 
   public static final Parcelable.Creator<Subject> CREATOR = AndroidMessage.newCreator(ADAPTER);
-
-  private static final long serialVersionUID = 0L;
-
   public static final Long DEFAULT_ID = 0L;
-
   public static final Long DEFAULT_UNIVERSITY_ID = 0L;
-
   public static final String DEFAULT_NAME = "";
-
   public static final String DEFAULT_NUMBER = "";
-
   public static final String DEFAULT_SEASON = "";
-
   public static final String DEFAULT_YEAR = "";
-
   public static final String DEFAULT_TOPIC_NAME = "";
-
   public static final String DEFAULT_TOPIC_ID = "";
-
+  private static final long serialVersionUID = 0L;
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
@@ -112,11 +99,44 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
   )
   public final List<Metadata> metadata;
 
-  public Subject(@Nullable Long id, @Nullable Long university_id, @Nullable String name, @Nullable String number, @Nullable String season, @Nullable String year, @Nullable String topic_name, @Nullable String topic_id, List<Course> courses, List<Metadata> metadata) {
-    this(id, university_id, name, number, season, year, topic_name, topic_id, courses, metadata, ByteString.EMPTY);
+  public Subject(
+      @Nullable Long id,
+      @Nullable Long university_id,
+      @Nullable String name,
+      @Nullable String number,
+      @Nullable String season,
+      @Nullable String year,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      List<Course> courses,
+      List<Metadata> metadata) {
+    this(
+        id,
+        university_id,
+        name,
+        number,
+        season,
+        year,
+        topic_name,
+        topic_id,
+        courses,
+        metadata,
+        ByteString.EMPTY
+    );
   }
 
-  public Subject(@Nullable Long id, @Nullable Long university_id, @Nullable String name, @Nullable String number, @Nullable String season, @Nullable String year, @Nullable String topic_name, @Nullable String topic_id, List<Course> courses, List<Metadata> metadata, ByteString unknownFields) {
+  public Subject(
+      @Nullable Long id,
+      @Nullable Long university_id,
+      @Nullable String name,
+      @Nullable String number,
+      @Nullable String season,
+      @Nullable String year,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      List<Course> courses,
+      List<Metadata> metadata,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.university_id = university_id;
@@ -131,26 +151,13 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
   }
 
   @Override
-  public Builder newBuilder() {
-    Builder builder = new Builder();
-    builder.id = id;
-    builder.university_id = university_id;
-    builder.name = name;
-    builder.number = number;
-    builder.season = season;
-    builder.year = year;
-    builder.topic_name = topic_name;
-    builder.topic_id = topic_id;
-    builder.courses = Internal.copyOf("courses", courses);
-    builder.metadata = Internal.copyOf("metadata", metadata);
-    builder.addUnknownFields(unknownFields());
-    return builder;
-  }
-
-  @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Subject)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Subject)) {
+      return false;
+    }
     Subject o = (Subject) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -186,18 +193,55 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
   }
 
   @Override
+  public Builder newBuilder() {
+    Builder builder = new Builder();
+    builder.id = id;
+    builder.university_id = university_id;
+    builder.name = name;
+    builder.number = number;
+    builder.season = season;
+    builder.year = year;
+    builder.topic_name = topic_name;
+    builder.topic_id = topic_id;
+    builder.courses = Internal.copyOf("courses", courses);
+    builder.metadata = Internal.copyOf("metadata", metadata);
+    builder.addUnknownFields(unknownFields());
+    return builder;
+  }
+
+  @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (university_id != null) builder.append(", university_id=").append(university_id);
-    if (name != null) builder.append(", name=").append(name);
-    if (number != null) builder.append(", number=").append(number);
-    if (season != null) builder.append(", season=").append(season);
-    if (year != null) builder.append(", year=").append(year);
-    if (topic_name != null) builder.append(", topic_name=").append(topic_name);
-    if (topic_id != null) builder.append(", topic_id=").append(topic_id);
-    if (!courses.isEmpty()) builder.append(", courses=").append(courses);
-    if (!metadata.isEmpty()) builder.append(", metadata=").append(metadata);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (university_id != null) {
+      builder.append(", university_id=").append(university_id);
+    }
+    if (name != null) {
+      builder.append(", name=").append(name);
+    }
+    if (number != null) {
+      builder.append(", number=").append(number);
+    }
+    if (season != null) {
+      builder.append(", season=").append(season);
+    }
+    if (year != null) {
+      builder.append(", year=").append(year);
+    }
+    if (topic_name != null) {
+      builder.append(", topic_name=").append(topic_name);
+    }
+    if (topic_id != null) {
+      builder.append(", topic_id=").append(topic_id);
+    }
+    if (!courses.isEmpty()) {
+      builder.append(", courses=").append(courses);
+    }
+    if (!metadata.isEmpty()) {
+      builder.append(", metadata=").append(metadata);
+    }
     return builder.replace(0, 2, "Subject{").append('}').toString();
   }
 
@@ -227,13 +271,37 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
       metadata = Internal.newMutableList();
     }
 
+    @Override
+    public Subject build() {
+      return new Subject(
+          id,
+          university_id,
+          name,
+          number,
+          season,
+          year,
+          topic_name,
+          topic_id,
+          courses,
+          metadata,
+          super.buildUnknownFields()
+      );
+    }
+
+    public Builder courses(List<Course> courses) {
+      Internal.checkElementsNotNull(courses);
+      this.courses = courses;
+      return this;
+    }
+
     public Builder id(Long id) {
       this.id = id;
       return this;
     }
 
-    public Builder university_id(Long university_id) {
-      this.university_id = university_id;
+    public Builder metadata(List<Metadata> metadata) {
+      Internal.checkElementsNotNull(metadata);
+      this.metadata = metadata;
       return this;
     }
 
@@ -252,8 +320,8 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
       return this;
     }
 
-    public Builder year(String year) {
-      this.year = year;
+    public Builder topic_id(String topic_id) {
+      this.topic_id = topic_id;
       return this;
     }
 
@@ -262,26 +330,14 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
       return this;
     }
 
-    public Builder topic_id(String topic_id) {
-      this.topic_id = topic_id;
+    public Builder university_id(Long university_id) {
+      this.university_id = university_id;
       return this;
     }
 
-    public Builder courses(List<Course> courses) {
-      Internal.checkElementsNotNull(courses);
-      this.courses = courses;
+    public Builder year(String year) {
+      this.year = year;
       return this;
-    }
-
-    public Builder metadata(List<Metadata> metadata) {
-      Internal.checkElementsNotNull(metadata);
-      this.metadata = metadata;
-      return this;
-    }
-
-    @Override
-    public Subject build() {
-      return new Subject(id, university_id, name, number, season, year, topic_name, topic_id, courses, metadata, super.buildUnknownFields());
     }
   }
 
@@ -291,51 +347,41 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
     }
 
     @Override
-    public int encodedSize(Subject value) {
-      return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
-          + (value.university_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.university_id) : 0)
-          + (value.name != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.name) : 0)
-          + (value.number != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.number) : 0)
-          + (value.season != null ? ProtoAdapter.STRING.encodedSizeWithTag(5, value.season) : 0)
-          + (value.year != null ? ProtoAdapter.STRING.encodedSizeWithTag(6, value.year) : 0)
-          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.topic_name) : 0)
-          + (value.topic_id != null ? ProtoAdapter.STRING.encodedSizeWithTag(8, value.topic_id) : 0)
-          + Course.ADAPTER.asRepeated().encodedSizeWithTag(9, value.courses)
-          + Metadata.ADAPTER.asRepeated().encodedSizeWithTag(10, value.metadata)
-          + value.unknownFields().size();
-    }
-
-    @Override
-    public void encode(ProtoWriter writer, Subject value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.university_id != null) ProtoAdapter.INT64.encodeWithTag(writer, 2, value.university_id);
-      if (value.name != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.name);
-      if (value.number != null) ProtoAdapter.STRING.encodeWithTag(writer, 4, value.number);
-      if (value.season != null) ProtoAdapter.STRING.encodeWithTag(writer, 5, value.season);
-      if (value.year != null) ProtoAdapter.STRING.encodeWithTag(writer, 6, value.year);
-      if (value.topic_name != null) ProtoAdapter.STRING.encodeWithTag(writer, 7, value.topic_name);
-      if (value.topic_id != null) ProtoAdapter.STRING.encodeWithTag(writer, 8, value.topic_id);
-      Course.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.courses);
-      Metadata.ADAPTER.asRepeated().encodeWithTag(writer, 10, value.metadata);
-      writer.writeBytes(value.unknownFields());
-    }
-
-    @Override
     public Subject decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.university_id(ProtoAdapter.INT64.decode(reader)); break;
-          case 3: builder.name(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.number(ProtoAdapter.STRING.decode(reader)); break;
-          case 5: builder.season(ProtoAdapter.STRING.decode(reader)); break;
-          case 6: builder.year(ProtoAdapter.STRING.decode(reader)); break;
-          case 7: builder.topic_name(ProtoAdapter.STRING.decode(reader)); break;
-          case 8: builder.topic_id(ProtoAdapter.STRING.decode(reader)); break;
-          case 9: builder.courses.add(Course.ADAPTER.decode(reader)); break;
-          case 10: builder.metadata.add(Metadata.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.university_id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 3:
+            builder.name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.number(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 5:
+            builder.season(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 6:
+            builder.year(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 7:
+            builder.topic_name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 8:
+            builder.topic_id(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 9:
+            builder.courses.add(Course.ADAPTER.decode(reader));
+            break;
+          case 10:
+            builder.metadata.add(Metadata.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -345,6 +391,56 @@ public final class Subject extends AndroidMessage<Subject, Subject.Builder> {
       }
       reader.endMessage(token);
       return builder.build();
+    }
+
+    @Override
+    public void encode(ProtoWriter writer, Subject value) throws IOException {
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.university_id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 2, value.university_id);
+      }
+      if (value.name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.name);
+      }
+      if (value.number != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 4, value.number);
+      }
+      if (value.season != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 5, value.season);
+      }
+      if (value.year != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 6, value.year);
+      }
+      if (value.topic_name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 7, value.topic_name);
+      }
+      if (value.topic_id != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 8, value.topic_id);
+      }
+      Course.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.courses);
+      Metadata.ADAPTER.asRepeated().encodeWithTag(writer, 10, value.metadata);
+      writer.writeBytes(value.unknownFields());
+    }
+
+    @Override
+    public int encodedSize(Subject value) {
+      return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
+          + (value.university_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(
+          2,
+          value.university_id
+      ) : 0)
+          + (value.name != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.name) : 0)
+          + (value.number != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.number) : 0)
+          + (value.season != null ? ProtoAdapter.STRING.encodedSizeWithTag(5, value.season) : 0)
+          + (value.year != null ? ProtoAdapter.STRING.encodedSizeWithTag(6, value.year) : 0)
+          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.topic_name)
+                                      : 0)
+          + (value.topic_id != null ? ProtoAdapter.STRING.encodedSizeWithTag(8, value.topic_id) : 0)
+          + Course.ADAPTER.asRepeated().encodedSizeWithTag(9, value.courses)
+          + Metadata.ADAPTER.asRepeated().encodedSizeWithTag(10, value.metadata)
+          + value.unknownFields().size();
     }
 
     @Override

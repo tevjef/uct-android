@@ -5,26 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/metadata_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
-    <LinearLayout
-        style="@style/section_metadata_containers"
-        android:orientation="vertical"
-        android:id="@+id/metadata_wrapper">
-        <TextView
-            android:id="@+id/metadata_title"
-            style="@style/PrimaryTextStyle"
-            tools:text="Metadata Title" />
+  <LinearLayout
+      android:id="@+id/metadata_wrapper"
+      android:orientation="vertical"
+      style="@style/section_metadata_containers"
+      >
+    <TextView
+        android:id="@+id/metadata_title"
+        tools:text="Metadata Title"
+        style="@style/PrimaryTextStyle"
+        />
 
-        <TextView
-            android:id="@+id/metadata_text"
-            style="@style/SecondaryMetadataTextStyle"
-            android:text="@string/metadata_dummy_text"
-            android:textColorLink="@color/accent_light"/>
+    <TextView
+        android:id="@+id/metadata_text"
+        android:text="@string/metadata_dummy_text"
+        android:textColorLink="@color/accent_light"
+        style="@style/SecondaryMetadataTextStyle"
+        />
 
-    </LinearLayout>
-    <View
-        android:id="@+id/fsl_divider5"
-        style="@style/divider.metadata"
-        android:layout_below="@+id/metadata_wrapper" />
+  </LinearLayout>
+  <View
+      android:id="@+id/fsl_divider5"
+      android:layout_below="@+id/metadata_wrapper"
+      style="@style/divider.metadata"
+      />
 </RelativeLayout>

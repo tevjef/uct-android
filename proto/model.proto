@@ -64,7 +64,7 @@ message Section {
 
 message Meeting {
     optional int64 id = 1;
-    optional int64 section_id = 2 ;
+    optional int64 section_id = 2;
     optional string room = 3;
     optional string day = 4;
     optional string start_time = 5;
@@ -74,35 +74,35 @@ message Meeting {
     repeated Metadata metadata = 9;
 }
 message Instructor {
-    optional int64 id = 1 ;
-    optional int64 section_id = 2 ;
-    optional string name = 3 ;
-    optional int32 index = 4 ;
+    optional int64 id = 1;
+    optional int64 section_id = 2;
+    optional string name = 3;
+    optional int32 index = 4;
 }
 
 message Book {
-    optional int64 id = 1 ;
-    optional int64 section_id = 2 ;
-    optional string title = 3 ;
-    optional string url = 4 ;
+    optional int64 id = 1;
+    optional int64 section_id = 2;
+    optional string title = 3;
+    optional string url = 4;
 }
 
 message Metadata {
-    optional int64 id = 1 ;
-    optional int64 university_id = 2 ;
-    optional int64 subject_id = 3 ;
-    optional int64 course_id = 4 ;
-    optional int64 section_id = 5 ;
-    optional int64 meeting_id = 6 ;
-    optional string title = 7 ;
-    optional string content = 8 ;
+    optional int64 id = 1;
+    optional int64 university_id = 2;
+    optional int64 subject_id = 3;
+    optional int64 course_id = 4;
+    optional int64 section_id = 5;
+    optional int64 meeting_id = 6;
+    optional string title = 7;
+    optional string content = 8;
 }
 
 message Registration {
-    optional int64 id = 1 ;
-    optional int64 university_id = 2 ;
-    optional string period = 3 ;
-    optional int64 period_date = 4 ;
+    optional int64 id = 1;
+    optional int64 university_id = 2;
+    optional string period = 3;
+    optional int64 period_date = 4;
 
 }
 
@@ -113,15 +113,15 @@ message ResolvedSemester {
 }
 
 message Semester {
-    optional int32 year = 1 ;
-    optional string season = 2 ;
+    optional int32 year = 1;
+    optional string season = 2;
 }
 
 message UCTNotification {
-    optional int64 notification_id = 1 ;
-    optional string topic_name = 2 ;
-    optional string status = 3 ;
-    optional University university = 4 ;
+    optional int64 notification_id = 1;
+    optional string topic_name = 2;
+    optional string status = 3;
+    optional University university = 4;
 }
 
 message Response {

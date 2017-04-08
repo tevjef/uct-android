@@ -27,22 +27,22 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class CourseInfoViewTest {
 
-    @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
-    CourseInfoView courseinfoView;
+  @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
+      CourseInfoView courseinfoView;
 
-    CourseInfoViewState viewState;
+  CourseInfoViewState viewState;
 
-    @Before
-    public void setUp() throws Exception {
-        viewState = new CourseInfoViewState();
-    }
+  @Test
+  public void TestEssentialViewInit() throws Exception {
+    viewState.apply(courseinfoView, true);
+    verify(courseinfoView).initRecyclerView();
+    verify(courseinfoView).initToolbar();
+    verify(courseinfoView).initHeaderView();
+    verify(courseinfoView).initViews();
+  }
 
-    @Test
-    public void TestEssentialViewInit() throws Exception {
-        viewState.apply(courseinfoView, true);
-        verify(courseinfoView).initRecyclerView();
-        verify(courseinfoView).initToolbar();
-        verify(courseinfoView).initHeaderView();
-        verify(courseinfoView).initViews();
-    }
+  @Before
+  public void setUp() throws Exception {
+    viewState = new CourseInfoViewState();
+  }
 }

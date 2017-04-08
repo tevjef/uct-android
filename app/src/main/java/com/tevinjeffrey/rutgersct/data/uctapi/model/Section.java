@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,39 +12,25 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
 import java.util.List;
-
 import okio.ByteString;
 
 public final class Section extends AndroidMessage<Section, Section.Builder> {
   public static final ProtoAdapter<Section> ADAPTER = new ProtoAdapter_Section();
 
   public static final Parcelable.Creator<Section> CREATOR = AndroidMessage.newCreator(ADAPTER);
-
-  private static final long serialVersionUID = 0L;
-
   public static final Long DEFAULT_ID = 0L;
-
   public static final Long DEFAULT_COURSE_ID = 0L;
-
   public static final String DEFAULT_NUMBER = "";
-
   public static final String DEFAULT_CALL_NUMBER = "";
-
   public static final Long DEFAULT_MAX = 0L;
-
   public static final Long DEFAULT_NOW = 0L;
-
   public static final String DEFAULT_STATUS = "";
-
   public static final String DEFAULT_CREDITS = "";
-
   public static final String DEFAULT_TOPIC_NAME = "";
-
   public static final String DEFAULT_TOPIC_ID = "";
-
+  private static final long serialVersionUID = 0L;
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
@@ -144,11 +129,56 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
   )
   public final List<Metadata> metadata;
 
-  public Section(@Nullable Long id, @Nullable Long course_id, @Nullable String number, @Nullable String call_number, @Nullable Long max, @Nullable Long now, @Nullable String status, @Nullable String credits, @Nullable String topic_name, @Nullable String topic_id, List<Meeting> meetings, List<Instructor> instructors, List<Book> books, List<Metadata> metadata) {
-    this(id, course_id, number, call_number, max, now, status, credits, topic_name, topic_id, meetings, instructors, books, metadata, ByteString.EMPTY);
+  public Section(
+      @Nullable Long id,
+      @Nullable Long course_id,
+      @Nullable String number,
+      @Nullable String call_number,
+      @Nullable Long max,
+      @Nullable Long now,
+      @Nullable String status,
+      @Nullable String credits,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      List<Meeting> meetings,
+      List<Instructor> instructors,
+      List<Book> books,
+      List<Metadata> metadata) {
+    this(
+        id,
+        course_id,
+        number,
+        call_number,
+        max,
+        now,
+        status,
+        credits,
+        topic_name,
+        topic_id,
+        meetings,
+        instructors,
+        books,
+        metadata,
+        ByteString.EMPTY
+    );
   }
 
-  public Section(@Nullable Long id, @Nullable Long course_id, @Nullable String number, @Nullable String call_number, @Nullable Long max, @Nullable Long now, @Nullable String status, @Nullable String credits, @Nullable String topic_name, @Nullable String topic_id, List<Meeting> meetings, List<Instructor> instructors, List<Book> books, List<Metadata> metadata, ByteString unknownFields) {
+  public Section(
+      @Nullable Long id,
+      @Nullable Long course_id,
+      @Nullable String number,
+      @Nullable String call_number,
+      @Nullable Long max,
+      @Nullable Long now,
+      @Nullable String status,
+      @Nullable String credits,
+      @Nullable String topic_name,
+      @Nullable String topic_id,
+      List<Meeting> meetings,
+      List<Instructor> instructors,
+      List<Book> books,
+      List<Metadata> metadata,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.course_id = course_id;
@@ -167,30 +197,13 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
   }
 
   @Override
-  public Builder newBuilder() {
-    Builder builder = new Builder();
-    builder.id = id;
-    builder.course_id = course_id;
-    builder.number = number;
-    builder.call_number = call_number;
-    builder.max = max;
-    builder.now = now;
-    builder.status = status;
-    builder.credits = credits;
-    builder.topic_name = topic_name;
-    builder.topic_id = topic_id;
-    builder.meetings = Internal.copyOf("meetings", meetings);
-    builder.instructors = Internal.copyOf("instructors", instructors);
-    builder.books = Internal.copyOf("books", books);
-    builder.metadata = Internal.copyOf("metadata", metadata);
-    builder.addUnknownFields(unknownFields());
-    return builder;
-  }
-
-  @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Section)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Section)) {
+      return false;
+    }
     Section o = (Section) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -234,22 +247,71 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
   }
 
   @Override
+  public Builder newBuilder() {
+    Builder builder = new Builder();
+    builder.id = id;
+    builder.course_id = course_id;
+    builder.number = number;
+    builder.call_number = call_number;
+    builder.max = max;
+    builder.now = now;
+    builder.status = status;
+    builder.credits = credits;
+    builder.topic_name = topic_name;
+    builder.topic_id = topic_id;
+    builder.meetings = Internal.copyOf("meetings", meetings);
+    builder.instructors = Internal.copyOf("instructors", instructors);
+    builder.books = Internal.copyOf("books", books);
+    builder.metadata = Internal.copyOf("metadata", metadata);
+    builder.addUnknownFields(unknownFields());
+    return builder;
+  }
+
+  @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (course_id != null) builder.append(", course_id=").append(course_id);
-    if (number != null) builder.append(", number=").append(number);
-    if (call_number != null) builder.append(", call_number=").append(call_number);
-    if (max != null) builder.append(", max=").append(max);
-    if (now != null) builder.append(", now=").append(now);
-    if (status != null) builder.append(", status=").append(status);
-    if (credits != null) builder.append(", credits=").append(credits);
-    if (topic_name != null) builder.append(", topic_name=").append(topic_name);
-    if (topic_id != null) builder.append(", topic_id=").append(topic_id);
-    if (!meetings.isEmpty()) builder.append(", meetings=").append(meetings);
-    if (!instructors.isEmpty()) builder.append(", instructors=").append(instructors);
-    if (!books.isEmpty()) builder.append(", books=").append(books);
-    if (!metadata.isEmpty()) builder.append(", metadata=").append(metadata);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (course_id != null) {
+      builder.append(", course_id=").append(course_id);
+    }
+    if (number != null) {
+      builder.append(", number=").append(number);
+    }
+    if (call_number != null) {
+      builder.append(", call_number=").append(call_number);
+    }
+    if (max != null) {
+      builder.append(", max=").append(max);
+    }
+    if (now != null) {
+      builder.append(", now=").append(now);
+    }
+    if (status != null) {
+      builder.append(", status=").append(status);
+    }
+    if (credits != null) {
+      builder.append(", credits=").append(credits);
+    }
+    if (topic_name != null) {
+      builder.append(", topic_name=").append(topic_name);
+    }
+    if (topic_id != null) {
+      builder.append(", topic_id=").append(topic_id);
+    }
+    if (!meetings.isEmpty()) {
+      builder.append(", meetings=").append(meetings);
+    }
+    if (!instructors.isEmpty()) {
+      builder.append(", instructors=").append(instructors);
+    }
+    if (!books.isEmpty()) {
+      builder.append(", books=").append(books);
+    }
+    if (!metadata.isEmpty()) {
+      builder.append(", metadata=").append(metadata);
+    }
     return builder.replace(0, 2, "Section{").append('}').toString();
   }
 
@@ -289,18 +351,30 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
       metadata = Internal.newMutableList();
     }
 
-    public Builder id(Long id) {
-      this.id = id;
-      return this;
+    @Override
+    public Section build() {
+      return new Section(
+          id,
+          course_id,
+          number,
+          call_number,
+          max,
+          now,
+          status,
+          credits,
+          topic_name,
+          topic_id,
+          meetings,
+          instructors,
+          books,
+          metadata,
+          super.buildUnknownFields()
+      );
     }
 
-    public Builder course_id(Long course_id) {
-      this.course_id = course_id;
-      return this;
-    }
-
-    public Builder number(String number) {
-      this.number = number;
+    public Builder books(List<Book> books) {
+      Internal.checkElementsNotNull(books);
+      this.books = books;
       return this;
     }
 
@@ -309,18 +383,8 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
       return this;
     }
 
-    public Builder max(Long max) {
-      this.max = max;
-      return this;
-    }
-
-    public Builder now(Long now) {
-      this.now = now;
-      return this;
-    }
-
-    public Builder status(String status) {
-      this.status = status;
+    public Builder course_id(Long course_id) {
+      this.course_id = course_id;
       return this;
     }
 
@@ -329,19 +393,8 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
       return this;
     }
 
-    public Builder topic_name(String topic_name) {
-      this.topic_name = topic_name;
-      return this;
-    }
-
-    public Builder topic_id(String topic_id) {
-      this.topic_id = topic_id;
-      return this;
-    }
-
-    public Builder meetings(List<Meeting> meetings) {
-      Internal.checkElementsNotNull(meetings);
-      this.meetings = meetings;
+    public Builder id(Long id) {
+      this.id = id;
       return this;
     }
 
@@ -351,9 +404,14 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
       return this;
     }
 
-    public Builder books(List<Book> books) {
-      Internal.checkElementsNotNull(books);
-      this.books = books;
+    public Builder max(Long max) {
+      this.max = max;
+      return this;
+    }
+
+    public Builder meetings(List<Meeting> meetings) {
+      Internal.checkElementsNotNull(meetings);
+      this.meetings = meetings;
       return this;
     }
 
@@ -363,9 +421,29 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
       return this;
     }
 
-    @Override
-    public Section build() {
-      return new Section(id, course_id, number, call_number, max, now, status, credits, topic_name, topic_id, meetings, instructors, books, metadata, super.buildUnknownFields());
+    public Builder now(Long now) {
+      this.now = now;
+      return this;
+    }
+
+    public Builder number(String number) {
+      this.number = number;
+      return this;
+    }
+
+    public Builder status(String status) {
+      this.status = status;
+      return this;
+    }
+
+    public Builder topic_id(String topic_id) {
+      this.topic_id = topic_id;
+      return this;
+    }
+
+    public Builder topic_name(String topic_name) {
+      this.topic_name = topic_name;
+      return this;
     }
   }
 
@@ -375,63 +453,53 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
     }
 
     @Override
-    public int encodedSize(Section value) {
-      return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
-          + (value.course_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.course_id) : 0)
-          + (value.number != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.number) : 0)
-          + (value.call_number != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.call_number) : 0)
-          + (value.max != null ? ProtoAdapter.INT64.encodedSizeWithTag(5, value.max) : 0)
-          + (value.now != null ? ProtoAdapter.INT64.encodedSizeWithTag(6, value.now) : 0)
-          + (value.status != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.status) : 0)
-          + (value.credits != null ? ProtoAdapter.STRING.encodedSizeWithTag(8, value.credits) : 0)
-          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(9, value.topic_name) : 0)
-          + (value.topic_id != null ? ProtoAdapter.STRING.encodedSizeWithTag(10, value.topic_id) : 0)
-          + Meeting.ADAPTER.asRepeated().encodedSizeWithTag(11, value.meetings)
-          + Instructor.ADAPTER.asRepeated().encodedSizeWithTag(12, value.instructors)
-          + Book.ADAPTER.asRepeated().encodedSizeWithTag(13, value.books)
-          + Metadata.ADAPTER.asRepeated().encodedSizeWithTag(14, value.metadata)
-          + value.unknownFields().size();
-    }
-
-    @Override
-    public void encode(ProtoWriter writer, Section value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.course_id != null) ProtoAdapter.INT64.encodeWithTag(writer, 2, value.course_id);
-      if (value.number != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.number);
-      if (value.call_number != null) ProtoAdapter.STRING.encodeWithTag(writer, 4, value.call_number);
-      if (value.max != null) ProtoAdapter.INT64.encodeWithTag(writer, 5, value.max);
-      if (value.now != null) ProtoAdapter.INT64.encodeWithTag(writer, 6, value.now);
-      if (value.status != null) ProtoAdapter.STRING.encodeWithTag(writer, 7, value.status);
-      if (value.credits != null) ProtoAdapter.STRING.encodeWithTag(writer, 8, value.credits);
-      if (value.topic_name != null) ProtoAdapter.STRING.encodeWithTag(writer, 9, value.topic_name);
-      if (value.topic_id != null) ProtoAdapter.STRING.encodeWithTag(writer, 10, value.topic_id);
-      Meeting.ADAPTER.asRepeated().encodeWithTag(writer, 11, value.meetings);
-      Instructor.ADAPTER.asRepeated().encodeWithTag(writer, 12, value.instructors);
-      Book.ADAPTER.asRepeated().encodeWithTag(writer, 13, value.books);
-      Metadata.ADAPTER.asRepeated().encodeWithTag(writer, 14, value.metadata);
-      writer.writeBytes(value.unknownFields());
-    }
-
-    @Override
     public Section decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.course_id(ProtoAdapter.INT64.decode(reader)); break;
-          case 3: builder.number(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.call_number(ProtoAdapter.STRING.decode(reader)); break;
-          case 5: builder.max(ProtoAdapter.INT64.decode(reader)); break;
-          case 6: builder.now(ProtoAdapter.INT64.decode(reader)); break;
-          case 7: builder.status(ProtoAdapter.STRING.decode(reader)); break;
-          case 8: builder.credits(ProtoAdapter.STRING.decode(reader)); break;
-          case 9: builder.topic_name(ProtoAdapter.STRING.decode(reader)); break;
-          case 10: builder.topic_id(ProtoAdapter.STRING.decode(reader)); break;
-          case 11: builder.meetings.add(Meeting.ADAPTER.decode(reader)); break;
-          case 12: builder.instructors.add(Instructor.ADAPTER.decode(reader)); break;
-          case 13: builder.books.add(Book.ADAPTER.decode(reader)); break;
-          case 14: builder.metadata.add(Metadata.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.course_id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 3:
+            builder.number(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.call_number(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 5:
+            builder.max(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 6:
+            builder.now(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 7:
+            builder.status(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 8:
+            builder.credits(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 9:
+            builder.topic_name(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 10:
+            builder.topic_id(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 11:
+            builder.meetings.add(Meeting.ADAPTER.decode(reader));
+            break;
+          case 12:
+            builder.instructors.add(Instructor.ADAPTER.decode(reader));
+            break;
+          case 13:
+            builder.books.add(Book.ADAPTER.decode(reader));
+            break;
+          case 14:
+            builder.metadata.add(Metadata.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -441,6 +509,70 @@ public final class Section extends AndroidMessage<Section, Section.Builder> {
       }
       reader.endMessage(token);
       return builder.build();
+    }
+
+    @Override
+    public void encode(ProtoWriter writer, Section value) throws IOException {
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.course_id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 2, value.course_id);
+      }
+      if (value.number != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.number);
+      }
+      if (value.call_number != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 4, value.call_number);
+      }
+      if (value.max != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 5, value.max);
+      }
+      if (value.now != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 6, value.now);
+      }
+      if (value.status != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 7, value.status);
+      }
+      if (value.credits != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 8, value.credits);
+      }
+      if (value.topic_name != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 9, value.topic_name);
+      }
+      if (value.topic_id != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 10, value.topic_id);
+      }
+      Meeting.ADAPTER.asRepeated().encodeWithTag(writer, 11, value.meetings);
+      Instructor.ADAPTER.asRepeated().encodeWithTag(writer, 12, value.instructors);
+      Book.ADAPTER.asRepeated().encodeWithTag(writer, 13, value.books);
+      Metadata.ADAPTER.asRepeated().encodeWithTag(writer, 14, value.metadata);
+      writer.writeBytes(value.unknownFields());
+    }
+
+    @Override
+    public int encodedSize(Section value) {
+      return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
+          + (value.course_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.course_id)
+                                     : 0)
+          + (value.number != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.number) : 0)
+          + (value.call_number != null ? ProtoAdapter.STRING.encodedSizeWithTag(
+          4,
+          value.call_number
+      ) : 0)
+          + (value.max != null ? ProtoAdapter.INT64.encodedSizeWithTag(5, value.max) : 0)
+          + (value.now != null ? ProtoAdapter.INT64.encodedSizeWithTag(6, value.now) : 0)
+          + (value.status != null ? ProtoAdapter.STRING.encodedSizeWithTag(7, value.status) : 0)
+          + (value.credits != null ? ProtoAdapter.STRING.encodedSizeWithTag(8, value.credits) : 0)
+          + (value.topic_name != null ? ProtoAdapter.STRING.encodedSizeWithTag(9, value.topic_name)
+                                      : 0)
+          + (value.topic_id != null ? ProtoAdapter.STRING.encodedSizeWithTag(10, value.topic_id)
+                                    : 0)
+          + Meeting.ADAPTER.asRepeated().encodedSizeWithTag(11, value.meetings)
+          + Instructor.ADAPTER.asRepeated().encodedSizeWithTag(12, value.instructors)
+          + Book.ADAPTER.asRepeated().encodedSizeWithTag(13, value.books)
+          + Metadata.ADAPTER.asRepeated().encodedSizeWithTag(14, value.metadata)
+          + value.unknownFields().size();
     }
 
     @Override

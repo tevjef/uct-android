@@ -7,8 +7,8 @@
     android:layout_height="wrap_content"
     android:checked="false"
     android:text="Summer 2015"
-    tools:checked="true"
-    style="@style/TwoStateTextStyle"
     android:textColor="@color/secondary_text"
+    tools:checked="true"
     tools:ignore="HardcodedText"
+    style="@style/TwoStateTextStyle"
     />

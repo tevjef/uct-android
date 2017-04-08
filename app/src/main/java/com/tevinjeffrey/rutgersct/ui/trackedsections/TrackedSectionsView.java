@@ -3,21 +3,20 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.BaseToolbarView;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-
 import java.util.List;
 
 @SuppressWarnings("BooleanParameter")
 public interface TrackedSectionsView extends View, BaseToolbarView {
 
-    void showLoading(boolean pullToRefresh);
+  void initRecyclerView();
 
-    void setData(List<UCTSubscription> data);
+  void initSwipeLayout();
 
-    void showError(Throwable e);
+  void setData(List<UCTSubscription> data);
 
-    void showLayout(LayoutType showEmptyLayout);
+  void showError(Throwable e);
 
-    void initRecyclerView();
+  void showLayout(LayoutType showEmptyLayout);
 
-    void initSwipeLayout();
+  void showLoading(boolean pullToRefresh);
 }

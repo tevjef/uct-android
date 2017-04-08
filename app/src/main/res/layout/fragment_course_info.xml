@@ -3,20 +3,22 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/coordinator_layout"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/course_info_list"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:scrollbars="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:transitionGroup="true"/>
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/course_info_list"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="vertical"
+      android:transitionGroup="true"
+      app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      />
 
-    <include layout="@layout/course_info_app_bar" />
+  <include layout="@layout/course_info_app_bar"/>
 
 </android.support.design.widget.CoordinatorLayout>

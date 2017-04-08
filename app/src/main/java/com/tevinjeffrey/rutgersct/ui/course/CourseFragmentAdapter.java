@@ -6,56 +6,56 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
-
 import java.math.BigInteger;
 import java.util.List;
 
 public class CourseFragmentAdapter extends RecyclerView.Adapter<CourseVH> {
 
-    private List<Course> courseList;
-    private ItemClickListener<Course, View> itemClickListener;
+  private List<Course> courseList;
+  private ItemClickListener<Course, View> itemClickListener;
 
-    public CourseFragmentAdapter(List<Course> courseList, @NonNull ItemClickListener<Course, View> listener) {
-        this.courseList = courseList;
-        this.itemClickListener = listener;
-        setHasStableIds(true);
-    }
+  public CourseFragmentAdapter(
+      List<Course> courseList,
+      @NonNull ItemClickListener<Course, View> listener) {
+    this.courseList = courseList;
+    this.itemClickListener = listener;
+    setHasStableIds(true);
+  }
 
-    @Override
-    public CourseVH onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        final Context context = viewGroup.getContext();
-        final View parent = LayoutInflater.from(context).inflate(R.layout.course_list_item, viewGroup, false);
+  @Override
+  public int getItemCount() {
+    return courseList.size();
+  }
 
-        return CourseVH.newInstance(parent);
-    }
+  @Override
+  public long getItemId(int position) {
+    return new BigInteger(courseList.get(position).topic_id).longValue();
+  }
 
-    @Override
-    public void onBindViewHolder(final CourseVH holder, int position) {
+  @Override
+  public void onBindViewHolder(final CourseVH holder, int position) {
 
-        final Course course = courseList.get(position);
+    final Course course = courseList.get(position);
 
-        holder.setCourseTitle(course);
-        holder.setSectionsInfo(course);
-        holder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemClickListener.onItemClicked(course, v);
-            }
-        });
-    }
+    holder.setCourseTitle(course);
+    holder.setSectionsInfo(course);
+    holder.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        itemClickListener.onItemClicked(course, v);
+      }
+    });
+  }
 
-    @Override
-    public long getItemId(int position) {
-        return new BigInteger(courseList.get(position).topic_id).longValue();
-    }
+  @Override
+  public CourseVH onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    final Context context = viewGroup.getContext();
+    final View parent =
+        LayoutInflater.from(context).inflate(R.layout.course_list_item, viewGroup, false);
 
-    @Override
-    public int getItemCount() {
-        return courseList.size();
-    }
-
+    return CourseVH.newInstance(parent);
+  }
 }

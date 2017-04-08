@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/error_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
+    android:gravity="center"
     android:orientation="vertical"
-    android:id="@+id/error_view"
     android:visibility="gone"
-    tools:visibility="visible"
     tools:showIn="@layout/fragment_tracked_sections"
-    android:gravity="center">
+    tools:visibility="visible"
+    >
 
-    <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/error_icon"
-        android:layout_centerInParent="true"
-        android:tint="?attr/colorPrimary"
-        android:src="@drawable/ic_cloud_error" />
+  <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+      android:id="@+id/error_icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:src="@drawable/ic_cloud_error"
+      android:tint="?attr/colorPrimary"
+      />
 
-    <TextView
-        android:text="@string/empty_view"
-        android:id="@+id/text"
-        style="@style/SecondaryTextStyle"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/error_icon"
-        android:layout_alignParentStart="false"
-        android:layout_marginTop="-12dp" />
+  <TextView
+      android:id="@+id/text"
+      android:layout_alignParentStart="false"
+      android:layout_below="@+id/error_icon"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="-12dp"
+      android:text="@string/empty_view"
+      style="@style/SecondaryTextStyle"
+      />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="TRY AGAIN"
-        android:id="@+id/try_again"
-        android:layout_below="@+id/text"
-        android:layout_centerHorizontal="true"
-        android:textColor="?attr/colorAccent"
-        android:textStyle="bold"
-        android:padding="@dimen/default_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_alignParentBottom="false" />
+  <TextView
+      android:id="@+id/try_again"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="false"
+      android:layout_below="@+id/text"
+      android:layout_centerHorizontal="true"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:padding="@dimen/default_margin"
+      android:text="TRY AGAIN"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textColor="?attr/colorAccent"
+      android:textStyle="bold"
+      />
 </LinearLayout>

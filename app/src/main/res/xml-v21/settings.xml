@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+  <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+  <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+  <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+       dismiss it. -->
+  <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
 
-    <PreferenceCategory android:title="Notifications">
+  <PreferenceCategory android:title="Notifications">
 
-        <CheckBoxPreference
-            android:key="app_notification"
-            android:title="Notifications"
-            android:defaultValue="true"
-            android:summary="Notify me when a section opens"/>
-        <CheckBoxPreference
-            android:key="@string/pref_sound_key"
-            android:title="Sound"
-            android:summary="Play sound on notification"
-            android:defaultValue="@bool/pref_sound_default_value"
-            android:dependency="app_notification"
-            />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="app_notification"
+        android:summary="Notify me when a section opens"
+        android:title="Notifications"
+        />
+    <CheckBoxPreference
+        android:defaultValue="@bool/pref_sound_default_value"
+        android:dependency="app_notification"
+        android:key="@string/pref_sound_key"
+        android:summary="Play sound on notification"
+        android:title="Sound"
+        />
 
-    </PreferenceCategory>
+  </PreferenceCategory>
 
-    <PreferenceCategory android:title="Developer">
+  <PreferenceCategory android:title="Developer">
 
-        <Preference
-            android:key="licenses"
-            android:title="Open Source Licenses" />
-        <Preference
-            android:key="about"
-            android:title="About" />
+    <Preference
+        android:key="licenses"
+        android:title="Open Source Licenses"
+        />
+    <Preference
+        android:key="about"
+        android:title="About"
+        />
 
-    </PreferenceCategory>
+  </PreferenceCategory>
 
 </PreferenceScreen>

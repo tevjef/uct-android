@@ -2,77 +2,74 @@ package com.tevinjeffrey.rutgersct.data.rutgersapi.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import org.apache.commons.lang3.text.WordUtils;
 
 public class Subject implements Parcelable {
 
-    private String description;
-    private String code;
-    private String modifiedDescription;
-
-    public Subject() {
+  public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {
+    public Subject createFromParcel(Parcel source) {
+      return new Subject(source);
     }
 
-    public String getDescription() {
-        return description;
+    public Subject[] newArray(int size) {
+      return new Subject[size];
     }
+  };
+  private String description;
+  private String code;
+  private String modifiedDescription;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public Subject() {
+  }
 
-    public String getTitle() {
-        return WordUtils.capitalize(description.toLowerCase());
-    }
+  protected Subject(Parcel in) {
+    this.description = in.readString();
+    this.code = in.readString();
+    this.modifiedDescription = in.readString();
+  }
 
-    public String getCode() {
-        return code;
-    }
+  @Override
+  public int describeContents() {
+    return 0;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  @Override
+  public String toString() {
+    return getCode() + " : " + getDescription();
+  }
 
-    public String getModifiedDescription() {
-        return modifiedDescription;
-    }
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.description);
+    dest.writeString(this.code);
+    dest.writeString(this.modifiedDescription);
+  }
 
-    public void setModifiedDescription(String modifiedDescription) {
-        this.modifiedDescription = modifiedDescription;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    @Override
-    public String toString() {
-        return getCode() + " : " + getDescription();
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
+  public String getDescription() {
+    return description;
+  }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.description);
-        dest.writeString(this.code);
-        dest.writeString(this.modifiedDescription);
-    }
+  public String getModifiedDescription() {
+    return modifiedDescription;
+  }
 
-    protected Subject(Parcel in) {
-        this.description = in.readString();
-        this.code = in.readString();
-        this.modifiedDescription = in.readString();
-    }
+  public void setModifiedDescription(String modifiedDescription) {
+    this.modifiedDescription = modifiedDescription;
+  }
 
-    public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {
-        public Subject createFromParcel(Parcel source) {
-            return new Subject(source);
-        }
-
-        public Subject[] newArray(int size) {
-            return new Subject[size];
-        }
-    };
+  public String getTitle() {
+    return WordUtils.capitalize(description.toLowerCase());
+  }
 }

@@ -4,13 +4,13 @@ import com.tevinjeffrey.rutgersct.ui.base.StatefulPresenter;
 
 public interface SectionInfoPresenter extends StatefulPresenter {
 
-    void setFabState(boolean animate);
+  void addSection();
 
-    void toggleFab();
+  void loadRMP();
 
-    void loadRMP();
+  void removeSection();
 
-    void removeSection();
+  void setFabState(boolean animate);
 
-    void addSection();
+  void toggleFab();
 }

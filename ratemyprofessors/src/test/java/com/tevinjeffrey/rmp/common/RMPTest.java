@@ -1,89 +1,94 @@
 package com.tevinjeffrey.rmp.common;
 
+import dagger.ObjectGraph;
+import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
-import dagger.ObjectGraph;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class RMPTest {
 
-    @Inject
-    RMP rmp;
+  @Inject
+  RMP rmp;
 
-    @Before
-    public void setUp() throws Exception {
-        ObjectGraph.create(new RMPTestModule()).inject(this);
-    }
+  @Before
+  public void setUp() throws Exception {
+    ObjectGraph.create(new RMPTestModule()).inject(this);
+  }
 
-    @Test
-    public void testProfessorWithoutFirstName() throws Exception {
-        String expected = "John";
+  @Test
+  public void testEmptyUniversity() throws Exception {
+    String expected = "John";
 
-        Parameter params = new Parameter("rutgers",
-                "Mathematics", "Newark", "101", "", "Randall");
+    Parameter params = new Parameter("",
+        "Mathematics", "Newark", "101", "J", "Randall"
+    );
 
-        Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
+    Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
 
-        assertEquals(expected, result.getFirstName());
-    }
+    assertEquals(expected, result.getFirstName());
+  }
 
-    @Test
-    public void testProfessorWithFirstName() throws Exception {
-        String expected = "John";
+  @Test
+  public void testNJITprofessor() throws Exception {
+    String expected = "Lay";
 
-        Parameter params = new Parameter("rutgers",
-                "Mathematics", "Newark", "101", "J", "Randall");
+    Parameter params = new Parameter("rutgers",
+        "Computer Science", "Newark", "101", "L", "Lay"
+    );
 
-        Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
+    Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
 
-        assertEquals(expected, result.getFirstName());
-    }
+    assertEquals(expected, result.getLastName());
+  }
 
-    @Test
-    public void testEmptyUniversity() throws Exception {
-        String expected = "John";
+  @Test
+  public void testNoProfessor() throws Exception {
+    Parameter params = new Parameter("rutgers",
+        "Computer Science", "Newark", "101", "", "NOPROFESSOR"
+    );
 
-        Parameter params = new Parameter("",
-                "Mathematics", "Newark", "101", "J", "Randall");
+    Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
 
-        Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
+    assertNull(result);
+  }
 
-        assertEquals(expected, result.getFirstName());
-    }
+  @Test
+  public void testProfessorWithFirstName() throws Exception {
+    String expected = "John";
 
-    @Test
-    public void testNJITprofessor() throws Exception {
-        String expected = "Lay";
+    Parameter params = new Parameter("rutgers",
+        "Mathematics", "Newark", "101", "J", "Randall"
+    );
 
-        Parameter params = new Parameter("rutgers",
-                "Computer Science", "Newark", "101", "L", "Lay");
+    Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
 
-        Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
+    assertEquals(expected, result.getFirstName());
+  }
 
-        assertEquals(expected, result.getLastName());
-    }
+  @Test
+  public void testProfessorWithoutFirstName() throws Exception {
+    String expected = "John";
 
-    @Test
-    public void testStaff() throws Exception {
-       Parameter params = new Parameter("rutgers",
-                "Computer Science", "Newark", "101", "", "STAFF");
+    Parameter params = new Parameter("rutgers",
+        "Mathematics", "Newark", "101", "", "Randall"
+    );
 
-        Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
+    Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
 
-        assertNull(result);
-    }
+    assertEquals(expected, result.getFirstName());
+  }
 
-    @Test
-    public void testNoProfessor() throws Exception {
-        Parameter params = new Parameter("rutgers",
-                "Computer Science", "Newark", "101", "", "NOPROFESSOR");
+  @Test
+  public void testStaff() throws Exception {
+    Parameter params = new Parameter("rutgers",
+        "Computer Science", "Newark", "101", "", "STAFF"
+    );
 
-        Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
+    Professor result = rmp.getProfessor(params).toBlocking().lastOrDefault(null);
 
-        assertNull(result);
-    }
+    assertNull(result);
+  }
 }

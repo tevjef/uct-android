@@ -17,18 +17,17 @@
 package com.tevinjeffrey.rutgersct.data.uctapi.notifications;
 
 import android.util.Log;
-
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
-    private static final String TAG = "MyInstanceIDLS";
+  private static final String TAG = "MyInstanceIDLS";
 
-    @Override
-    public void onTokenRefresh() {
-        // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
-    }
+  @Override
+  public void onTokenRefresh() {
+    // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
+    String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+    Log.d(TAG, "Refreshed token: " + refreshedToken);
+  }
 }

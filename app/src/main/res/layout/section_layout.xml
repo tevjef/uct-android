@@ -8,36 +8,41 @@
     android:background="?android:attr/selectableItemBackground"
     android:minHeight="72dp"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp"
     android:paddingRight="@dimen/default_margin"
-    tools:background="@android:color/white">
+    android:paddingTop="8dp"
+    tools:background="@android:color/white"
+    >
+
+  <include
+      layout="@layout/section_item_circle"
+      android:id="@+id/section_number_background"
+      />
+
+  <TextView
+      android:id="@+id/prof_text"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_below="@+id/time_frame"
+      android:text="A EXAMPLE OF VERY LONG TEXT"
+      android:textColor="@color/secondary_text"
+      android:textStyle="bold"
+      tools:ignore="HardcodedText"
+      style="@style/SecondaryTextStyle"
+      />
+
+  <FrameLayout
+      android:id="@+id/time_frame"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingLeft="@dimen/start_keyline"
+      >
 
     <include
-        layout="@layout/section_item_circle"
-        android:id="@+id/section_number_background" />
-
-    <TextView
-        android:id="@+id/prof_text"
-        android:text="A EXAMPLE OF VERY LONG TEXT"
-        android:textColor="@color/secondary_text"
-        style="@style/SecondaryTextStyle"
-        tools:ignore="HardcodedText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/time_frame"
-        android:textStyle="bold" />
-
-    <FrameLayout
+        layout="@layout/section_item_time_container"
+        android:id="@+id/section_item_time_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/start_keyline"
-        android:id="@+id/time_frame">
-
-        <include
-            layout="@layout/section_item_time_container"
-            android:id="@+id/section_item_time_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+        />
+  </FrameLayout>
 
 </RelativeLayout>

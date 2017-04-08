@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,26 +12,18 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
-
 import okio.ByteString;
 
 public final class Registration extends AndroidMessage<Registration, Registration.Builder> {
   public static final ProtoAdapter<Registration> ADAPTER = new ProtoAdapter_Registration();
 
   public static final Parcelable.Creator<Registration> CREATOR = AndroidMessage.newCreator(ADAPTER);
-
-  private static final long serialVersionUID = 0L;
-
   public static final Long DEFAULT_ID = 0L;
-
   public static final Long DEFAULT_UNIVERSITY_ID = 0L;
-
   public static final String DEFAULT_PERIOD = "";
-
   public static final Long DEFAULT_PERIOD_DATE = 0L;
-
+  private static final long serialVersionUID = 0L;
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
@@ -61,11 +52,20 @@ public final class Registration extends AndroidMessage<Registration, Registratio
   @Nullable
   public final Long period_date;
 
-  public Registration(@Nullable Long id, @Nullable Long university_id, @Nullable String period, @Nullable Long period_date) {
+  public Registration(
+      @Nullable Long id,
+      @Nullable Long university_id,
+      @Nullable String period,
+      @Nullable Long period_date) {
     this(id, university_id, period, period_date, ByteString.EMPTY);
   }
 
-  public Registration(@Nullable Long id, @Nullable Long university_id, @Nullable String period, @Nullable Long period_date, ByteString unknownFields) {
+  public Registration(
+      @Nullable Long id,
+      @Nullable Long university_id,
+      @Nullable String period,
+      @Nullable Long period_date,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
     this.university_id = university_id;
@@ -74,20 +74,13 @@ public final class Registration extends AndroidMessage<Registration, Registratio
   }
 
   @Override
-  public Builder newBuilder() {
-    Builder builder = new Builder();
-    builder.id = id;
-    builder.university_id = university_id;
-    builder.period = period;
-    builder.period_date = period_date;
-    builder.addUnknownFields(unknownFields());
-    return builder;
-  }
-
-  @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Registration)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Registration)) {
+      return false;
+    }
     Registration o = (Registration) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(id, o.id)
@@ -111,12 +104,31 @@ public final class Registration extends AndroidMessage<Registration, Registratio
   }
 
   @Override
+  public Builder newBuilder() {
+    Builder builder = new Builder();
+    builder.id = id;
+    builder.university_id = university_id;
+    builder.period = period;
+    builder.period_date = period_date;
+    builder.addUnknownFields(unknownFields());
+    return builder;
+  }
+
+  @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (id != null) builder.append(", id=").append(id);
-    if (university_id != null) builder.append(", university_id=").append(university_id);
-    if (period != null) builder.append(", period=").append(period);
-    if (period_date != null) builder.append(", period_date=").append(period_date);
+    if (id != null) {
+      builder.append(", id=").append(id);
+    }
+    if (university_id != null) {
+      builder.append(", university_id=").append(university_id);
+    }
+    if (period != null) {
+      builder.append(", period=").append(period);
+    }
+    if (period_date != null) {
+      builder.append(", period_date=").append(period_date);
+    }
     return builder.replace(0, 2, "Registration{").append('}').toString();
   }
 
@@ -132,13 +144,13 @@ public final class Registration extends AndroidMessage<Registration, Registratio
     public Builder() {
     }
 
-    public Builder id(Long id) {
-      this.id = id;
-      return this;
+    @Override
+    public Registration build() {
+      return new Registration(id, university_id, period, period_date, super.buildUnknownFields());
     }
 
-    public Builder university_id(Long university_id) {
-      this.university_id = university_id;
+    public Builder id(Long id) {
+      this.id = id;
       return this;
     }
 
@@ -152,9 +164,9 @@ public final class Registration extends AndroidMessage<Registration, Registratio
       return this;
     }
 
-    @Override
-    public Registration build() {
-      return new Registration(id, university_id, period, period_date, super.buildUnknownFields());
+    public Builder university_id(Long university_id) {
+      this.university_id = university_id;
+      return this;
     }
   }
 
@@ -164,33 +176,23 @@ public final class Registration extends AndroidMessage<Registration, Registratio
     }
 
     @Override
-    public int encodedSize(Registration value) {
-      return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
-          + (value.university_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(2, value.university_id) : 0)
-          + (value.period != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.period) : 0)
-          + (value.period_date != null ? ProtoAdapter.INT64.encodedSizeWithTag(4, value.period_date) : 0)
-          + value.unknownFields().size();
-    }
-
-    @Override
-    public void encode(ProtoWriter writer, Registration value) throws IOException {
-      if (value.id != null) ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
-      if (value.university_id != null) ProtoAdapter.INT64.encodeWithTag(writer, 2, value.university_id);
-      if (value.period != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.period);
-      if (value.period_date != null) ProtoAdapter.INT64.encodeWithTag(writer, 4, value.period_date);
-      writer.writeBytes(value.unknownFields());
-    }
-
-    @Override
     public Registration decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.id(ProtoAdapter.INT64.decode(reader)); break;
-          case 2: builder.university_id(ProtoAdapter.INT64.decode(reader)); break;
-          case 3: builder.period(ProtoAdapter.STRING.decode(reader)); break;
-          case 4: builder.period_date(ProtoAdapter.INT64.decode(reader)); break;
+          case 1:
+            builder.id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 2:
+            builder.university_id(ProtoAdapter.INT64.decode(reader));
+            break;
+          case 3:
+            builder.period(ProtoAdapter.STRING.decode(reader));
+            break;
+          case 4:
+            builder.period_date(ProtoAdapter.INT64.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -200,6 +202,36 @@ public final class Registration extends AndroidMessage<Registration, Registratio
       }
       reader.endMessage(token);
       return builder.build();
+    }
+
+    @Override
+    public void encode(ProtoWriter writer, Registration value) throws IOException {
+      if (value.id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 1, value.id);
+      }
+      if (value.university_id != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 2, value.university_id);
+      }
+      if (value.period != null) {
+        ProtoAdapter.STRING.encodeWithTag(writer, 3, value.period);
+      }
+      if (value.period_date != null) {
+        ProtoAdapter.INT64.encodeWithTag(writer, 4, value.period_date);
+      }
+      writer.writeBytes(value.unknownFields());
+    }
+
+    @Override
+    public int encodedSize(Registration value) {
+      return (value.id != null ? ProtoAdapter.INT64.encodedSizeWithTag(1, value.id) : 0)
+          + (value.university_id != null ? ProtoAdapter.INT64.encodedSizeWithTag(
+          2,
+          value.university_id
+      ) : 0)
+          + (value.period != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.period) : 0)
+          + (value.period_date != null ? ProtoAdapter.INT64.encodedSizeWithTag(4, value.period_date)
+                                       : 0)
+          + value.unknownFields().size();
     }
 
     @Override

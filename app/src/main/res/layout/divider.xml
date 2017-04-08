@@ -2,7 +2,8 @@
 <View xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fsl_divider"
     android:layout_below="@+id/course_title_text"
-    android:layout_toRightOf="@+id/section_number_background"
-    android:layout_toEndOf="@+id/section_number_background"
     android:layout_marginBottom="4dp"
-    style="@style/divider" />
+    android:layout_toEndOf="@+id/section_number_background"
+    android:layout_toRightOf="@+id/section_number_background"
+    style="@style/divider"
+    />

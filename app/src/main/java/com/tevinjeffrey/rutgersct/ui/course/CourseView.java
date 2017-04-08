@@ -3,24 +3,23 @@ package com.tevinjeffrey.rutgersct.ui.course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.BaseToolbarView;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-
 import java.util.List;
 
 @SuppressWarnings("BooleanParameter")
 public interface CourseView extends BaseToolbarView, View {
 
-    String SELECTED_COURSE = "SELECTED_COURSE";
+  String SELECTED_COURSE = "SELECTED_COURSE";
 
-    void showLoading(boolean pullToRefresh);
+  void initRecyclerView();
 
-    void setData(List<Course> data);
+  void initSwipeLayout();
 
-    void showError(Throwable e);
+  void setData(List<Course> data);
 
-    //Shows either the default LIST layout, ERROR or EMPTY layout.
-    void showLayout(LayoutType showEmptyLayout);
+  void showError(Throwable e);
 
-    void initRecyclerView();
+  //Shows either the default LIST layout, ERROR or EMPTY layout.
+  void showLayout(LayoutType showEmptyLayout);
 
-    void initSwipeLayout();
+  void showLoading(boolean pullToRefresh);
 }

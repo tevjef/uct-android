@@ -1,39 +1,38 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven { url 'https://maven.fabric.io/public' }
-        maven { url "https://clojars.org/repo/" }
-        maven { url "https://jitpack.io" }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.4.0-alpha5'
-        classpath 'com.google.gms:google-services:3.0.0'
-        classpath 'io.fabric.tools:gradle:1.22.1'
-
-    }
+  repositories {
+    jcenter()
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://clojars.org/repo/" }
+    maven { url "https://jitpack.io" }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.4.0-alpha5'
+    classpath 'com.google.gms:google-services:3.0.0'
+    classpath 'io.fabric.tools:gradle:1.22.1'
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
-        maven { url "https://clojars.org/repo/" }
-        maven { url "https://jitpack.io" }
-        maven { url 'https://maven.fabric.io/public' }
-    }
+  repositories {
+    jcenter()
+    maven { url "https://clojars.org/repo/" }
+    maven { url "https://jitpack.io" }
+    maven { url 'https://maven.fabric.io/public' }
+  }
 }
 
 ext {
-    Properties properties = new Properties()
-    File propertiesFile = file('local.properties')
-    propertiesFile.createNewFile()
-    propertiesFile.withInputStream {
-        properties.load(it)
-    }
+  Properties properties = new Properties()
+  File propertiesFile = file('local.properties')
+  propertiesFile.createNewFile()
+  propertiesFile.withInputStream {
+    properties.load(it)
+  }
 
-    keyAlias = properties.keyAlias
-    keyPassword = properties.keyPassword
-    storePassword = properties.storePassword
-    storeFile = properties.storeFile == null? "/":properties.storeFile
+  keyAlias = properties.keyAlias
+  keyPassword = properties.keyPassword
+  storePassword = properties.storePassword
+  storeFile = properties.storeFile == null ? "/" : properties.storeFile
 
-    supportVersion = '25.3.1'
+  supportVersion = '25.3.1'
 }

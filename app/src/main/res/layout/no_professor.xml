@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/SecondaryTextStyle"
-    android:layout_width="match_parent"
-    tools:text="No professor found"
     android:id="@+id/message"
+    android:layout_width="match_parent"
     android:layout_centerInParent="true"
+    android:gravity="center"
     android:padding="16dp"
-    android:gravity="center" />
+    tools:text="No professor found"
+    style="@style/SecondaryTextStyle"
+    />

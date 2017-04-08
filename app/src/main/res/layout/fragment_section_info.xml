@@ -6,55 +6,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <include layout="@layout/section_info_app_bar"
-        android:id="@+id/tb_include" />
+  <include
+      layout="@layout/section_info_app_bar"
+      android:id="@+id/tb_include"
+      />
 
 
-    <android.support.v4.widget.NestedScrollView
+  <android.support.v4.widget.NestedScrollView
+      android:id="@+id/scrollView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="fill_vertical"
+      android:fillViewport="true"
+      android:scrollbars="vertical"
+      android:transitionGroup="true"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      >
+
+    <LinearLayout
+        android:id="@+id/bottomHalf"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="fill_vertical"
-        android:scrollbars="vertical"
-        android:fillViewport="true"
-        android:id="@+id/scrollView"
-        android:transitionGroup="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-         >
-
-        <LinearLayout
-            android:id="@+id/bottomHalf"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="16dp"
-            android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        >
 
 
-            <include layout="@layout/section_info_metadata" />
+      <include layout="@layout/section_info_metadata"/>
 
-            <include layout="@layout/section_info_times"/>
+      <include layout="@layout/section_info_times"/>
 
-            <include layout="@layout/section_info_rmp"/>
+      <include layout="@layout/section_info_rmp"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+  </android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_courses_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_white_24dp"
-        android:layout_margin="@dimen/fab_compat_margin"
-        android:alpha="0"
-        tools:alpha="1"
-        android:transitionName="@string/transition_name_fab"
-        app:rippleColor="@color/accent_dark"
-        app:borderWidth="0dp"
-        app:layout_anchor="@id/tb_include"
-        android:clickable="true"
-        app:layout_anchorGravity="bottom|right|end" />
+  <android.support.design.widget.FloatingActionButton
+      android:id="@+id/add_courses_fab"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/fab_compat_margin"
+      android:alpha="0"
+      android:clickable="true"
+      android:src="@drawable/ic_add_white_24dp"
+      android:transitionName="@string/transition_name_fab"
+      app:borderWidth="0dp"
+      app:layout_anchor="@id/tb_include"
+      app:layout_anchorGravity="bottom|right|end"
+      app:rippleColor="@color/accent_dark"
+      tools:alpha="1"
+      />
 
 </android.support.design.widget.CoordinatorLayout>
 

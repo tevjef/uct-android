@@ -28,72 +28,74 @@ import rx.schedulers.Schedulers;
 import static org.mockito.Mockito.mock;
 
 @Module(injects = {
-        TrackedSectionsPresenterImpl.class,
-        SubjectPresenterImpl.class,
-        SectionInfoPresenterImpl.class,
-        CoursePresenterImpl.class,
-        ChooserPresenterImpl.class,
-        RetroRutgersTest.class
+    TrackedSectionsPresenterImpl.class,
+    SubjectPresenterImpl.class,
+    SectionInfoPresenterImpl.class,
+    CoursePresenterImpl.class,
+    ChooserPresenterImpl.class,
+    RetroRutgersTest.class
 }
-        , library = true
-        , complete = false)
+    , library = true
+    , complete = false)
 public class TestModule {
-    @Provides
-    @Singleton
-    public Bus provideBus() {
-        return mock(Bus.class);
-    }
+  @Provides
+  @Singleton
+  @AndroidMainThread
+  public Scheduler provideAndroidMainThread() {
+    return Schedulers.immediate();
+  }
 
-    @Provides
-    @Singleton
-    public DatabaseHandler provideDatabaseHandler() {
-        return new MockDatabaseHandler();
-    }
+  @Provides
+  @Singleton
+  @BackgroundThread
+  public Scheduler provideBackgroundThread() {
+    return Schedulers.immediate();
+  }
 
-    @Provides
-    @Singleton
-    public RetroRutgers providesRetroRutgers(RetroRutgersService service, @BackgroundThread Scheduler thread) {
-        return new RetroRutgers(service, thread);
-    }
+  @Provides
+  @Singleton
+  public Bus provideBus() {
+    return mock(Bus.class);
+  }
 
-    @Provides
-    @Singleton
-    public RetroRutgersService providesRutgersRestAdapter(OkHttpClient client, Gson gson) {
-        return new Retrofit.Builder()
-            .client(client)
-            .addConverterFactory(WireConverterFactory.create())
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-            .baseUrl("http://sis.rutgers.edu/soc/")
-            .build()
-            .create(RetroRutgersService.class);
-    }
+  @Provides
+  @Singleton
+  public DatabaseHandler provideDatabaseHandler() {
+    return new MockDatabaseHandler();
+  }
 
-    @Provides
-    @Singleton
-    public Gson providesGson() {
-        return new GsonBuilder()
-                .serializeNulls()
-                .setPrettyPrinting()
-                .create();
-    }
+  @Provides
+  @Singleton
+  public Gson providesGson() {
+    return new GsonBuilder()
+        .serializeNulls()
+        .setPrettyPrinting()
+        .create();
+  }
 
-    @Provides
-    @Singleton
-    public OkHttpClient providesOkHttpClient() {
-        return new OkHttpClient();
-    }
+  @Provides
+  @Singleton
+  public OkHttpClient providesOkHttpClient() {
+    return new OkHttpClient();
+  }
 
-    @Provides
-    @Singleton
-    @AndroidMainThread
-    public Scheduler provideAndroidMainThread() {
-        return Schedulers.immediate();
-    }
+  @Provides
+  @Singleton
+  public RetroRutgers providesRetroRutgers(
+      RetroRutgersService service,
+      @BackgroundThread Scheduler thread) {
+    return new RetroRutgers(service, thread);
+  }
 
-    @Provides
-    @Singleton
-    @BackgroundThread
-    public Scheduler provideBackgroundThread() {
-        return Schedulers.immediate();
-    }
+  @Provides
+  @Singleton
+  public RetroRutgersService providesRutgersRestAdapter(OkHttpClient client, Gson gson) {
+    return new Retrofit.Builder()
+        .client(client)
+        .addConverterFactory(WireConverterFactory.create())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .baseUrl("http://sis.rutgers.edu/soc/")
+        .build()
+        .create(RetroRutgersService.class);
+  }
 }

@@ -3,22 +3,21 @@ package com.tevinjeffrey.rutgersct.ui.subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BaseToolbarView;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-
 import java.util.List;
 
 public interface SubjectView extends View, BaseToolbarView {
 
-    String SELECTED_SUBJECT = "SELECTED_SUBJECT";
+  String SELECTED_SUBJECT = "SELECTED_SUBJECT";
 
-    void showLoading(boolean pullToRefresh);
+  void initRecyclerView();
 
-    void setData(List<Subject> data);
+  void initSwipeLayout();
 
-    void showError(Throwable e);
+  void setData(List<Subject> data);
 
-    void showLayout(LayoutType showEmptyLayout);
+  void showError(Throwable e);
 
-    void initRecyclerView();
+  void showLayout(LayoutType showEmptyLayout);
 
-    void initSwipeLayout();
+  void showLoading(boolean pullToRefresh);
 }

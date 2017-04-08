@@ -4,7 +4,6 @@ package com.tevinjeffrey.rutgersct.data.uctapi.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -13,10 +12,8 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
-
 import java.io.IOException;
 import java.util.List;
-
 import okio.ByteString;
 
 public final class Data extends AndroidMessage<Data, Data.Builder> {
@@ -82,11 +79,38 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
   @Nullable
   public final Section section;
 
-  public Data(List<University> universities, List<Subject> subjects, List<Course> courses, List<Section> sections, @Nullable University university, @Nullable Subject subject, @Nullable Course course, @Nullable Section section) {
-    this(universities, subjects, courses, sections, university, subject, course, section, ByteString.EMPTY);
+  public Data(
+      List<University> universities,
+      List<Subject> subjects,
+      List<Course> courses,
+      List<Section> sections,
+      @Nullable University university,
+      @Nullable Subject subject,
+      @Nullable Course course,
+      @Nullable Section section) {
+    this(
+        universities,
+        subjects,
+        courses,
+        sections,
+        university,
+        subject,
+        course,
+        section,
+        ByteString.EMPTY
+    );
   }
 
-  public Data(List<University> universities, List<Subject> subjects, List<Course> courses, List<Section> sections, @Nullable University university, @Nullable Subject subject, @Nullable Course course, @Nullable Section section, ByteString unknownFields) {
+  public Data(
+      List<University> universities,
+      List<Subject> subjects,
+      List<Course> courses,
+      List<Section> sections,
+      @Nullable University university,
+      @Nullable Subject subject,
+      @Nullable Course course,
+      @Nullable Section section,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.universities = Internal.immutableCopyOf("universities", universities);
     this.subjects = Internal.immutableCopyOf("subjects", subjects);
@@ -99,24 +123,13 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
   }
 
   @Override
-  public Builder newBuilder() {
-    Builder builder = new Builder();
-    builder.universities = Internal.copyOf("universities", universities);
-    builder.subjects = Internal.copyOf("subjects", subjects);
-    builder.courses = Internal.copyOf("courses", courses);
-    builder.sections = Internal.copyOf("sections", sections);
-    builder.university = university;
-    builder.subject = subject;
-    builder.course = course;
-    builder.section = section;
-    builder.addUnknownFields(unknownFields());
-    return builder;
-  }
-
-  @Override
   public boolean equals(Object other) {
-    if (other == this) return true;
-    if (!(other instanceof Data)) return false;
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Data)) {
+      return false;
+    }
     Data o = (Data) other;
     return unknownFields().equals(o.unknownFields())
         && universities.equals(o.universities)
@@ -148,16 +161,47 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
   }
 
   @Override
+  public Builder newBuilder() {
+    Builder builder = new Builder();
+    builder.universities = Internal.copyOf("universities", universities);
+    builder.subjects = Internal.copyOf("subjects", subjects);
+    builder.courses = Internal.copyOf("courses", courses);
+    builder.sections = Internal.copyOf("sections", sections);
+    builder.university = university;
+    builder.subject = subject;
+    builder.course = course;
+    builder.section = section;
+    builder.addUnknownFields(unknownFields());
+    return builder;
+  }
+
+  @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    if (!universities.isEmpty()) builder.append(", universities=").append(universities);
-    if (!subjects.isEmpty()) builder.append(", subjects=").append(subjects);
-    if (!courses.isEmpty()) builder.append(", courses=").append(courses);
-    if (!sections.isEmpty()) builder.append(", sections=").append(sections);
-    if (university != null) builder.append(", university=").append(university);
-    if (subject != null) builder.append(", subject=").append(subject);
-    if (course != null) builder.append(", course=").append(course);
-    if (section != null) builder.append(", section=").append(section);
+    if (!universities.isEmpty()) {
+      builder.append(", universities=").append(universities);
+    }
+    if (!subjects.isEmpty()) {
+      builder.append(", subjects=").append(subjects);
+    }
+    if (!courses.isEmpty()) {
+      builder.append(", courses=").append(courses);
+    }
+    if (!sections.isEmpty()) {
+      builder.append(", sections=").append(sections);
+    }
+    if (university != null) {
+      builder.append(", university=").append(university);
+    }
+    if (subject != null) {
+      builder.append(", subject=").append(subject);
+    }
+    if (course != null) {
+      builder.append(", course=").append(course);
+    }
+    if (section != null) {
+      builder.append(", section=").append(section);
+    }
     return builder.replace(0, 2, "Data{").append('}').toString();
   }
 
@@ -185,15 +229,23 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
       sections = Internal.newMutableList();
     }
 
-    public Builder universities(List<University> universities) {
-      Internal.checkElementsNotNull(universities);
-      this.universities = universities;
-      return this;
+    @Override
+    public Data build() {
+      return new Data(
+          universities,
+          subjects,
+          courses,
+          sections,
+          university,
+          subject,
+          course,
+          section,
+          super.buildUnknownFields()
+      );
     }
 
-    public Builder subjects(List<Subject> subjects) {
-      Internal.checkElementsNotNull(subjects);
-      this.subjects = subjects;
+    public Builder course(Course course) {
+      this.course = course;
       return this;
     }
 
@@ -203,14 +255,14 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
       return this;
     }
 
-    public Builder sections(List<Section> sections) {
-      Internal.checkElementsNotNull(sections);
-      this.sections = sections;
+    public Builder section(Section section) {
+      this.section = section;
       return this;
     }
 
-    public Builder university(University university) {
-      this.university = university;
+    public Builder sections(List<Section> sections) {
+      Internal.checkElementsNotNull(sections);
+      this.sections = sections;
       return this;
     }
 
@@ -219,19 +271,21 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
       return this;
     }
 
-    public Builder course(Course course) {
-      this.course = course;
+    public Builder subjects(List<Subject> subjects) {
+      Internal.checkElementsNotNull(subjects);
+      this.subjects = subjects;
       return this;
     }
 
-    public Builder section(Section section) {
-      this.section = section;
+    public Builder universities(List<University> universities) {
+      Internal.checkElementsNotNull(universities);
+      this.universities = universities;
       return this;
     }
 
-    @Override
-    public Data build() {
-      return new Data(universities, subjects, courses, sections, university, subject, course, section, super.buildUnknownFields());
+    public Builder university(University university) {
+      this.university = university;
+      return this;
     }
   }
 
@@ -241,45 +295,35 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
     }
 
     @Override
-    public int encodedSize(Data value) {
-      return University.ADAPTER.asRepeated().encodedSizeWithTag(1, value.universities)
-          + Subject.ADAPTER.asRepeated().encodedSizeWithTag(2, value.subjects)
-          + Course.ADAPTER.asRepeated().encodedSizeWithTag(3, value.courses)
-          + Section.ADAPTER.asRepeated().encodedSizeWithTag(4, value.sections)
-          + (value.university != null ? University.ADAPTER.encodedSizeWithTag(5, value.university) : 0)
-          + (value.subject != null ? Subject.ADAPTER.encodedSizeWithTag(6, value.subject) : 0)
-          + (value.course != null ? Course.ADAPTER.encodedSizeWithTag(7, value.course) : 0)
-          + (value.section != null ? Section.ADAPTER.encodedSizeWithTag(8, value.section) : 0)
-          + value.unknownFields().size();
-    }
-
-    @Override
-    public void encode(ProtoWriter writer, Data value) throws IOException {
-      University.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.universities);
-      Subject.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.subjects);
-      Course.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.courses);
-      Section.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.sections);
-      if (value.university != null) University.ADAPTER.encodeWithTag(writer, 5, value.university);
-      if (value.subject != null) Subject.ADAPTER.encodeWithTag(writer, 6, value.subject);
-      if (value.course != null) Course.ADAPTER.encodeWithTag(writer, 7, value.course);
-      if (value.section != null) Section.ADAPTER.encodeWithTag(writer, 8, value.section);
-      writer.writeBytes(value.unknownFields());
-    }
-
-    @Override
     public Data decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
-      for (int tag; (tag = reader.nextTag()) != -1;) {
+      for (int tag; (tag = reader.nextTag()) != -1; ) {
         switch (tag) {
-          case 1: builder.universities.add(University.ADAPTER.decode(reader)); break;
-          case 2: builder.subjects.add(Subject.ADAPTER.decode(reader)); break;
-          case 3: builder.courses.add(Course.ADAPTER.decode(reader)); break;
-          case 4: builder.sections.add(Section.ADAPTER.decode(reader)); break;
-          case 5: builder.university(University.ADAPTER.decode(reader)); break;
-          case 6: builder.subject(Subject.ADAPTER.decode(reader)); break;
-          case 7: builder.course(Course.ADAPTER.decode(reader)); break;
-          case 8: builder.section(Section.ADAPTER.decode(reader)); break;
+          case 1:
+            builder.universities.add(University.ADAPTER.decode(reader));
+            break;
+          case 2:
+            builder.subjects.add(Subject.ADAPTER.decode(reader));
+            break;
+          case 3:
+            builder.courses.add(Course.ADAPTER.decode(reader));
+            break;
+          case 4:
+            builder.sections.add(Section.ADAPTER.decode(reader));
+            break;
+          case 5:
+            builder.university(University.ADAPTER.decode(reader));
+            break;
+          case 6:
+            builder.subject(Subject.ADAPTER.decode(reader));
+            break;
+          case 7:
+            builder.course(Course.ADAPTER.decode(reader));
+            break;
+          case 8:
+            builder.section(Section.ADAPTER.decode(reader));
+            break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -292,16 +336,59 @@ public final class Data extends AndroidMessage<Data, Data.Builder> {
     }
 
     @Override
+    public void encode(ProtoWriter writer, Data value) throws IOException {
+      University.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.universities);
+      Subject.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.subjects);
+      Course.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.courses);
+      Section.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.sections);
+      if (value.university != null) {
+        University.ADAPTER.encodeWithTag(writer, 5, value.university);
+      }
+      if (value.subject != null) {
+        Subject.ADAPTER.encodeWithTag(writer, 6, value.subject);
+      }
+      if (value.course != null) {
+        Course.ADAPTER.encodeWithTag(writer, 7, value.course);
+      }
+      if (value.section != null) {
+        Section.ADAPTER.encodeWithTag(writer, 8, value.section);
+      }
+      writer.writeBytes(value.unknownFields());
+    }
+
+    @Override
+    public int encodedSize(Data value) {
+      return University.ADAPTER.asRepeated().encodedSizeWithTag(1, value.universities)
+          + Subject.ADAPTER.asRepeated().encodedSizeWithTag(2, value.subjects)
+          + Course.ADAPTER.asRepeated().encodedSizeWithTag(3, value.courses)
+          + Section.ADAPTER.asRepeated().encodedSizeWithTag(4, value.sections)
+          + (value.university != null ? University.ADAPTER.encodedSizeWithTag(5, value.university)
+                                      : 0)
+          + (value.subject != null ? Subject.ADAPTER.encodedSizeWithTag(6, value.subject) : 0)
+          + (value.course != null ? Course.ADAPTER.encodedSizeWithTag(7, value.course) : 0)
+          + (value.section != null ? Section.ADAPTER.encodedSizeWithTag(8, value.section) : 0)
+          + value.unknownFields().size();
+    }
+
+    @Override
     public Data redact(Data value) {
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.universities, University.ADAPTER);
       Internal.redactElements(builder.subjects, Subject.ADAPTER);
       Internal.redactElements(builder.courses, Course.ADAPTER);
       Internal.redactElements(builder.sections, Section.ADAPTER);
-      if (builder.university != null) builder.university = University.ADAPTER.redact(builder.university);
-      if (builder.subject != null) builder.subject = Subject.ADAPTER.redact(builder.subject);
-      if (builder.course != null) builder.course = Course.ADAPTER.redact(builder.course);
-      if (builder.section != null) builder.section = Section.ADAPTER.redact(builder.section);
+      if (builder.university != null) {
+        builder.university = University.ADAPTER.redact(builder.university);
+      }
+      if (builder.subject != null) {
+        builder.subject = Subject.ADAPTER.redact(builder.subject);
+      }
+      if (builder.course != null) {
+        builder.course = Course.ADAPTER.redact(builder.course);
+      }
+      if (builder.section != null) {
+        builder.section = Section.ADAPTER.redact(builder.section);
+      }
       builder.clearUnknownFields();
       return builder.build();
     }
