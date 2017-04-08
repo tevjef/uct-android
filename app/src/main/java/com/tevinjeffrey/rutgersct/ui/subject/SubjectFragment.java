@@ -28,7 +28,6 @@ import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
@@ -70,9 +69,6 @@ public class SubjectFragment extends MVPFragment
 
   @State
   SubjectViewState mViewState = new SubjectViewState();
-
-  @Inject
-  RetroRutgers mRetroRutgers;
 
   @Inject
   SearchManager searchManager;

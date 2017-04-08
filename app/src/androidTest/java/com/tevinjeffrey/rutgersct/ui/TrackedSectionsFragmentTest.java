@@ -7,11 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTTestModule;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.testUtils.RutgersApiConts;
 import dagger.ObjectGraph;
-import javax.inject.Inject;
 import jonathanfinerty.once.Once;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,7 +19,6 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeDown;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
@@ -41,8 +36,7 @@ public class TrackedSectionsFragmentTest {
   @Rule
   public ActivityTestRule<MainActivity> mActivityRule =
       new ActivityTestRule<MainActivity>(MainActivity.class);
-  @Inject
-  DatabaseHandler databaseHandler;
+
   Activity mActivity;
 
   @Before
@@ -82,17 +76,6 @@ public class TrackedSectionsFragmentTest {
         == Configuration.ORIENTATION_LANDSCAPE) {
       onView(isRoot()).perform(orientationPortrait());
     }
-  }
-
-  @Test
-  public void testRecyclerItemClickAndRemoveSection() {
-    Request expected = RutgersApiConts.getPrimarySemesterRequest();
-    databaseHandler.addSectionToDb(expected);
-
-    onView(withId(R.id.tsf_list)).perform(actionOnItemAtPosition(0, click()));
-    onView(withId(R.id.add_courses_fab)).perform(click());
-
-    databaseHandler.removeSectionFromDb(expected);
   }
 
   @Test

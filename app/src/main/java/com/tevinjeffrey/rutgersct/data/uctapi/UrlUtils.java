@@ -1,10 +1,7 @@
-package com.tevinjeffrey.rutgersct.data.rutgersapi.utils;
+package com.tevinjeffrey.rutgersct.data.uctapi;
 
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class UrlUtils {
 
@@ -33,35 +30,6 @@ public class UrlUtils {
     sb.append(",");
   }
 
-  public static Map<String, String> buildCourseQuery(Request request) {
-    //The order of the parameters matter when send the request >:(
-    Map<String, String> query = new LinkedHashMap<>(4);
-    query.put("subject", request.getSubject());
-    query.put("semester", getSemester(request));
-    query.put("campus", getLocations(request));
-    query.put("level", getLevels(request));
-    return query;
-  }
-
-  public static String buildParamUrl(Request request) {
-    return "subject=" + request.getSubject()
-        + "&" + "semester="
-        + getSemester(request)
-        + "&" + "campus="
-        + getLocations(request)
-        + "&" + "level="
-        + getLevels(request);
-  }
-
-  public static Map<String, String> buildSubjectQuery(Request request) {
-    //The order of the parameters matter when send the request >:(
-    Map<String, String> query = new LinkedHashMap<>(3);
-    query.put("semester", getSemester(request));
-    query.put("campus", getLocations(request));
-    query.put("level", getLevels(request));
-    return query;
-  }
-
   private static String createSearchUrl(String query, Section s) {
     return Utils.InstructorUtils.getToStringInstructors(s.instructors, "+OR+") + query;
   }
@@ -82,18 +50,6 @@ public class UrlUtils {
   public static String getGoogleUrl(Section s) {
     String query = "+rutgers";
     return createSearchUrl(query, s);
-  }
-
-  private static String getLevels(Request request) {
-    return parseLevels(request.getLevels());
-  }
-
-  private static String getLocations(Request request) {
-    return parseLocations(request.getLocations());
-  }
-
-  private static String getSemester(Request request) {
-    return parseSemester(request.getSemester());
   }
 
   private static String parseLevels(Iterable<String> lvls) {
@@ -139,9 +95,5 @@ public class UrlUtils {
     }
 
     return location.toString();
-  }
-
-  private static String parseSemester(SemesterUtils.Semester semester) {
-    return semester.getSeason().getCode() + semester.getYear();
   }
 }

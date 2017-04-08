@@ -35,7 +35,6 @@ import com.tevinjeffrey.rutgersct.data.uctapi.model.Meeting;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.utils.Utils;
@@ -96,9 +95,6 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
   @State
   SectionInfoViewState mViewState = new SectionInfoViewState();
-
-  @Inject
-  DatabaseHandler mDatabaseHandler;
 
   @Inject
   Bus mBus;

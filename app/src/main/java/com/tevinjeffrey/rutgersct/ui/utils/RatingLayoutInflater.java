@@ -16,7 +16,7 @@ import com.dlazaro66.wheelindicatorview.WheelIndicatorItem;
 import com.dlazaro66.wheelindicatorview.WheelIndicatorView;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.UrlUtils;
+import com.tevinjeffrey.rutgersct.data.uctapi.UrlUtils;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
 
 public class RatingLayoutInflater {

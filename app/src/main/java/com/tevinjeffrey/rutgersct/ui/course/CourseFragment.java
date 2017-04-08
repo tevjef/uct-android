@@ -32,7 +32,6 @@ import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersServerIOException;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
@@ -227,8 +226,6 @@ public class CourseFragment extends MVPFragment
     Resources resources = getContext().getResources();
     if (t instanceof UnknownHostException) {
       message = resources.getString(R.string.no_internet);
-    } else if (t instanceof JsonParseException || t instanceof RutgersServerIOException) {
-      message = resources.getString(R.string.server_down);
     } else if (t instanceof SocketTimeoutException) {
       message = resources.getString(R.string.timed_out);
     } else {

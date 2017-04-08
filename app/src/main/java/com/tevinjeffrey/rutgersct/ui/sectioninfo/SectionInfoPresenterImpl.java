@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
@@ -14,7 +13,6 @@ import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Instructor;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
-import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
@@ -131,7 +129,8 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
                 professor.getLastName(),
                 0.70f
             ) > .30
-                || JaroWinklerDistance.getDistance(Utils.InstructorUtils.getLastName(i),
+                || JaroWinklerDistance.getDistance(
+                Utils.InstructorUtils.getLastName(i),
                 professor.getFirstName(),
                 0.70f
             ) > .30) {
@@ -200,11 +199,6 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
           .putCustomAttribute("Course", searchFlow.getCourse().name));
       addSection();
     }
-  }
-
-  @Subscribe
-  public void onDbUpdateEvent(DatabaseUpdateEvent event) {
-    setFabState(true);
   }
 
   private Observable<Parameter> buildSearchParameters(final SearchFlow searchFlow) {

@@ -9,9 +9,6 @@ import com.tevinjeffrey.rmp.common.RMPModule;
 import com.tevinjeffrey.rutgersct.data.uctapi.notifications.MyFirebaseMessagingService;
 import com.tevinjeffrey.rutgersct.data.uctapi.notifications.RegistrationIntentService;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandlerImpl;
-import com.tevinjeffrey.rutgersct.modules.RetroRutgersModule;
 import com.tevinjeffrey.rutgersct.modules.RetroUCTModule;
 import com.tevinjeffrey.rutgersct.receivers.DatabaseReceiver;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
@@ -63,7 +60,7 @@ import rx.schedulers.Schedulers;
         SectionInfoPresenterImpl.class,
     },
     includes = {
-        RetroRutgersModule.class, RetroUCTModule.class,
+        RetroUCTModule.class,
         RMPModule.class
     })
 
@@ -145,12 +142,6 @@ public class RutgersCTModule {
   @Singleton
   public Context provideContext() {
     return applicationContext;
-  }
-
-  @Provides
-  @Singleton
-  public DatabaseHandler providesDatabaseHandler(Bus bus) {
-    return new DatabaseHandlerImpl(bus);
   }
 
   @Provides

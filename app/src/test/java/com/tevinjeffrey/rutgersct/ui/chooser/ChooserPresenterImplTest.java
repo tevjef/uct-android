@@ -17,11 +17,7 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import com.tevinjeffrey.rutgersct.TestModule;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.RetroRutgers;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.SystemMessage;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-import com.tevinjeffrey.rutgersct.utils.TestConts;
 import dagger.Module;
 import dagger.ObjectGraph;
 import dagger.Provides;
@@ -30,26 +26,16 @@ import javax.inject.Singleton;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import rx.Observable;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ChooserPresenterImplTest {
   ChooserPresenterImpl chooserPresenterImpl;
   @Inject
   ChooserView chooserView;
-  @Inject
-  RetroRutgers retroRutgers;
-  @Inject
-  DatabaseHandler databaseHandler;
 
   @Test
   public void GetView_NotNull() throws Exception {
@@ -69,46 +55,6 @@ public class ChooserPresenterImplTest {
     chooserPresenterImpl.attachView(chooserView);
     chooserPresenterImpl.detachView();
     assertNull(chooserPresenterImpl.getView());
-  }
-
-  @Test
-  public void IsLoading_False_WhenObservableHasTerminated() throws Exception {
-    chooserPresenterImpl.attachView(chooserView);
-    databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
-    when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>empty());
-
-    assertFalse(chooserPresenterImpl.isLoading());
-  }
-
-  @Test
-  public void IsLoading_True_WhenObservableHasNotTerminated() throws Exception {
-    chooserPresenterImpl.attachView(chooserView);
-    databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
-    when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>never());
-
-    assertTrue(chooserPresenterImpl.isLoading());
-  }
-
-  @Test
-  public void LoadChooser_CompletesWithData() throws Exception {
-    SystemMessage systemMessage = mock(SystemMessage.class);
-    chooserPresenterImpl.attachView(chooserView);
-    databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
-    when(retroRutgers.getSystemMessage()).thenReturn(Observable.just(systemMessage));
-  }
-
-  @Test
-  public void LoadChooser_CompletesWithEmptyList() throws Exception {
-    chooserPresenterImpl.attachView(chooserView);
-    databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
-    when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>empty());
-  }
-
-  @Test
-  public void LoadChooser_CompletesWithErrors() throws Exception {
-    chooserPresenterImpl.attachView(chooserView);
-    databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
-    when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>error(new AssertionError()));
   }
 
   @Before
@@ -139,13 +85,6 @@ public class ChooserPresenterImplTest {
     public ChooserView providesChooserView() {
       //Injected mock
       return mockChooserView;
-    }
-
-    @Provides
-    @Singleton
-    public RetroRutgers providesRetroRutgers() {
-      //Inline mock
-      return Mockito.mock(RetroRutgers.class);
     }
   }
 }

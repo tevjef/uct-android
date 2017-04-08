@@ -2,10 +2,8 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import android.os.Bundle;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
-import com.tevinjeffrey.rutgersct.database.DatabaseUpdateEvent;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
@@ -118,12 +116,6 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
   @Override
   public String toString() {
     return TAG;
-  }
-
-  @Subscribe
-  public void onDbUpdateEvent(DatabaseUpdateEvent event) {
-    //When a database update event comes through it loads the data, without a loading animation.
-    loadTrackedSections(false);
   }
 
   private void cancePreviousSubscription() {

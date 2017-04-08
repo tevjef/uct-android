@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
-import com.tevinjeffrey.rutgersct.data.rutgersapi.exceptions.RutgersDataIOException;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
@@ -78,10 +77,6 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
         if (getView() != null) {
 
           getView().setData(subjectList);
-
-          if (subjectList.size() == 0) {
-            getView().showError(new RutgersDataIOException());
-          }
 
           if (subjectList.size() > 0) {
             getView().showLayout(View.LayoutType.LIST);

@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.database.DatabaseHandler;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 import icepick.Icepick;
@@ -32,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
   Context context;
   @Inject
   PreferenceUtils mPreferenceUtils;
-  @Inject
-  DatabaseHandler databaseHandler;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

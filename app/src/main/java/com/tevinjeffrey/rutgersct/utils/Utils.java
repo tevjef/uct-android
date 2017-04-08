@@ -13,9 +13,6 @@ import android.view.ContextThemeWrapper;
 import android.view.Window;
 import android.view.WindowManager;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
-import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
-import com.tevinjeffrey.rutgersct.database.TrackedSections;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,24 +20,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import rx.Observable;
-import rx.functions.Func1;
 
 public class Utils {
-  private static Observable<Request> createRequest(TrackedSections trackedSection) {
-    return Observable.just(getRequestFromTrackedSections(trackedSection));
-  }
-
-  public static Observable<Request> createRequestObservableFromTrackedSections(Iterable<TrackedSections> allTrackedSections) {
-    return Observable.from(allTrackedSections)
-        .flatMap(new Func1<TrackedSections, Observable<Request>>() {
-          @Override
-          public Observable<Request> call(TrackedSections trackedSection) {
-            return createRequest(trackedSection);
-          }
-        });
-  }
-
   public static int fetchPrimaryColor(Context context) {
     TypedValue typedValue = new TypedValue();
     TypedArray a =
@@ -57,16 +38,6 @@ public class Utils {
     int color = a.getColor(0, 0);
     a.recycle();
     return color;
-  }
-
-  public static Request getRequestFromTrackedSections(TrackedSections ts) {
-    return new Request(
-        ts.getSubject(),
-        new SemesterUtils.Semester(ts.getSemester()),
-        ts.getLocations(),
-        ts.getLevels(),
-        ts.getIndexNumber()
-    );
   }
 
   public static void openLink(Context context, String url) {
