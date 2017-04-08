@@ -90,9 +90,7 @@ public class ChooserPresenterImplTest {
         chooserPresenterImpl.attachView(chooserView);
         databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
         when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>empty());
-        chooserPresenterImpl.loadSystemMessage();
 
-        verify(chooserView, never()).showMessage(any(SystemMessage.class));
 
     }
 
@@ -103,9 +101,7 @@ public class ChooserPresenterImplTest {
         chooserPresenterImpl.attachView(chooserView);
         databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
         when(retroRutgers.getSystemMessage()).thenReturn(Observable.just(systemMessage));
-        chooserPresenterImpl.loadSystemMessage();
 
-        verify(chooserView).showMessage(any(SystemMessage.class));
     }
 
     @Test
@@ -113,9 +109,7 @@ public class ChooserPresenterImplTest {
         chooserPresenterImpl.attachView(chooserView);
         databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
         when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>error(new AssertionError()));
-        chooserPresenterImpl.loadSystemMessage();
 
-        verify(chooserView, never()).showMessage(any(SystemMessage.class));
     }
 
     @Test
@@ -123,7 +117,6 @@ public class ChooserPresenterImplTest {
         chooserPresenterImpl.attachView(chooserView);
         databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
         when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>never());
-        chooserPresenterImpl.loadSystemMessage();
 
         assertTrue(chooserPresenterImpl.isLoading());
     }
@@ -133,7 +126,6 @@ public class ChooserPresenterImplTest {
         chooserPresenterImpl.attachView(chooserView);
         databaseHandler.addSectionToDb(TestConts.getPrimarySemesterRequest());
         when(retroRutgers.getSystemMessage()).thenReturn(Observable.<SystemMessage>empty());
-        chooserPresenterImpl.loadSystemMessage();
 
         assertFalse(chooserPresenterImpl.isLoading());
     }

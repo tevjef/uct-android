@@ -1,7 +1,6 @@
 package com.tevinjeffrey.rutgersct.testUtils;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.Response;
+
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Request;
 import com.tevinjeffrey.rutgersct.data.rutgersapi.utils.SemesterUtils;
 import com.tevinjeffrey.rutgersct.database.TrackedSections;
@@ -13,6 +12,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import okhttp3.Interceptor;
+import okhttp3.Response;
 import timber.log.Timber;
 
 public class RutgersApiConts {
@@ -20,8 +21,8 @@ public class RutgersApiConts {
     public static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Interceptor.Chain chain) throws IOException {
-            com.squareup.okhttp.Request originalRequest = chain.request();
-            Timber.d("Host: %s", originalRequest.httpUrl().host());
+            okhttp3.Request originalRequest = chain.request();
+            Timber.d("Host: %s", originalRequest.url().host());
 
             Response originalResponse = chain.proceed(chain.request());
             return originalResponse.newBuilder()

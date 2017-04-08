@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
-import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 
 import org.junit.Before;

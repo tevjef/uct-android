@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import com.tevinjeffrey.rutgersct.data.rutgersapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 
 import org.junit.Before;
@@ -47,7 +48,7 @@ public class TrackedSectionsViewTest {
     public void ShowData_GivenSomeData() throws Exception {
         viewState.data = mock(List.class);
         viewState.apply(mockTrackedSectionsView, true);
-        verify(mockTrackedSectionsView).setData(anyListOf(Course.Section.class));
+        verify(mockTrackedSectionsView).setData(anyListOf(UCTSubscription.class));
     }
 
     @Test

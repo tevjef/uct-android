@@ -21,8 +21,6 @@ import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 

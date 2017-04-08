@@ -6,9 +6,8 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:2.4.0-alpha5'
         classpath 'com.google.gms:google-services:3.0.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         classpath 'io.fabric.tools:gradle:1.22.1'
 
     }
@@ -36,44 +35,5 @@ ext {
     storePassword = properties.storePassword
     storeFile = properties.storeFile == null? "/":properties.storeFile
 
-    supportVersion = '25.3.0'
-
-    // Adding reference to Java Home, RetroLambda needs this
-    JAVA7_HOME = getJavaHome('1.7')
-    JAVA8_HOME = getJavaHome('1.8')
-}
-
-/**
- * Obtain the Java Home absolute path given a version.
- *
- * In order to build this project, you must have both Java 8 and Java 7 installed.
- * On OSX, the method will find your Java paths using a command that comes installed with java.
- * (it calls an executable java places in "/usr/libexec/java_home")
- * <p>
- * On Windows you will need to set the Environment variables "JAVA7_HOME" and "JAVA8_HOME"
- *
- * @param version
- * The version to obtain the path for, e.g. '1.6', '1.7', '1.8'.
- *
- * @return
- * The absolute path to the Java home directory.
- */
-def getJavaHome(version) {
-    def cmd
-
-    if (System.properties['os.name'].toLowerCase().contains('windows')) {
-        int dotIndex = version.indexOf(".") + 1
-        def majorVersion = version.getAt(dotIndex)
-        cmd = "cmd /c \"echo %JAVA${majorVersion}_HOME%\""
-        println "Attempting to use Windows env vars JAVA7_HOME and JAVA8_HOME to determine java locations"
-    } else {
-        cmd = "/usr/libexec/java_home -v ${version}"
-    }
-
-    def proc = cmd.execute()
-
-    def javaHome = proc.text.trim()
-    println "JavaHome for ${version} is \"${javaHome}\""
-
-    return javaHome
+    supportVersion = '25.3.1'
 }

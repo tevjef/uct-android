@@ -39,7 +39,6 @@ public class ChooserViewTest {
     @Test
     public void TestEssentialViewInit() throws Exception {
         viewState.apply(chooserView, true);
-        verify(chooserView).initPicker();
         verify(chooserView).initToolbar();
     }
 }

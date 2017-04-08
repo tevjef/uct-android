@@ -3,7 +3,6 @@ package com.tevinjeffrey.rmp.scraper;
 
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
-import com.tevinjeffrey.rmp.common.RMP;
 import com.tevinjeffrey.rmp.scraper.search.Decider;
 import com.tevinjeffrey.rmp.scraper.search.Listing;
 import com.tevinjeffrey.rmp.scraper.search.RatingParser;

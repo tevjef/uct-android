@@ -2,7 +2,6 @@ package com.tevinjeffrey.rmp.scraper.module;
 
 import com.tevinjeffrey.rmp.scraper.RMPScraper;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;

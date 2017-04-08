@@ -4,7 +4,6 @@ import com.tevinjeffrey.rmp.client.RMPClient;
 import com.tevinjeffrey.rmp.scraper.RMPScraper;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 

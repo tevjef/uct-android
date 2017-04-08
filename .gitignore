@@ -1,4 +1,4 @@
-# Created by https://www.gitignore.io
+  # Created by https://www.gitignore.io
 
 ### Android ###
 # Built application files
@@ -35,4 +35,5 @@ captures/
 *.index
 
 
-app/google-services.json
+google-services.json
+.gradle/
