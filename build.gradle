@@ -34,5 +34,5 @@ ext {
   storePassword = properties.storePassword
   storeFile = properties.storeFile == null ? "/" : properties.storeFile
 
-  supportVersion = '25.3.1'
+  supportVersion = '26.0.0-alpha1'
 }
