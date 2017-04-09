@@ -24,9 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
@@ -67,22 +68,22 @@ public class TrackedSectionsFragment extends MVPFragment
   public static final String TAG = TrackedSectionsFragment.class.getSimpleName();
   public static final String CORRUPT_SECTIONS = "corrupt_sections";
 
-  @Bind(R.id.swipeRefreshLayout)
+  @BindView(R.id.swipeRefreshLayout)
   SwipeRefreshLayout mSwipeRefreshLayout;
 
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar mToolbar;
 
-  @Bind(R.id.add_courses_fab)
+  @BindView(R.id.add_courses_fab)
   FloatingActionButton mFab;
 
-  @Bind(R.id.tsf_list)
+  @BindView(R.id.tsf_list)
   RecyclerView mRecyclerView;
 
-  @Bind(R.id.add_courses_to_track)
+  @BindView(R.id.add_courses_to_track)
   ViewGroup mEmptyView;
 
-  @Bind(R.id.error_view)
+  @BindView(R.id.error_view)
   ViewGroup mErrorView;
 
   @State
@@ -92,6 +93,7 @@ public class TrackedSectionsFragment extends MVPFragment
   SearchManager searchManager;
 
   private ArrayList<UCTSubscription> mListDataset;
+  private Unbinder unBinder;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,7 @@ public class TrackedSectionsFragment extends MVPFragment
         inflater.cloneInContext(Utils.wrapContextTheme(getActivity(), R.style.RutgersCT));
     ViewGroup rootView =
         (ViewGroup) themedInflator.inflate(R.layout.fragment_tracked_sections, container, false);
-    ButterKnife.bind(this, rootView);
+    unBinder = ButterKnife.bind(this, rootView);
 
     if (!Once.beenDone(CORRUPT_SECTIONS) && !Once.beenDone(IntroActivity.TOUR_STARTED)) {
       // Show alert
@@ -179,8 +181,8 @@ public class TrackedSectionsFragment extends MVPFragment
   @Override
   public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
     dismissSnackbar();
+    unBinder.unbind();
   }
 
   public void initRecyclerView() {

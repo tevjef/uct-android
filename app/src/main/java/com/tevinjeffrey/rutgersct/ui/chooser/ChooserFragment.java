@@ -20,8 +20,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Semester;
@@ -40,19 +41,19 @@ import static com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.Seme
 
 public class ChooserFragment extends MVPFragment implements ChooserView {
 
-  @Bind(R.id.semester_radiogroup)
+  @BindView(R.id.semester_radiogroup)
   RadioGroup mSemesterRadiogroup;
 
-  @Bind(R.id.search_btn)
+  @BindView(R.id.search_btn)
   TextView mSearchButton;
 
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar mToolbar;
 
   @State
   ChooserViewState mViewState = new ChooserViewState();
 
-  @Bind(R.id.university_spinner)
+  @BindView(R.id.university_spinner)
   Spinner universitySpinner;
 
   @Inject
@@ -60,6 +61,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
   List<University> universities;
   List<Semester> semesters;
+  private Unbinder unbinder;
 
   public ChooserFragment() {
   }
@@ -99,7 +101,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     LayoutInflater themedInflator =
         inflater.cloneInContext(Utils.wrapContextTheme(getActivity(), R.style.RutgersCT));
     final View rootView = themedInflator.inflate(R.layout.fragment_chooser, container, false);
-    ButterKnife.bind(this, rootView);
+    unbinder = ButterKnife.bind(this, rootView);
 
     LayoutTransition layoutTransition = new LayoutTransition();
     layoutTransition.setDuration(100);
@@ -117,6 +119,11 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     }
   }
 
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
+  }
+
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
@@ -127,12 +134,6 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     if (mIsInitialLoad) {
       mSemesterRadiogroup.clearCheck();
     }
-  }
-
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    ButterKnife.unbind(this);
   }
 
   @Override

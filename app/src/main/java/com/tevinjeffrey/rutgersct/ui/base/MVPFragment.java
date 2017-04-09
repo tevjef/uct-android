@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import butterknife.ButterKnife;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity;
@@ -95,7 +94,6 @@ public abstract class MVPFragment extends Fragment implements View {
   @Override
   public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
     if (mBasePresenter != null) {
       mBasePresenter.detachView();
     }

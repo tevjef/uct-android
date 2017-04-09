@@ -24,9 +24,10 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
@@ -48,46 +49,46 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
   private static final String TAG = SectionInfoFragment.class.getSimpleName();
 
-  @Bind(R.id.prof_ratings_container)
+  @BindView(R.id.prof_ratings_container)
   ViewGroup ratingsContainer;
 
-  @Bind(R.id.prof_ratings_root)
+  @BindView(R.id.prof_ratings_root)
   ViewGroup ratingsRoot;
 
-  @Bind(R.id.semester_text)
+  @BindView(R.id.semester_text)
   TextView mSemesterText;
 
-  @Bind(R.id.course_title_text)
+  @BindView(R.id.course_title_text)
   TextView mCourseTitleText;
 
-  @Bind(R.id.sectionNumber_text)
+  @BindView(R.id.sectionNumber_text)
   TextView mSectionNumberText;
 
-  @Bind(R.id.indexNumber_text)
+  @BindView(R.id.indexNumber_text)
   TextView mIndexNumberText;
 
-  @Bind(R.id.subtitle)
+  @BindView(R.id.subtitle)
   TextView mCreditsText;
 
-  @Bind(R.id.tCredits)
+  @BindView(R.id.tCredits)
   ViewGroup mCreditsViewGroup;
 
-  @Bind(R.id.instructors_text)
+  @BindView(R.id.instructors_text)
   TextView mInstructorsText;
 
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar mToolbar;
 
-  @Bind(R.id.section_times_container)
+  @BindView(R.id.section_times_container)
   LinearLayout mSectionTimeContainer;
 
-  @Bind(R.id.add_courses_fab)
+  @BindView(R.id.add_courses_fab)
   FloatingActionButton mFab;
 
-  @Bind(R.id.collapsing_toolbar)
+  @BindView(R.id.collapsing_toolbar)
   CollapsingToolbarLayout mCollapsingToolbar;
 
-  @Bind(R.id.section_metadata)
+  @BindView(R.id.section_metadata)
   LinearLayout sectionMetadataContainer;
 
   @State
@@ -101,6 +102,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
   @Inject
   SearchManager searchManager;
+  private Unbinder unbinder;
 
   public SectionInfoFragment() {
   }
@@ -157,7 +159,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
     final View rootView = themedInflator.inflate(R.layout.fragment_section_info, container, false);
 
-    ButterKnife.bind(this, rootView);
+    unbinder = ButterKnife.bind(this, rootView);
 
     return rootView;
   }
@@ -199,7 +201,11 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
   @Override
   public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
   }
 
   @Override

@@ -10,10 +10,10 @@ android {
   }
   signingConfigs {
     release {
-      keyAlias rootProject.ext.keyAlias
-      keyPassword rootProject.ext.keyPassword
-      storeFile file(rootProject.ext.storeFile)
-      storePassword rootProject.ext.storePassword
+      keyAlias rootProject.keyAlias
+      keyPassword rootProject.keyPassword
+      storeFile file(rootProject.storeFile)
+      storePassword rootProject.storePassword
     }
   }
 
@@ -28,12 +28,6 @@ android {
     signingConfig signingConfigs.release
     vectorDrawables.useSupportLibrary = true
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-    javaCompileOptions {
-      annotationProcessorOptions {
-        includeCompileClasspath false
-      }
-    }
   }
 
   compileOptions {
@@ -87,7 +81,7 @@ dependencies {
     exclude group: 'com.android.support', module: 'support-v4'
     exclude module: 'recyclerview-v7'
   }
-  androidTestCompile "com.android.support:support-annotations:${rootProject.ext.supportVersion}"
+  androidTestCompile "com.android.support:support-annotations:${rootProject.supportVersion}"
   androidTestCompile "com.android.support:design:${rootProject.supportVersion}"
   androidTestCompile "com.android.support:appcompat-v7:${rootProject.supportVersion}"
 
@@ -113,7 +107,8 @@ dependencies {
   compile "com.android.support:recyclerview-v7:${rootProject.supportVersion}"
   compile "com.android.support:support-annotations:${rootProject.supportVersion}"
   compile 'com.dlazaro66.wheelindicatorview:WheelIndicatorView:1.0.0'
-  compile 'com.jakewharton:butterknife:7.0.1'
+  compile 'com.jakewharton:butterknife:8.5.1'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
   compile 'com.github.afollestad.material-dialogs:core:0.9.4.2@aar'
   compile 'com.google.firebase:firebase-core:10.2.1'
   compile 'com.google.firebase:firebase-messaging:10.2.1'

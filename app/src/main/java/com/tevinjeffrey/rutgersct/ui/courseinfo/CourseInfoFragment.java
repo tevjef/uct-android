@@ -19,8 +19,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
@@ -47,31 +48,31 @@ public class CourseInfoFragment extends MVPFragment
 
   private static final String TAG = CourseInfoFragment.class.getSimpleName();
 
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar mToolbar;
 
-  @Bind(R.id.course_info_list)
+  @BindView(R.id.course_info_list)
   RecyclerView mRecyclerView;
 
-  @Bind(R.id.course_title_text)
+  @BindView(R.id.course_title_text)
   TextView mCourseTitleText;
 
-  @Bind(R.id.app_bar_layout)
+  @BindView(R.id.app_bar_layout)
   AppBarLayout mAppBarLayout;
 
-  @Bind(R.id.coordinator_layout)
+  @BindView(R.id.coordinator_layout)
   CoordinatorLayout mCoordinatorLayout;
 
-  @Bind(R.id.subtitle)
+  @BindView(R.id.subtitle)
   TextView mCreditsText;
 
-  @Bind(R.id.shortenedCourseInfo)
+  @BindView(R.id.shortenedCourseInfo)
   TextView mShortenedCourseInfo;
 
-  @Bind(R.id.openSections_text)
+  @BindView(R.id.openSections_text)
   TextView mOpenSectionsText;
 
-  @Bind(R.id.totalSections_text)
+  @BindView(R.id.totalSections_text)
   TextView mTotalSectionsText;
 
   @State
@@ -85,6 +86,7 @@ public class CourseInfoFragment extends MVPFragment
 
   private List<View> mHeaderViews = new ArrayList<>();
   private Course mSelectedCourse;
+  private Unbinder unbinder;
 
   public CourseInfoFragment() {
   }
@@ -112,7 +114,7 @@ public class CourseInfoFragment extends MVPFragment
         R.style.RutgersCT_Accent
     ));
     final View rootView = themedInflator.inflate(R.layout.fragment_course_info, container, false);
-    ButterKnife.bind(this, rootView);
+    unbinder = ButterKnife.bind(this, rootView);
     return rootView;
   }
 
@@ -143,6 +145,11 @@ public class CourseInfoFragment extends MVPFragment
           mSelectedCourse.sections, this
       ));
     }
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
   }
 
   @Override

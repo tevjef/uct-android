@@ -20,10 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.google.gson.JsonParseException;
+import butterknife.Unbinder;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
@@ -55,16 +55,16 @@ public class CourseFragment extends MVPFragment
 
   private final String TAG = this.getClass().getSimpleName();
 
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar mToolbar;
 
-  @Bind(R.id.list_view)
+  @BindView(R.id.list_view)
   RecyclerView mRecyclerView;
 
-  @Bind(R.id.swipeRefreshLayout)
+  @BindView(R.id.swipeRefreshLayout)
   SwipeRefreshLayout mSwipeRefreshLayout;
 
-  @Bind(R.id.error_view)
+  @BindView(R.id.error_view)
   ViewGroup mErrorView;
 
   @State
@@ -80,6 +80,7 @@ public class CourseFragment extends MVPFragment
   SearchManager searchManager;
 
   private Subject selectedSubject;
+  private Unbinder unbinder;
 
   public CourseFragment() {
   }
@@ -105,9 +106,15 @@ public class CourseFragment extends MVPFragment
     LayoutInflater themedInflator =
         inflater.cloneInContext(Utils.wrapContextTheme(getActivity(), R.style.RutgersCT));
     final View rootView = themedInflator.inflate(R.layout.fragment_courses, container, false);
-    ButterKnife.bind(this, rootView);
+    unbinder = ButterKnife.bind(this, rootView);
     return rootView;
   }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
+  }
+
 
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -157,7 +164,6 @@ public class CourseFragment extends MVPFragment
   @Override
   public void onDestroyView() {
     super.onDestroyView();
-    ButterKnife.unbind(this);
     dismissSnackbar();
   }
 
