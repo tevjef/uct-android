@@ -85,14 +85,8 @@ public class RutgersCTApp extends Application {
       //When debugging logs will go through the Android logger
       Timber.plant(new Timber.DebugTree());
     } else {
-
-      //Mint.enableDebug();
-      //Mint.initAndStartSession(this, "2974ff7f");
-      //Gets a unique id for for every installation
       String s = getsID(getApplicationContext());
 
-      //Set unique user id
-      //Mint.setUserIdentifier(s);
       Crashlytics.setUserIdentifier(s);
       //Diverts logs through crash reporting APIs
       Timber.plant(new CrashReportingTree());
