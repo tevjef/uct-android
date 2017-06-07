@@ -29,7 +29,8 @@ public class DatabaseReceiver extends BroadcastReceiver {
       retroUCT.unsubscribe(subscription.getSectionTopicName());
       //Notify user with a toast.
       Toast
-          .makeText(context,
+          .makeText(
+              context,
               String.format("Stopped tracking %s", subscription.getCourse().name),
               Toast.LENGTH_SHORT
           )

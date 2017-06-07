@@ -104,11 +104,6 @@ public class SubjectFragment extends MVPFragment
     return rootView;
   }
 
-  @Override public void onDestroy() {
-    super.onDestroy();
-    unbinder.unbind();
-  }
-
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -158,6 +153,11 @@ public class SubjectFragment extends MVPFragment
   public void onDestroyView() {
     super.onDestroyView();
     dismissSnackbar();
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
   }
 
   public void initRecyclerView() {

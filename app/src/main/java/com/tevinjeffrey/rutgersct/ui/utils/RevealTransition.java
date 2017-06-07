@@ -55,7 +55,8 @@ public class RevealTransition extends Visibility {
     final float originalAlpha = view.getAlpha();
     view.setAlpha(0f);
 
-    float startRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+    float startRadius = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
         40,
         view.getContext().getResources().getDisplayMetrics()
     );

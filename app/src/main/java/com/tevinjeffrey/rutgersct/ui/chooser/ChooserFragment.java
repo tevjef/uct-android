@@ -119,11 +119,6 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     }
   }
 
-  @Override public void onDestroy() {
-    super.onDestroy();
-    unbinder.unbind();
-  }
-
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
@@ -134,6 +129,11 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     if (mIsInitialLoad) {
       mSemesterRadiogroup.clearCheck();
     }
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
   }
 
   @Override
@@ -268,7 +268,8 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
       if (semesters == null || radioButton == null) {
         Toast
-            .makeText(getParentActivity(),
+            .makeText(
+                getParentActivity(),
                 getParentActivity().getString(R.string.select_a_semester),
                 Toast.LENGTH_SHORT
             )
@@ -280,7 +281,8 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
       if (tag == null) {
         Toast
-            .makeText(getParentActivity(),
+            .makeText(
+                getParentActivity(),
                 getParentActivity().getString(R.string.select_a_semester),
                 Toast.LENGTH_SHORT
             )

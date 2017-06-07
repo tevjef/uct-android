@@ -130,6 +130,11 @@ public class CourseInfoFragment extends MVPFragment
     inflater.inflate(R.menu.menu_fragment_info, menu);
   }
 
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
+  }
+
   public void initHeaderView() {
     View courseMetadata = createCourseMetaDataView();
     mHeaderViews.add(courseMetadata);
@@ -145,11 +150,6 @@ public class CourseInfoFragment extends MVPFragment
           mSelectedCourse.sections, this
       ));
     }
-  }
-
-  @Override public void onDestroy() {
-    super.onDestroy();
-    unbinder.unbind();
   }
 
   @Override
