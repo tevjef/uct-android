@@ -1,18 +1,15 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
-import java.util.List;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.Subscription;
 
 public class SubjectPresenterImpl extends BasePresenter implements SubjectPresenter {
 
@@ -28,7 +25,7 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
   @BackgroundThread
   Scheduler mBackgroundThread;
 
-  private Subscription mSubscription;
+  private Disposable disposable;
   private boolean isLoading;
 
   public SubjectPresenterImpl(SearchFlow searchFlow) {
@@ -51,49 +48,37 @@ public class SubjectPresenterImpl extends BasePresenter implements SubjectPresen
     }
 
     cancePreviousSubscription();
-
-    Subscriber<List<Subject>> mSubscriber = new Subscriber<List<Subject>>() {
-      @Override
-      public void onCompleted() {
-        if (getView() != null) {
-          getView().showLoading(false);
-        }
-      }
-
-      @Override
-      public void onError(Throwable e) {
-        //Lets the view decide what to display depending on what type of exception it is.
-        if (getView() != null) {
-          getView().showError(e);
-        }
-        //Removes the animated loading drawable
-        if (getView() != null) {
-          getView().showLoading(false);
-        }
-      }
-
-      @Override
-      public void onNext(List<Subject> subjectList) {
-        if (getView() != null) {
-
-          getView().setData(subjectList);
-
-          if (subjectList.size() > 0) {
-            getView().showLayout(View.LayoutType.LIST);
-          }
-        }
-      }
-    };
-
-    mSubscription = mRetroUCT.getSubjects(searchFlow)
-        .doOnSubscribe(() -> isLoading = true)
+    disposable = mRetroUCT.getSubjects(searchFlow)
+        .doOnSubscribe(disposable -> isLoading = true)
         .doOnTerminate(() -> isLoading = false)
         .subscribeOn(mBackgroundThread)
         .observeOn(mMainThread)
-        .subscribe(mSubscriber);
+        .subscribe(subjectList -> {
+          if (getView() != null) {
+
+            getView().setData(subjectList);
+
+            if (subjectList.size() > 0) {
+              getView().showLayout(View.LayoutType.LIST);
+            }
+          }
+        }, throwable -> {
+          //Lets the view decide what to display depending on what type of exception it is.
+          if (getView() != null) {
+            getView().showError(throwable);
+          }
+          //Removes the animated loading drawable
+          if (getView() != null) {
+            getView().showLoading(false);
+          }
+        }, () -> {
+          if (getView() != null) {
+            getView().showLoading(false);
+          }
+        });
   }
 
   private void cancePreviousSubscription() {
-    RxUtils.unsubscribeIfNotNull(mSubscription);
+    RxUtils.disposeIfNotNull(disposable);
   }
 }

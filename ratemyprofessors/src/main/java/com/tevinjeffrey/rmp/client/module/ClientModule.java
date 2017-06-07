@@ -5,13 +5,13 @@ import com.tevinjeffrey.rmp.client.ClientService;
 import com.tevinjeffrey.rmp.client.RMPClient;
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.schedulers.Schedulers;
 
 @Module(complete = false,
         library = true)
@@ -32,7 +32,7 @@ public class ClientModule {
     return new RMPClient(new Retrofit.Builder()
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
         .baseUrl("http://rutgersapp.tevindev.me/api/")
         .build()
         .create(ClientService.class));

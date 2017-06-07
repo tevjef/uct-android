@@ -2,9 +2,8 @@ package com.tevinjeffrey.rmp.common;
 
 import com.tevinjeffrey.rmp.client.RMPClient;
 import com.tevinjeffrey.rmp.scraper.RMPScraper;
-import rx.Observable;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 public class RMP {
   public static final String RMP_BASE_URL = "http://www.ratemyprofessors.com";
@@ -25,17 +24,8 @@ public class RMP {
         .subscribeOn(Schedulers.io());
 
     return Observable.concat(professorFromClient, professorFromScraper)
-        .takeFirst(new Func1<Professor, Boolean>() {
-          @Override
-          public Boolean call(Professor professor) {
-            return true;
-          }
-        })
-        .filter(new Func1<Professor, Boolean>() {
-          @Override
-          public Boolean call(Professor professor) {
-            return professor != null;
-          }
-        });
+        .firstElement()
+        .toObservable()
+        .filter(professor ->  professor != null);
   }
 }

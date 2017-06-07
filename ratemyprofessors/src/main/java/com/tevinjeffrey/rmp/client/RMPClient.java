@@ -2,10 +2,9 @@ package com.tevinjeffrey.rmp.client;
 
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
+import io.reactivex.Observable;
 import java.util.HashMap;
 import java.util.Map;
-import rx.Observable;
-import rx.functions.Func1;
 
 public class RMPClient {
 
@@ -27,11 +26,6 @@ public class RMPClient {
 
   public Observable<Professor> findProfessor(Parameter parameter) {
     return mClientService.findProfessor(makeParameters(parameter))
-        .filter(new Func1<Professor, Boolean>() {
-          @Override
-          public Boolean call(Professor professor) {
-            return professor != null;
-          }
-        });
+        .filter(professor -> professor != null);
   }
 }

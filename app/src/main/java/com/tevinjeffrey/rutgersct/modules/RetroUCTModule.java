@@ -8,12 +8,12 @@ import com.tevinjeffrey.rutgersct.ui.subject.SubjectPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.wire.WireConverterFactory;
-import rx.schedulers.Schedulers;
 
 @Module(injects = {
     TrackedSectionsPresenterImpl.class,
@@ -36,7 +36,7 @@ public class RetroUCTModule {
     return new Retrofit.Builder()
         .client(client)
         .addConverterFactory(WireConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
         .baseUrl("https://api.coursetrakr.io/")
         .build()
         .create(RetroUCTService.class);

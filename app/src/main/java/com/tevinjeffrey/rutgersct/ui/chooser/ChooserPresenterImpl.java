@@ -7,11 +7,11 @@ import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
 import java.util.List;
 import javax.inject.Inject;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.Subscription;
+import org.reactivestreams.Subscription;
 
 public class ChooserPresenterImpl extends BasePresenter implements ChooserPresenter {
 
@@ -29,7 +29,7 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
   @Inject
   RetroUCT retroUCT;
 
-  private Subscription mSubsciption;
+  private Disposable disposable;
   private boolean isLoading;
 
   public ChooserPresenterImpl() {
@@ -58,55 +58,30 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
   @Override
   public void loadAvailableSemesters(String universityTopicName) {
     cancePreviousSubscription();
-    mSubsciption = mRetroUCT.getUniversity(universityTopicName)
+    disposable = mRetroUCT.getUniversity(universityTopicName)
         .map(university -> university.available_semesters)
         .observeOn(mMainThread)
-        .subscribe(new Subscriber<List<Semester>>() {
-          @Override
-          public void onCompleted() {
-
+        .subscribe(semesters -> {
+          if (getView() != null) {
+            getView().setAvailableSemesters(semesters);
           }
-
-          @Override
-          public void onError(Throwable e) {
-            if (getView() != null) {
-              //Show error in view getView().showError(e);
-              e.printStackTrace();
-            }
-          }
-
-          @Override
-          public void onNext(List<Semester> semesters) {
-            if (getView() != null) {
-              getView().setAvailableSemesters(semesters);
-            }
+        }, throwable -> {
+          if (getView() != null) {
+            //Show error in view getView().showError(e);
+            throwable.printStackTrace();
           }
         });
   }
 
   @Override
   public void loadUniversities() {
-    mSubsciption = mRetroUCT.getUniversities()
+    mRetroUCT.getUniversities()
         .observeOn(mMainThread)
-        .subscribe(new Subscriber<List<University>>() {
-          @Override
-          public void onCompleted() {
-
+        .subscribe(universities -> {
+          if (getView() != null) {
+            getView().setUniversities(universities);
           }
-
-          @Override
-          public void onError(Throwable e) {
-
-            e.printStackTrace();
-          }
-
-          @Override
-          public void onNext(List<University> universities) {
-            if (getView() != null) {
-              getView().setUniversities(universities);
-            }
-          }
-        });
+        }, Throwable::printStackTrace);
   }
 
   @Override
@@ -120,6 +95,6 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
   }
 
   private void cancePreviousSubscription() {
-    RxUtils.unsubscribeIfNotNull(mSubsciption);
+    RxUtils.disposeIfNotNull(disposable);
   }
 }

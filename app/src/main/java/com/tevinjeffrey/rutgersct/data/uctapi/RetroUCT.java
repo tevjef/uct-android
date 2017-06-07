@@ -10,7 +10,10 @@ import com.tevinjeffrey.rutgersct.data.uctapi.notifications.SubscriptionManager;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
-import com.tevinjeffrey.rutgersct.utils.SimpleObserver;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +21,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import retrofit2.HttpException;
-import rx.Observable;
-import rx.Scheduler;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 @Singleton
@@ -145,13 +144,8 @@ public class RetroUCT {
 
   public Observable<UCTSubscription> refreshSubscriptions() {
     List<UCTSubscription> subscriptions = getTopics();
-    return Observable.from(subscriptions)
-        .flatMap(new Func1<UCTSubscription, Observable<Section>>() {
-          @Override
-          public Observable<Section> call(UCTSubscription subscription) {
-            return getSection(subscription.getSectionTopicName());
-          }
-        })
+    return Observable.fromIterable(subscriptions)
+        .flatMap(subscription -> getSection(subscription.getSectionTopicName()))
         .map(section -> {
           int index = subscriptions.indexOf(new UCTSubscription(section.topic_name));
           University newUni = subscriptions.get(index).updateSection(section);
@@ -160,69 +154,56 @@ public class RetroUCT {
           return newSub;
         })
         .toList()
-        .flatMap(new Func1<List<UCTSubscription>, Observable<Boolean>>() {
-          @Override
-          public Observable<Boolean> call(List<UCTSubscription> uctSubscriptions) {
-            return addAllSubscription(uctSubscriptions);
-          }
-        })
-        .flatMap(new Func1<Boolean, Observable<UCTSubscription>>() {
-          @Override
-          public Observable<UCTSubscription> call(Boolean aBoolean) {
-            return Observable.from(getTopics());
-          }
-        });
+        .flatMap(this::addAllSubscription)
+        .toObservable()
+        .flatMap(ignore -> Observable.fromIterable(getTopics()));
   }
 
   public void removeAll() {
     for (UCTSubscription s : getTopics()) {
-      unsubscribe(s.getSectionTopicName()).subscribe(new SimpleObserver<Boolean>() {
-        @Override
-        public void onNext(Boolean aBoolean) {
-          removeSubscription(s.getSectionTopicName()).subscribe();
-        }
-      });
+      unsubscribe(s.getSectionTopicName()).subscribe(ignore ->
+          removeSubscription(s.getSectionTopicName()).subscribe());
     }
   }
 
-  public Observable<Boolean> subscribe(UCTSubscription subscription) {
+  public Single<Boolean> subscribe(UCTSubscription subscription) {
     Timber.d("Subscribing to: %s", subscription);
 
-    return Observable.defer(() -> {
+    return Single.defer(() -> {
       try {
         subscriptionManager.subscribe(subscription.getSectionTopicName());
       } catch (IOException e) {
-        return Observable.error(e);
+        return Single.error(e);
       }
-      return Observable.just(subscription);
+      return Single.just(subscription);
     })
         .subscribeOn(Schedulers.io())
         .flatMap(subscription1 -> addSubscription(subscription1));
   }
 
-  public Observable<Boolean> unsubscribe(String topicName) {
+  public Single<Boolean> unsubscribe(String topicName) {
     Timber.d("Unsubscribing from: %s", topicName);
 
-    return Observable.defer(() -> {
+    return Single.defer(() -> {
       try {
         subscriptionManager.unsubscribe(topicName);
       } catch (IOException e) {
-        return Observable.error(e);
+        return Single.error(e);
       }
-      return Observable.just(topicName);
+      return Single.just(topicName);
     })
         .subscribeOn(Schedulers.io())
-        .flatMap(sectionModel1 -> removeSubscription(topicName));
+        .flatMap(ignore -> removeSubscription(topicName));
   }
 
-  private Observable<Boolean> addAllSubscription(List<UCTSubscription> subscription) {
-    return Hawk.putObservable(TRACKED_SECTIONS, subscription);
+  private Single<Boolean> addAllSubscription(List<UCTSubscription> subscription) {
+    return Single.defer(() -> Single.just(Hawk.put(TRACKED_SECTIONS, subscription)));
   }
 
-  private Observable<Boolean> addSubscription(UCTSubscription subscription) {
+  private Single<Boolean> addSubscription(UCTSubscription subscription) {
     List<UCTSubscription> topics = getTopics();
     topics.add(subscription);
-    return Hawk.putObservable(TRACKED_SECTIONS, topics);
+    return Single.defer(() -> Single.just(Hawk.put(TRACKED_SECTIONS, topics)));
   }
 
   private Observable<UCTSubscription> getSubscription(String topicName) {
@@ -235,13 +216,13 @@ public class RetroUCT {
     }
   }
 
-  private Observable<Boolean> removeSubscription(String topicName) {
+  private Single<Boolean> removeSubscription(String topicName) {
     List<UCTSubscription> topics = getTopics();
     topics.remove(new UCTSubscription(topicName));
-    return Hawk.putObservable(TRACKED_SECTIONS, topics);
+    return Single.defer(() -> Single.just(Hawk.put(TRACKED_SECTIONS, topics)));
   }
 
-  private Observable<Boolean> updateSubscription(UCTSubscription subscription) {
+  private Single<Boolean> updateSubscription(UCTSubscription subscription) {
     Timber.d("Updating subscription: %s", subscription.getSectionTopicName());
     return removeSubscription(subscription.getSectionTopicName())
         .flatMap(aBoolean -> addSubscription(subscription));

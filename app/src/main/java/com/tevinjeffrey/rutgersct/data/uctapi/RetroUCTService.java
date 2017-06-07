@@ -1,10 +1,10 @@
 package com.tevinjeffrey.rutgersct.data.uctapi;
 
 import com.tevinjeffrey.rutgersct.data.uctapi.model.Response;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
-import rx.Observable;
 
 public interface RetroUCTService {
   String ACCEPT_PROTOBUF = "Accept: application/x-protobuf";

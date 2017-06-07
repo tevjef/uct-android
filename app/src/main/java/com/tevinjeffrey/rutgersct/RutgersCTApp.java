@@ -8,8 +8,6 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.orhanobut.hawk.Hawk;
-import com.orhanobut.hawk.HawkBuilder;
-import com.orhanobut.hawk.LogLevel;
 import com.orhanobut.hawk.Parser;
 import com.orm.SugarContext;
 import com.squareup.wire.AndroidMessage;
@@ -69,9 +67,6 @@ public class RutgersCTApp extends Application {
 
     Hawk.init(this)
         .setParser(new GsonParser(new Gson()))
-        .setEncryptionMethod(HawkBuilder.EncryptionMethod.NO_ENCRYPTION)
-        .setStorage(HawkBuilder.newSqliteStorage(this))
-        .setLogLevel(LogLevel.FULL)
         .build();
 
     SugarContext.init(this);

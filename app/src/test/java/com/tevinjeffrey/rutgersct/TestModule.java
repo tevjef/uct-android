@@ -12,10 +12,10 @@ import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
 
 import static org.mockito.Mockito.mock;
 
@@ -33,14 +33,14 @@ public class TestModule {
   @Singleton
   @AndroidMainThread
   public Scheduler provideAndroidMainThread() {
-    return Schedulers.immediate();
+    return Schedulers.trampoline();
   }
 
   @Provides
   @Singleton
   @BackgroundThread
   public Scheduler provideBackgroundThread() {
-    return Schedulers.immediate();
+    return Schedulers.trampoline();
   }
 
   @Provides

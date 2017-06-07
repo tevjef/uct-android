@@ -6,7 +6,6 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Parameter;
-import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.RMP;
 import com.tevinjeffrey.rmp.common.utils.JaroWinklerDistance;
 import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
@@ -17,15 +16,13 @@ import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.inject.Inject;
-import rx.Observable;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Func1;
 import timber.log.Timber;
 
 public class SectionInfoPresenterImpl extends BasePresenter implements SectionInfoPresenter {
@@ -33,23 +30,15 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
   private final String TAG = this.getClass().getSimpleName();
   private final SearchFlow searchFlow;
 
+  @Inject RMP rmp;
+  @Inject RetroUCT mRetroUCT;
+  @Inject Bus mBus;
   @Inject
-  RMP rmp;
+  @AndroidMainThread Scheduler mMainThread;
+  @Inject
+  @BackgroundThread Scheduler mBackgroundThread;
 
-  @Inject
-  RetroUCT mRetroUCT;
-
-  @Inject
-  Bus mBus;
-
-  @Inject
-  @AndroidMainThread
-  Scheduler mMainThread;
-  @Inject
-  @BackgroundThread
-  Scheduler mBackgroundThread;
-
-  private Subscription mSubscription;
+  private Disposable disposable;
 
   public SectionInfoPresenterImpl(SearchFlow searchFlow) {
     this.searchFlow = searchFlow;
@@ -70,22 +59,10 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
   public void addSection() {
     mRetroUCT.subscribe(searchFlow.buildSubscription())
         .observeOn(mMainThread)
-        .subscribe(new Subscriber<Boolean>() {
-          @Override
-          public void onCompleted() {
-
-          }
-
-          @Override
-          public void onError(Throwable e) {
-            Timber.e(e);
-          }
-
-          @Override
-          public void onNext(Boolean aBoolean) {
-            setFabState(true);
-          }
-        });
+        .subscribe(
+            b -> setFabState(true),
+            Timber::e
+        );
   }
 
   @Nullable
@@ -99,25 +76,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
     cancePreviousSubscription();
 
-    Subscriber<Professor> subscriber = new Subscriber<Professor>() {
-      @Override
-      public void onCompleted() {
-      }
-
-      @Override
-      public void onError(Throwable e) {
-        Timber.e(e);
-      }
-
-      @Override
-      public void onNext(Professor professor) {
-        if (getView() != null) {
-          getView().addRMPProfessor(professor);
-        }
-      }
-    };
-
-    mSubscription = buildSearchParameters(searchFlow)
+    disposable = buildSearchParameters(searchFlow)
         .flatMap(parameter -> rmp.getProfessor(parameter))
         //Should need this to busness code.
         .doOnNext(professor -> {
@@ -140,41 +99,27 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
         })
         .subscribeOn(mBackgroundThread)
         .observeOn(mMainThread)
-        .doOnTerminate(new Action0() {
-          @Override
-          public void call() {
-            if (getView() != null) {
-              getView().showRatingsLayout();
-              getView().hideRatingsLoading();
-              for (Instructor i : professorsNotFound) {
-                getView().addErrorProfessor(Utils.InstructorUtils.getName(i));
-              }
+        .doOnTerminate(() -> {
+          if (getView() != null) {
+            getView().showRatingsLayout();
+            getView().hideRatingsLoading();
+            for (Instructor i : professorsNotFound) {
+              getView().addErrorProfessor(Utils.InstructorUtils.getName(i));
             }
           }
         })
-        .subscribe(subscriber);
+        .subscribe(professor -> {
+          if (getView() != null) {
+            getView().addRMPProfessor(professor);
+          }
+        }, Timber::e);
   }
 
   @Override
   public void removeSection() {
     mRetroUCT.unsubscribe(searchFlow.section.topic_name)
         .observeOn(mMainThread)
-        .subscribe(new Subscriber<Boolean>() {
-          @Override
-          public void onCompleted() {
-
-          }
-
-          @Override
-          public void onError(Throwable e) {
-            Timber.e(e);
-          }
-
-          @Override
-          public void onNext(Boolean aBoolean) {
-            setFabState(true);
-          }
-        });
+        .subscribe(b -> setFabState(false), Timber::e);
   }
 
   public void setFabState(boolean animate) {
@@ -202,7 +147,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
   }
 
   private Observable<Parameter> buildSearchParameters(final SearchFlow searchFlow) {
-    return Observable.from(searchFlow.getSection().instructors)
+    return Observable.fromIterable(searchFlow.getSection().instructors)
         .filter(filterGenericInstructors())
         .flatMap(instructor -> {
           String university = "rutgers";
@@ -221,11 +166,11 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
   }
 
   private void cancePreviousSubscription() {
-    RxUtils.unsubscribeIfNotNull(mSubscription);
+    RxUtils.disposeIfNotNull(disposable);
   }
 
   @NonNull
-  private Func1<Instructor, Boolean> filterGenericInstructors() {
+  private Predicate<Instructor> filterGenericInstructors() {
     return instructor -> !Utils.InstructorUtils.getLastName(instructor).equals("STAFF");
   }
 }

@@ -1,16 +1,15 @@
 package com.tevinjeffrey.rutgersct.ui.utils;
 
 import android.support.v7.widget.RecyclerView;
-import rx.Observable;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 public class RecyclerSimpleScrollListener extends RecyclerView.OnScrollListener {
   private static final int SCROLL_TOLERANCE = 0;
-  private final SerializedSubject<Direction, Direction> scrollBus;
+  private final PublishSubject<Direction> scrollBus;
 
   public RecyclerSimpleScrollListener() {
-    scrollBus = new SerializedSubject<>(PublishSubject.<Direction>create());
+    scrollBus = PublishSubject.create();
   }
 
   @Override
@@ -31,7 +30,7 @@ public class RecyclerSimpleScrollListener extends RecyclerView.OnScrollListener 
   }
 
   public Observable<Direction> getDirectionObservable() {
-    return scrollBus.onBackpressureDrop().distinctUntilChanged().asObservable();
+    return scrollBus.distinctUntilChanged();
   }
 
   public enum Direction {

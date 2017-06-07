@@ -47,14 +47,13 @@ import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.ui.utils.RecyclerSimpleScrollListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
 import icepick.State;
+import io.reactivex.functions.Consumer;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import jonathanfinerty.once.Once;
-import rx.exceptions.CompositeException;
-import rx.functions.Action1;
 import timber.log.Timber;
 
 import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.EMPTY;
@@ -196,9 +195,9 @@ public class TrackedSectionsFragment extends MVPFragment
     mRecyclerView.addOnScrollListener(recyclerSimpleScrollListener);
     recyclerSimpleScrollListener
         .getDirectionObservable()
-        .subscribe(new Action1<RecyclerSimpleScrollListener.Direction>() {
-          @Override
-          public void call(RecyclerSimpleScrollListener.Direction direction) {
+        .subscribe(new Consumer<RecyclerSimpleScrollListener.Direction>() {
+          @Override public void accept(final RecyclerSimpleScrollListener.Direction direction)
+              throws Exception {
             switch (direction) {
               case UP:
                 animateFabIn();
@@ -293,7 +292,7 @@ public class TrackedSectionsFragment extends MVPFragment
   public void showError(Throwable t) {
     String message;
     Resources resources = getContext().getResources();
-    if (t instanceof UnknownHostException || t instanceof CompositeException) {
+    if (t instanceof UnknownHostException) {
       message = resources.getString(R.string.no_internet);
     } else if (t instanceof SocketTimeoutException) {
       message = resources.getString(R.string.timed_out);

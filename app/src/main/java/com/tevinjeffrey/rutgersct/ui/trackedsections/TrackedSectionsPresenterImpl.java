@@ -8,12 +8,12 @@ import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 import java.util.List;
 import javax.inject.Inject;
-import rx.Observable;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.Subscription;
 
 public class TrackedSectionsPresenterImpl extends BasePresenter
     implements TrackedSectionsPresenter {
@@ -36,8 +36,8 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
 
   private boolean isLoading = false;
 
-  private Subscription mSubscription;
-  private Subscriber<List<UCTSubscription>> trackedSectinsSubscriber;
+  private Disposable disposable;
+  private SingleObserver<List<UCTSubscription>> trackedSectinsSubscriber;
 
   public TrackedSectionsPresenterImpl() {
   }
@@ -76,14 +76,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
       return;
     }
 
-    trackedSectinsSubscriber = new Subscriber<List<UCTSubscription>>() {
-      @Override
-      public void onCompleted() {
-        if (getView() != null) {
-          getView().showLoading(false);
-        }
-      }
-
+    trackedSectinsSubscriber = new SingleObserver<List<UCTSubscription>>() {
       @Override
       public void onError(Throwable e) {
         //Removes the animated loading drawable
@@ -96,16 +89,19 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
         }
       }
 
-      @Override
-      public void onNext(List<UCTSubscription> subscriptions) {
+      @Override public void onSubscribe(final Disposable d) {
+        disposable = d;
+      }
+
+      @Override public void onSuccess(final List<UCTSubscription> uctSubscriptions) {
         if (getView() != null) {
-          getView().setData(subscriptions);
+          getView().setData(uctSubscriptions);
         }
       }
     };
 
-    mSubscription = Observable.defer(() -> mRetroUCT.refreshSubscriptions())
-        .doOnSubscribe(() -> isLoading = true)
+    Observable.defer(() -> mRetroUCT.refreshSubscriptions())
+        .doOnSubscribe(disposable -> isLoading = true)
         .doOnTerminate(() -> isLoading = false)
         .toSortedList()
         .subscribeOn(mBackgroundThread)
@@ -119,6 +115,6 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
   }
 
   private void cancePreviousSubscription() {
-    RxUtils.unsubscribeIfNotNull(mSubscription);
+    RxUtils.disposeIfNotNull(disposable);
   }
 }
