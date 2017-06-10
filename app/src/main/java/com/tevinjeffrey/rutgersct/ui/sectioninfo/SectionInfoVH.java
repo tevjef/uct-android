@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Meeting;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils;
+import com.tevinjeffrey.rutgersct.data.model.Meeting;
+import com.tevinjeffrey.rutgersct.data.model.Section;
+import com.tevinjeffrey.rutgersct.data.model.extensions.Utils;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
 import java.util.List;
 

@@ -11,7 +11,6 @@ import javax.inject.Inject;
 public class PreferenceUtils {
   final Context context;
 
-  @Inject
   public PreferenceUtils(Context context) {
     this.context = context;
   }

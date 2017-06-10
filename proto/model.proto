@@ -1,6 +1,6 @@
 syntax = "proto2";
 
-option java_package = "com.tevinjeffrey.rutgersct.data.uctapi.model";
+option java_package = "com.tevinjeffrey.rutgersct.data.model";
 
 message University {
     optional int64 id = 1;

@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.RutgersCTTestModule;
-import dagger.ObjectGraph;
 import jonathanfinerty.once.Once;
 import org.junit.Before;
 import org.junit.Rule;
@@ -44,7 +43,7 @@ public class TrackedSectionsFragmentTest {
     // Espresso does not start the Activity for you we need to do this manually here.
     mActivity = mActivityRule.getActivity();
     assertThat(mActivity, notNullValue());
-    ObjectGraph.create(new RutgersCTTestModule()).inject(this);
+    //ObjectGraph.create(new RutgersCTTestModule()).inject(this);
     Once.markDone(MainActivity.SHOW_TOUR);
   }
 

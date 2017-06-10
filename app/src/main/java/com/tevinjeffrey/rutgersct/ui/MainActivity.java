@@ -1,5 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -13,16 +14,20 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
+import dagger.android.support.DaggerAppCompatActivity;
 import icepick.Icepick;
 import icepick.State;
 import javax.inject.Inject;
 import jonathanfinerty.once.Once;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HasFragmentInjector {
 
   public final static String SHOW_TOUR = "showTour";
   @State
@@ -32,8 +37,11 @@ public class MainActivity extends AppCompatActivity {
   @Inject
   PreferenceUtils mPreferenceUtils;
 
+  @Inject DispatchingAndroidInjector<Fragment> fragmentInjector;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    AndroidInjection.inject(this);
     super.onCreate(savedInstanceState);
 
     if (!Once.beenDone(Once.THIS_APP_INSTALL, SHOW_TOUR)) {
@@ -44,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     Timber.d("Token %s", FirebaseInstanceId.getInstance().getToken());
 
-    RutgersCTApp.getObjectGraph(this).inject(this);
+   // RutgersCTApp.getObjectGraph(this).inject(this);
 
     setContentView(R.layout.activity_main);
 
@@ -91,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
   public void decrementBackstackCount() {
     --mBackstackCount;
+  }
+
+  @Override public AndroidInjector<Fragment> fragmentInjector() {
+    return fragmentInjector;
   }
 
   //Helper methods to manage the back stack count. The count return from

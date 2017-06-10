@@ -24,10 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Semester;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
+import com.tevinjeffrey.rutgersct.data.model.Semester;
+import com.tevinjeffrey.rutgersct.data.model.University;
+import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment;
 import com.tevinjeffrey.rutgersct.utils.Utils;
@@ -37,7 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 import timber.log.Timber;
 
-import static com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString;
+import static com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils.readableString;
 
 public class ChooserFragment extends MVPFragment implements ChooserView {
 
@@ -58,6 +57,8 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
   @Inject
   SearchManager searchManager;
+
+  @Inject ChooserSubcomponent subcomponent;
 
   List<University> universities;
   List<Semester> semesters;
@@ -115,7 +116,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     super.onViewCreated(view, savedInstanceState);
     if (mBasePresenter == null) {
       mBasePresenter = new ChooserPresenterImpl();
-      RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+      subcomponent.inject((ChooserPresenterImpl) mBasePresenter);
     }
   }
 
@@ -163,7 +164,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
   @Override
   public void injectTargets() {
-    RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    //RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
   }
 
   @Override

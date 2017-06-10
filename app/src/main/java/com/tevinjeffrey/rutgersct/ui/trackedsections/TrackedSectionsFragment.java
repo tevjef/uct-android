@@ -34,9 +34,8 @@ import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.data.search.SearchManager;
+import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.IntroActivity;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
@@ -91,6 +90,8 @@ public class TrackedSectionsFragment extends MVPFragment
   @Inject
   SearchManager searchManager;
 
+  @Inject TrackedSectionsSubcomponent subcomponent;
+
   private ArrayList<UCTSubscription> mListDataset;
   private Unbinder unBinder;
 
@@ -131,8 +132,7 @@ public class TrackedSectionsFragment extends MVPFragment
     //Recreate presenter if necessary.
     if (mBasePresenter == null) {
       mBasePresenter = new TrackedSectionsPresenterImpl();
-      //Field injection instead of constructor injection. Less code when adding dependancies.
-      RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+      subcomponent.inject((TrackedSectionsPresenterImpl) mBasePresenter);
     }
   }
 
@@ -258,7 +258,6 @@ public class TrackedSectionsFragment extends MVPFragment
 
   @Override
   public void injectTargets() {
-    RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
   }
 
   @Override

@@ -6,11 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module(
-    injects = {
-        TrackedSectionsFragmentTest.class,
-    }, overrides = true, library = true)
-
+@Module
 public class RutgersCTTestModule {
   @Provides
   @Singleton

@@ -28,10 +28,9 @@ import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
+import com.tevinjeffrey.rutgersct.data.model.Subject;
+import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
+import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
@@ -43,7 +42,7 @@ import java.util.List;
 import javax.inject.Inject;
 import timber.log.Timber;
 
-import static com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils.readableString;
+import static com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils.readableString;
 
 public class SubjectFragment extends MVPFragment
     implements SubjectView, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
@@ -74,6 +73,9 @@ public class SubjectFragment extends MVPFragment
   @Inject
   SearchManager searchManager;
   private Unbinder unbinder;
+
+  @Inject
+  SubjectSubcomponent subcomponent;
 
   public SubjectFragment() {
   }
@@ -110,7 +112,7 @@ public class SubjectFragment extends MVPFragment
     //Recreate presenter if necessary.
     if (mBasePresenter == null) {
       mBasePresenter = new SubjectPresenterImpl(searchFlow);
-      RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+      subcomponent.inject((SubjectPresenterImpl) mBasePresenter);
     }
   }
 
@@ -193,7 +195,7 @@ public class SubjectFragment extends MVPFragment
 
   @Override
   public void injectTargets() {
-    RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    //RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
   }
 
   @Override

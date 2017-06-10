@@ -16,8 +16,8 @@ import com.dlazaro66.wheelindicatorview.WheelIndicatorItem;
 import com.dlazaro66.wheelindicatorview.WheelIndicatorView;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.uctapi.UrlUtils;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.UrlUtils;
+import com.tevinjeffrey.rutgersct.data.model.Section;
 
 public class RatingLayoutInflater {
   public static final int LOW_RATING_LIMIT = 40;

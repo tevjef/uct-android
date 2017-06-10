@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
+import com.tevinjeffrey.rutgersct.data.model.Section;
 import com.tevinjeffrey.rutgersct.ui.utils.HeaderVH;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import java.math.BigInteger;

@@ -48,29 +48,23 @@
     </activity>
 
     <service
-        android:name=".data.uctapi.notifications.MyFirebaseMessagingService">
+        android:name=".data.notifications.UCTFirebaseMessagingService">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
     </service>
     <service
-        android:name=".data.uctapi.notifications.MyFirebaseInstanceIDService">
+        android:name=".data.notifications.MyFirebaseInstanceIDService">
       <intent-filter>
         <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
       </intent-filter>
     </service>
+    <service android:name=".data.notifications.RegistrationIntentService"/>
 
     <meta-data
         android:name="com.crashlytics.ApiKey"
         android:value="833534bcb0efa4959e3a72cd803a7e3251d6bc65"
         />
-
-    <receiver
-        android:name=".receivers.DatabaseReceiver"
-        android:enabled="true"
-        android:exported="true"
-        />
-
     <activity
         android:name=".ui.IntroActivity"
         android:label="@string/title_activity_intro"

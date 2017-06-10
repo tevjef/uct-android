@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
-import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import java.util.List;
 import org.junit.Before;

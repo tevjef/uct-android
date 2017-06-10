@@ -6,16 +6,10 @@ import com.tevinjeffrey.rmp.scraper.RMPScraper;
 import com.tevinjeffrey.rmp.scraper.module.ScraperModule;
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Singleton;
 
-@Module(
-    includes = { ClientModule.class, ScraperModule.class },
-    complete = false,
-    library = true)
-
+@Module(includes = { ClientModule.class, ScraperModule.class })
 public class RMPModule {
 
-  @Singleton
   @Provides
   public RMP providesRMP(RMPClient rmpClient, RMPScraper rmpScraper) {
     return new RMP(rmpClient, rmpScraper);

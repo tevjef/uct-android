@@ -31,11 +31,10 @@ import com.nispok.snackbar.listeners.ActionClickListener;
 import com.nispok.snackbar.listeners.ActionSwipeListener;
 import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
+import com.tevinjeffrey.rutgersct.data.model.Course;
+import com.tevinjeffrey.rutgersct.data.model.Subject;
+import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
+import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsView;
@@ -79,6 +78,8 @@ public class CourseFragment extends MVPFragment
   @Inject
   SearchManager searchManager;
 
+  @Inject CourseSubcomponent subcomponent;
+
   private Subject selectedSubject;
   private Unbinder unbinder;
 
@@ -116,7 +117,7 @@ public class CourseFragment extends MVPFragment
     //Recreate presenter if necessary.
     if (mBasePresenter == null) {
       mBasePresenter = new CoursePresenterImpl(searchFlow);
-      RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+      subcomponent.inject((CoursePresenterImpl) mBasePresenter);
     }
   }
 
@@ -200,7 +201,7 @@ public class CourseFragment extends MVPFragment
 
   @Override
   public void injectTargets() {
-    RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    //RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
   }
 
   @Override

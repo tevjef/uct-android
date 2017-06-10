@@ -31,11 +31,10 @@ import butterknife.Unbinder;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Meeting;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
+import com.tevinjeffrey.rutgersct.data.model.Meeting;
+import com.tevinjeffrey.rutgersct.data.model.Metadata;
+import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
+import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.utils.Utils;
@@ -102,6 +101,9 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
   @Inject
   SearchManager searchManager;
+
+  @Inject SectionInfoSubcomponent subcomponent;
+
   private Unbinder unbinder;
 
   public SectionInfoFragment() {
@@ -170,7 +172,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     //Recreate presenter if necessary.
     if (mBasePresenter == null) {
       mBasePresenter = new SectionInfoPresenterImpl(searchFlow);
-      RutgersCTApp.getObjectGraph(getParentActivity()).inject(mBasePresenter);
+      subcomponent.inject((SectionInfoPresenterImpl) mBasePresenter);
     }
   }
 
@@ -246,7 +248,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
   @Override
   public void injectTargets() {
-    RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    //RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
   }
 
   public void showFab(boolean animate) {
@@ -352,7 +354,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
   private void setInstructors() {
     if (searchFlow.getSection().instructors.size() != 0) {
-      mInstructorsText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.InstructorUtils
+      mInstructorsText.setText(com.tevinjeffrey.rutgersct.data.model.extensions.Utils.InstructorUtils
           .toString(searchFlow.getSection().instructors));
     } else {
       mInstructorsText.setVisibility(View.GONE);
@@ -377,7 +379,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
   }
 
   private void setSemester() {
-    mSemesterText.setText(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.SemesterUtils
+    mSemesterText.setText(com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils
         .readableString(searchFlow.semester));
   }
 

@@ -2,7 +2,7 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
 import com.tevinjeffrey.rutgersct.ui.base.View.LayoutType;
 import java.util.ArrayList;

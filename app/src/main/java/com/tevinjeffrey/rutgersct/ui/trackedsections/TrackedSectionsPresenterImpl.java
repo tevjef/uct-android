@@ -2,8 +2,8 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import android.os.Bundle;
 import com.squareup.otto.Bus;
-import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.data.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
@@ -82,9 +82,6 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
         //Removes the animated loading drawable
         if (getView() != null) {
           getView().showLoading(false);
-        }
-        //Lets the view decide what to display depending on what type of exception it is.
-        if (getView() != null) {
           getView().showError(e);
         }
       }
@@ -96,6 +93,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
       @Override public void onSuccess(final List<UCTSubscription> uctSubscriptions) {
         if (getView() != null) {
           getView().setData(uctSubscriptions);
+          getView().showLoading(false);
         }
       }
     };

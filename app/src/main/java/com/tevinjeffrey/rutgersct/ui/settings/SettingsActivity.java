@@ -24,7 +24,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.tevinjeffrey.rutgersct.BuildConfig;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
 import com.tevinjeffrey.rutgersct.ui.utils.AppCompatPreferenceActivity;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
 import com.tevinjeffrey.rutgersct.utils.Utils;
@@ -34,6 +33,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -69,8 +69,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
-
       addPreferencesFromResource(R.xml.settings);
     }
 

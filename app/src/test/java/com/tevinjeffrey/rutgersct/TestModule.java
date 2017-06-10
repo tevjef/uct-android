@@ -19,15 +19,7 @@ import okhttp3.OkHttpClient;
 
 import static org.mockito.Mockito.mock;
 
-@Module(injects = {
-    TrackedSectionsPresenterImpl.class,
-    SubjectPresenterImpl.class,
-    SectionInfoPresenterImpl.class,
-    CoursePresenterImpl.class,
-    ChooserPresenterImpl.class,
-}
-    , library = true
-    , complete = false)
+@Module
 public class TestModule {
   @Provides
   @Singleton

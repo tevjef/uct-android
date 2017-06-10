@@ -1,17 +1,15 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
-import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Semester;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.University;
+import com.tevinjeffrey.rutgersct.data.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.model.Semester;
+import com.tevinjeffrey.rutgersct.data.model.University;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
 import com.tevinjeffrey.rutgersct.utils.RxUtils;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
-import java.util.List;
 import javax.inject.Inject;
-import org.reactivestreams.Subscription;
 
 public class ChooserPresenterImpl extends BasePresenter implements ChooserPresenter {
 

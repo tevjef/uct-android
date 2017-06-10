@@ -15,6 +15,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontwarn android.support.v4.**
+-dontwarn android.support.v7.**
+-keep class me.zhanghai.android.materialprogressbar.** { *; }
+-dontwarn com.afollestad.materialdialogs.**
+-dontwarn dagger.android.**
+
 -keep class butterknife.** { *; }
 -keep class com.tevinjeffrey.rutgersct.** { *;}
 

@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.course;
 
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
+import com.tevinjeffrey.rutgersct.data.model.Course;
 import com.tevinjeffrey.rutgersct.ui.base.BaseToolbarView;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import java.util.List;

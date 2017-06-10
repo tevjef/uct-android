@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.UCTSubscription;
+import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import java.math.BigInteger;
 import java.util.List;

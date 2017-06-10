@@ -23,13 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTApp;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Course;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Metadata;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Section;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchManager;
+import com.tevinjeffrey.rutgersct.data.model.Course;
+import com.tevinjeffrey.rutgersct.data.model.Metadata;
+import com.tevinjeffrey.rutgersct.data.model.Section;
+import com.tevinjeffrey.rutgersct.data.model.Subject;
+import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
+import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
@@ -167,7 +166,7 @@ public class CourseInfoFragment extends MVPFragment
 
   @Override
   public void injectTargets() {
-    RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    //RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
   }
 
   @Override
@@ -205,7 +204,7 @@ public class CourseInfoFragment extends MVPFragment
   }
 
   private void setOpenSections() {
-    mOpenSectionsText.setText(String.valueOf(com.tevinjeffrey.rutgersct.data.uctapi.model.extensions.Utils.CourseUtils
+    mOpenSectionsText.setText(String.valueOf(com.tevinjeffrey.rutgersct.data.model.extensions.Utils.CourseUtils
         .getOpenSections(mSelectedCourse)));
   }
 

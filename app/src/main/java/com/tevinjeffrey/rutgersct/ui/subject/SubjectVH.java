@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.model.Subject;
 
 public final class SubjectVH extends RecyclerView.ViewHolder {
 

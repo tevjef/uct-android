@@ -2,7 +2,7 @@ package com.tevinjeffrey.rutgersct.ui.subject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.tevinjeffrey.rutgersct.data.uctapi.model.Subject;
+import com.tevinjeffrey.rutgersct.data.model.Subject;
 import com.tevinjeffrey.rutgersct.ui.base.BaseViewState;
 import com.tevinjeffrey.rutgersct.ui.base.View.LayoutType;
 import java.util.ArrayList;

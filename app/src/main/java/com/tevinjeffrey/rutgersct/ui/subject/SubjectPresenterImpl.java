@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
-import com.tevinjeffrey.rutgersct.data.uctapi.RetroUCT;
-import com.tevinjeffrey.rutgersct.data.uctapi.search.SearchFlow;
+import com.tevinjeffrey.rutgersct.data.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;

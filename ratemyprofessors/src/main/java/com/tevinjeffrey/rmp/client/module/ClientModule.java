@@ -13,16 +13,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module(complete = false,
-        library = true)
-
+@Module
 public class ClientModule {
 
   private static final long CONNECT_TIMEOUT_MILLIS = 6000;
   private static final long READ_TIMEOUT_MILLIS = 7000;
 
   @Provides
-  @Singleton
   public RMPClient providesRMPClient(Gson gson, OkHttpClient.Builder clientBuilder) {
 
     OkHttpClient client = clientBuilder

@@ -13,7 +13,9 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
+import dagger.android.AndroidInjection;
 import icepick.Icepick;
+import javax.inject.Inject;
 import timber.log.Timber;
 
 public abstract class MVPFragment extends Fragment implements View {
@@ -22,6 +24,7 @@ public abstract class MVPFragment extends Fragment implements View {
 
   public BasePresenter mBasePresenter;
 
+  @Inject
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -40,6 +43,11 @@ public abstract class MVPFragment extends Fragment implements View {
     if (mBasePresenter != null) {
       mBasePresenter.onActivityCreated(savedInstanceState);
     }
+  }
+
+  @Override public void onAttach(final Context context) {
+    AndroidInjection.inject(this);
+    super.onAttach(context);
   }
 
   @Override

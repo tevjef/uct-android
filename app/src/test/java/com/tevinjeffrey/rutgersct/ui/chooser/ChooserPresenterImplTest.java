@@ -19,7 +19,6 @@ package com.tevinjeffrey.rutgersct.ui.chooser;
 import com.tevinjeffrey.rutgersct.TestModule;
 import com.tevinjeffrey.rutgersct.ui.base.View;
 import dagger.Module;
-import dagger.ObjectGraph;
 import dagger.Provides;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -59,19 +58,10 @@ public class ChooserPresenterImplTest {
 
   @Before
   public void setUp() throws Exception {
-    ObjectGraph og = ObjectGraph.create(new TestModule(), new MockModule());
-    og.inject(this);
-    chooserPresenterImpl = new ChooserPresenterImpl();
-    og.inject(chooserPresenterImpl);
+
   }
 
-  @Module(injects = {
-      ChooserPresenterImplTest.class
-  }
-
-      , overrides = true
-      , library = true
-      , complete = false)
+  @Module
   public class MockModule {
     @Mock
     ChooserView mockChooserView;
