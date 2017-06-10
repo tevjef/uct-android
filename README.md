@@ -22,9 +22,9 @@ I owe the speed at which I developed the application to <a href="https://github.
 ## Requirements
 
 - [Android SDK](http://developer.android.com/sdk/index.html).
-- Android [6.0 (API 23) ](http://developer.android.com/tools/revisions/platforms.html#6.0).
-- Android SDK Tools (Gradle 1.5+)
-- Android SDK Build tools 23.0.2
+- Android [8.0 (API 26) ](http://developer.android.com/tools/revisions/platforms.html#8.0).
+- Android SDK Tools (Gradle 3+)
+- Android SDK Build tools 26.0.0
 - Android Support Repository
 - MinSdkVersion 15
 
@@ -32,11 +32,11 @@ I owe the speed at which I developed the application to <a href="https://github.
 
 The libraries and tools used include:
 
-- Support library
+- Support library 26
 - RecyclerView
-- [RxJava](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) 
-- [Retrofit 1.9](http://square.github.io/retrofit/) and [OkHttp](https://github.com/square/okhttp)
-- [Dagger 1](http://google.github.io/dagger/)
+- [RxJava 2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+- [Retrofit 2](http://square.github.io/retrofit/) and [OkHttp](https://github.com/square/okhttp)
+- [Dagger 2](http://google.github.io/dagger/)
 - [Butterknife](https://github.com/JakeWharton/butterknife)
 - [Timber](https://github.com/JakeWharton/timber)
 - [AppIntro](https://github.com/PaoloRotolo/AppIntro)
