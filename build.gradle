@@ -36,5 +36,21 @@ ext {
   storePassword = properties.storePassword
   storeFile = properties.storeFile == null ? "/" : properties.storeFile
 
-  supportVersion = '26.0.0-alpha1'
+  compileSdkVersion = 26
+  targetSdkVersion = 26
+
+  buildToolsVersion = "26.0.0-rc2"
+  supportLibVersion = "26.0.0-beta1"
+  playServicesVersion = '11.0.0'
+  runnerVersion = "0.5"
+  rulesVersion = "0.5"
+  espressoVersion = "2.2.2"
+  archLifecycleVersion = "1.0.0-alpha1"
+  archRoomVersion = "1.0.0-alpha1"
+  daggerVersion = '2.11'
+  rxJava2Version = '2.1.0'
+  rxAndroidVersion = '2.0.1'
+  retrofit2Version = '2.3.0'
+  okhttp3Version = '3.8.0'
+  junitVersion = '4.12'
 }

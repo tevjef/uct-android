@@ -6,17 +6,20 @@ apply plugin: 'java'
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  testCompile 'junit:junit:4.12'
-  compile 'org.apache.commons:commons-lang3:3.4'
-  compile "io.reactivex.rxjava2:rxjava:2.1.0"
 
-  compile 'com.squareup.retrofit2:retrofit:2.2.0'
-  compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-  compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-  compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-  compile group: 'com.squareup.retrofit2', name: 'converter-wire', version: '2.2.0'
-  implementation 'com.google.dagger:dagger:2.11'
-  apt 'com.google.dagger:dagger-compiler:2.11'
+  testCompile 'junit:junit:' + rootProject.junitVersion
+
+  compile 'org.apache.commons:commons-lang3:3.4'
+  compile "io.reactivex.rxjava2:rxjava:" + rootProject.rxJava2Version
+
+  compile 'com.squareup.retrofit2:retrofit:' + rootProject.retrofit2Version
+  compile 'com.squareup.retrofit2:converter-gson:' + rootProject.retrofit2Version
+  compile 'com.squareup.retrofit2:adapter-rxjava2:' + rootProject.retrofit2Version
+  compile group: 'com.squareup.retrofit2', name: 'converter-wire', version: rootProject.retrofit2Version
+  compile 'com.squareup.okhttp3:logging-interceptor:' + rootProject.okhttp3Version
+
+  implementation 'com.google.dagger:dagger:' + rootProject.daggerVersion
+  apt 'com.google.dagger:dagger-compiler:' + rootProject.daggerVersion
 }
 
 sourceCompatibility = "1.8"

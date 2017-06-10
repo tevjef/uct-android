@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements HasFragmentInject
     }
 
     Timber.d("Token %s", FirebaseInstanceId.getInstance().getToken());
-    
+
     setContentView(R.layout.activity_main);
 
     Icepick.restoreInstanceState(this, savedInstanceState);
