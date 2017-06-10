@@ -17,7 +17,7 @@ public class CourseFragmentAdapter extends RecyclerView.Adapter<CourseVH> {
   private List<Course> courseList;
   private ItemClickListener<Course, View> itemClickListener;
 
-  public CourseFragmentAdapter(
+  CourseFragmentAdapter(
       List<Course> courseList,
       @NonNull ItemClickListener<Course, View> listener) {
     this.courseList = courseList;

@@ -1,7 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
-import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
-import com.tevinjeffrey.rutgersct.ui.course.CoursePresenterImpl;
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 

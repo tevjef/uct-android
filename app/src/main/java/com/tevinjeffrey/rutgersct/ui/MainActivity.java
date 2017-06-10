@@ -20,7 +20,6 @@ import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasFragmentInjector;
-import dagger.android.support.DaggerAppCompatActivity;
 import icepick.Icepick;
 import icepick.State;
 import javax.inject.Inject;
@@ -30,13 +29,11 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity implements HasFragmentInjector {
 
   public final static String SHOW_TOUR = "showTour";
-  @State
-  public int mBackstackCount;
-  @Inject
-  Context context;
-  @Inject
-  PreferenceUtils mPreferenceUtils;
 
+  @State public int mBackstackCount;
+
+  @Inject Context context;
+  @Inject PreferenceUtils mPreferenceUtils;
   @Inject DispatchingAndroidInjector<Fragment> fragmentInjector;
 
   @Override
@@ -51,9 +48,7 @@ public class MainActivity extends AppCompatActivity implements HasFragmentInject
     }
 
     Timber.d("Token %s", FirebaseInstanceId.getInstance().getToken());
-
-   // RutgersCTApp.getObjectGraph(this).inject(this);
-
+    
     setContentView(R.layout.activity_main);
 
     Icepick.restoreInstanceState(this, savedInstanceState);
@@ -87,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements HasFragmentInject
     Icepick.saveInstanceState(this, outState);
   }
 
+  @Override public AndroidInjector<Fragment> fragmentInjector() {
+    return fragmentInjector;
+  }
+
   @Override
   public void onBackPressed() {
     if (getBackstackCount() > 0) {
@@ -99,10 +98,6 @@ public class MainActivity extends AppCompatActivity implements HasFragmentInject
 
   public void decrementBackstackCount() {
     --mBackstackCount;
-  }
-
-  @Override public AndroidInjector<Fragment> fragmentInjector() {
-    return fragmentInjector;
   }
 
   //Helper methods to manage the back stack count. The count return from

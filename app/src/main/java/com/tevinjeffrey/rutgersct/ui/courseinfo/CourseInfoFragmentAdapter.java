@@ -18,9 +18,11 @@ public class CourseInfoFragmentAdapter extends RecyclerView.Adapter<RecyclerView
 
   private static final int TYPE_HEADER = 0;
   private static final int TYPE_ITEM = 1;
+
   private final List<Section> sectionList;
-  final private ItemClickListener<Section, View> itemClickListener;
-  final private List<View> mHeaders;
+
+  private final ItemClickListener<Section, View> itemClickListener;
+  private final List<View> mHeaders;
 
   public CourseInfoFragmentAdapter(
       List<View> headers,

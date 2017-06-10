@@ -48,66 +48,31 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
 
   private static final String TAG = SectionInfoFragment.class.getSimpleName();
 
-  @BindView(R.id.prof_ratings_container)
-  ViewGroup ratingsContainer;
+  @BindView(R.id.prof_ratings_container) ViewGroup ratingsContainer;
+  @BindView(R.id.prof_ratings_root) ViewGroup ratingsRoot;
+  @BindView(R.id.semester_text) TextView mSemesterText;
+  @BindView(R.id.course_title_text) TextView mCourseTitleText;
+  @BindView(R.id.sectionNumber_text) TextView mSectionNumberText;
+  @BindView(R.id.indexNumber_text) TextView mIndexNumberText;
+  @BindView(R.id.subtitle) TextView mCreditsText;
+  @BindView(R.id.tCredits) ViewGroup mCreditsViewGroup;
+  @BindView(R.id.instructors_text) TextView mInstructorsText;
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.section_times_container) LinearLayout mSectionTimeContainer;
+  @BindView(R.id.add_courses_fab) FloatingActionButton mFab;
+  @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
+  @BindView(R.id.section_metadata) LinearLayout sectionMetadataContainer;
 
-  @BindView(R.id.prof_ratings_root)
-  ViewGroup ratingsRoot;
+  @State SearchFlow searchFlow;
+  @State SectionInfoViewState mViewState = new SectionInfoViewState();
 
-  @BindView(R.id.semester_text)
-  TextView mSemesterText;
-
-  @BindView(R.id.course_title_text)
-  TextView mCourseTitleText;
-
-  @BindView(R.id.sectionNumber_text)
-  TextView mSectionNumberText;
-
-  @BindView(R.id.indexNumber_text)
-  TextView mIndexNumberText;
-
-  @BindView(R.id.subtitle)
-  TextView mCreditsText;
-
-  @BindView(R.id.tCredits)
-  ViewGroup mCreditsViewGroup;
-
-  @BindView(R.id.instructors_text)
-  TextView mInstructorsText;
-
-  @BindView(R.id.toolbar)
-  Toolbar mToolbar;
-
-  @BindView(R.id.section_times_container)
-  LinearLayout mSectionTimeContainer;
-
-  @BindView(R.id.add_courses_fab)
-  FloatingActionButton mFab;
-
-  @BindView(R.id.collapsing_toolbar)
-  CollapsingToolbarLayout mCollapsingToolbar;
-
-  @BindView(R.id.section_metadata)
-  LinearLayout sectionMetadataContainer;
-
-  @State
-  SearchFlow searchFlow;
-
-  @State
-  SectionInfoViewState mViewState = new SectionInfoViewState();
-
-  @Inject
-  Bus mBus;
-
-  @Inject
-  SearchManager searchManager;
-
+  @Inject Bus mBus;
+  @Inject SearchManager searchManager;
   @Inject SectionInfoSubcomponent subcomponent;
 
   private Unbinder unbinder;
 
-  public SectionInfoFragment() {
-  }
+  public SectionInfoFragment() {}
 
   public static SectionInfoFragment newInstance() {
     final SectionInfoFragment newInstance = new SectionInfoFragment();

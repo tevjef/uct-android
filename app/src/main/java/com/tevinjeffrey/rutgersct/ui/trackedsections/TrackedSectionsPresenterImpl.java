@@ -2,7 +2,7 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import android.os.Bundle;
 import com.squareup.otto.Bus;
-import com.tevinjeffrey.rutgersct.data.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.UCTApi;
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
@@ -20,22 +20,12 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
 
   private static final String TAG = TrackedSectionsPresenterImpl.class.getSimpleName();
 
-  @Inject
-  RetroUCT mRetroUCT;
-
-  @Inject
-  Bus mBus;
-
-  @Inject
-  @AndroidMainThread
-  Scheduler mMainThread;
-
-  @Inject
-  @BackgroundThread
-  Scheduler mBackgroundThread;
+  @Inject UCTApi mUCTApi;
+  @Inject Bus mBus;
+  @Inject @AndroidMainThread Scheduler mMainThread;
+  @Inject @BackgroundThread Scheduler mBackgroundThread;
 
   private boolean isLoading = false;
-
   private Disposable disposable;
   private SingleObserver<List<UCTSubscription>> trackedSectinsSubscriber;
 
@@ -98,7 +88,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
       }
     };
 
-    Observable.defer(() -> mRetroUCT.refreshSubscriptions())
+    Observable.defer(() -> mUCTApi.refreshSubscriptions())
         .doOnSubscribe(disposable -> isLoading = true)
         .doOnTerminate(() -> isLoading = false)
         .toSortedList()

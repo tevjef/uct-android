@@ -1,5 +1,6 @@
-package com.tevinjeffrey.rutgersct.ui;
+package com.tevinjeffrey.rutgersct.dagger;
 
+import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectPresenterImpl;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsPresenterImpl;
 import dagger.Subcomponent;

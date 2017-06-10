@@ -47,48 +47,26 @@ public class CourseInfoFragment extends MVPFragment
 
   private static final String TAG = CourseInfoFragment.class.getSimpleName();
 
-  @BindView(R.id.toolbar)
-  Toolbar mToolbar;
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.course_info_list) RecyclerView mRecyclerView;
+  @BindView(R.id.course_title_text) TextView mCourseTitleText;
+  @BindView(R.id.app_bar_layout) AppBarLayout mAppBarLayout;
+  @BindView(R.id.coordinator_layout) CoordinatorLayout mCoordinatorLayout;
+  @BindView(R.id.subtitle) TextView mCreditsText;
+  @BindView(R.id.shortenedCourseInfo) TextView mShortenedCourseInfo;
+  @BindView(R.id.openSections_text) TextView mOpenSectionsText;
+  @BindView(R.id.totalSections_text) TextView mTotalSectionsText;
 
-  @BindView(R.id.course_info_list)
-  RecyclerView mRecyclerView;
+  @State SearchFlow searchFlow;
+  @State CourseInfoViewState mViewState = new CourseInfoViewState();
 
-  @BindView(R.id.course_title_text)
-  TextView mCourseTitleText;
-
-  @BindView(R.id.app_bar_layout)
-  AppBarLayout mAppBarLayout;
-
-  @BindView(R.id.coordinator_layout)
-  CoordinatorLayout mCoordinatorLayout;
-
-  @BindView(R.id.subtitle)
-  TextView mCreditsText;
-
-  @BindView(R.id.shortenedCourseInfo)
-  TextView mShortenedCourseInfo;
-
-  @BindView(R.id.openSections_text)
-  TextView mOpenSectionsText;
-
-  @BindView(R.id.totalSections_text)
-  TextView mTotalSectionsText;
-
-  @State
-  SearchFlow searchFlow;
-
-  @State
-  CourseInfoViewState mViewState = new CourseInfoViewState();
-
-  @Inject
-  SearchManager searchManager;
+  @Inject SearchManager searchManager;
 
   private List<View> mHeaderViews = new ArrayList<>();
   private Course mSelectedCourse;
   private Unbinder unbinder;
 
-  public CourseInfoFragment() {
-  }
+  public CourseInfoFragment() { }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

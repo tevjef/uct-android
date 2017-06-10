@@ -49,33 +49,19 @@ public class SubjectFragment extends MVPFragment
 
   private static final String TAG = SubjectFragment.class.getSimpleName();
 
-  @BindView(R.id.toolbar)
-  Toolbar mToolbar;
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.list_view) RecyclerView mRecyclerView;
+  @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.error_view) ViewGroup mErrorView;
 
-  @BindView(R.id.list_view)
-  RecyclerView mRecyclerView;
+  @State ArrayList<Subject> mListDataset;
+  @State SearchFlow searchFlow;
+  @State SubjectViewState mViewState = new SubjectViewState();
 
-  @BindView(R.id.swipeRefreshLayout)
-  SwipeRefreshLayout mSwipeRefreshLayout;
+  @Inject SearchManager searchManager;
+  @Inject SubjectSubcomponent subcomponent;
 
-  @BindView(R.id.error_view)
-  ViewGroup mErrorView;
-
-  @State
-  ArrayList<Subject> mListDataset;
-
-  @State
-  SearchFlow searchFlow;
-
-  @State
-  SubjectViewState mViewState = new SubjectViewState();
-
-  @Inject
-  SearchManager searchManager;
   private Unbinder unbinder;
-
-  @Inject
-  SubjectSubcomponent subcomponent;
 
   public SubjectFragment() {
   }

@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 
-public interface RetroUCTService {
+public interface UCTService {
   String ACCEPT_PROTOBUF = "Accept: application/x-protobuf";
 
   @Headers({ ACCEPT_PROTOBUF })

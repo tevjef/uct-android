@@ -17,7 +17,7 @@ public class SubjectFragmentAdapter extends RecyclerView.Adapter<SubjectVH> {
   private final List<Subject> subjectList;
   private final ItemClickListener<Subject, View> itemClickListener;
 
-  public SubjectFragmentAdapter(
+  SubjectFragmentAdapter(
       List<Subject> subjectList,
       @NonNull ItemClickListener<Subject, View> listener) {
     this.subjectList = subjectList;

@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.dagger;
 
-import com.tevinjeffrey.rutgersct.data.RetroUCTService;
+import com.tevinjeffrey.rutgersct.data.UCTService;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.schedulers.Schedulers;
@@ -14,13 +14,13 @@ public class DataModule {
 
   @Provides
   @PerApp
-  public RetroUCTService providesUCTRestAdapter(OkHttpClient client) {
+  public UCTService providesUCTRestAdapter(OkHttpClient client) {
     return new Retrofit.Builder()
         .client(client)
         .addConverterFactory(WireConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
         .baseUrl("https://api.coursetrakr.io/")
         .build()
-        .create(RetroUCTService.class);
+        .create(UCTService.class);
   }
 }

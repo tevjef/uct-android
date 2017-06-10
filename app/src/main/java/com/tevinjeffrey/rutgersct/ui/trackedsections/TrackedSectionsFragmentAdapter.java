@@ -17,7 +17,7 @@ public class TrackedSectionsFragmentAdapter extends RecyclerView.Adapter<Tracked
   private final List<UCTSubscription> sectionList;
   private final ItemClickListener<UCTSubscription, View> itemClickListener;
 
-  public TrackedSectionsFragmentAdapter(
+  TrackedSectionsFragmentAdapter(
       List<UCTSubscription> sectionList,
       @NonNull ItemClickListener<UCTSubscription, View> listener) {
     this.sectionList = sectionList;

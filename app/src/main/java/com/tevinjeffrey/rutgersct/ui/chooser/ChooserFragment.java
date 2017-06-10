@@ -40,28 +40,18 @@ import static com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUti
 
 public class ChooserFragment extends MVPFragment implements ChooserView {
 
-  @BindView(R.id.semester_radiogroup)
-  RadioGroup mSemesterRadiogroup;
+  @BindView(R.id.semester_radiogroup) RadioGroup mSemesterRadiogroup;
+  @BindView(R.id.search_btn) TextView mSearchButton;
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.university_spinner) Spinner universitySpinner;
 
-  @BindView(R.id.search_btn)
-  TextView mSearchButton;
+  @State ChooserViewState mViewState = new ChooserViewState();
 
-  @BindView(R.id.toolbar)
-  Toolbar mToolbar;
-
-  @State
-  ChooserViewState mViewState = new ChooserViewState();
-
-  @BindView(R.id.university_spinner)
-  Spinner universitySpinner;
-
-  @Inject
-  SearchManager searchManager;
-
+  @Inject SearchManager searchManager;
   @Inject ChooserSubcomponent subcomponent;
 
-  List<University> universities;
-  List<Semester> semesters;
+  private List<University> universities;
+  private List<Semester> semesters;
   private Unbinder unbinder;
 
   public ChooserFragment() {

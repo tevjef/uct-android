@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import retrofit2.HttpException;
 import timber.log.Timber;
 
-public class RetroUCT {
+public class UCTApi {
 
   private final String DEFAULT_UNIVERSITY = "default_university";
   private final String DEFAULT_SEMESTER = "default_semester";
@@ -30,15 +30,15 @@ public class RetroUCT {
   private final String TRACKED_SECTIONS = "trackedsections";
   private final SubscriptionManager subscriptionManager;
 
-  RetroUCTService uctService;
+  UCTService uctService;
   Scheduler backgroundThread;
 
   @Inject
-  public RetroUCT(
-      RetroUCTService retroUCTService,
+  public UCTApi(
+      UCTService UCTService,
       @BackgroundThread Scheduler backgroundThread,
       SubscriptionManager subscriptionManager) {
-    this.uctService = retroUCTService;
+    this.uctService = UCTService;
     this.backgroundThread = backgroundThread;
     this.subscriptionManager = subscriptionManager;
   }

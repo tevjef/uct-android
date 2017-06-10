@@ -66,30 +66,16 @@ public class TrackedSectionsFragment extends MVPFragment
   public static final String TAG = TrackedSectionsFragment.class.getSimpleName();
   public static final String CORRUPT_SECTIONS = "corrupt_sections";
 
-  @BindView(R.id.swipeRefreshLayout)
-  SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.add_courses_fab) FloatingActionButton mFab;
+  @BindView(R.id.tsf_list) RecyclerView mRecyclerView;
+  @BindView(R.id.add_courses_to_track) ViewGroup mEmptyView;
+  @BindView(R.id.error_view) ViewGroup mErrorView;
 
-  @BindView(R.id.toolbar)
-  Toolbar mToolbar;
+  @State TrackedSectionsViewState mViewState = new TrackedSectionsViewState();
 
-  @BindView(R.id.add_courses_fab)
-  FloatingActionButton mFab;
-
-  @BindView(R.id.tsf_list)
-  RecyclerView mRecyclerView;
-
-  @BindView(R.id.add_courses_to_track)
-  ViewGroup mEmptyView;
-
-  @BindView(R.id.error_view)
-  ViewGroup mErrorView;
-
-  @State
-  TrackedSectionsViewState mViewState = new TrackedSectionsViewState();
-
-  @Inject
-  SearchManager searchManager;
-
+  @Inject SearchManager searchManager;
   @Inject TrackedSectionsSubcomponent subcomponent;
 
   private ArrayList<UCTSubscription> mListDataset;

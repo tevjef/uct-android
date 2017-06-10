@@ -8,7 +8,7 @@ import com.squareup.otto.Bus;
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.RMP;
 import com.tevinjeffrey.rmp.common.utils.JaroWinklerDistance;
-import com.tevinjeffrey.rutgersct.data.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.UCTApi;
 import com.tevinjeffrey.rutgersct.data.model.Instructor;
 import com.tevinjeffrey.rutgersct.data.model.extensions.Utils;
 import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
@@ -31,12 +31,10 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
   private final SearchFlow searchFlow;
 
   @Inject RMP rmp;
-  @Inject RetroUCT mRetroUCT;
+  @Inject UCTApi mUCTApi;
   @Inject Bus mBus;
-  @Inject
-  @AndroidMainThread Scheduler mMainThread;
-  @Inject
-  @BackgroundThread Scheduler mBackgroundThread;
+  @Inject @AndroidMainThread Scheduler mMainThread;
+  @Inject @BackgroundThread Scheduler mBackgroundThread;
 
   private Disposable disposable;
 
@@ -57,7 +55,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
   @Override
   public void addSection() {
-    mRetroUCT.subscribe(searchFlow.buildSubscription())
+    mUCTApi.subscribe(searchFlow.buildSubscription())
         .observeOn(mMainThread)
         .subscribe(
             b -> setFabState(true),
@@ -117,14 +115,14 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
 
   @Override
   public void removeSection() {
-    mRetroUCT.unsubscribe(searchFlow.section.topic_name)
+    mUCTApi.unsubscribe(searchFlow.section.topic_name)
         .observeOn(mMainThread)
         .subscribe(b -> setFabState(false), Timber::e);
   }
 
   public void setFabState(boolean animate) {
     if (getView() != null) {
-      boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.section.topic_name);
+      boolean sectionTracked = mUCTApi.isTopicTracked(searchFlow.section.topic_name);
       getView().showSectionTracked(sectionTracked, animate);
     }
   }
@@ -135,7 +133,7 @@ public class SectionInfoPresenterImpl extends BasePresenter implements SectionIn
   }
 
   public void toggleFab() {
-    boolean sectionTracked = mRetroUCT.isTopicTracked(searchFlow.section.topic_name);
+    boolean sectionTracked = mUCTApi.isTopicTracked(searchFlow.section.topic_name);
     if (sectionTracked) {
       removeSection();
     } else {

@@ -52,39 +52,22 @@ public class CourseFragment extends MVPFragment
     implements CourseView, SwipeRefreshLayout.OnRefreshListener,
     ItemClickListener<Course, View> {
 
-  private final String TAG = this.getClass().getSimpleName();
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.list_view) RecyclerView mRecyclerView;
+  @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.error_view) ViewGroup mErrorView;
 
-  @BindView(R.id.toolbar)
-  Toolbar mToolbar;
+  @State ArrayList<Course> mListDataset;
+  @State CourseViewState mViewState = new CourseViewState();
+  @State SearchFlow searchFlow;
 
-  @BindView(R.id.list_view)
-  RecyclerView mRecyclerView;
-
-  @BindView(R.id.swipeRefreshLayout)
-  SwipeRefreshLayout mSwipeRefreshLayout;
-
-  @BindView(R.id.error_view)
-  ViewGroup mErrorView;
-
-  @State
-  ArrayList<Course> mListDataset;
-
-  @State
-  CourseViewState mViewState = new CourseViewState();
-
-  @State
-  SearchFlow searchFlow;
-
-  @Inject
-  SearchManager searchManager;
-
+  @Inject SearchManager searchManager;
   @Inject CourseSubcomponent subcomponent;
 
   private Subject selectedSubject;
   private Unbinder unbinder;
 
-  public CourseFragment() {
-  }
+  public CourseFragment() { }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

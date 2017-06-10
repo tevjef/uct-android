@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
-import com.tevinjeffrey.rutgersct.data.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.UCTApi;
 import com.tevinjeffrey.rutgersct.data.model.Semester;
 import com.tevinjeffrey.rutgersct.data.model.University;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
@@ -15,33 +15,24 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
 
   private static final String TAG = ChooserPresenterImpl.class.getSimpleName();
 
-  @Inject
-  RetroUCT mRetroUCT;
-  @Inject
-  @AndroidMainThread
-  Scheduler mMainThread;
-  @Inject
-  @BackgroundThread
-  Scheduler mBackgroundThread;
-
-  @Inject
-  RetroUCT retroUCT;
+  @Inject UCTApi mUCTApi;
+  @Inject @AndroidMainThread Scheduler mMainThread;
+  @Inject @BackgroundThread Scheduler mBackgroundThread;
+  @Inject UCTApi UCTApi;
 
   private Disposable disposable;
   private boolean isLoading;
 
-  public ChooserPresenterImpl() {
-
-  }
+  public ChooserPresenterImpl() { }
 
   @Override
   public Semester getDefaultSemester() {
-    return retroUCT.getDefaultSemester();
+    return UCTApi.getDefaultSemester();
   }
 
   @Override
   public University getDefaultUniversity() {
-    return retroUCT.getDefaultUniversity();
+    return UCTApi.getDefaultUniversity();
   }
 
   public ChooserView getView() {
@@ -56,7 +47,7 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
   @Override
   public void loadAvailableSemesters(String universityTopicName) {
     cancePreviousSubscription();
-    disposable = mRetroUCT.getUniversity(universityTopicName)
+    disposable = mUCTApi.getUniversity(universityTopicName)
         .map(university -> university.available_semesters)
         .observeOn(mMainThread)
         .subscribe(semesters -> {
@@ -73,7 +64,7 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
 
   @Override
   public void loadUniversities() {
-    mRetroUCT.getUniversities()
+    mUCTApi.getUniversities()
         .observeOn(mMainThread)
         .subscribe(universities -> {
           if (getView() != null) {
@@ -84,12 +75,12 @@ public class ChooserPresenterImpl extends BasePresenter implements ChooserPresen
 
   @Override
   public void updateDefaultUniversity(University university) {
-    retroUCT.setDefaultUniversity(university);
+    UCTApi.setDefaultUniversity(university);
   }
 
   @Override
   public void updateSemester(Semester semester) {
-    retroUCT.setDefaultSemester(semester);
+    UCTApi.setDefaultSemester(semester);
   }
 
   private void cancePreviousSubscription() {

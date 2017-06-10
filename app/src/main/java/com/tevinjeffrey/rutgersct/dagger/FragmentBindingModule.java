@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.ui;
+package com.tevinjeffrey.rutgersct.dagger;
 
 import android.app.Fragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;

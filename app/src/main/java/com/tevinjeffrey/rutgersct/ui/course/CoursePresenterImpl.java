@@ -1,6 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.course;
 
-import com.tevinjeffrey.rutgersct.data.RetroUCT;
+import com.tevinjeffrey.rutgersct.data.UCTApi;
 import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.ui.base.BasePresenter;
 import com.tevinjeffrey.rutgersct.ui.base.View;
@@ -16,14 +16,9 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
   private static final String TAG = CoursePresenterImpl.class.getSimpleName();
   private final SearchFlow searchFlow;
 
-  @Inject
-  RetroUCT mRetroUCT;
-  @Inject
-  @AndroidMainThread
-  Scheduler mMainThread;
-  @Inject
-  @BackgroundThread
-  Scheduler mBackgroundThread;
+  @Inject UCTApi mUCTApi;
+  @Inject @AndroidMainThread Scheduler mMainThread;
+  @Inject @BackgroundThread Scheduler mBackgroundThread;
 
   private Disposable disposable;
   private boolean isLoading;
@@ -49,7 +44,7 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
 
     cancePreviousSubscription();
 
-    disposable = mRetroUCT.getCourses(searchFlow)
+    disposable = mUCTApi.getCourses(searchFlow)
         .doOnSubscribe(disposable -> isLoading = true)
         .doOnTerminate(() -> isLoading = false)
         .subscribeOn(mBackgroundThread)
