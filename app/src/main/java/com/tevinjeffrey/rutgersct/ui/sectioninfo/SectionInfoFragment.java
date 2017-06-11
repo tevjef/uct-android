@@ -100,15 +100,6 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     // create ContextThemeWrapper from the original Activity Context with the custom theme
     if (searchFlow.getSection().status.equals("Open")) {
       contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Green);
-
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        getActivity().setTaskDescription(
-            new ActivityManager.TaskDescription(
-                null, null,
-                ContextCompat.getColor(container.getContext(), R.color.green)
-            )
-        );
-      }
     } else {
       contextThemeWrapper = Utils.wrapContextTheme(getActivity(), R.style.RutgersCT_Red);
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

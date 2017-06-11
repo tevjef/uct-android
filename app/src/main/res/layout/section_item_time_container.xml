@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/section_times_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="false"
-    android:layout_below="@+id/fsl_divider"
+    android:orientation="vertical"
     tools:showIn="@layout/section_layout_with_title"
     >
 
@@ -13,41 +12,27 @@
   <include
       layout="@layout/section_item_mini_time"
       android:id="@+id/stub_section_item_time_info_0"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
       />
 
   <include
       layout="@layout/section_item_mini_time"
       android:id="@+id/stub_section_item_time_info_1"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/stub_section_item_time_info_0"
       />
 
   <include
       layout="@layout/section_item_mini_time"
       android:id="@+id/stub_section_item_time_info_2"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/stub_section_item_time_info_1"
       />
 
   <include
       layout="@layout/section_item_mini_time"
       android:id="@+id/stub_section_item_time_info_3"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/stub_section_item_time_info_2"
       />
 
   <include
       layout="@layout/section_item_mini_time"
       android:id="@+id/stub_section_item_time_info_4"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/stub_section_item_time_info_3"
       />
 
 
-</RelativeLayout>
+</LinearLayout>

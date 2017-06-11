@@ -1,45 +1,47 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-  <android.support.v7.widget.Toolbar
-      android:id="@+id/toolbar"
-      android:theme="@style/RutgersCT.ToolbarTheme"
-      android:transitionGroup="true"
-      android:transitionName="@string/transition_name_tool_background"
-      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-      style="@style/ToolbarStyle"
-      >
-
-  </android.support.v7.widget.Toolbar>
-
-  <android.support.v4.widget.SwipeRefreshLayout
-      android:id="@+id/swipeRefreshLayout"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/toolbar"
+      android:orientation="vertical"
       >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:theme="@style/RutgersCT.ToolbarTheme"
+        android:transitionGroup="true"
+        android:transitionName="@string/transition_name_tool_background"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        style="@style/ToolbarStyle"
+        >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_view"
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:scrollbars="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/course_list_item"
-        />
+        >
 
-  </android.support.v4.widget.SwipeRefreshLayout>
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/list_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_below="@+id/toolbar"
+          android:scrollbars="vertical"
+          app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+          tools:listitem="@layout/course_list_item"
+          />
+    </android.support.v4.widget.SwipeRefreshLayout>
+  </LinearLayout>
 
-  <include
-      layout="@layout/error_view"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true"
-      />
-</RelativeLayout>
+
+  <include layout="@layout/error_view"/>
+
+</android.support.design.widget.CoordinatorLayout>

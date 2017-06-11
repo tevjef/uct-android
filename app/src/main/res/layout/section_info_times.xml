@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/section_times_layout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    >
-
+  >
   <LinearLayout
+
       android:id="@+id/section_times_wrapper"
       android:orientation="vertical"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
       style="@style/section_metadata_containers"
       >
 
     <TextView
-        android:id="@+id/sectionNumber"
         android:text="@string/time_and_location"
         style="@style/PrimaryTextStyle"
         />
-
+    
     <LinearLayout
         android:id="@+id/section_times_container"
         android:layout_width="match_parent"
@@ -27,12 +25,13 @@
         style="@style/SecondaryMetadataTextStyle"
         >
     </LinearLayout>
-
   </LinearLayout>
 
-  <View
-      android:layout_below="@+id/section_times_wrapper"
-      style="@style/divider.metadata"
-      />
-
-</RelativeLayout>
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      >
+    <View style="@style/divider.metadata"/>
+  </FrameLayout>
+</FrameLayout>

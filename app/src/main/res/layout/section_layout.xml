@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/section_details"
@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:minHeight="72dp"
+    android:orientation="horizontal"
     android:paddingBottom="8dp"
     android:paddingRight="@dimen/default_margin"
     android:paddingTop="8dp"
@@ -18,31 +19,31 @@
       android:id="@+id/section_number_background"
       />
 
-  <TextView
-      android:id="@+id/prof_text"
-      android:layout_alignParentEnd="true"
-      android:layout_alignParentRight="true"
-      android:layout_below="@+id/time_frame"
-      android:text="A EXAMPLE OF VERY LONG TEXT"
-      android:textColor="@color/secondary_text"
-      android:textStyle="bold"
-      tools:ignore="HardcodedText"
-      style="@style/SecondaryTextStyle"
-      />
 
-  <FrameLayout
+  <LinearLayout
       android:id="@+id/time_frame"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingLeft="@dimen/start_keyline"
+      android:orientation="vertical"
+      android:paddingLeft="16dp"
       >
 
     <include
         layout="@layout/section_item_time_container"
         android:id="@+id/section_item_time_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-  </FrameLayout>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/prof_text"
+        android:layout_gravity="end"
+        android:text="A EXAMPLE OF VERY LONG TEXT"
+        android:textColor="@color/secondary_text"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText"
+        style="@style/SecondaryTextStyle"
+        />
+  </LinearLayout>
+
+</LinearLayout>
