@@ -16,7 +16,7 @@
         android:text="@string/time_and_location"
         style="@style/PrimaryTextStyle"
         />
-    
+
     <LinearLayout
         android:id="@+id/section_times_container"
         android:layout_width="match_parent"
