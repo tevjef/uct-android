@@ -10,6 +10,7 @@ import com.tevinjeffrey.rutgersct.utils.RxUtils;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 public class CoursePresenterImpl extends BasePresenter implements CoursePresenter {
 
@@ -68,6 +69,8 @@ public class CoursePresenterImpl extends BasePresenter implements CoursePresente
           if (getView() != null) {
             getView().showError(throwable);
           }
+
+          Timber.e(throwable);
         }, () -> {
           if (getView() != null) {
             getView().showLoading(false);

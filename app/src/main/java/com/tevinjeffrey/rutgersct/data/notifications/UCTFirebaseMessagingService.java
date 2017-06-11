@@ -131,7 +131,7 @@ public class UCTFirebaseMessagingService extends FirebaseMessagingService {
     Intent openInBrowser = new Intent(Intent.ACTION_VIEW);
     openInBrowser.setData(Uri.parse("https://sims.rutgers.edu/webreg/"));
     PendingIntent pOpenInBrowser = PendingIntent.getActivity(this, 0, openInBrowser, 0);
-    mBuilder.addAction(R.drawable.ic_open_in_browser_white_24dp, "Webreg", pOpenInBrowser);
+    mBuilder.addAction(R.drawable.ic_open_in_browser, "Webreg", pOpenInBrowser);
     mBuilder.setContentIntent(pOpenInBrowser);
 
     notificationManager.notify(

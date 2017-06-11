@@ -24,13 +24,14 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.ImageView;
 import com.tevinjeffrey.rutgersct.R;
 
 @SuppressWarnings("ResourceType")
-public class TintImageView extends ImageView {
+public class TintImageView extends AppCompatImageView {
   private static final int[] TINT_ATTRS = {
       android.R.attr.background,
       android.R.attr.src,

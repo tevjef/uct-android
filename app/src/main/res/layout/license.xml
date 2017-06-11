@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     >
 
-  <net.steamcrafted.materialiconlib.MaterialIconView
+  <ImageView
       android:id="@+id/open_in_browser"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -18,9 +18,7 @@
       android:paddingTop="5dp"
       android:scaleType="fitEnd"
       android:tint="@color/secondary_text"
-      app:materialIcon="github_circle"
-      app:materialIconColor="@color/accent"
-      app:materialIconSize="24dp"
+      app:srcCompat="@drawable/ic_github_circle"
       />
 
   <TextView

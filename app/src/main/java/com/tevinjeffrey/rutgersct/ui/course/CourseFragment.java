@@ -4,7 +4,9 @@ import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,12 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
-import com.nispok.snackbar.enums.SnackbarType;
-import com.nispok.snackbar.listeners.ActionClickListener;
-import com.nispok.snackbar.listeners.ActionSwipeListener;
-import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.model.Course;
 import com.tevinjeffrey.rutgersct.data.model.Subject;
@@ -66,6 +62,7 @@ public class CourseFragment extends MVPFragment
 
   private Subject selectedSubject;
   private Unbinder unbinder;
+  private Snackbar snackbar;
 
   public CourseFragment() { }
 
@@ -283,8 +280,8 @@ public class CourseFragment extends MVPFragment
 
   private void dismissSnackbar() {
     //It's only being dismissed to not leak the fragment
-    if (SnackbarManager.getCurrentSnackbar() != null) {
-      SnackbarManager.dismiss();
+    if (snackbar != null) {
+      snackbar.dismiss();
     }
   }
 
@@ -309,64 +306,22 @@ public class CourseFragment extends MVPFragment
   }
 
   private void showSnackBar(CharSequence message) {
-    SnackbarManager.show(
-        Snackbar.with(getParentActivity())
-            .type(SnackbarType.MULTI_LINE)
-            .text(message)
-            .actionLabel(R.string.retry)// text to display
-            .actionListener(new ActionClickListener() {
-              @Override
-              public void onActionClicked(Snackbar snackbar) {
-                onRefresh();
-                mViewState.snackBarShowing = false;
-              }
-            })
-            .swipeListener(new ActionSwipeListener() {
-              @Override
-              public void onSwipeToDismiss() {
-                mViewState.snackBarShowing = false;
-              }
-            })
-            .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
-            .color(ContextCompat.getColor(
-                getParentActivity(),
-                R.color.accent
-            ))// action button label color
-            .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-            .eventListener(new EventListener() {
-              @Override
-              public void onDismiss(Snackbar snackbar) {
+    snackbar = makeSnackBar(message);
+    snackbar.setAction(R.string.retry, view -> {
+      onRefresh();
+      mViewState.snackBarShowing = false;
+    });
+    snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+      @Override public void onDismissed(final Snackbar transientBottomBar, final int event) {
+        mViewState.snackBarShowing = false;
+        snackbar.removeCallback(this);
+      }
 
-              }
-
-              @Override
-              public void onDismissByReplace(Snackbar snackbar) {
-
-              }
-
-              @Override
-              public void onDismissed(Snackbar snackbar) {
-
-              }
-
-              @Override
-              public void onShow(Snackbar snackbar) {
-                if (snackbar != null) {
-                  mViewState.snackBarShowing = true;
-                }
-              }
-
-              @Override
-              public void onShowByReplace(Snackbar snackbar) {
-
-              }
-
-              @Override
-              public void onShown(Snackbar snackbar) {
-
-              }
-            })
-        , getParentActivity()); // activity where it is displayed
+      @Override public void onShown(final Snackbar transientBottomBar) {
+        mViewState.snackBarShowing = true;
+      }
+    });
+    snackbar.show();
   }
 
   private void startCourseInfoFragment(Bundle b) {

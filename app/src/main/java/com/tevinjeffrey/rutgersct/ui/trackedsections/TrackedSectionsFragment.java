@@ -6,7 +6,9 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,10 +31,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
-import com.nispok.snackbar.enums.SnackbarType;
-import com.nispok.snackbar.listeners.EventListener;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
@@ -80,6 +78,7 @@ public class TrackedSectionsFragment extends MVPFragment
 
   private ArrayList<UCTSubscription> mListDataset;
   private Unbinder unBinder;
+  private Snackbar snackbar;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -179,50 +178,6 @@ public class TrackedSectionsFragment extends MVPFragment
 
     RecyclerSimpleScrollListener recyclerSimpleScrollListener = new RecyclerSimpleScrollListener();
     mRecyclerView.addOnScrollListener(recyclerSimpleScrollListener);
-    recyclerSimpleScrollListener
-        .getDirectionObservable()
-        .subscribe(new Consumer<RecyclerSimpleScrollListener.Direction>() {
-          @Override public void accept(final RecyclerSimpleScrollListener.Direction direction)
-              throws Exception {
-            switch (direction) {
-              case UP:
-                animateFabIn();
-                //These helper methods have a glitchy animation on some Samsung devices.
-                //mFab.show();
-                break;
-              case DOWN:
-                animateFabOut();
-                //These helper methods have a glitchy animation on some Samsung devices.
-                //mFab.hide();
-                break;
-              case NEUTRAL:
-                break;
-            }
-          }
-
-          //The animation up and down takes into account if he snackbar is showing or not.
-          private void animateFabIn() {
-            ViewCompat.animate(mFab).alpha(1).setStartDelay(50).start();
-
-            if (mViewState.snackBarShowing) {
-              if (SnackbarManager.getCurrentSnackbar() != null) {
-                ViewCompat
-                    .animate(mFab)
-                    .translationY(-SnackbarManager.getCurrentSnackbar().getHeight())
-                    .setStartDelay(50)
-                    .start();
-              }
-            } else {
-              ViewCompat.animate(mFab).translationY(0);
-            }
-          }
-
-          private void animateFabOut() {
-            ViewCompat.animate(mFab).alphaBy(0).setStartDelay(50).start();
-            ViewCompat.animate(mFab).translationYBy(250).setStartDelay(50).start();
-          }
-        });
-
     if (mListDataset == null) {
       mListDataset = new ArrayList<>(10);
     }
@@ -364,8 +319,8 @@ public class TrackedSectionsFragment extends MVPFragment
 
   private void dismissSnackbar() {
     //It's only being dismissed to not leak the fragment
-    if (SnackbarManager.getCurrentSnackbar() != null) {
-      SnackbarManager.dismiss();
+    if (snackbar != null) {
+      snackbar.dismiss();
     }
   }
 
@@ -409,65 +364,22 @@ public class TrackedSectionsFragment extends MVPFragment
   }
 
   private void showSnackBar(CharSequence message) {
-    // TODO Repace when android.design Snackbar recieves decent callbacks.
-    SnackbarManager.show(
-        Snackbar.with(getParentActivity())
-            .type(SnackbarType.MULTI_LINE)
-            .text(message)
-            .actionLabel("RETRY")// text to display
-            .actionListener(snackbar -> {
-              onRefresh();
-              mViewState.snackBarShowing = false;
-            })
-            .swipeListener(() -> mViewState.snackBarShowing = false)
-            .actionColor(ContextCompat.getColor(getParentActivity(), android.R.color.white))
-            .color(ContextCompat.getColor(
-                getParentActivity(),
-                R.color.accent
-            ))// action button label color
-            .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-            .eventListener(new EventListener() {
-              @Override
-              public void onDismiss(Snackbar snackbar) {
-                if (mFab != null) {
-                  ViewCompat
-                      .animate(mFab)
-                      .translationYBy(snackbar.getHeight())
-                      .setInterpolator(new OvershootInterpolator());
-                }
-              }
+    snackbar = makeSnackBar(message);
+    snackbar.setAction(R.string.retry, view -> {
+      onRefresh();
+      mViewState.snackBarShowing = false;
+    });
+    snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+      @Override public void onDismissed(final Snackbar transientBottomBar, final int event) {
+        mViewState.snackBarShowing = false;
+        snackbar.removeCallback(this);
+      }
 
-              @Override
-              public void onDismissByReplace(Snackbar snackbar) {
-              }
-
-              @Override
-              public void onDismissed(Snackbar snackbar) {
-              }
-
-              @Override
-              public void onShow(Snackbar snackbar) {
-                if (snackbar != null) {
-                  mViewState.snackBarShowing = true;
-                  if (mFab != null) {
-                    ViewCompat
-                        .animate(mFab)
-                        .translationYBy(-snackbar.getHeight())
-                        .setInterpolator(new OvershootInterpolator());
-                  }
-                }
-              }
-
-              @Override
-              public void onShowByReplace(Snackbar snackbar) {
-              }
-
-              @Override
-              public void onShown(Snackbar snackbar) {
-
-              }
-            }) // Snackbar's EventListener
-        , getParentActivity()); // activity where it is displayed
+      @Override public void onShown(final Snackbar transientBottomBar) {
+        mViewState.snackBarShowing = true;
+      }
+    });
+    snackbar.show();
   }
 
   private void startChooserFragment() {

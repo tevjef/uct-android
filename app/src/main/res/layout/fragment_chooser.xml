@@ -66,11 +66,11 @@
           android:layout_weight="1"
           >
 
-        <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+        <ImageView
             android:id="@+id/ic_university"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_location_city_white_24dp"
+            app:srcCompat="@drawable/ic_location_city"
             />
 
         <TextView
@@ -106,13 +106,12 @@
           android:layout_weight="1"
           >
 
-        <com.tevinjeffrey.rutgersct.ui.utils.TintImageView
+        <ImageView
             android:id="@+id/ic_today"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_today_white_24dp"
+            app:srcCompat="@drawable/ic_today"
             />
-
 
         <TextView
             android:id="@+id/semester_title"
