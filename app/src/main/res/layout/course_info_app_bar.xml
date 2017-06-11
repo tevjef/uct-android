@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_bar_layout"
-    android:clickable="true"
     android:theme="@style/RutgersCT.ToolbarTheme"
     android:transitionGroup="true"
     android:transitionName="@string/transition_name_tool_background"

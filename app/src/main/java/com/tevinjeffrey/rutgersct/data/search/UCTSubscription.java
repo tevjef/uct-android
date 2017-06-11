@@ -1,5 +1,8 @@
 package com.tevinjeffrey.rutgersct.data.search;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.tevinjeffrey.rutgersct.data.model.Course;
@@ -8,9 +11,16 @@ import com.tevinjeffrey.rutgersct.data.model.Semester;
 import com.tevinjeffrey.rutgersct.data.model.Subject;
 import com.tevinjeffrey.rutgersct.data.model.University;
 
+@Entity(tableName = "uct_subscription")
 public class UCTSubscription implements Parcelable, Comparable {
 
-  public static final String SUBSCRIPTION = "UCTSubscription";
+  @PrimaryKey
+  @ColumnInfo(name = "section_topic_name")
+  private String sectionTopicName;
+
+  private University university;
+
+
   public static final Creator<UCTSubscription> CREATOR = new Creator<UCTSubscription>() {
     @Override
     public UCTSubscription createFromParcel(Parcel source) {
@@ -22,8 +32,6 @@ public class UCTSubscription implements Parcelable, Comparable {
       return new UCTSubscription[size];
     }
   };
-  private String sectionTopicName;
-  private University university;
 
   public UCTSubscription(String sectionTopicName) {
     this.sectionTopicName = sectionTopicName;

@@ -14,6 +14,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import java.util.List;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 public class TrackedSectionsPresenterImpl extends BasePresenter
     implements TrackedSectionsPresenter {
@@ -73,6 +74,7 @@ public class TrackedSectionsPresenterImpl extends BasePresenter
         if (getView() != null) {
           getView().showLoading(false);
           getView().showError(e);
+          Timber.e(e);
         }
       }
 

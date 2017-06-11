@@ -1,6 +1,8 @@
 package com.tevinjeffrey.rutgersct.ui.courseinfo;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -16,6 +18,7 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -31,6 +34,8 @@ import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment;
+import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity;
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback;
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
@@ -104,7 +109,23 @@ public class CourseInfoFragment extends MVPFragment
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
-    inflater.inflate(R.menu.menu_fragment_info, menu);
+    inflater.inflate(R.menu.menu_course_info, menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_add_all:
+        //noinspection ClassReferencesSubclass
+        getParentActivity().mBackstackCount = 0;
+        getFragmentManager().popBackStackImmediate(
+            TrackedSectionsFragment.TAG,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE
+        );
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @Override public void onDestroy() {

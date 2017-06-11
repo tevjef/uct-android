@@ -1,7 +1,12 @@
 package com.tevinjeffrey.rutgersct.dagger;
 
+import android.arch.persistence.room.Room;
+import android.content.Context;
 import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.tevinjeffrey.rutgersct.data.UCTService;
+import com.tevinjeffrey.rutgersct.data.database.PreferenceDao;
+import com.tevinjeffrey.rutgersct.data.database.UCTDatabase;
+import com.tevinjeffrey.rutgersct.data.database.UCTSubscriptionDao;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.exceptions.OnErrorNotImplementedException;
@@ -19,9 +24,38 @@ public class DataModule {
 
   @Provides
   @PerApp
+  public PreferenceDao providePreferenceDao(final Context context) {
+    UCTDatabase db = Room.databaseBuilder(context.getApplicationContext(),
+        UCTDatabase.class, "uct")
+        .allowMainThreadQueries()
+        .build();
+    return db.preferenceDao();
+  }
+
+  @Provides
+  @PerApp
+  public UCTSubscriptionDao provideSubscriptionDao(final UCTDatabase database) {
+    return database.subscriptionDao();
+  }
+
+  @Provides
+  @PerApp
+  public UCTDatabase provideUCTDatabase(final Context context) {
+    UCTDatabase db = Room.databaseBuilder(context.getApplicationContext(),
+        UCTDatabase.class, "uct"
+    )
+        .allowMainThreadQueries()
+        .build();
+
+    return db;
+  }
+
+  @Provides
+  @PerApp
   public UCTService providesUCTRestAdapter(OkHttpClient client) {
     RxJavaPlugins.setErrorHandler(throwable -> {
-      if (throwable instanceof OnErrorNotImplementedException || throwable instanceof ProtocolViolationException) {
+      if (throwable instanceof OnErrorNotImplementedException
+          || throwable instanceof ProtocolViolationException) {
         throw new RuntimeExecutionException(throwable);
       }
       Timber.e(throwable, "Error handler reported");

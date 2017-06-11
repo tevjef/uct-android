@@ -1,6 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+
+  <item
+      android:id="@+id/action_add_all"
+      android:icon="@drawable/ic_add_all"
+      android:title="@string/action_track"
+      android:titleCondensed="@string/action_track"
+      app:showAsAction="ifRoom"
+      />
+
   <item
       android:id="@+id/action_track"
       android:icon="@drawable/ic_tracked_sections"
@@ -8,4 +17,6 @@
       android:titleCondensed="@string/action_track"
       app:showAsAction="ifRoom"
       />
+
+
 </menu>

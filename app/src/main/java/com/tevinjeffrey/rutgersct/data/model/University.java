@@ -2,6 +2,8 @@
 // Source file: model.proto at 5:1
 package com.tevinjeffrey.rutgersct.data.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import com.squareup.wire.AndroidMessage;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import okio.ByteString;
 
+@Entity(primaryKeys = {"topic_name"})
 public final class University extends AndroidMessage<University, University.Builder> {
   public static final ProtoAdapter<University> ADAPTER = new ProtoAdapter_University();
 
@@ -30,6 +33,7 @@ public final class University extends AndroidMessage<University, University.Buil
   public static final String DEFAULT_TOPIC_NAME = "";
   public static final String DEFAULT_TOPIC_ID = "";
   private static final long serialVersionUID = 0L;
+
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"

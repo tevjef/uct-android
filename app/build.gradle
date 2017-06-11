@@ -22,16 +22,20 @@ android {
     versionCode 33
     versionName '1.0.7.1'
     signingConfig signingConfigs.release
-
-    multiDexEnabled true
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
     vectorDrawables {
       useSupportLibrary = true
     }
 
-    resConfigs 'en', 'xxhdpi'
+    resConfigs 'en'
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        arguments = ["room.schemaLocation":
+                         "$projectDir/schemas".toString()]
+      }
+    }
   }
 
   compileOptions {
@@ -41,16 +45,20 @@ android {
 
   buildTypes {
     release {
+      debuggable true
       signingConfig signingConfigs.release
       shrinkResources true
       minifyEnabled true
       versionNameSuffix 'R'
+      multiDexEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
 
     debug {
       proguardFiles 'proguard-rules.pro'
       versionNameSuffix 'D'
       applicationIdSuffix '.debug'
+      multiDexEnabled true
       // Crashlytics will generate a new build id for every build. Disable it
       ext.alwaysUpdateBuildId = false
     }
@@ -126,6 +134,7 @@ dependencies {
 
   compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion
   compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
+  compile 'android.arch.persistence.room:rxjava2:' + rootProject.archRoomVersion
   annotationProcessor "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
   annotationProcessor "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
 

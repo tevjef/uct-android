@@ -1,0 +1,37 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "95730008a71212e129144772c549543c",
+    "entities": [
+      {
+        "tableName": "uct_subscription",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sectionTopicName` TEXT, `university` TEXT, PRIMARY KEY(`sectionTopicName`))",
+        "fields": [
+          {
+            "fieldPath": "sectionTopicName",
+            "columnName": "sectionTopicName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "university",
+            "columnName": "university",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sectionTopicName"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"95730008a71212e129144772c549543c\")"
+    ]
+  }
+}

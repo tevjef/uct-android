@@ -17,6 +17,7 @@
   <string name="action_webreg">Webreg</string>
   <string name="action_feedback">Send Feedback</string>
   <string name="action_track">Track Sections</string>
+  <string name="action_add_all">Add All Sections</string>
 
   <string name="sync_interval">Sync Interval</string>
   <string name="please_wait">Please wait…</string>

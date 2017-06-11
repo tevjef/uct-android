@@ -164,6 +164,8 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
 
     mSemesterRadiogroup.removeAllViews();
 
+    Semester defaultSemester = getPresenter().getDefaultSemester();
+
     for (Semester semester : semesters) {
       RadioButton radioButton = (RadioButton) LayoutInflater
           .from(this.getParentActivity())
@@ -176,7 +178,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
       radioButton.setTag(semester);
       mSemesterRadiogroup.addView(radioButton, layoutParams);
 
-      radioButton.setChecked(semester.equals(getPresenter().getDefaultSemester()));
+      radioButton.setChecked(semester.equals(defaultSemester));
     }
 
     mSemesterRadiogroup.setOnCheckedChangeListener((group, checkedId) -> {
