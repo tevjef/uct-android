@@ -76,7 +76,7 @@ public class CircleSharedElementCallback extends SharedElementCallback {
 
     @Override
     public void onTransitionEnd(Transition transition) {
-      if (transition != null) {
+      if (transition != null && tempView != null) {
         tempView.get().setAlpha(0);
         transition.removeListener(this);
       }

@@ -51,9 +51,9 @@ public class SubjectFragment extends MVPFragment
   @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
   @BindView(R.id.error_view) ViewGroup mErrorView;
 
-  @State ArrayList<Subject> mListDataset;
-  @State SearchFlow searchFlow;
-  @State SubjectViewState mViewState = new SubjectViewState();
+  ArrayList<Subject> mListDataset;
+  SearchFlow searchFlow;
+  SubjectViewState mViewState = new SubjectViewState();
 
   @Inject SearchManager searchManager;
   @Inject SubjectSubcomponent subcomponent;

@@ -62,8 +62,8 @@ public class CourseInfoFragment extends MVPFragment
   @BindView(R.id.openSections_text) TextView mOpenSectionsText;
   @BindView(R.id.totalSections_text) TextView mTotalSectionsText;
 
-  @State SearchFlow searchFlow;
-  @State CourseInfoViewState mViewState = new CourseInfoViewState();
+  SearchFlow searchFlow;
+  CourseInfoViewState mViewState = new CourseInfoViewState();
 
   @Inject SearchManager searchManager;
 

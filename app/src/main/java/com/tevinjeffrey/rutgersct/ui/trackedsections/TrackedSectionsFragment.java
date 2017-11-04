@@ -10,7 +10,6 @@ import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,12 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.search.SearchManager;
@@ -43,20 +38,25 @@ import com.tevinjeffrey.rutgersct.ui.utils.CircleView;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.ui.utils.RecyclerSimpleScrollListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import icepick.State;
-import io.reactivex.functions.Consumer;
+
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import jonathanfinerty.once.Once;
 import timber.log.Timber;
 
 import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.EMPTY;
 import static com.tevinjeffrey.rutgersct.ui.base.View.LayoutType.LIST;
 
-@SuppressWarnings({ "ClassWithTooManyMethods" })
+@SuppressWarnings({"ClassWithTooManyMethods"})
 public class TrackedSectionsFragment extends MVPFragment
     implements TrackedSectionsView, SwipeRefreshLayout.OnRefreshListener,
     ItemClickListener<UCTSubscription, View> {
@@ -64,17 +64,25 @@ public class TrackedSectionsFragment extends MVPFragment
   public static final String TAG = TrackedSectionsFragment.class.getSimpleName();
   public static final String CORRUPT_SECTIONS = "corrupt_sections";
 
-  @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.add_courses_fab) FloatingActionButton mFab;
-  @BindView(R.id.tsf_list) RecyclerView mRecyclerView;
-  @BindView(R.id.add_courses_to_track) ViewGroup mEmptyView;
-  @BindView(R.id.error_view) ViewGroup mErrorView;
+  @BindView(R.id.swipeRefreshLayout)
+  SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.toolbar)
+  Toolbar mToolbar;
+  @BindView(R.id.add_courses_fab)
+  FloatingActionButton mFab;
+  @BindView(R.id.tsf_list)
+  RecyclerView mRecyclerView;
+  @BindView(R.id.add_courses_to_track)
+  ViewGroup mEmptyView;
+  @BindView(R.id.error_view)
+  ViewGroup mErrorView;
 
-  @State TrackedSectionsViewState mViewState = new TrackedSectionsViewState();
+  TrackedSectionsViewState mViewState = new TrackedSectionsViewState();
 
-  @Inject SearchManager searchManager;
-  @Inject TrackedSectionsSubcomponent subcomponent;
+  @Inject
+  SearchManager searchManager;
+  @Inject
+  TrackedSectionsSubcomponent subcomponent;
 
   private ArrayList<UCTSubscription> mListDataset;
   private Unbinder unBinder;
@@ -370,12 +378,14 @@ public class TrackedSectionsFragment extends MVPFragment
       mViewState.snackBarShowing = false;
     });
     snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-      @Override public void onDismissed(final Snackbar transientBottomBar, final int event) {
+      @Override
+      public void onDismissed(final Snackbar transientBottomBar, final int event) {
         mViewState.snackBarShowing = false;
         snackbar.removeCallback(this);
       }
 
-      @Override public void onShown(final Snackbar transientBottomBar) {
+      @Override
+      public void onShown(final Snackbar transientBottomBar) {
         mViewState.snackBarShowing = true;
       }
     });

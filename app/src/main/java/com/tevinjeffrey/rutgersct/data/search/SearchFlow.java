@@ -17,6 +17,7 @@ public class SearchFlow implements Parcelable {
         }
 
         @Override
+
         public SearchFlow[] newArray(int size) {
           return new SearchFlow[size];
         }

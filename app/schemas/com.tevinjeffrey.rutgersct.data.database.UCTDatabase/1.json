@@ -2,21 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3903c92d119ba4e175163f96bef9c43d",
+    "identityHash": "ea03cdec8aa9dc422ccdc4a623a44d2f",
     "entities": [
       {
         "tableName": "uct_subscription",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`section_topic_name` TEXT, `university` TEXT, PRIMARY KEY(`section_topic_name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`section_topic_name` TEXT NOT NULL, `university` TEXT, PRIMARY KEY(`section_topic_name`))",
         "fields": [
           {
             "fieldPath": "sectionTopicName",
             "columnName": "section_topic_name",
-            "affinity": "TEXT"
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "university",
             "columnName": "university",
-            "affinity": "TEXT"
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -30,12 +32,13 @@
       },
       {
         "tableName": "default_university",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`university` TEXT, PRIMARY KEY(`university`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`university` TEXT NOT NULL, PRIMARY KEY(`university`))",
         "fields": [
           {
             "fieldPath": "university",
             "columnName": "university",
-            "affinity": "TEXT"
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -49,12 +52,13 @@
       },
       {
         "tableName": "default_semester",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`semester` TEXT, PRIMARY KEY(`semester`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`semester` TEXT NOT NULL, PRIMARY KEY(`semester`))",
         "fields": [
           {
             "fieldPath": "semester",
             "columnName": "semester",
-            "affinity": "TEXT"
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -69,7 +73,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3903c92d119ba4e175163f96bef9c43d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ea03cdec8aa9dc422ccdc4a623a44d2f\")"
     ]
   }
 }

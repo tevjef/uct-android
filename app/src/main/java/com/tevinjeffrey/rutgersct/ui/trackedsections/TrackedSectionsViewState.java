@@ -36,7 +36,6 @@ public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView>
     this.isRefreshing = in.readByte() != 0;
     int tmpLayoutType = in.readInt();
     this.layoutType = tmpLayoutType == -1 ? null : LayoutType.values()[tmpLayoutType];
-    this.data = in.createTypedArrayList(UCTSubscription.CREATOR);
     this.snackBarShowing = in.readByte() != 0;
     this.errorMessage = in.readString();
   }
@@ -78,7 +77,6 @@ public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView>
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeByte(this.isRefreshing ? (byte) 1 : (byte) 0);
     dest.writeInt(this.layoutType == null ? -1 : this.layoutType.ordinal());
-    dest.writeTypedList(this.data);
     dest.writeByte(this.snackBarShowing ? (byte) 1 : (byte) 0);
     dest.writeString(this.errorMessage);
   }

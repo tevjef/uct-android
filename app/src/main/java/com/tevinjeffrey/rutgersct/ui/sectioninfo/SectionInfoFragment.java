@@ -63,8 +63,8 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
   @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
   @BindView(R.id.section_metadata) LinearLayout sectionMetadataContainer;
 
-  @State SearchFlow searchFlow;
-  @State SectionInfoViewState mViewState = new SectionInfoViewState();
+  SearchFlow searchFlow;
+  SectionInfoViewState mViewState = new SectionInfoViewState();
 
   @Inject Bus mBus;
   @Inject SearchManager searchManager;

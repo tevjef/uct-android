@@ -45,7 +45,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.university_spinner) Spinner universitySpinner;
 
-  @State ChooserViewState mViewState = new ChooserViewState();
+  ChooserViewState mViewState = new ChooserViewState();
 
   @Inject SearchManager searchManager;
   @Inject ChooserSubcomponent subcomponent;

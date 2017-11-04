@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
 import com.tevinjeffrey.rutgersct.data.model.Course;
 import com.tevinjeffrey.rutgersct.data.model.Section;
 import com.tevinjeffrey.rutgersct.data.model.Semester;
@@ -12,26 +14,15 @@ import com.tevinjeffrey.rutgersct.data.model.Subject;
 import com.tevinjeffrey.rutgersct.data.model.University;
 
 @Entity(tableName = "uct_subscription")
-public class UCTSubscription implements Parcelable, Comparable {
+public class UCTSubscription implements Comparable {
 
   @PrimaryKey
   @ColumnInfo(name = "section_topic_name")
+  @NonNull
   private String sectionTopicName;
 
   private University university;
 
-
-  public static final Creator<UCTSubscription> CREATOR = new Creator<UCTSubscription>() {
-    @Override
-    public UCTSubscription createFromParcel(Parcel source) {
-      return new UCTSubscription(source);
-    }
-
-    @Override
-    public UCTSubscription[] newArray(int size) {
-      return new UCTSubscription[size];
-    }
-  };
 
   public UCTSubscription(String sectionTopicName) {
     this.sectionTopicName = sectionTopicName;
@@ -63,11 +54,6 @@ public class UCTSubscription implements Parcelable, Comparable {
   }
 
   @Override
-  public int describeContents() {
-    return 0;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -90,12 +76,6 @@ public class UCTSubscription implements Parcelable, Comparable {
   public String toString() {
     return "UCTSubscription{" + sectionTopicName +
         '}';
-  }
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
-    dest.writeString(this.sectionTopicName);
-    dest.writeParcelable(this.university, 0);
   }
 
   public Course getCourse() {

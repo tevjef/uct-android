@@ -53,9 +53,9 @@ public class CourseFragment extends MVPFragment
   @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
   @BindView(R.id.error_view) ViewGroup mErrorView;
 
-  @State ArrayList<Course> mListDataset;
-  @State CourseViewState mViewState = new CourseViewState();
-  @State SearchFlow searchFlow;
+  ArrayList<Course> mListDataset;
+  CourseViewState mViewState = new CourseViewState();
+  SearchFlow searchFlow;
 
   @Inject SearchManager searchManager;
   @Inject CourseSubcomponent subcomponent;

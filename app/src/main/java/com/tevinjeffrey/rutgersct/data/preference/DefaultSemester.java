@@ -2,6 +2,8 @@ package com.tevinjeffrey.rutgersct.data.preference;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.tevinjeffrey.rutgersct.data.model.Semester;
 import com.tevinjeffrey.rutgersct.data.model.University;
 
@@ -9,6 +11,7 @@ import com.tevinjeffrey.rutgersct.data.model.University;
 public class DefaultSemester {
 
   @PrimaryKey
+  @NonNull
   private Semester semester;
 
   public DefaultSemester(final Semester semester) {
