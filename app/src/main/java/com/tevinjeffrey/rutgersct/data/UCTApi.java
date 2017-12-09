@@ -122,10 +122,8 @@ public class UCTApi {
         });
   }
 
-  public Observable<List<Subject>> getSubjects(SearchFlow searchFlow) {
-    return uctService.getSubjects(searchFlow.university.topic_name, searchFlow.semester.season,
-        String.valueOf(searchFlow.semester.year)
-    ).map(response -> response.data.subjects);
+  public Observable<List<Subject>> getSubjects(String university, String season, String year) {
+    return uctService.getSubjects(university, season, year).map(response -> response.data.subjects);
   }
 
   public Observable<List<University>> getUniversities() {

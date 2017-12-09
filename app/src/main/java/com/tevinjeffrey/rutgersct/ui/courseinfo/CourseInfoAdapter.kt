@@ -13,7 +13,7 @@ import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import java.math.BigInteger
 
 class CourseInfoAdapter(
-    private val mHeaders: List<View>,
+    private val headers: List<View>,
     private val sectionList: List<Section>,
     private val itemClickListener: ItemClickListener<Section, View>)
   : BaseAdapter<Section, RecyclerView.ViewHolder>() {
@@ -45,7 +45,7 @@ class CourseInfoAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     if (holder.itemViewType == TYPE_HEADER && position == 0) {
       val headerVH = holder as HeaderVH
-      headerVH.setHeaders(mHeaders)
+      headerVH.setHeaders(headers)
     } else if (holder.itemViewType == TYPE_ITEM) {
       val courseInfoViewHolder = holder as CourseInfoViewHolder
       val section = sectionList[position - 1]

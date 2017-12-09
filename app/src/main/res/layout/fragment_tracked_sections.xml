@@ -1,51 +1,45 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    >
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:animateLayoutChanges="true">
 
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical"
-      >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:contentInsetLeft="0dp"
-        android:contentInsetStart="0dp"
-        android:theme="@style/RutgersCT.ToolbarTheme"
-        android:transitionName="@string/transition_name_tool_background"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        style="@style/ToolbarStyle"
-        >
+      android:id="@+id/toolbar"
+      style="@style/ToolbarStyle"
+      android:contentInsetLeft="0dp"
+      android:contentInsetStart="0dp"
+      android:theme="@style/RutgersCT.ToolbarTheme"
+      android:transitionName="@string/transition_name_tool_background"
+      app:contentInsetLeft="0dp"
+      app:contentInsetStart="0dp"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
       <FrameLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:paddingLeft="3dp"
-            android:src="@drawable/ic_tracked_sections"
-            />
+          android:id="@+id/imageView"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_marginLeft="@dimen/default_margin"
+          android:paddingLeft="3dp"
+          android:src="@drawable/ic_tracked_sections" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:paddingLeft="@dimen/start_keyline"
-            android:text="@string/tracked_sections"
-            style="@style/ToolbarTitleStyle"
-            />
+          style="@style/ToolbarTitleStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:paddingLeft="@dimen/start_keyline"
+          android:text="@string/tracked_sections" />
 
       </FrameLayout>
 
@@ -53,40 +47,37 @@
 
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:visibility="visible"
-        tools:background="@android:color/white"
-        >
+      android:id="@+id/swipeRefreshLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@+id/toolbar"
+      android:visibility="visible"
+      tools:background="@android:color/white">
 
       <android.support.v7.widget.RecyclerView
-          android:id="@+id/tsf_list"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:scrollbars="vertical"
-          android:visibility="visible"
-          />
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:visibility="visible" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
   </LinearLayout>
 
 
-  <include layout="@layout/error_view"/>
+  <include layout="@layout/error_view" />
 
-  <include layout="@layout/add_courses_to_track"/>
+  <include layout="@layout/add_courses_to_track" />
 
   <android.support.design.widget.FloatingActionButton
-      android:id="@+id/add_courses_fab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|end"
-      android:layout_margin="@dimen/fab_compat_margin"
-      android:transitionName="@string/transition_name_fab"
-      android:visibility="visible"
-      app:borderWidth="0dp"
-      app:rippleColor="@color/blue_grey_light"
-      app:srcCompat="@drawable/ic_add"
-      />
+    android:id="@+id/fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_compat_margin"
+    android:transitionName="@string/transition_name_fab"
+    android:visibility="visible"
+    app:borderWidth="0dp"
+    app:rippleColor="@color/blue_grey_light"
+    app:srcCompat="@drawable/ic_add" />
 </android.support.design.widget.CoordinatorLayout>

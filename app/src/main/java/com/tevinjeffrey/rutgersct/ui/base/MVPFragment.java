@@ -83,7 +83,7 @@ public abstract class MVPFragment extends Fragment implements View {
         //noinspection ClassReferencesSubclass
         getParentActivity().mBackstackCount = 0;
         getFragmentManager().popBackStackImmediate(
-            TrackedSectionsFragment.TAG,
+            TrackedSectionsFragment.Companion.getTAG(),
             FragmentManager.POP_BACK_STACK_INCLUSIVE
         );
         return true;
@@ -139,9 +139,7 @@ public abstract class MVPFragment extends Fragment implements View {
     return (MainActivity) getActivity();
   }
 
-  public void injectTargets() {
-
-  }
+  public abstract void injectTargets();
 
   public void setToolbar(Toolbar toolbar) {
     toolbar.setTitleTextAppearance(getParentActivity(), R.style.ToolbarTitleStyle);

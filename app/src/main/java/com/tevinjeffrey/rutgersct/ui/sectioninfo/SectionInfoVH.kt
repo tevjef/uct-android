@@ -15,42 +15,42 @@ import com.tevinjeffrey.rutgersct.data.model.extensions.Utils
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 
 open class SectionInfoVH(
-    private val mParent: View,
-    val mInstructors: TextView,
-    val mSectionNumberBackground: CircleView,
-    val mSectionTimeContainer: ViewGroup) : RecyclerView.ViewHolder(mParent) {
+    val parent: View,
+    val instructors: TextView,
+    val sectionNumberBackground: CircleView,
+    val sectionTimeContainer: ViewGroup) : RecyclerView.ViewHolder(parent) {
 
   val indexNumber: String
-    get() = mSectionNumberBackground.tag as String
+    get() = sectionNumberBackground.tag as String
 
   fun setInstructors(section: Section) {
-    mInstructors.text = Utils.InstructorUtils.toString(section.instructors)
+    instructors.text = Utils.InstructorUtils.toString(section.instructors)
   }
 
   fun setOnClickListener(listener: View.OnClickListener) {
-    mParent.setOnClickListener(listener)
+    parent.setOnClickListener(listener)
   }
 
   fun setOpenStatus(section: Section) {
     if (section.status == "Open") {
-      mSectionNumberBackground.backgroundColor = ContextCompat.getColor(
-          mParent.context,
+      sectionNumberBackground.backgroundColor = ContextCompat.getColor(
+          parent.context,
           R.color.green
       )
     } else {
-      mSectionNumberBackground.backgroundColor = ContextCompat.getColor(
-          mParent.context,
+      sectionNumberBackground.backgroundColor = ContextCompat.getColor(
+          parent.context,
           R.color.red
       )
     }
   }
 
   fun setSectionNumber(section: Section) {
-    mSectionNumberBackground.titleText = section.number
-    mSectionNumberBackground.tag = section.topic_name
+    sectionNumberBackground.titleText = section.number
+    sectionNumberBackground.tag = section.topic_name
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      mSectionNumberBackground.transitionName = section.topic_name
+      sectionNumberBackground.transitionName = section.topic_name
     }
   }
 
@@ -62,8 +62,8 @@ open class SectionInfoVH(
     val meetingTimes = section.meetings
     //sort times so that Monday > Tuesday and Lecture > Recitation
 
-    for (i in 0 until mSectionTimeContainer.childCount) {
-      val timeLayout = mSectionTimeContainer.getChildAt(i)
+    for (i in 0 until sectionTimeContainer.childCount) {
+      val timeLayout = sectionTimeContainer.getChildAt(i)
 
       var time: Meeting? = null
       if (meetingTimes.size > 0 && meetingTimes.size - 1 >= i) {

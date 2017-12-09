@@ -19,39 +19,39 @@ public class TrackedSectionsViewTest {
   @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
       TrackedSectionsView mockTrackedSectionsView;
 
-  TrackedSectionsViewState viewState;
+  TrackedSectionsModel viewState;
 
   @Test
   public void ShowData_GivenSomeData() throws Exception {
-    viewState.data = mock(List.class);
+    viewState.setData(mock(List.class));
     viewState.apply(mockTrackedSectionsView, true);
     verify(mockTrackedSectionsView).setData(anyListOf(UCTSubscription.class));
   }
 
   @Test
   public void ShowLayout_Empty() throws Exception {
-    viewState.layoutType = View.LayoutType.EMPTY;
+    viewState.setLayoutType(View.LayoutType.EMPTY);
     viewState.apply(mockTrackedSectionsView, true);
     verify(mockTrackedSectionsView).showLayout(View.LayoutType.EMPTY);
   }
 
   @Test
   public void ShowLayout_Error() throws Exception {
-    viewState.layoutType = View.LayoutType.ERROR;
+    viewState.setLayoutType(View.LayoutType.ERROR);
     viewState.apply(mockTrackedSectionsView, true);
     verify(mockTrackedSectionsView).showLayout(View.LayoutType.ERROR);
   }
 
   @Test
   public void ShowLayout_List() throws Exception {
-    viewState.layoutType = View.LayoutType.LIST;
+    viewState.setLayoutType(View.LayoutType.LIST);
     viewState.apply(mockTrackedSectionsView, true);
     verify(mockTrackedSectionsView).showLayout(View.LayoutType.LIST);
   }
 
   @Test
   public void ShowLoading_GivenIsLoading() throws Exception {
-    viewState.isRefreshing = true;
+    viewState.setIsRefreshing(true);
     viewState.apply(mockTrackedSectionsView, true);
     verify(mockTrackedSectionsView).showLoading(true);
   }
@@ -66,6 +66,6 @@ public class TrackedSectionsViewTest {
 
   @Before
   public void setUp() throws Exception {
-    viewState = new TrackedSectionsViewState();
+    viewState = new TrackedSectionsModel();
   }
 }

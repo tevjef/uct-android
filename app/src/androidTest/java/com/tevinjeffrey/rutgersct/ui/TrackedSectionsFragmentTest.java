@@ -6,7 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.tevinjeffrey.rutgersct.R;
-import com.tevinjeffrey.rutgersct.RutgersCTTestModule;
+
 import jonathanfinerty.once.Once;
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,12 +49,12 @@ public class TrackedSectionsFragmentTest {
 
   @Test
   public void testAddCoursesButtonInteractivity() {
-    viewInteractivity(R.id.add_courses_fab);
+    viewInteractivity(R.id.fab);
   }
 
   @Test
   public void testClickAddCoursesFab() {
-    onView(withId(R.id.add_courses_fab)).perform(click());
+    onView(withId(R.id.fab)).perform(click());
     pressBack();
   }
 

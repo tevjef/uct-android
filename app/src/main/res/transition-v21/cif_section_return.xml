@@ -9,11 +9,11 @@
         android:transitionVisibilityMode="mode_out"
         >
       <targets>
-        <target android:targetId="@id/app_bar_layout"/>
+        <target android:targetId="@id/appBar"/>
         <target android:targetName="@string/transition_name_tool_background"/>
 
         <target android:excludeName="@string/transition_name_fab"/>
-        <target android:excludeId="@id/add_courses_fab"/>
+        <target android:excludeId="@id/fab"/>
 
         <target android:excludeId="@id/scrollView"/>
 

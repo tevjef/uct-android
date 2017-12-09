@@ -10,14 +10,15 @@ class CourseInfoViewHolder private constructor(
     parent: View,
     instructors: TextView,
     sectionNumberBackground: CircleView,
-    mSectionTimeContainer: ViewGroup) : SectionInfoVH(parent, instructors, sectionNumberBackground, mSectionTimeContainer) {
+    mSectionTimeContainer: ViewGroup)
+  : SectionInfoVH(parent, instructors, sectionNumberBackground, mSectionTimeContainer) {
   companion object {
 
     fun newInstance(parent: View): CourseInfoViewHolder {
       val sectionInfoVH = SectionInfoVH.newInstance(parent)
-      val instructors = sectionInfoVH.mInstructors
-      val sectionNumberBackground = sectionInfoVH.mSectionNumberBackground
-      val sectionTimeContainer = sectionInfoVH.mSectionTimeContainer
+      val instructors = sectionInfoVH.instructors
+      val sectionNumberBackground = sectionInfoVH.sectionNumberBackground
+      val sectionTimeContainer = sectionInfoVH.sectionTimeContainer
 
       return CourseInfoViewHolder(parent, instructors, sectionNumberBackground, sectionTimeContainer)
     }

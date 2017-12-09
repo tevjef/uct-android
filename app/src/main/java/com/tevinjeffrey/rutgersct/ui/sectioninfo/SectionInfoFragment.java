@@ -59,7 +59,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
   @BindView(R.id.instructors_text) TextView mInstructorsText;
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.section_times_container) LinearLayout mSectionTimeContainer;
-  @BindView(R.id.add_courses_fab) FloatingActionButton mFab;
+  @BindView(R.id.fab) FloatingActionButton mFab;
   @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
   @BindView(R.id.section_metadata) LinearLayout sectionMetadataContainer;
 
@@ -275,7 +275,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
     return TAG;
   }
 
-  @OnClick(R.id.add_courses_fab)
+  @OnClick(R.id.fab)
   public void fabClick(View view) {
     getPresenter().toggleFab();
   }

@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.ui.course
+package com.tevinjeffrey.rutgersct.ui.subject
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -9,59 +9,57 @@ import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.transition.ChangeBounds
-import android.transition.Fade
+import android.support.v7.widget.Toolbar
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
 import com.tevinjeffrey.rutgersct.R
-import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Subject
+import com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils.readableString
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment
-import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment
+import com.tevinjeffrey.rutgersct.ui.course.CourseFragment
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
 import kotlinx.android.synthetic.main.error_view.try_again
-import kotlinx.android.synthetic.main.fragment_courses.list
-import kotlinx.android.synthetic.main.fragment_courses.swipeRefreshLayout
-import kotlinx.android.synthetic.main.fragment_courses.toolbar
+import kotlinx.android.synthetic.main.fragment_subjects.list
+import kotlinx.android.synthetic.main.fragment_subjects.swipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_subjects.toolbar
 import timber.log.Timber
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Course, View> {
-  @Inject lateinit var subcomponent: CourseSubcomponent
+class SubjectFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
+  @Inject
+  internal lateinit var subcomponent: SubjectSubcomponent
 
-  private lateinit var selectedSubject: Subject
   private var snackbar: Snackbar? = null
 
   private lateinit var searchFlowViewModel: SearchViewModel
-  private lateinit var model: CourseViewModel
+  private lateinit var model: SubjectViewModel
 
-  private val adapter = CourseAdapter(this)
+  private val adapter = SubjectAdapter(this)
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    model = ViewModelProviders.of(activity).get(SubjectViewModel::class.java)
+    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
     super.onCreate(savedInstanceState)
     retainInstance = true
-
-    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-    selectedSubject = searchFlowViewModel.subject!!
-
     initRecyclerView()
     initSwipeLayout()
     initToolbar()
 
     try_again.setOnClickListener { onRefresh() }
 
-    model = ViewModelProviders.of(activity).get(CourseViewModel::class.java)
-    model.loadCourseLiveData(
-        searchFlowViewModel.subject?.topic_name.orEmpty())
+    model.loadSubjectData(
+        searchFlowViewModel.university?.topic_name.orEmpty(),
+        searchFlowViewModel.semester?.season.toString(),
+        searchFlowViewModel.semester?.year.toString())
         .observe(this, Observer { model ->
           if (model?.error != null) {
             showError(model.error)
@@ -72,30 +70,31 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
   }
 
   override fun onCreateView(
-      inflater: LayoutInflater, container: ViewGroup?,
+      inflater: LayoutInflater,
+      container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
     val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(activity, R.style.RutgersCT))
-    return themedInflater.inflate(R.layout.fragment_courses, container, false)
+    return themedInflater.inflate(R.layout.fragment_subjects, container, false)
   }
 
-  override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     super.onCreateOptionsMenu(menu, inflater)
-    inflater!!.inflate(R.menu.menu_fragment_main, menu)
+    inflater.inflate(R.menu.menu_fragment_main, menu)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
+    when (item.itemId) {
       R.id.action_refresh -> {
-        onRefresh()
-        true
+        this.onRefresh()
+        return true
       }
-      else -> super.onOptionsItemSelected(item)
+      else -> return super.onOptionsItemSelected(item)
     }
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
-    snackbar?.dismiss()
+    dismissSnackbar()
   }
 
   fun initRecyclerView() {
@@ -115,20 +114,26 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
   }
 
   fun initToolbar() {
-    toolbar.title = selectedSubject.number + ": " + selectedSubject.name
+    setToolbarTitle()
     setToolbar(toolbar)
   }
 
-  override fun injectTargets() {}
+  override fun injectTargets() {
+    subcomponent.inject(model)
+    subcomponent.inject(this)
+  }
 
-  override fun onItemClicked(course: Course, view: View) {
-    Timber.i("Selected course: %s", course)
-    searchFlowViewModel.course = course
-    startCourseInfoFragment(Bundle.EMPTY)
+  override fun onItemClicked(subject: Subject, view: View) {
+    Timber.i("Selected subject: %s", subject)
+    searchFlowViewModel.subject = subject
+    startCourseFragement(Bundle())
   }
 
   override fun onRefresh() {
-    model.loadCourses(searchFlowViewModel.subject?.topic_name.orEmpty())
+    model.loadSubjects(
+        searchFlowViewModel.university?.topic_name.orEmpty(),
+        searchFlowViewModel.semester?.season.toString(),
+        searchFlowViewModel.semester?.year.toString())
   }
 
   fun showError(t: Throwable) {
@@ -147,6 +152,15 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
     swipeRefreshLayout.isRefreshing = pullToRefresh
   }
 
+  private fun dismissSnackbar() {
+    snackbar?.dismiss()
+  }
+
+  private fun setToolbarTitle() {
+    val title = searchFlowViewModel.university?.abbr + " " + readableString(searchFlowViewModel.semester)
+    super.setToolbarTitle(toolbar, title)
+  }
+
   private fun showSnackBar(message: CharSequence) {
     snackbar = makeSnackBar(message)
     snackbar?.setAction(R.string.retry) { onRefresh() }
@@ -160,23 +174,15 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
     snackbar!!.show()
   }
 
-  private fun startCourseInfoFragment(b: Bundle) {
-    val courseInfoFragment = CourseInfoFragment()
+  private fun startCourseFragement(b: Bundle) {
+    val courseFragment = CourseFragment()
+    courseFragment.arguments = b
     val ft = fragmentManager.beginTransaction()
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      val changeBoundsTransition = ChangeBounds()
-      changeBoundsTransition.interpolator = DecelerateInterpolator()
-
-      courseInfoFragment.enterTransition = Fade(Fade.IN).setStartDelay(250)
-      courseInfoFragment.returnTransition = Fade(Fade.OUT).setDuration(50)
-
-      courseInfoFragment.allowReturnTransitionOverlap = false
-      courseInfoFragment.allowEnterTransitionOverlap = false
-
-      courseInfoFragment.sharedElementEnterTransition = changeBoundsTransition
-      courseInfoFragment.sharedElementReturnTransition = changeBoundsTransition
-
-      ft.addSharedElement(toolbar, getString(R.string.transition_name_tool_background))
+      val sfTransition = TransitionInflater.from(parentActivity).inflateTransition(R.transition.sf_exit)
+      exitTransition = sfTransition.excludeTarget(Toolbar::class.java, true)
+      courseFragment.allowEnterTransitionOverlap = false
     } else {
       ft.setCustomAnimations(
           R.animator.enter,
@@ -185,7 +191,7 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
           R.animator.pop_exit
       )
     }
-    courseInfoFragment.arguments = b
-    startFragment(this, courseInfoFragment, ft)
+
+    startFragment(this, courseFragment, ft)
   }
 }
