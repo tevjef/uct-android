@@ -2,6 +2,7 @@ package com.tevinjeffrey.rmp.scraper.search;
 
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.scraper.ScrapeProfessor;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;

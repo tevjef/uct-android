@@ -3,6 +3,7 @@ package com.tevinjeffrey.rmp.scraper;
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.common.utils.FuzzyDistance;
+
 import java.util.Comparator;
 import java.util.Locale;
 

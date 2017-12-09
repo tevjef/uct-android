@@ -5,13 +5,15 @@ import android.content.res.Configuration;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+
 import com.tevinjeffrey.rutgersct.R;
 
-import jonathanfinerty.once.Once;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import jonathanfinerty.once.Once;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -44,7 +46,7 @@ public class TrackedSectionsFragmentTest {
     mActivity = mActivityRule.getActivity();
     assertThat(mActivity, notNullValue());
     //ObjectGraph.create(new RutgersCTTestModule()).inject(this);
-    Once.markDone(MainActivity.SHOW_TOUR);
+    Once.markDone(MainActivity.Companion.getSHOW_TOUR());
   }
 
   @Test

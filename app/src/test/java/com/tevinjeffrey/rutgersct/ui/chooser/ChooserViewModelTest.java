@@ -16,23 +16,24 @@
 
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
-import com.tevinjeffrey.rutgersct.TestModule;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-public class ChooserPresenterImplTest {
-  ChooserPresenterImpl chooserPresenterImpl;
+public class ChooserViewModelTest {
+  ChooserViewModel chooserPresenterImpl;
   @Inject
   ChooserView chooserView;
 

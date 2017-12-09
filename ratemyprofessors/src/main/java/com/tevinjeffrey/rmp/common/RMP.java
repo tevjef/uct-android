@@ -2,6 +2,7 @@ package com.tevinjeffrey.rmp.common;
 
 import com.tevinjeffrey.rmp.client.RMPClient;
 import com.tevinjeffrey.rmp.scraper.RMPScraper;
+
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 

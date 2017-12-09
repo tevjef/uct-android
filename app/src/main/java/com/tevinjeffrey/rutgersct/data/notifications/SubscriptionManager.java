@@ -18,8 +18,11 @@ package com.tevinjeffrey.rutgersct.data.notifications;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.io.IOException;
+
 import javax.inject.Inject;
 
 public class SubscriptionManager {

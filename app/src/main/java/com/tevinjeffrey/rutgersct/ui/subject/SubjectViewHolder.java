@@ -3,9 +3,11 @@ package com.tevinjeffrey.rutgersct.ui.subject;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.ButterKnife;
+
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.model.Subject;
+
+import butterknife.ButterKnife;
 
 public final class SubjectViewHolder extends RecyclerView.ViewHolder {
 

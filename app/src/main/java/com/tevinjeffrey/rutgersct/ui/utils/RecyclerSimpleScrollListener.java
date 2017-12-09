@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.ui.utils;
 
 import android.support.v7.widget.RecyclerView;
+
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 

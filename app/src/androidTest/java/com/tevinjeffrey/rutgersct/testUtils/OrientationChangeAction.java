@@ -31,8 +31,10 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.view.View;
-import java.util.Collection;
+
 import org.hamcrest.Matcher;
+
+import java.util.Collection;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 

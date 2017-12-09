@@ -1,9 +1,10 @@
 package com.tevinjeffrey.rmp.scraper.search;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
 public class SearchParser {
 

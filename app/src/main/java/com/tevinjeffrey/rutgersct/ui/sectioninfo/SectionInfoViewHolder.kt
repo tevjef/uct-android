@@ -14,11 +14,11 @@ import com.tevinjeffrey.rutgersct.data.model.Section
 import com.tevinjeffrey.rutgersct.data.model.extensions.Utils
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 
-open class SectionInfoVH(
-    val parent: View,
+open class SectionInfoViewHolder(
+    private val mParent: View,
     val instructors: TextView,
     val sectionNumberBackground: CircleView,
-    val sectionTimeContainer: ViewGroup) : RecyclerView.ViewHolder(parent) {
+    val sectionTimeContainer: ViewGroup) : RecyclerView.ViewHolder(mParent) {
 
   val indexNumber: String
     get() = sectionNumberBackground.tag as String
@@ -28,18 +28,18 @@ open class SectionInfoVH(
   }
 
   fun setOnClickListener(listener: View.OnClickListener) {
-    parent.setOnClickListener(listener)
+    mParent.setOnClickListener(listener)
   }
 
   fun setOpenStatus(section: Section) {
     if (section.status == "Open") {
       sectionNumberBackground.backgroundColor = ContextCompat.getColor(
-          parent.context,
+          mParent.context,
           R.color.green
       )
     } else {
       sectionNumberBackground.backgroundColor = ContextCompat.getColor(
-          parent.context,
+          mParent.context,
           R.color.red
       )
     }
@@ -107,11 +107,13 @@ open class SectionInfoVH(
   }
 
   companion object {
-    fun newInstance(parent: View): SectionInfoVH {
+
+    fun newInstance(parent: View): SectionInfoViewHolder {
       val instructors = ButterKnife.findById<TextView>(parent, R.id.prof_text)
       val sectionNumberBackground = ButterKnife.findById<CircleView>(parent, R.id.section_number_background)
       val sectionTimeContainer = ButterKnife.findById<ViewGroup>(parent, R.id.section_item_time_container)
-      return SectionInfoVH(parent, instructors, sectionNumberBackground, sectionTimeContainer)
+
+      return SectionInfoViewHolder(parent, instructors, sectionNumberBackground, sectionTimeContainer)
     }
   }
 }

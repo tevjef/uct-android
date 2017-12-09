@@ -3,9 +3,9 @@
 package com.tevinjeffrey.rutgersct.data.model;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -14,8 +14,10 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+
 import java.io.IOException;
 import java.util.List;
+
 import okio.ByteString;
 
 @Entity(primaryKeys = {"topic_name"})

@@ -5,11 +5,14 @@ import android.os.Build;
 import android.support.v4.app.SharedElementCallback;
 import android.transition.Transition;
 import android.view.View;
-import butterknife.ButterKnife;
+
 import com.tevinjeffrey.rutgersct.R;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.ButterKnife;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CircleSharedElementCallback extends SharedElementCallback {

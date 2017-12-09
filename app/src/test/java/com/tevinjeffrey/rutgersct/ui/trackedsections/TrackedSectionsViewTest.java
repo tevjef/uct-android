@@ -2,12 +2,14 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.ui.base.View;
-import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.List;
 
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.mock;

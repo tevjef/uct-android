@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rutgersct.data.search;
 
 import android.os.Parcel;
-import android.os.Parcelable;
+
 import com.tevinjeffrey.rutgersct.data.model.Course;
 import com.tevinjeffrey.rutgersct.data.model.Section;
 import com.tevinjeffrey.rutgersct.data.model.Semester;

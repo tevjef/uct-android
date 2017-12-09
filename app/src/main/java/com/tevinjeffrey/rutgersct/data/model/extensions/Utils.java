@@ -4,10 +4,12 @@ import com.tevinjeffrey.rutgersct.data.model.Course;
 import com.tevinjeffrey.rutgersct.data.model.Instructor;
 import com.tevinjeffrey.rutgersct.data.model.Section;
 import com.tevinjeffrey.rutgersct.data.model.Semester;
-import java.util.ArrayList;
-import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
   public static class CourseUtils {

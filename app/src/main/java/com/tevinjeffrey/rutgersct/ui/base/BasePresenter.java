@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgersct.ui.base;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import java.lang.ref.WeakReference;
 
 //Responsible for attaching and detaching the view to the presentor

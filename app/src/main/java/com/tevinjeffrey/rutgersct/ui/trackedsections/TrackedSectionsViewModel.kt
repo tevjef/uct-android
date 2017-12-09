@@ -1,12 +1,9 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.tevinjeffrey.rutgersct.data.UCTApi
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
 import com.tevinjeffrey.rutgersct.utils.RxUtils
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -19,17 +16,7 @@ class TrackedSectionsViewModel : ViewModel() {
 
   private var disposable: Disposable? = null
 
-  private lateinit var trackedSectionsLiveData: MutableLiveData<TrackedSectionsModel>
-
-  fun loadTrackedSectionsLiveData(): LiveData<TrackedSectionsModel> {
-    if (!this::trackedSectionsLiveData.isInitialized) {
-      trackedSectionsLiveData = MutableLiveData()
-      loadTrackedSections()
-    }
-
-    return trackedSectionsLiveData
-  }
-
+  val trackedSectionsLiveData = MutableLiveData<TrackedSectionsModel>()
 
   fun loadTrackedSections() {
     RxUtils.disposeIfNotNull(disposable)

@@ -2,9 +2,11 @@ package com.tevinjeffrey.rmp.client;
 
 import com.tevinjeffrey.rmp.common.Parameter;
 import com.tevinjeffrey.rmp.common.Professor;
-import io.reactivex.Observable;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import io.reactivex.Observable;
 
 public class RMPClient {
 

@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.data;
 
 import com.tevinjeffrey.rutgersct.data.model.Response;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;

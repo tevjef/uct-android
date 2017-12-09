@@ -4,8 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.BaseTransientBottomBar
-import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -22,7 +20,7 @@ import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Subject
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
-import com.tevinjeffrey.rutgersct.ui.base.MVPFragment
+import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
@@ -35,40 +33,39 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Course, View> {
+class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Course, View> {
   @Inject lateinit var subcomponent: CourseSubcomponent
 
   private lateinit var selectedSubject: Subject
-  private var snackbar: Snackbar? = null
 
-  private lateinit var searchFlowViewModel: SearchViewModel
-  private lateinit var model: CourseViewModel
+  private lateinit var searchViewModel: SearchViewModel
+  private lateinit var viewModel: CourseViewModel
 
   private val adapter = CourseAdapter(this)
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    searchViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
+    viewModel = ViewModelProviders.of(activity).get(CourseViewModel::class.java)
+    selectedSubject = searchViewModel.subject!!
     super.onCreate(savedInstanceState)
     retainInstance = true
 
-    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-    selectedSubject = searchFlowViewModel.subject!!
+    viewModel.courseLiveData.observe(this, Observer { model ->
+      if (model == null) {
+        return@Observer
+      }
 
-    initRecyclerView()
-    initSwipeLayout()
-    initToolbar()
+      if (model.error != null) {
+        showError(model.error)
+        return@Observer
+      }
 
-    try_again.setOnClickListener { onRefresh() }
+      swipeRefreshLayout.isRefreshing = model.isLoading
 
-    model = ViewModelProviders.of(activity).get(CourseViewModel::class.java)
-    model.loadCourseLiveData(
-        searchFlowViewModel.subject?.topic_name.orEmpty())
-        .observe(this, Observer { model ->
-          if (model?.error != null) {
-            showError(model.error)
-            return@Observer
-          }
-          adapter.swapData(model?.data ?: emptyList())
-        })
+      adapter.swapData(model.data)
+    })
+
+    viewModel.loadCourses(searchViewModel.subject?.topic_name.orEmpty())
   }
 
   override fun onCreateView(
@@ -76,6 +73,26 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
       savedInstanceState: Bundle?): View? {
     val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(activity, R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_courses, container, false)
+  }
+
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+    val layoutManager = LinearLayoutManager(parentActivity)
+    layoutManager.orientation = LinearLayoutManager.VERTICAL
+    layoutManager.isSmoothScrollbarEnabled = true
+    list.addItemDecoration(DividerItemDecoration(list.context, DividerItemDecoration.VERTICAL))
+    list.layoutManager = layoutManager
+    list.setHasFixedSize(true)
+    list.adapter = adapter
+
+    swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT)
+    swipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green)
+    swipeRefreshLayout.setOnRefreshListener(this)
+
+    toolbar.title = selectedSubject.number + ": " + selectedSubject.name
+    setToolbar(toolbar)
+
+    try_again.setOnClickListener { onRefresh() }
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -93,45 +110,21 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
     }
   }
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    snackbar?.dismiss()
+  override fun injectTargets() {
+    subcomponent.inject(viewModel)
   }
-
-  fun initRecyclerView() {
-    val layoutManager = LinearLayoutManager(parentActivity)
-    layoutManager.orientation = LinearLayoutManager.VERTICAL
-    layoutManager.isSmoothScrollbarEnabled = true
-    list.addItemDecoration(DividerItemDecoration(list.context, DividerItemDecoration.VERTICAL))
-    list.layoutManager = layoutManager
-    list.setHasFixedSize(true)
-    list.adapter = adapter
-  }
-
-  fun initSwipeLayout() {
-    swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT)
-    swipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green)
-    swipeRefreshLayout.setOnRefreshListener(this)
-  }
-
-  fun initToolbar() {
-    toolbar.title = selectedSubject.number + ": " + selectedSubject.name
-    setToolbar(toolbar)
-  }
-
-  override fun injectTargets() {}
 
   override fun onItemClicked(course: Course, view: View) {
     Timber.i("Selected course: %s", course)
-    searchFlowViewModel.course = course
+    searchViewModel.course = course
     startCourseInfoFragment(Bundle.EMPTY)
   }
 
   override fun onRefresh() {
-    model.loadCourses(searchFlowViewModel.subject?.topic_name.orEmpty())
+    viewModel.loadCourses(searchViewModel.subject?.topic_name.orEmpty())
   }
 
-  fun showError(t: Throwable) {
+  override fun showError(t: Throwable) {
     val message: String
     val resources = context.resources
     message = when (t) {
@@ -140,24 +133,9 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
       else -> t.message ?: ""
     }
 
-    showSnackBar(message)
-  }
-
-  fun showLoading(pullToRefresh: Boolean) {
-    swipeRefreshLayout.isRefreshing = pullToRefresh
-  }
-
-  private fun showSnackBar(message: CharSequence) {
-    snackbar = makeSnackBar(message)
-    snackbar?.setAction(R.string.retry) { onRefresh() }
-    snackbar?.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-      override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-        snackbar!!.removeCallback(this)
-      }
-
-      override fun onShown(transientBottomBar: Snackbar?) {}
+    showSnackBar(message, {
+      onRefresh()
     })
-    snackbar!!.show()
   }
 
   private fun startCourseInfoFragment(b: Bundle) {

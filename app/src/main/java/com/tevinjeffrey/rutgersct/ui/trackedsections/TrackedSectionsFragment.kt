@@ -6,8 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.BaseTransientBottomBar
-import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
@@ -22,15 +20,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import butterknife.ButterKnife
-import butterknife.OnClick
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
 import com.tevinjeffrey.rutgersct.ui.IntroActivity
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
-import com.tevinjeffrey.rutgersct.ui.base.MVPFragment
+import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment
-import com.tevinjeffrey.rutgersct.ui.course.CourseViewModel
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
@@ -47,38 +43,20 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class TrackedSectionsFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<UCTSubscription, View> {
+class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<UCTSubscription, View> {
 
   @Inject lateinit var subcomponent: TrackedSectionsSubcomponent
 
-  private var snackbar: Snackbar? = null
   private lateinit var searchFlowViewModel: SearchViewModel
-  private lateinit var model: TrackedSectionsViewModel
+  private lateinit var viewModel: TrackedSectionsViewModel
 
   private val adapter = TrackedSectionsAdapter(this)
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    viewModel = ViewModelProviders.of(activity).get(TrackedSectionsViewModel::class.java)
+    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
     super.onCreate(savedInstanceState)
     retainInstance = true
-
-    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-
-    initRecyclerView()
-    initSwipeLayout()
-    initToolbar()
-
-    fab.setOnClickListener { startChooserFragment() }
-    try_again.setOnClickListener { onRefresh() }
-
-    model = ViewModelProviders.of(activity).get(TrackedSectionsViewModel::class.java)
-    model.loadTrackedSectionsLiveData().observe(this, Observer { model ->
-      if (model?.error != null) {
-        showError(model.error!!)
-        return@Observer
-      }
-
-      adapter.swapData(model?.data ?: emptyList())
-    })
   }
 
   override fun onCreateView(
@@ -100,6 +78,44 @@ class TrackedSectionsFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListe
       Once.markDone(CORRUPT_SECTIONS)
     }
     return rootView
+  }
+
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+
+    val layoutManager = LinearLayoutManager(parentActivity)
+    layoutManager.orientation = LinearLayoutManager.VERTICAL
+    layoutManager.isSmoothScrollbarEnabled = true
+    list.addItemDecoration(DividerItemDecoration(list.context, DividerItemDecoration.VERTICAL))
+    list.layoutManager = layoutManager
+    list.setHasFixedSize(true)
+    list.adapter = adapter
+
+    swipeRefreshLayout.setOnRefreshListener(this)
+    swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT)
+    swipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green)
+
+    setToolbar(toolbar)
+
+    fab.setOnClickListener { startChooserFragment() }
+    try_again.setOnClickListener { onRefresh() }
+
+    viewModel.trackedSectionsLiveData.observe(this, Observer { model ->
+      if (model == null) {
+        return@Observer
+      }
+
+      if (model.error != null) {
+        showError(model.error!!)
+        return@Observer
+      }
+
+      swipeRefreshLayout.isRefreshing = model.isLoading
+
+      adapter.swapData(model.data)
+    })
+
+    viewModel.loadTrackedSections()
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -125,32 +141,9 @@ class TrackedSectionsFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListe
     }
   }
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    dismissSnackbar()
+  override fun injectTargets() {
+    subcomponent.inject(viewModel)
   }
-
-  fun initRecyclerView() {
-    val layoutManager = LinearLayoutManager(parentActivity)
-    layoutManager.orientation = LinearLayoutManager.VERTICAL
-    layoutManager.isSmoothScrollbarEnabled = true
-    list.addItemDecoration(DividerItemDecoration(list.context, DividerItemDecoration.VERTICAL))
-    list.layoutManager = layoutManager
-    list.setHasFixedSize(true)
-    list.adapter = adapter
-  }
-
-  fun initSwipeLayout() {
-    swipeRefreshLayout.setOnRefreshListener(this)
-    swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT)
-    swipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green)
-  }
-
-  fun initToolbar() {
-    setToolbar(toolbar)
-  }
-
-  override fun injectTargets() {}
 
   override fun onItemClicked(subscription: UCTSubscription, view: View) {
     Timber.i("Selected subscription: %s", subscription)
@@ -164,10 +157,10 @@ class TrackedSectionsFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListe
 
   override fun onRefresh() {
     // Retrieve section and while showing the loading animation.
-    model.loadTrackedSections()
+    viewModel.loadTrackedSections()
   }
 
-  fun showError(t: Throwable) {
+  override fun showError(t: Throwable) {
     val message: String
     val resources = context.resources
     message = when (t) {
@@ -176,31 +169,9 @@ class TrackedSectionsFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListe
       else -> t.message ?: ""
     }
 
-    showSnackBar(message)
-  }
-
-  fun showLoading(pullToRefresh: Boolean) {
-    swipeRefreshLayout.isRefreshing = pullToRefresh
-  }
-
-  private fun showSnackBar(message: CharSequence) {
-    snackbar = makeSnackBar(message)
-    snackbar?.setAction(R.string.retry) { onRefresh() }
-    snackbar?.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-      override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-        snackbar!!.removeCallback(this)
-      }
-
-      override fun onShown(transientBottomBar: Snackbar?) {}
+    showSnackBar(message, {
+      onRefresh()
     })
-    snackbar!!.show()
-  }
-
-  private fun dismissSnackbar() {
-    //It's only being dismissed to not leak the fragment
-    if (snackbar != null) {
-      snackbar!!.dismiss()
-    }
   }
 
   private fun launchMarket() {

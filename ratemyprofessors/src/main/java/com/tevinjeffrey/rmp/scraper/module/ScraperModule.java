@@ -1,10 +1,11 @@
 package com.tevinjeffrey.rmp.scraper.module;
 
 import com.tevinjeffrey.rmp.scraper.RMPScraper;
+
+import java.util.concurrent.TimeUnit;
+
 import dagger.Module;
 import dagger.Provides;
-import java.util.concurrent.TimeUnit;
-import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 
 @Module

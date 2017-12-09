@@ -19,9 +19,11 @@ package com.tevinjeffrey.rutgersct.data.notifications;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
-import javax.inject.Inject;
 
 public class RegistrationIntentService extends IntentService {
 

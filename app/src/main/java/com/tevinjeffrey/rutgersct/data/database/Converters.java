@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.data.database;
 
 import android.arch.persistence.room.TypeConverter;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tevinjeffrey.rutgersct.data.model.Semester;

@@ -5,11 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 import com.tevinjeffrey.rutgersct.utils.AndroidMainThread;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
-import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 
 import static org.mockito.Mockito.mock;

@@ -12,7 +12,9 @@ import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.tevinjeffrey.rutgersct.R;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

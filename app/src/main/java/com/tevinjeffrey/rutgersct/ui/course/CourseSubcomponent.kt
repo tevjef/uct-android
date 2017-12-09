@@ -6,7 +6,7 @@ import dagger.android.AndroidInjector
 @Subcomponent
 interface CourseSubcomponent : AndroidInjector<CourseFragment> {
 
-  fun inject(coursePresenter: CourseViewModel)
+  fun inject(courseViewModel: CourseViewModel)
 
   @Subcomponent.Builder
   abstract class Builder : AndroidInjector.Builder<CourseFragment>() {

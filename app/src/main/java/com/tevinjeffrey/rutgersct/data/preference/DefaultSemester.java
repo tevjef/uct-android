@@ -5,7 +5,6 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.tevinjeffrey.rutgersct.data.model.Semester;
-import com.tevinjeffrey.rutgersct.data.model.University;
 
 @Entity(tableName = "default_semester")
 public class DefaultSemester {

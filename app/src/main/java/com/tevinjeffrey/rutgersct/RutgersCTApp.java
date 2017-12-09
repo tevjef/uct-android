@@ -8,6 +8,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -17,19 +18,22 @@ import com.orm.SugarContext;
 import com.squareup.wire.AndroidMessage;
 import com.tevinjeffrey.rutgersct.dagger.DaggerRutgersCTComponent;
 import com.tevinjeffrey.rutgersct.dagger.RutgersCTComponent;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
-import dagger.android.HasBroadcastReceiverInjector;
-import dagger.android.HasServiceInjector;
-import io.fabric.sdk.android.Fabric;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Type;
 import java.util.UUID;
+
 import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+import dagger.android.HasBroadcastReceiverInjector;
+import dagger.android.HasServiceInjector;
+import io.fabric.sdk.android.Fabric;
 import jonathanfinerty.once.Once;
 import timber.log.Timber;
 

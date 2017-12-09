@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.data;
 
 import android.support.v4.util.Pair;
+
 import com.orhanobut.hawk.Hawk;
 import com.tevinjeffrey.rutgersct.data.database.PreferenceDao;
 import com.tevinjeffrey.rutgersct.data.database.UCTSubscriptionDao;
@@ -12,20 +13,22 @@ import com.tevinjeffrey.rutgersct.data.model.University;
 import com.tevinjeffrey.rutgersct.data.notifications.SubscriptionManager;
 import com.tevinjeffrey.rutgersct.data.preference.DefaultSemester;
 import com.tevinjeffrey.rutgersct.data.preference.DefaultUniversity;
-import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
 import com.tevinjeffrey.rutgersct.utils.BackgroundThread;
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.schedulers.Schedulers;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
+
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.schedulers.Schedulers;
 import jonathanfinerty.once.Amount;
 import jonathanfinerty.once.Once;
 import retrofit2.HttpException;

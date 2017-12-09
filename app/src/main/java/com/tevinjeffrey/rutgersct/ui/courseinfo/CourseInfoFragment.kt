@@ -21,7 +21,7 @@ import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Section
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
-import com.tevinjeffrey.rutgersct.ui.base.MVPFragment
+import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
@@ -37,25 +37,45 @@ import kotlinx.android.synthetic.main.course_info_app_bar.totalSections
 import kotlinx.android.synthetic.main.fragment_course_info.list
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
-class CourseInfoFragment : MVPFragment(), ItemClickListener<Section, View> {
+class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
+
+  @Inject lateinit var subcomponent: CourseInfoSubcomponent
 
   private val headerViews = ArrayList<View>()
   private var selectedCourse: Course? = null
 
   private lateinit var searchFlowViewModel: SearchViewModel
+  private lateinit var viewModel: CourseInfoViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
+    viewModel = ViewModelProviders.of(activity).get(CourseInfoViewModel::class.java)
+    selectedCourse = searchFlowViewModel.course
     super.onCreate(savedInstanceState)
     retainInstance = true
+  }
 
-    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-    selectedCourse = searchFlowViewModel.course
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
 
-    initToolbar()
-    initHeaderView()
-    initRecyclerView()
-    initViews()
+    setToolbar(toolbar)
+    parentActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+
+    headerViews.add(createCourseMetaDataView())
+
+    val layoutManager = LinearLayoutManager(parentActivity)
+    layoutManager.orientation = LinearLayoutManager.VERTICAL
+    list.layoutManager = layoutManager
+    list.setHasFixedSize(true)
+    list.adapter = CourseInfoAdapter(headerViews,
+        selectedCourse?.sections.orEmpty(), this)
+
+    setCourseTitle()
+    setShortenedCourseInfo()
+    setOpenSections()
+    setTotalSections()
   }
 
   override fun onCreateView(
@@ -77,7 +97,7 @@ class CourseInfoFragment : MVPFragment(), ItemClickListener<Section, View> {
     return when (item.itemId) {
       R.id.action_add_all -> {
 
-        parentActivity.mBackstackCount = 0
+        parentActivity.backstackCount = 0
         fragmentManager.popBackStackImmediate(
             TrackedSectionsFragment.TAG,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
@@ -88,36 +108,8 @@ class CourseInfoFragment : MVPFragment(), ItemClickListener<Section, View> {
     }
   }
 
-  fun initHeaderView() {
-    headerViews.add(createCourseMetaDataView())
-  }
-
-  fun initRecyclerView() {
-    val layoutManager = LinearLayoutManager(parentActivity)
-    layoutManager.orientation = LinearLayoutManager.VERTICAL
-    list.layoutManager = layoutManager
-    list.setHasFixedSize(true)
-    if (list.adapter == null) {
-      list.adapter = CourseInfoAdapter(headerViews,
-          selectedCourse?.sections.orEmpty(), this
-      )
-    }
-  }
-
-  fun initToolbar() {
-    setToolbar(toolbar)
-    parentActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
-  }
-
-  fun initViews() {
-    setCourseTitle()
-    setShortenedCourseInfo()
-    setOpenSections()
-    setTotalSections()
-  }
-
   override fun injectTargets() {
-    //RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+    subcomponent.inject(viewModel)
   }
 
   override fun onItemClicked(section: Section, view: View) {

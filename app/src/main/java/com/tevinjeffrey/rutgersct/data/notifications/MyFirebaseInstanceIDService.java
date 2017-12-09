@@ -17,6 +17,7 @@
 package com.tevinjeffrey.rutgersct.data.notifications;
 
 import android.util.Log;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 

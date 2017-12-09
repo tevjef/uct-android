@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.dagger;
 
 import com.tevinjeffrey.rutgersct.RutgersCTApp;
+
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;

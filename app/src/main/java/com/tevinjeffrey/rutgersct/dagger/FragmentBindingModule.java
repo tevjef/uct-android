@@ -14,6 +14,7 @@ import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment;
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectSubcomponent;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsSubcomponent;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.AndroidInjector;

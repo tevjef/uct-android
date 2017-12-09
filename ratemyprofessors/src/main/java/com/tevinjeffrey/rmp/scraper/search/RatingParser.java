@@ -3,6 +3,7 @@ package com.tevinjeffrey.rmp.scraper.search;
 import com.tevinjeffrey.rmp.scraper.ScrapeLocation;
 import com.tevinjeffrey.rmp.scraper.ScrapeProfessor;
 import com.tevinjeffrey.rmp.scraper.ScrapeRating;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class RatingParser {

@@ -3,7 +3,7 @@ package com.tevinjeffrey.rutgersct.ui.courseinfo
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoVH
+import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoViewHolder
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 
 class CourseInfoViewHolder private constructor(
@@ -11,11 +11,11 @@ class CourseInfoViewHolder private constructor(
     instructors: TextView,
     sectionNumberBackground: CircleView,
     mSectionTimeContainer: ViewGroup)
-  : SectionInfoVH(parent, instructors, sectionNumberBackground, mSectionTimeContainer) {
+  : SectionInfoViewHolder(parent, instructors, sectionNumberBackground, mSectionTimeContainer) {
   companion object {
 
     fun newInstance(parent: View): CourseInfoViewHolder {
-      val sectionInfoVH = SectionInfoVH.newInstance(parent)
+      val sectionInfoVH = SectionInfoViewHolder.newInstance(parent)
       val instructors = sectionInfoVH.instructors
       val sectionNumberBackground = sectionInfoVH.sectionNumberBackground
       val sectionTimeContainer = sectionInfoVH.sectionTimeContainer

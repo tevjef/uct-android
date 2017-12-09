@@ -1,10 +1,8 @@
 package com.tevinjeffrey.rutgersct.ui.course
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.tevinjeffrey.rutgersct.data.UCTApi
-import com.tevinjeffrey.rutgersct.data.search.SearchFlow
 import com.tevinjeffrey.rutgersct.utils.RxUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -18,16 +16,7 @@ class CourseViewModel : ViewModel() {
 
   private var disposable: Disposable? = null
 
-  private lateinit var courseLiveData: MutableLiveData<CourseModel>
-
-  fun loadCourseLiveData(topicName: String): LiveData<CourseModel> {
-    if (!this::courseLiveData.isInitialized) {
-      courseLiveData = MutableLiveData()
-      loadCourses(topicName)
-    }
-
-    return courseLiveData
-  }
+  lateinit var courseLiveData: MutableLiveData<CourseModel>
 
   fun loadCourses(topicName: String) {
     RxUtils.disposeIfNotNull(disposable)

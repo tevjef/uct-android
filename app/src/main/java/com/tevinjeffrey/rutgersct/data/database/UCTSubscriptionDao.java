@@ -6,7 +6,9 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription;
+
 import java.util.List;
 
 @Dao

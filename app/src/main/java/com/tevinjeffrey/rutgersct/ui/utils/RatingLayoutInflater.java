@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.ButterKnife;
+
 import com.dlazaro66.wheelindicatorview.WheelIndicatorItem;
 import com.dlazaro66.wheelindicatorview.WheelIndicatorView;
 import com.tevinjeffrey.rmp.common.Professor;
@@ -19,13 +19,15 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.UrlUtils;
 import com.tevinjeffrey.rutgersct.data.model.Section;
 
+import butterknife.ButterKnife;
+
 public class RatingLayoutInflater {
   public static final int LOW_RATING_LIMIT = 40;
   public static final int MEDIUM_RATING_LIMIT = 60;
   private final Professor mProfessor;
   private final Context mContext;
 
-  public RatingLayoutInflater(@NonNull Activity context, @NonNull Professor professor) {
+  public RatingLayoutInflater(@NonNull Activity context, Professor professor) {
     this.mProfessor = professor;
     this.mContext = context;
   }

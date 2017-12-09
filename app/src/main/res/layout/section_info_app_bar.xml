@@ -12,7 +12,7 @@
     >
 
   <android.support.design.widget.CollapsingToolbarLayout
-      android:id="@+id/collapsing_toolbar"
+      android:id="@+id/collapsingToolbar"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_scrollFlags="scroll"
@@ -76,7 +76,7 @@
 
 
         <TextView
-            android:id="@+id/instructors_text"
+            android:id="@+id/instructorsText"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="85dp"
@@ -90,12 +90,12 @@
             />
 
         <TextView
-            android:id="@+id/semester_text"
+            android:id="@+id/semesterText"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/instructors_text"
+            android:layout_alignTop="@+id/instructorsText"
             android:layout_marginLeft="32dp"
             android:layout_marginStart="32dp"
             android:alpha="1"
@@ -112,7 +112,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/semester_text"
+            android:layout_above="@+id/semesterText"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="16dp"
@@ -131,7 +131,7 @@
               >
 
             <TextView
-                android:id="@+id/sectionNumber_text"
+                android:id="@+id/sectionNumberText"
                 tools:text="Q2"
                 style="@style/SectionInfoDataText"
                 />
@@ -154,7 +154,7 @@
               >
 
             <TextView
-                android:id="@+id/indexNumber_text"
+                android:id="@+id/indexNumberText"
                 tools:text="34562"
                 style="@style/SectionInfoDataText"
                 />
@@ -168,7 +168,7 @@
           </LinearLayout>
 
           <LinearLayout
-              android:id="@+id/tCredits"
+              android:id="@+id/creditsLayout"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_weight="1"
@@ -177,7 +177,7 @@
               >
 
             <TextView
-                android:id="@+id/subtitle"
+                android:id="@+id/creditsText"
                 tools:text="4"
                 style="@style/SectionInfoDataText"
                 />

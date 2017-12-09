@@ -5,11 +5,14 @@ import com.tevinjeffrey.rmp.common.Professor;
 import com.tevinjeffrey.rmp.scraper.search.Decider;
 import com.tevinjeffrey.rmp.scraper.search.RatingParser;
 import com.tevinjeffrey.rmp.scraper.search.SearchParser;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
-import java.io.IOException;
-import javax.inject.Inject;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

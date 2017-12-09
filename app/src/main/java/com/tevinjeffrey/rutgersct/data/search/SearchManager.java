@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.data.search;
 
 import com.tevinjeffrey.rutgersct.dagger.PerApp;
+
 import javax.inject.Inject;
 
 @PerApp

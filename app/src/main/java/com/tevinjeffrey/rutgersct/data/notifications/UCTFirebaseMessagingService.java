@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -37,11 +38,14 @@ import com.tevinjeffrey.rutgersct.data.model.Subject;
 import com.tevinjeffrey.rutgersct.data.model.UCTNotification;
 import com.tevinjeffrey.rutgersct.data.model.University;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
+
 import java.io.IOException;
 import java.math.BigInteger;
+
 import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
 import timber.log.Timber;
 
 public class UCTFirebaseMessagingService extends FirebaseMessagingService {

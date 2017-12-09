@@ -1,14 +1,12 @@
 package com.tevinjeffrey.rutgersct.ui
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Section
 import com.tevinjeffrey.rutgersct.data.model.Semester
 import com.tevinjeffrey.rutgersct.data.model.Subject
 import com.tevinjeffrey.rutgersct.data.model.University
-import com.tevinjeffrey.rutgersct.data.search.SearchFlow
+import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
 
 class SearchViewModel : ViewModel() {
   var university: University? = null
@@ -17,17 +15,37 @@ class SearchViewModel : ViewModel() {
   var course: Course? = null
   var section: Section? = null
 
-  private val searchFlowLiveData = MutableLiveData<SearchFlow>()
+  fun buildSubscription(): UCTSubscription {
+    val uctSubscription = UCTSubscription(section!!.topic_name)
 
-  fun getSearchFlow(): LiveData<SearchFlow> {
-    if (searchFlowLiveData.value != null) {
-      searchFlowLiveData.postValue(SearchFlow())
-    }
+    val courseBuilder = course!!.newBuilder()
+    courseBuilder.sections.clear()
+    courseBuilder.sections.add(section)
 
-    return searchFlowLiveData
+    val newCourse = courseBuilder.build()
+
+    val subjectBuilder = subject!!.newBuilder()
+    subjectBuilder.courses.clear()
+    subjectBuilder.courses.add(newCourse)
+
+    val newSubject = subjectBuilder.build()
+
+    val universityBuilder = university!!.newBuilder()
+    universityBuilder.subjects.clear()
+    universityBuilder.subjects.add(newSubject)
+
+    universityBuilder.available_semesters.clear()
+    universityBuilder.available_semesters.add(semester)
+
+    uctSubscription.university = universityBuilder.build()
+    return uctSubscription
   }
 
-  fun setSearchFlow(searchFlow: SearchFlow) {
-    this.searchFlowLiveData.postValue(searchFlow)
+  fun newSearch() {
+    university = null
+    semester = null
+    subject = null
+    course = null
+    section = null
   }
 }

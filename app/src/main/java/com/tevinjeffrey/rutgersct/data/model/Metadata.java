@@ -4,6 +4,7 @@ package com.tevinjeffrey.rutgersct.data.model;
 
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+
 import com.squareup.wire.AndroidMessage;
 import com.squareup.wire.FieldEncoding;
 import com.squareup.wire.Message;
@@ -12,7 +13,9 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+
 import java.io.IOException;
+
 import okio.ByteString;
 
 public final class Metadata extends AndroidMessage<Metadata, Metadata.Builder> {

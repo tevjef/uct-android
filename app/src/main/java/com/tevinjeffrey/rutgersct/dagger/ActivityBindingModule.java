@@ -1,7 +1,9 @@
 package com.tevinjeffrey.rutgersct.dagger;
 
 import android.app.Activity;
+
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.ActivityKey;

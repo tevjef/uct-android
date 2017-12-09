@@ -1,10 +1,11 @@
 package com.tevinjeffrey.rutgersct;
 
 import com.squareup.otto.Bus;
-import com.tevinjeffrey.rutgersct.ui.TrackedSectionsFragmentTest;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Singleton;
 
 @Module
 public class RutgersCTTestModule {

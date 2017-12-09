@@ -1,8 +1,10 @@
 package com.tevinjeffrey.rutgersct.dagger;
 
 import android.app.Service;
+
 import com.tevinjeffrey.rutgersct.data.notifications.RegistrationIntentService;
 import com.tevinjeffrey.rutgersct.data.notifications.UCTFirebaseMessagingService;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.AndroidInjector;

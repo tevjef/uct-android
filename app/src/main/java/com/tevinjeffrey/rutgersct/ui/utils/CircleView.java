@@ -11,7 +11,9 @@ import android.os.Parcelable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+
 import com.tevinjeffrey.rutgersct.R;
+
 import icepick.Icepick;
 import icepick.State;
 

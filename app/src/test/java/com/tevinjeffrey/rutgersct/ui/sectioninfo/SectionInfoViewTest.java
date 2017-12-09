@@ -18,7 +18,7 @@ public class SectionInfoViewTest {
 
   @Test
   public void ShowFabWithAnimation() throws Exception {
-    viewState.shouldAnimateFabIn = true;
+    viewState.setShouldAnimateFabIn(true);
     viewState.apply(sectioninfoView, true);
     verify(sectioninfoView).showFab(true);
   }

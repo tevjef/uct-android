@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.ButterKnife
 import com.tevinjeffrey.rutgersct.R
-import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoVH
+import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoViewHolder
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 
 class TrackedSectionViewHolder private constructor(
@@ -13,7 +13,7 @@ class TrackedSectionViewHolder private constructor(
     instructors: TextView,
     val courseTitleText: TextView,
     sectionNumberBackground: CircleView,
-    sectionTimeContainer: ViewGroup) : SectionInfoVH(parent, instructors, sectionNumberBackground, sectionTimeContainer) {
+    sectionTimeContainer: ViewGroup) : SectionInfoViewHolder(parent, instructors, sectionNumberBackground, sectionTimeContainer) {
 
   fun setCourseTitle(subjectNumber: String, courseName: String) {
     courseTitleText.text = subjectNumber + " | " + courseName
@@ -22,7 +22,7 @@ class TrackedSectionViewHolder private constructor(
   companion object {
 
     fun newInstance(parent: View): TrackedSectionViewHolder {
-      val sectionInfoVH = SectionInfoVH.newInstance(parent)
+      val sectionInfoVH = SectionInfoViewHolder.newInstance(parent)
       val courseTitleText = ButterKnife.findById<TextView>(parent, R.id.courseTitleText)
       val instructors = sectionInfoVH.instructors
       val sectionNumberBackground = sectionInfoVH.sectionNumberBackground
