@@ -20,7 +20,7 @@ import icepick.Icepick
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-abstract class BaseFragment : Fragment(), View {
+abstract class BaseFragment : Fragment() {
   val parentActivity: MainActivity
     get() = activity as MainActivity
 

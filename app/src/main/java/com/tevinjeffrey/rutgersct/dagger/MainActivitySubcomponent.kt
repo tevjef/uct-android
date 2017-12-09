@@ -5,7 +5,10 @@ import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsViewModel
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
 
-@Subcomponent(modules = arrayOf(MainActivityModule::class, FragmentBindingModule::class))
+@Subcomponent(modules = [
+  MainActivityModule::class,
+  FragmentBindingModule::class]
+)
 interface MainActivitySubcomponent : AndroidInjector<MainActivity> {
 
   fun inject(trackedSectionsPresenter: TrackedSectionsViewModel)

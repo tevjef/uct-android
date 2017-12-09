@@ -16,8 +16,8 @@ import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.Parser;
 import com.orm.SugarContext;
 import com.squareup.wire.AndroidMessage;
-import com.tevinjeffrey.rutgersct.dagger.DaggerRutgersCTComponent;
-import com.tevinjeffrey.rutgersct.dagger.RutgersCTComponent;
+import com.tevinjeffrey.rutgersct.dagger.DaggerRutgersAppComponent;
+import com.tevinjeffrey.rutgersct.dagger.RutgersAppComponent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +41,7 @@ public class RutgersCTApp extends MultiDexApplication implements HasActivityInje
     HasBroadcastReceiverInjector, HasServiceInjector {
   private static final String INSTALLATION = "INSTALLATION";
   private static String sID = null;
-  private static RutgersCTComponent component;
+  private static RutgersAppComponent component;
 
   @Inject DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
   @Inject DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverDispatchingAndroidInjector;
@@ -88,7 +88,7 @@ public class RutgersCTApp extends MultiDexApplication implements HasActivityInje
     SugarContext.init(this);
     Once.initialise(this);
 
-    component = DaggerRutgersCTComponent
+    component = DaggerRutgersAppComponent
         .builder()
         .application(this)
         .build();

@@ -39,7 +39,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
     DataModule.class,
     RMPModule.class
 })
-public class RutgersCTModule {
+public class RutgersAppModule {
 
   private static final long CONNECT_TIMEOUT_MILLIS = 15000;
   private static final long READ_TIMEOUT_MILLIS = 20000;
