@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <View xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fsl_divider"
-    android:layout_below="@+id/course_title_text"
+    android:layout_below="@+id/courseTitleText"
     android:layout_marginBottom="4dp"
     android:layout_toEndOf="@+id/section_number_background"
     android:layout_toRightOf="@+id/section_number_background"

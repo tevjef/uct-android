@@ -11,7 +11,7 @@
     </transition>
     <targets>
       <target android:targetName="@string/transition_name_tool_background"/>
-      <target android:targetId="@id/app_bar_layout"/>
+      <target android:targetId="@id/appBar"/>
 
       <target android:excludeName="@string/transition_name_fab"/>
       <target android:excludeId="@id/add_courses_fab"/>
@@ -27,7 +27,7 @@
       <target android:excludeId="@id/add_courses_fab"/>
 
       <target android:excludeName="@string/transition_name_tool_background"/>
-      <target android:excludeId="@id/app_bar_layout"/>
+      <target android:excludeId="@id/appBar"/>
     </targets>
   </transitionSet>
 </transitionSet>

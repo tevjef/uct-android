@@ -23,11 +23,11 @@ public final class TrackedSectionVH extends SectionInfoVH {
   }
 
   public static TrackedSectionVH newInstance(View parent) {
-    SectionInfoVH sectionInfoVH = SectionInfoVH.newInstance(parent);
-    TextView courseTitleText = ButterKnife.findById(parent, R.id.course_title_text);
-    TextView instructors = sectionInfoVH.mInstructors;
-    CircleView sectionNumberBackground = sectionInfoVH.mSectionNumberBackground;
-    ViewGroup sectionTimeContainer = sectionInfoVH.mSectionTimeContainer;
+    SectionInfoVH sectionInfoVH = SectionInfoVH.Companion.newInstance(parent);
+    TextView courseTitleText = ButterKnife.findById(parent, R.id.courseTitleText);
+    TextView instructors = sectionInfoVH.getMInstructors();
+    CircleView sectionNumberBackground = sectionInfoVH.getMSectionNumberBackground();
+    ViewGroup sectionTimeContainer = sectionInfoVH.getMSectionTimeContainer();
     return new TrackedSectionVH(
         parent,
         instructors,

@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.ui.course
+package com.tevinjeffrey.rutgersct.ui.base
 
 import android.support.v7.widget.RecyclerView
 

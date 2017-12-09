@@ -8,7 +8,7 @@ import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.extensions.Utils
 
-class CourseVH private constructor(
+class CourseViewHolder private constructor(
     private val parent: View,
     private val courseTitle: TextView,
     private val sectionInfo: TextView) : RecyclerView.ViewHolder(parent) {
@@ -26,13 +26,10 @@ class CourseVH private constructor(
   }
 
   companion object {
-
-    fun newInstance(parent: View): CourseVH {
-
+    fun newInstance(parent: View): CourseViewHolder {
       val courseTitle = ButterKnife.findById<TextView>(parent, R.id.list_item_title)
       val sectionInfo = ButterKnife.findById<TextView>(parent, R.id.course_list_sections)
-
-      return CourseVH(parent, courseTitle, sectionInfo)
+      return CourseViewHolder(parent, courseTitle, sectionInfo)
     }
   }
 }

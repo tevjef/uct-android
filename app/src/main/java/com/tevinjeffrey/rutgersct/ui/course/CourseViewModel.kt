@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class CourseViewModel(private val searchFlow: SearchFlow) : ViewModel() {
+class CourseViewModel : ViewModel() {
 
   @Inject internal lateinit var uctApi: UCTApi
 
@@ -20,18 +20,18 @@ class CourseViewModel(private val searchFlow: SearchFlow) : ViewModel() {
 
   private lateinit var courseLiveData: MutableLiveData<CourseModel>
 
-  fun loadCourseLiveData(): LiveData<CourseModel> {
+  fun loadCourseLiveData(topicName: String): LiveData<CourseModel> {
     if (!this::courseLiveData.isInitialized) {
       courseLiveData = MutableLiveData()
-      loadCourses()
+      loadCourses(topicName)
     }
 
     return courseLiveData
   }
 
-  fun loadCourses() {
+  fun loadCourses(topicName: String) {
     RxUtils.disposeIfNotNull(disposable)
-    disposable = uctApi.getCourses(searchFlow)
+    disposable = uctApi.getCourses(topicName)
         .doOnSubscribe { courseLiveData.postValue(CourseModel(isLoading = true)) }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())

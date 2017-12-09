@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/app_bar_layout"
+    android:id="@+id/appBar"
     android:theme="@style/RutgersCT.ToolbarTheme"
     android:transitionGroup="true"
     android:transitionName="@string/transition_name_tool_background"
@@ -36,7 +36,7 @@
         >
 
       <TextView
-          android:id="@+id/course_title_text"
+          android:id="@+id/courseTitleText"
           android:layout_above="@+id/subtitle"
           android:layout_alignLeft="@+id/subtitle"
           android:layout_alignStart="@+id/subtitle"
@@ -57,7 +57,7 @@
 
       <TextView
           android:id="@+id/shortenedCourseInfo"
-          android:layout_above="@+id/course_title_text"
+          android:layout_above="@+id/courseTitleText"
           android:layout_alignLeft="@+id/subtitle"
           android:layout_alignStart="@+id/subtitle"
           android:singleLine="true"
@@ -74,7 +74,7 @@
           />
 
       <TextView
-          android:id="@+id/openSections_text"
+          android:id="@+id/openSections"
           android:layout_alignBottom="@+id/credits_title"
           android:layout_marginRight="3sp"
           android:layout_toRightOf="@+id/credits_title"
@@ -85,14 +85,14 @@
 
       <TextView
           android:id="@+id/openSections_title"
-          android:layout_alignTop="@+id/openSections_text"
-          android:layout_toRightOf="@+id/openSections_text"
+          android:layout_alignTop="@+id/openSections"
+          android:layout_toRightOf="@+id/openSections"
           android:text="@string/open_sections_of"
           style="@style/ToolbarSubtitleStyle.Normal"
           />
 
       <TextView
-          android:id="@+id/totalSections_text"
+          android:id="@+id/totalSections"
           android:layout_alignBottom="@+id/openSections_title"
           android:layout_toRightOf="@+id/openSections_title"
           android:paddingLeft="3dp"

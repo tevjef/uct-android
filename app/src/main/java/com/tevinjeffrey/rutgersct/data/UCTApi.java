@@ -71,9 +71,9 @@ public class UCTApi {
     }
   }
 
-  public Observable<List<Course>> getCourses(SearchFlow searchFlow) {
+  public Observable<List<Course>> getCourses(String topicName) {
     return uctService
-        .getCourses(searchFlow.subject.topic_name)
+        .getCourses(topicName)
         .map(response -> response.data.courses);
   }
 

@@ -1,4 +1,4 @@
-package com.tevinjeffrey.rutgersct.ui.course
+package com.tevinjeffrey.rutgersct.ui
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

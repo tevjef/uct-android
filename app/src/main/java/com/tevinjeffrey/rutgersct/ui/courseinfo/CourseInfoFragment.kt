@@ -1,0 +1,229 @@
+package com.tevinjeffrey.rutgersct.ui.courseinfo
+
+import android.arch.lifecycle.ViewModelProviders
+import android.os.Build
+import android.os.Bundle
+import android.support.v4.app.FragmentManager
+import android.support.v7.widget.LinearLayoutManager
+import android.text.Html
+import android.text.method.LinkMovementMethod
+import android.transition.Fade
+import android.transition.TransitionInflater
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import butterknife.ButterKnife
+import com.tevinjeffrey.rutgersct.R
+import com.tevinjeffrey.rutgersct.data.model.Course
+import com.tevinjeffrey.rutgersct.data.model.Section
+import com.tevinjeffrey.rutgersct.ui.SearchViewModel
+import com.tevinjeffrey.rutgersct.ui.base.MVPFragment
+import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment
+import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment
+import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
+import com.tevinjeffrey.rutgersct.ui.utils.CircleView
+import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
+import com.tevinjeffrey.rutgersct.utils.Utils
+import kotlinx.android.synthetic.main.course_info_app_bar.appBar
+import kotlinx.android.synthetic.main.course_info_app_bar.courseTitleText
+import kotlinx.android.synthetic.main.course_info_app_bar.openSections
+import kotlinx.android.synthetic.main.course_info_app_bar.shortenedCourseInfo
+import kotlinx.android.synthetic.main.course_info_app_bar.toolbar
+import kotlinx.android.synthetic.main.course_info_app_bar.totalSections
+import kotlinx.android.synthetic.main.fragment_course_info.list
+import timber.log.Timber
+import java.util.*
+
+class CourseInfoFragment : MVPFragment(), ItemClickListener<Section, View> {
+
+  private val headerViews = ArrayList<View>()
+  private var selectedCourse: Course? = null
+
+  private lateinit var searchFlowViewModel: SearchViewModel
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    retainInstance = true
+
+    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
+    selectedCourse = searchFlowViewModel.course
+
+    initToolbar()
+    initHeaderView()
+    initRecyclerView()
+    initViews()
+  }
+
+  override fun onCreateView(
+      inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?): View? {
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(
+        activity,
+        R.style.RutgersCT_Accent
+    ))
+    return themedInflater.inflate(R.layout.fragment_course_info, container, false)
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    super.onCreateOptionsMenu(menu, inflater)
+    inflater.inflate(R.menu.menu_course_info, menu)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.action_add_all -> {
+
+        parentActivity.mBackstackCount = 0
+        fragmentManager.popBackStackImmediate(
+            TrackedSectionsFragment.TAG,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
+    }
+  }
+
+  fun initHeaderView() {
+    headerViews.add(createCourseMetaDataView())
+  }
+
+  fun initRecyclerView() {
+    val layoutManager = LinearLayoutManager(parentActivity)
+    layoutManager.orientation = LinearLayoutManager.VERTICAL
+    list.layoutManager = layoutManager
+    list.setHasFixedSize(true)
+    if (list.adapter == null) {
+      list.adapter = CourseInfoAdapter(headerViews,
+          selectedCourse?.sections.orEmpty(), this
+      )
+    }
+  }
+
+  fun initToolbar() {
+    setToolbar(toolbar)
+    parentActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+  }
+
+  fun initViews() {
+    setCourseTitle()
+    setShortenedCourseInfo()
+    setOpenSections()
+    setTotalSections()
+  }
+
+  override fun injectTargets() {
+    //RutgersCTApp.getObjectGraph(getParentActivity()).inject(this);
+  }
+
+  override fun onItemClicked(section: Section, view: View) {
+    Timber.i("Selected section: %s", section)
+    searchFlowViewModel.section = section
+    val bundle = Bundle()
+    startSectionInfoFragment(bundle, view)
+  }
+
+  private fun createCourseMetaDataView(): View {
+    val root = parentActivity
+        .layoutInflater
+        .inflate(R.layout.course_info_metadata, null) as ViewGroup
+    for (data in selectedCourse?.metadata.orEmpty()) {
+      val metadata = LayoutInflater.from(parentActivity).inflate(R.layout.metadata, null) as ViewGroup
+      val title = ButterKnife.findById<TextView>(metadata, R.id.metadata_title)
+      val description = ButterKnife.findById<TextView>(metadata, R.id.metadata_text)
+      description.movementMethod = LinkMovementMethod()
+      title.text = data.title
+      description.text = Html.fromHtml(data.content)
+      root.addView(metadata)
+    }
+    return root
+  }
+
+  private fun setCourseTitle() {
+    courseTitleText.text = selectedCourse?.name
+  }
+
+  private fun setOpenSections() {
+    openSections.text = com.tevinjeffrey.rutgersct.data.model.extensions.Utils.CourseUtils
+        .getOpenSections(selectedCourse).toString()
+  }
+
+  private fun setShortenedCourseInfo() {
+    //String offeringUnitCode = selectedCourse.getOfferingUnitCode();
+    val subject = searchFlowViewModel.subject
+    val course = searchFlowViewModel.course
+    if (subject != null) {
+      val shortenedCourseInfo = subject.number + ": " + subject.name + " › " + course?.number
+      this.shortenedCourseInfo.text = shortenedCourseInfo
+    }
+  }
+
+  private fun setTotalSections() {
+    totalSections.text = selectedCourse?.sections?.size.toString()
+  }
+
+  private fun startSectionInfoFragment(b: Bundle, clickedView: View) {
+    val sectionInfoFragment = SectionInfoFragment()
+
+    val ft = fragmentManager.beginTransaction()
+
+    val circleView = ButterKnife.findById<CircleView>(clickedView, R.id.section_number_background)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+      circleView.transitionName = getString(R.string.transition_name_circle_view)
+      ft.addSharedElement(circleView, getString(R.string.transition_name_circle_view))
+
+      appBar.transitionName = null
+
+      val cifSectionEnter = TransitionInflater
+          .from(parentActivity)
+          .inflateTransition(R.transition.cif_section_enter)
+
+      val cifSectionReturn = TransitionInflater
+          .from(parentActivity)
+          .inflateTransition(R.transition.cif_section_return)
+
+      sectionInfoFragment.enterTransition = cifSectionEnter
+      sectionInfoFragment.returnTransition = cifSectionReturn
+
+      reenterTransition = Fade(Fade.IN).setDuration(200)
+
+      val cifExit = TransitionInflater
+          .from(parentActivity)
+          .inflateTransition(R.transition.cif_exit)
+
+      exitTransition = cifExit
+
+      sectionInfoFragment.allowReturnTransitionOverlap = false
+      sectionInfoFragment.allowEnterTransitionOverlap = false
+
+      val sharedElementsEnter = TransitionInflater
+          .from(parentActivity).inflateTransition(R.transition.cif_shared_element_enter)
+
+      val sharedElementsReturn = TransitionInflater
+          .from(parentActivity).inflateTransition(R.transition.cif_shared_element_return)
+
+      sectionInfoFragment.sharedElementEnterTransition = sharedElementsEnter
+      sectionInfoFragment.sharedElementReturnTransition = sharedElementsReturn
+
+      val sharedelementCallback = CircleSharedElementCallback()
+      sectionInfoFragment.setEnterSharedElementCallback(sharedelementCallback)
+      sharedElementsEnter.addListener(sharedelementCallback.transitionCallback)
+    } else {
+      ft.setCustomAnimations(
+          R.animator.enter,
+          R.animator.exit,
+          R.animator.pop_enter,
+          R.animator.pop_exit
+      )
+    }
+
+    sectionInfoFragment.arguments = b
+    startFragment(this, sectionInfoFragment, ft)
+  }
+}

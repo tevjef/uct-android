@@ -38,7 +38,7 @@ import com.tevinjeffrey.rutgersct.data.search.SearchManager;
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import icepick.State;
+
 import javax.inject.Inject;
 
 import static android.view.View.GONE;
@@ -51,7 +51,7 @@ public class SectionInfoFragment extends MVPFragment implements SectionInfoView 
   @BindView(R.id.prof_ratings_container) ViewGroup ratingsContainer;
   @BindView(R.id.prof_ratings_root) ViewGroup ratingsRoot;
   @BindView(R.id.semester_text) TextView mSemesterText;
-  @BindView(R.id.course_title_text) TextView mCourseTitleText;
+  @BindView(R.id.courseTitleText) TextView mCourseTitleText;
   @BindView(R.id.sectionNumber_text) TextView mSectionNumberText;
   @BindView(R.id.indexNumber_text) TextView mIndexNumberText;
   @BindView(R.id.subtitle) TextView mCreditsText;

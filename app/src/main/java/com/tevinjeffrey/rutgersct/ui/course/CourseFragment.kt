@@ -21,6 +21,7 @@ import android.view.animation.DecelerateInterpolator
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Subject
+import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.MVPFragment
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
@@ -43,7 +44,7 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
   private lateinit var searchFlowViewModel: SearchViewModel
   private lateinit var model: CourseViewModel
 
-  private val adapter = CourseFragmentAdapter(this)
+  private val adapter = CourseAdapter(this)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -59,7 +60,9 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
     try_again.setOnClickListener { onRefresh() }
 
     model = ViewModelProviders.of(activity).get(CourseViewModel::class.java)
-    model.loadCourseLiveData().observe(this, Observer { courseModel ->
+    model.loadCourseLiveData(
+        searchFlowViewModel.subject?.topic_name.orEmpty()
+    ).observe(this, Observer { courseModel ->
       adapter.swapData(courseModel?.data ?: emptyList())
     })
 
@@ -121,7 +124,7 @@ class CourseFragment : MVPFragment(), SwipeRefreshLayout.OnRefreshListener, Item
   }
 
   override fun onRefresh() {
-    model.loadCourses()
+    model.loadCourses(searchFlowViewModel.subject?.topic_name.orEmpty())
   }
 
   fun showError(t: Throwable) {

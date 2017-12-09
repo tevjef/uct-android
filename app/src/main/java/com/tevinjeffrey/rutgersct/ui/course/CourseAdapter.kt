@@ -5,12 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
+import com.tevinjeffrey.rutgersct.ui.base.BaseAdapter
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import java.math.BigInteger
 
-class CourseFragmentAdapter constructor(
+class CourseAdapter constructor(
     private val itemClickListener: ItemClickListener<Course, View>)
-  : BaseAdapter<Course, CourseVH>() {
+  : BaseAdapter<Course, CourseViewHolder>() {
 
   init {
     setHasStableIds(true)
@@ -20,9 +21,8 @@ class CourseFragmentAdapter constructor(
     return BigInteger(getItems()[position].topic_id).toLong()
   }
 
-  override fun onBindViewHolder(holder: CourseVH, position: Int) {
+  override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
     val course = getItems()[position]
-
     holder.setCourseTitle(course)
     holder.setSectionsInfo(course)
     holder.setOnClickListener(View.OnClickListener { v ->
@@ -30,12 +30,12 @@ class CourseFragmentAdapter constructor(
     })
   }
 
-  override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CourseVH {
+  override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CourseViewHolder {
     val context = viewGroup.context
     val parent = LayoutInflater
         .from(context)
         .inflate(R.layout.course_list_item, viewGroup, false)
 
-    return CourseVH.newInstance(parent)
+    return CourseViewHolder.newInstance(parent)
   }
 }
