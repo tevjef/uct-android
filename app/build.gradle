@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 android {
@@ -129,14 +132,14 @@ dependencies {
 
   compile 'com.google.dagger:dagger:' + rootProject.daggerVersion
   compile 'com.google.dagger:dagger-android-support:' + rootProject.daggerVersion
-  annotationProcessor 'com.google.dagger:dagger-compiler:' + rootProject.daggerVersion
-  annotationProcessor 'com.google.dagger:dagger-android-processor:' + rootProject.daggerVersion
+  kapt 'com.google.dagger:dagger-compiler:' + rootProject.daggerVersion
+  kapt 'com.google.dagger:dagger-android-processor:' + rootProject.daggerVersion
 
   compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion
   compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
   compile 'android.arch.persistence.room:rxjava2:' + rootProject.archRoomVersion
-  annotationProcessor "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
-  annotationProcessor "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
+  kapt "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
+  kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
 
   compile 'com.dlazaro66.wheelindicatorview:WheelIndicatorView:1.0.0'
   compile 'com.github.afollestad.material-dialogs:core:0.9.4.3@aar'
@@ -150,10 +153,14 @@ dependencies {
   compile 'com.google.code.gson:gson:2.8.0'
 
   compile 'frankiesardo:icepick:3.2.0'
-  annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
+  kapt 'frankiesardo:icepick-processor:3.2.0'
 
   compile 'com.jakewharton:butterknife:8.5.1'
-  annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+  kapt 'com.jakewharton:butterknife-compiler:8.5.1'
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+  mavenCentral()
+}

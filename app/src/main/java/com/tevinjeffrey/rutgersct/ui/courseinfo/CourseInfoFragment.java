@@ -1,12 +1,11 @@
 package com.tevinjeffrey.rutgersct.ui.courseinfo;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -224,8 +223,7 @@ public class CourseInfoFragment extends MVPFragment
   private void startSectionInfoFragment(Bundle b, View clickedView) {
     SectionInfoFragment sectionInfoFragment = new SectionInfoFragment();
 
-    FragmentTransaction ft =
-        this.getFragmentManager().beginTransaction();
+    FragmentTransaction ft = getFragmentManager().beginTransaction();
 
     CircleView circleView = ButterKnife.findById(clickedView, R.id.section_number_background);
 

@@ -8,20 +8,7 @@ import com.tevinjeffrey.rutgersct.data.model.Semester;
 import com.tevinjeffrey.rutgersct.data.model.Subject;
 import com.tevinjeffrey.rutgersct.data.model.University;
 
-public class SearchFlow implements Parcelable {
-  public static final Parcelable.Creator<SearchFlow> CREATOR =
-      new Parcelable.Creator<SearchFlow>() {
-        @Override
-        public SearchFlow createFromParcel(Parcel source) {
-          return new SearchFlow(source);
-        }
-
-        @Override
-
-        public SearchFlow[] newArray(int size) {
-          return new SearchFlow[size];
-        }
-      };
+public class SearchFlow {
   public University university;
   public Semester semester;
   public Subject subject;
@@ -37,31 +24,6 @@ public class SearchFlow implements Parcelable {
     this.subject = in.readParcelable(Subject.class.getClassLoader());
     this.course = in.readParcelable(Course.class.getClassLoader());
     this.section = in.readParcelable(Section.class.getClassLoader());
-  }
-
-  @Override
-  public int describeContents() {
-    return 0;
-  }
-
-  @Override
-  public String toString() {
-    return "SearchFlow{" +
-        "university=" + university +
-        ", semester=" + semester +
-        ", subject=" + subject +
-        ", course=" + course +
-        ", section=" + section +
-        '}';
-  }
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
-    dest.writeParcelable(this.university, flags);
-    dest.writeParcelable(this.semester, flags);
-    dest.writeParcelable(this.subject, flags);
-    dest.writeParcelable(this.course, flags);
-    dest.writeParcelable(this.section, flags);
   }
 
   public UCTSubscription buildSubscription() {

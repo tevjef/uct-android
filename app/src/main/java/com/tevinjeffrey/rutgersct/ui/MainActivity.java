@@ -1,10 +1,10 @@
 package com.tevinjeffrey.rutgersct.ui;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.AutoTransition;
 import android.transition.ChangeBounds;
@@ -12,29 +12,36 @@ import android.transition.Fade;
 import android.view.Menu;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils;
+
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasFragmentInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import icepick.Icepick;
 import icepick.State;
-import javax.inject.Inject;
 import jonathanfinerty.once.Once;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements HasFragmentInjector {
+public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
   public final static String SHOW_TOUR = "showTour";
 
-  @State public int mBackstackCount;
+  @State
+  public int mBackstackCount;
 
-  @Inject Context context;
-  @Inject PreferenceUtils mPreferenceUtils;
-  @Inject DispatchingAndroidInjector<Fragment> fragmentInjector;
+  @Inject
+  Context context;
+  @Inject
+  PreferenceUtils mPreferenceUtils;
+  @Inject
+  DispatchingAndroidInjector<Fragment> fragmentInjector;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements HasFragmentInject
         tsf.setSharedElementEnterTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
         tsf.setSharedElementReturnTransition(new ChangeBounds().setInterpolator(new DecelerateInterpolator()));
       }
-      getFragmentManager().beginTransaction()
+      getSupportFragmentManager().beginTransaction()
           .replace(R.id.container, tsf)
           .commit();
     }
@@ -80,10 +87,6 @@ public class MainActivity extends AppCompatActivity implements HasFragmentInject
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     Icepick.saveInstanceState(this, outState);
-  }
-
-  @Override public AndroidInjector<Fragment> fragmentInjector() {
-    return fragmentInjector;
   }
 
   @Override
@@ -108,5 +111,10 @@ public class MainActivity extends AppCompatActivity implements HasFragmentInject
 
   public void incrementBackstackCount() {
     ++mBackstackCount;
+  }
+
+  @Override
+  public AndroidInjector<Fragment> supportFragmentInjector() {
+    return fragmentInjector;
   }
 }

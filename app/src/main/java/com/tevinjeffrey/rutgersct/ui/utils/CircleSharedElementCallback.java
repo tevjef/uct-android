@@ -1,8 +1,8 @@
 package com.tevinjeffrey.rutgersct.ui.utils;
 
 import android.annotation.TargetApi;
-import android.app.SharedElementCallback;
 import android.os.Build;
+import android.support.v4.app.SharedElementCallback;
 import android.transition.Transition;
 import android.view.View;
 import butterknife.ButterKnife;

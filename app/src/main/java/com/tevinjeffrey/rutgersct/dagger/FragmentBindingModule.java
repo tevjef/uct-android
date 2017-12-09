@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.dagger;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment;
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserSubcomponent;
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
@@ -16,7 +17,7 @@ import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsSubcomponent
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.AndroidInjector;
-import dagger.android.FragmentKey;
+import dagger.android.support.FragmentKey;
 import dagger.multibindings.IntoMap;
 
 @Module(subcomponents = {

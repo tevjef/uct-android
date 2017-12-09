@@ -35,39 +35,39 @@ public class CourseViewTest {
   @Mock //Injected via @RunWith(MockitoJUnitRunner.class)
       CourseView courseView;
 
-  CourseViewState viewState;
+  CourseModel viewState;
 
   @Test
   public void ShowData_GivenSomeData() throws Exception {
-    viewState.data = mock(List.class);
+    viewState.setData(mock(List.class));
     viewState.apply(courseView, true);
     verify(courseView).setData(anyListOf(Course.class));
   }
 
   @Test
   public void ShowLayout_Empty() throws Exception {
-    viewState.layoutType = View.LayoutType.EMPTY;
+    viewState.setLayoutType(View.LayoutType.EMPTY);
     viewState.apply(courseView, true);
     verify(courseView).showLayout(View.LayoutType.EMPTY);
   }
 
   @Test
   public void ShowLayout_Error() throws Exception {
-    viewState.layoutType = View.LayoutType.ERROR;
+    viewState.setLayoutType(View.LayoutType.ERROR);
     viewState.apply(courseView, true);
     verify(courseView).showLayout(View.LayoutType.ERROR);
   }
 
   @Test
   public void ShowLayout_List() throws Exception {
-    viewState.layoutType = View.LayoutType.LIST;
+    viewState.setLayoutType(View.LayoutType.LIST);
     viewState.apply(courseView, true);
     verify(courseView).showLayout(View.LayoutType.LIST);
   }
 
   @Test
   public void ShowLoading_GivenIsLoading() throws Exception {
-    viewState.isRefreshing = true;
+    viewState.setIsRefreshing(true);
     viewState.apply(courseView, true);
     verify(courseView).showLoading(true);
   }
@@ -82,6 +82,6 @@ public class CourseViewTest {
 
   @Before
   public void setUp() throws Exception {
-    viewState = new CourseViewState();
+    viewState = new CourseModel();
   }
 }

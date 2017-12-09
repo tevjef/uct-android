@@ -7,7 +7,7 @@ import dagger.android.AndroidInjector;
 public interface CourseSubcomponent
     extends AndroidInjector<CourseFragment> {
 
-  void inject(CoursePresenterImpl coursePresenter);
+  void inject(CourseViewModel coursePresenter);
 
   @Subcomponent.Builder
   abstract class Builder extends AndroidInjector.Builder<CourseFragment> {

@@ -1,12 +1,12 @@
 package com.tevinjeffrey.rutgersct.ui.base;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +15,8 @@ import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.ui.MainActivity;
 import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity;
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment;
-import dagger.android.AndroidInjection;
+
+import dagger.android.support.AndroidSupportInjection;
 import icepick.Icepick;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -48,7 +49,7 @@ public abstract class MVPFragment extends Fragment implements View {
   }
 
   @Override public void onAttach(final Context context) {
-    AndroidInjection.inject(this);
+    AndroidSupportInjection.inject(this);
     super.onAttach(context);
   }
 
@@ -138,7 +139,9 @@ public abstract class MVPFragment extends Fragment implements View {
     return (MainActivity) getActivity();
   }
 
-  public abstract void injectTargets();
+  public void injectTargets() {
+
+  }
 
   public void setToolbar(Toolbar toolbar) {
     toolbar.setTitleTextAppearance(getParentActivity(), R.style.ToolbarTitleStyle);

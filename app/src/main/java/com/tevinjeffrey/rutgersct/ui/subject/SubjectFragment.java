@@ -1,11 +1,11 @@
 package com.tevinjeffrey.rutgersct.ui.subject;
 
-import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar.BaseCallback;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,10 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.model.Subject;
 import com.tevinjeffrey.rutgersct.data.search.SearchFlow;
@@ -32,11 +29,17 @@ import com.tevinjeffrey.rutgersct.ui.base.MVPFragment;
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment;
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener;
 import com.tevinjeffrey.rutgersct.utils.Utils;
-import icepick.State;
+
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import timber.log.Timber;
 
 import static com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils.readableString;
@@ -46,17 +49,23 @@ public class SubjectFragment extends MVPFragment
 
   private static final String TAG = SubjectFragment.class.getSimpleName();
 
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.list_view) RecyclerView mRecyclerView;
-  @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
-  @BindView(R.id.error_view) ViewGroup mErrorView;
+  @BindView(R.id.toolbar)
+  Toolbar mToolbar;
+  @BindView(R.id.list)
+  RecyclerView mRecyclerView;
+  @BindView(R.id.swipeRefreshLayout)
+  SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.error_view)
+  ViewGroup mErrorView;
 
   ArrayList<Subject> mListDataset;
   SearchFlow searchFlow;
   SubjectViewState mViewState = new SubjectViewState();
 
-  @Inject SearchManager searchManager;
-  @Inject SubjectSubcomponent subcomponent;
+  @Inject
+  SearchManager searchManager;
+  @Inject
+  SubjectSubcomponent subcomponent;
 
   private Unbinder unbinder;
   private Snackbar snackbar;
@@ -141,7 +150,8 @@ public class SubjectFragment extends MVPFragment
     dismissSnackbar();
   }
 
-  @Override public void onDestroy() {
+  @Override
+  public void onDestroy() {
     super.onDestroy();
     unbinder.unbind();
   }
@@ -300,14 +310,16 @@ public class SubjectFragment extends MVPFragment
       mViewState.snackBarShowing = false;
     });
     snackbar.addCallback(new BaseCallback<android.support.design.widget.Snackbar>() {
-      @Override public void onDismissed(
+      @Override
+      public void onDismissed(
           final android.support.design.widget.Snackbar transientBottomBar,
           final int event) {
         mViewState.snackBarShowing = false;
         snackbar.removeCallback(this);
       }
 
-      @Override public void onShown(final android.support.design.widget.Snackbar transientBottomBar) {
+      @Override
+      public void onShown(final android.support.design.widget.Snackbar transientBottomBar) {
         mViewState.snackBarShowing = true;
       }
     });

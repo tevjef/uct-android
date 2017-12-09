@@ -69,7 +69,7 @@ public class TrackedSectionsViewState extends BaseViewState<TrackedSectionsView>
         ", layoutType=" + layoutType +
         ", data=" + data +
         ", snackBarShowing=" + snackBarShowing +
-        ", errorMessage='" + errorMessage + '\'' +
+        ", error='" + errorMessage + '\'' +
         '}';
   }
 

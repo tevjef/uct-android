@@ -1,6 +1,5 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;

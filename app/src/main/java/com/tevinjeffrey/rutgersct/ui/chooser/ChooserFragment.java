@@ -1,10 +1,10 @@
 package com.tevinjeffrey.rutgersct.ui.chooser;
 
 import android.animation.LayoutTransition;
-import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
@@ -257,7 +257,7 @@ public class ChooserFragment extends MVPFragment implements ChooserView {
     @Override
     public void onClick(View v) {
       RadioButton radioButton =
-          (RadioButton) mSemesterRadiogroup.findViewById(mSemesterRadiogroup.getCheckedRadioButtonId());
+          mSemesterRadiogroup.findViewById(mSemesterRadiogroup.getCheckedRadioButtonId());
 
       if (semesters == null || radioButton == null) {
         Toast
