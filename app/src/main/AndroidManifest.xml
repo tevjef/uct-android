@@ -1,76 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tevinjeffrey.rutgersct"
-    >
+  package="com.tevinjeffrey.rutgersct">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.INTERNET" />
 
-  <application
-      xmlns:tools="http://schemas.android.com/tools"
-      android:name=".RutgersCTApp"
-      android:allowBackup="true"
-      android:icon="@mipmap/ic_launcher"
-      android:label="@string/application_name"
-      android:theme="@style/RutgersCT_Default"
-      tools:replace="android:icon,android:label"
-      android:networkSecurityConfig="@xml/network_security_config"
-      >
+  <application xmlns:tools="http://schemas.android.com/tools"
+    android:name=".RutgersCTApp"
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/application_name"
+    android:networkSecurityConfig="@xml/network_security_config"
+    android:theme="@style/RutgersCT_Default"
+    tools:replace="android:icon,android:label">
     <meta-data
-        android:name="DATABASE"
-        android:value="tracked_sections.db"
-        />
+      android:name="DATABASE"
+      android:value="tracked_sections.db" />
     <meta-data
-        android:name="VERSION"
-        android:value="2"
-        />
+      android:name="VERSION"
+      android:value="2" />
     <meta-data
-        android:name="QUERY_LOG"
-        android:value="true"
-        />
+      android:name="QUERY_LOG"
+      android:value="true" />
     <meta-data
-        android:name="DOMAIN_PACKAGE_NAME"
-        android:value="com.tevinjeffrey.rutgersct.database"
-        />
+      android:name="DOMAIN_PACKAGE_NAME"
+      android:value="com.tevinjeffrey.rutgersct.database" />
+    <meta-data
+      android:name="com.google.firebase.messaging.default_notification_icon"
+      android:resource="@drawable/ic_notification" />
+    <meta-data
+      android:name="com.google.firebase.messaging.default_notification_color"
+      android:resource="@color/blue_grey" />
 
     <activity
-        android:name=".ui.MainActivity"
-        android:launchMode="singleTop"
-        >
+      android:name=".ui.MainActivity"
+      android:launchMode="singleTop">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
     <activity
-        android:name=".ui.settings.SettingsActivity"
-        android:launchMode="singleTop"
-        >
-    </activity>
+      android:name=".ui.settings.SettingsActivity"
+      android:launchMode="singleTop"></activity>
 
-    <service
-        android:name=".data.notifications.UCTFirebaseMessagingService">
+    <service android:name=".data.notifications.UCTFirebaseMessagingService">
       <intent-filter>
-        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
-    <service
-        android:name=".data.notifications.UCTFirebaseInstanceIDService">
+    <service android:name=".data.notifications.UCTFirebaseInstanceIDService">
       <intent-filter>
-        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
       </intent-filter>
     </service>
-    <service android:name=".data.notifications.RegistrationIntentService"/>
+    <service android:name=".data.notifications.RegistrationIntentService" />
 
     <meta-data
-        android:name="com.crashlytics.ApiKey"
-        android:value="833534bcb0efa4959e3a72cd803a7e3251d6bc65"
-        />
+      android:name="com.crashlytics.ApiKey"
+      android:value="833534bcb0efa4959e3a72cd803a7e3251d6bc65" />
     <activity
-        android:name=".ui.IntroActivity"
-        android:label="@string/title_activity_intro"
-        >
-    </activity>
+      android:name=".ui.IntroActivity"
+      android:label="@string/title_activity_intro"></activity>
   </application>
 
 </manifest>
