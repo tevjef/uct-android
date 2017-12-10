@@ -13,7 +13,7 @@ dependencies {
   compile "io.reactivex.rxjava2:rxjava:" + rootProject.rxJava2Version
 
   compile 'com.squareup.retrofit2:retrofit:' + rootProject.retrofit2Version
-  compile 'com.squareup.retrofit2:converter-gson:' + rootProject.retrofit2Version
+  compile 'com.squareup.retrofit2:converter-moshi:' + rootProject.retrofit2Version
   compile 'com.squareup.retrofit2:adapter-rxjava2:' + rootProject.retrofit2Version
   compile group: 'com.squareup.retrofit2', name: 'converter-wire', version: rootProject.retrofit2Version
   compile 'com.squareup.okhttp3:logging-interceptor:' + rootProject.okhttp3Version

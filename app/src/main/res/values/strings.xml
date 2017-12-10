@@ -96,5 +96,7 @@
     <item>Every 3 hours</item>
   </string-array>
   <string name="title_activity_intro">Title</string>
-
+  <string name="title_section_open">A section has opened!</string>
+  <string name="title_section_closed">A section has closed!</string>
+  <string name="section_notification_group">section_notification_group</string>
 </resources>

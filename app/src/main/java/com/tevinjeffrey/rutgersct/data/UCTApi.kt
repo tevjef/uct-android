@@ -17,6 +17,8 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jonathanfinerty.once.Amount
 import jonathanfinerty.once.Once
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.ZonedDateTime
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
@@ -50,6 +52,8 @@ class UCTApi @Inject constructor(
     }
   }
 
+
+  private var fcmToken: String = subscriptionManager.fcmToken()
 
   var defaultSemester: Semester?
     get() {
@@ -140,6 +144,14 @@ class UCTApi @Inject constructor(
 
   fun subscribeTo(subscription: UCTSubscription): Single<Boolean> {
     Timber.d("Subscribing to: %s", subscription)
+
+    // Send subscription to server independently from the stream
+    sendSubscription(subscription.sectionTopicName, true)
+        .subscribeOn(Schedulers.io())
+        .subscribe(
+            { Timber.i("Sent subscription to server. topicName: ${subscription.sectionTopicName} isSubscribed: true")},
+            { Timber.e(it) })
+
     return Single.defer {
       try {
         subscriptionManager.subscribe(subscription.sectionTopicName)
@@ -152,15 +164,38 @@ class UCTApi @Inject constructor(
         .flatMap { addSubscription(it) }
   }
 
+  fun acknowledgeNotification(topicName: String, notificationId: String): Single<Boolean> {
+    val timeNow = ZonedDateTime.now(ZoneOffset.UTC).toOffsetDateTime().toString()
+    return uctService
+        .acknowledgeNotification(timeNow, topicName, fcmToken, notificationId)
+        .subscribeOn(Schedulers.io())
+        .map { true }
+  }
+
+  private fun sendSubscription(topicName: String, isSubscribed: Boolean): Single<Boolean> {
+    return uctService
+        .subscription(isSubscribed, topicName, fcmToken)
+        .subscribeOn(Schedulers.io())
+        .map { true }
+  }
+
   fun unsubscribeFrom(topicName: String): Single<Boolean> {
     Timber.d("Unsubscribing from: %s", topicName)
+
+    // Send subscription to server independently from the stream
+    sendSubscription(topicName, false)
+        .subscribeOn(Schedulers.io())
+        .subscribe(
+            { Timber.i("Sent subscription to server. topicName: $topicName isSubscribed: false")},
+            { Timber.e(it) })
+
     return Single.defer {
       try {
         subscriptionManager.unsubscribe(topicName)
       } catch (e: IOException) {
         return@defer Single.error<String>(e)
       }
-      Single.just(topicName)
+      sendSubscription(topicName, false)
     }
         .subscribeOn(Schedulers.io())
         .flatMap { removeSubscription(topicName) }

@@ -14,6 +14,9 @@ import android.view.Window
 import android.view.WindowManager
 
 import com.tevinjeffrey.rutgersct.R
+import okio.BufferedSource
+import okio.Okio
+import okio.Source
 
 import java.io.BufferedReader
 import java.io.IOException
@@ -47,13 +50,10 @@ object Utils {
   }
 
   @Throws(IOException::class)
-  fun parseResource(context: Context, resource: Int): String {
+  fun parseResource(context: Context, resource: Int): BufferedSource {
     val inputStream = context.resources.openRawResource(resource)
 
-    val text = inputStream.bufferedReader()
-        .readText()
-    inputStream.close()
-    return text
+    return Okio.buffer(Okio.source(inputStream))
   }
 
   fun setWindowColor(colorDark: Int, context: Activity) {

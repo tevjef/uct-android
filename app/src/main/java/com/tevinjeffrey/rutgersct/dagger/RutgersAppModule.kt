@@ -3,8 +3,7 @@ package com.tevinjeffrey.rutgersct.dagger
 import android.content.Context
 import android.os.Build
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
 import com.tevinjeffrey.rmp.common.RMPModule
 import com.tevinjeffrey.rutgersct.BuildConfig
 import com.tevinjeffrey.rutgersct.RutgersCTApp
@@ -27,12 +26,10 @@ import javax.net.ssl.X509TrustManager
   RMPModule::class]
 )
 class RutgersAppModule {
+
   @Provides
-  fun providesGson(): Gson {
-    return GsonBuilder()
-        .serializeNulls()
-        .setPrettyPrinting()
-        .create()
+  fun providesMoshi(): Moshi {
+    return RutgersAppModule.moshi
   }
 
   @Provides
@@ -101,6 +98,9 @@ class RutgersAppModule {
   }
 
   companion object {
+    val moshi: Moshi by lazy {
+      Moshi.Builder().build()
+    }
 
     private val CONNECT_TIMEOUT_MILLIS: Long = 15000
     private val READ_TIMEOUT_MILLIS: Long = 20000

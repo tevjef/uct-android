@@ -20,11 +20,8 @@ import android.app.IntentService
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import dagger.android.AndroidInjection
-import javax.inject.Inject
 
 class RegistrationIntentService : IntentService(TAG) {
-  @Inject lateinit var subscriptionManager: SubscriptionManager
-
   override fun onCreate() {
     AndroidInjection.inject(this)
     super.onCreate()

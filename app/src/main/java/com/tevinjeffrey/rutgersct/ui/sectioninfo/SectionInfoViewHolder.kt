@@ -32,15 +32,15 @@ open class SectionInfoViewHolder(
 
   fun setOpenStatus(section: Section) {
     if (section.status == "Open") {
-      sectionNumberBackground.backgroundColor = ContextCompat.getColor(
+      sectionNumberBackground.setBackgroundColor(ContextCompat.getColor(
           mParent.context,
           R.color.green
-      )
+      ))
     } else {
-      sectionNumberBackground.backgroundColor = ContextCompat.getColor(
+      sectionNumberBackground.setBackgroundColor(ContextCompat.getColor(
           mParent.context,
           R.color.red
-      )
+      ))
     }
   }
 

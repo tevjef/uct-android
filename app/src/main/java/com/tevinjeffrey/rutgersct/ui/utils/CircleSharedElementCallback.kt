@@ -6,12 +6,8 @@ import android.support.transition.Transition
 import android.support.v4.app.SharedElementCallback
 import android.view.View
 
-import com.tevinjeffrey.rutgersct.R
-
-import java.lang.ref.WeakReference
-
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-class CircleSharedElementCallback : SharedElementCallback() {
+class CircleSharedElementCallback(val transitionName: String) : SharedElementCallback() {
 
   val transitionCallback = object : Transition.TransitionListener {
 
@@ -20,52 +16,37 @@ class CircleSharedElementCallback : SharedElementCallback() {
     }
 
     override fun onTransitionEnd(transition: Transition) {
-      if (tempView != null) {
-        tempView!!.get()?.alpha = 0f
-        transition.removeListener(this)
-      }
     }
 
     override fun onTransitionPause(transition: Transition) {
-
     }
 
     override fun onTransitionResume(transition: Transition) {
-
     }
 
     override fun onTransitionStart(transition: Transition) {
-
     }
   }
 
-  private var mCircleViewSnapshot: CircleView? = null
   private var isEnter = true
-  private var tempView: WeakReference<View>? = null
 
   override//set
   fun onMapSharedElements(names: List<String>?, sharedElements: Map<String, View>?) {
     //It's possible the the framework was unable to map the view in the appering activity/fragment.
-
     //It's possible for the fragmment to not be attach to the activity. Calls to getResources will crash.
     if (isEnter) {
-      if (mCircleViewSnapshot != null) {
-        val mappedFrameLayout = sharedElements!![mCircleViewSnapshot!!.transitionName]
-
-        val hiddenCircleView = mappedFrameLayout!!.findViewById<CircleView>(R.id.hidden_circle_view)
-
-        hiddenCircleView.visibility = View.VISIBLE
-        hiddenCircleView.backgroundColor = mCircleViewSnapshot!!.backgroundColor
-        hiddenCircleView.text = mCircleViewSnapshot!!.text
-
-        tempView = WeakReference<View>(mappedFrameLayout)
-      }
+      val hiddenCircleView = sharedElements.orEmpty()[transitionName] as? CircleView
+      hiddenCircleView?.setBackgroundColor(circleColor)
+      hiddenCircleView?.titleText = circleText
+      hiddenCircleView?.invalidate()
     }
     isEnter = false
   }
 
-  override//capture
-  fun onSharedElementStart(
+  private var circleColor: Int = 0
+  private var circleText: String = ""
+
+  override fun onSharedElementStart(
       sharedElementNames: List<String>?,
       sharedElements: List<View>?,
       sharedElementSnapshots: List<View>?) {
@@ -73,12 +54,11 @@ class CircleSharedElementCallback : SharedElementCallback() {
     //get desired view by tranisition name...guarenteed to be unique ;)
 
     if (isEnter) {
-      for (v in sharedElements!!) {
-        if (v
-            .transitionName == v.resources.getString(R.string.transition_name_circle_view) && v is CircleView) {
-          mCircleViewSnapshot = v
-          mCircleViewSnapshot!!.visibility = View.INVISIBLE
-        }
+      (sharedElements?.firstOrNull {
+        it.transitionName == transitionName
+      } as? CircleView)?.apply {
+        circleColor = getBackgroundColor()
+        circleText = this.text
       }
     }
   }

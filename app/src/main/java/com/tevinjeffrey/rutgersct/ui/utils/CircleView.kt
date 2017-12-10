@@ -33,29 +33,17 @@ class CircleView
     private val DEFAULT_VIEW_SIZE = 96
   }
 
-  @JvmField
-  @field:[State]
-  var titleColor: Int = DEFAULT_TITLE_COLOR
-  @JvmField
-  @field:[State]
-  var backgroundColor: Int = DEFAULT_BACKGROUND_COLOR
-  @JvmField
-  @field:[State]
-  var text: String = DEFAULT_TITLE
-  @JvmField
-  @field:[State]
-  var titleSize = DEFAULT_TITLE_SIZE
-  @JvmField
-  @field:[State]
-  var showTitle: Boolean = DEFAULT_SHOW_TITLE
-  @JvmField
-  @field:[State] var viewSize: Int = 0
+  @JvmField @field:[State] var titleColor: Int = DEFAULT_TITLE_COLOR
+  @JvmField @field:[State] protected var backgroundColor: Int = DEFAULT_BACKGROUND_COLOR
+  @JvmField @field:[State] var text: String = DEFAULT_TITLE
+  @JvmField @field:[State] var titleSize = DEFAULT_TITLE_SIZE
+  @JvmField @field:[State] var showTitle: Boolean = DEFAULT_SHOW_TITLE
+  @JvmField @field:[State] var viewSize: Int = 0
 
   private lateinit var titleTextPaint: TextPaint
   private lateinit var backgroundPaint: Paint
 
-  @State lateinit var mInnerRectF: RectF
-
+  @State lateinit var innerRectF: RectF
 
   /**
    * Sets the view's title string attribute value.
@@ -69,7 +57,6 @@ class CircleView
       invalidate()
     }
 
-
   override fun onSaveInstanceState(): Parcelable? {
     return Icepick.saveInstanceState(this, super.onSaveInstanceState())
   }
@@ -79,10 +66,10 @@ class CircleView
   }
 
   override fun onDraw(canvas: Canvas) {
-    mInnerRectF.set(0f, 0f, viewSize.toFloat(), viewSize.toFloat())
+    innerRectF.set(0f, 0f, viewSize.toFloat(), viewSize.toFloat())
 
-    val centerX = mInnerRectF.centerX()
-    val centerY = mInnerRectF.centerY()
+    val centerX = innerRectF.centerX()
+    val centerY = innerRectF.centerY()
 
     canvas.drawCircle(centerX, centerY, (viewSize / 2).toFloat(), backgroundPaint)
 
@@ -90,12 +77,7 @@ class CircleView
     val yPos = (centerY - (titleTextPaint.descent() + titleTextPaint.ascent()) / 2).toInt()
 
     if (showTitle) {
-      canvas.drawText(
-          this.text!!,
-          xPos.toFloat(),
-          yPos.toFloat(),
-          titleTextPaint
-      )
+      canvas.drawText(this.text, xPos.toFloat(), yPos.toFloat(), titleTextPaint)
     }
   }
 
@@ -146,7 +128,8 @@ class CircleView
     }
 
     titleColor = a.getColor(R.styleable.CircleView_titleColor, DEFAULT_TITLE_COLOR)
-    backgroundColor = a.getColor(R.styleable.CircleView_backgroundColorValue, DEFAULT_BACKGROUND_COLOR)
+    backgroundColor = a.getColor(R.styleable.CircleView_backgroundColorValue,
+        DEFAULT_BACKGROUND_COLOR)
 
     titleSize = a.getDimension(R.styleable.CircleView_titleSize, DEFAULT_TITLE_SIZE)
 
@@ -154,7 +137,7 @@ class CircleView
 
     titleTextPaint = TextPaint()
     backgroundPaint = Paint()
-    mInnerRectF = RectF()
+    innerRectF = RectF()
 
     //Title TextPaint
     titleTextPaint.flags = Paint.ANTI_ALIAS_FLAG

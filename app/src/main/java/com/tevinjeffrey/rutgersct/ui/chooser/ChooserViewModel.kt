@@ -6,6 +6,7 @@ import com.tevinjeffrey.rutgersct.data.UCTApi
 import com.tevinjeffrey.rutgersct.data.model.Semester
 import com.tevinjeffrey.rutgersct.data.model.University
 import com.tevinjeffrey.rutgersct.utils.RxUtils
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -21,17 +22,21 @@ class ChooserViewModel : ViewModel() {
 
   var defaultSemester: Semester?
     get() = uctApi.defaultSemester
-    set(value) { uctApi.defaultSemester = value }
+    set(value) {
+      uctApi.defaultSemester = value
+    }
 
   var defaultUniversity: University?
     get() = uctApi.defaultUniversity
-    set(value) { uctApi.defaultUniversity = value }
+    set(value) {
+      uctApi.defaultUniversity = value
+    }
 
   fun loadAvailableSemesters(universityTopicName: String) {
     cancePreviousSubscription()
-    disposable = uctApi
-        .getUniversity(universityTopicName)
-        .map { university -> university.available_semesters }
+    disposable = Observable.just(universityData.value?.data?.firstOrNull
+        { it.topic_name == universityTopicName }
+            ?.available_semesters)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             {

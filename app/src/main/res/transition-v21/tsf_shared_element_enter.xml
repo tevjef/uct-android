@@ -5,7 +5,6 @@
     >
   <changeBounds/>
   <changeTransform/>
-  <changeImageTransform/>
   <arcMotion
       android:maximumAngle="90"
       android:minimumHorizontalAngle="60"
@@ -13,8 +12,5 @@
       />
   <targets>
     <target android:targetName="@string/transition_name_circle_view"/>
-
-    <target android:excludeName="@string/transition_name_fab"/>
-    <target android:excludeId="@string/transition_name_fab"/>
   </targets>
 </transitionSet>

@@ -1,33 +1,37 @@
 package com.tevinjeffrey.rutgersct.data.database
 
 import android.arch.persistence.room.TypeConverter
-
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import android.support.annotation.Nullable
+import com.tevinjeffrey.rutgersct.dagger.RutgersAppModule
 import com.tevinjeffrey.rutgersct.data.model.Semester
 import com.tevinjeffrey.rutgersct.data.model.University
 
 class Converters {
 
-  private val GSON_INSTANCE = GsonBuilder().serializeNulls().create()
+  companion object {
+    private val semesterAdapter = RutgersAppModule.moshi.adapter(Semester::class.java)
+    private val universityAdapter = RutgersAppModule.moshi.adapter(University::class.java)
+  }
 
   @TypeConverter
-  fun semesterFromString(value: String): Semester {
-    return GSON_INSTANCE.fromJson(value, Semester::class.java)
+  @Nullable
+  fun semesterFromString(value: String): Semester? {
+    return semesterAdapter.fromJson(value)
   }
 
   @TypeConverter
   fun stringFromSemester(semester: Semester): String {
-    return GSON_INSTANCE.toJson(semester)
+    return semesterAdapter.toJson(semester)
   }
 
   @TypeConverter
   fun stringFromUniversity(university: University): String {
-    return GSON_INSTANCE.toJson(university)
+    return universityAdapter.toJson(university)
   }
 
   @TypeConverter
-  fun universityFromString(value: String): University {
-    return GSON_INSTANCE.fromJson(value, University::class.java)
+  @Nullable
+  fun universityFromString(value: String): University? {
+    return universityAdapter.fromJson(value)
   }
 }

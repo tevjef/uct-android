@@ -171,8 +171,9 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-      circleView.transitionName = getString(R.string.transition_name_circle_view)
-      ft.addSharedElement(circleView, getString(R.string.transition_name_circle_view))
+      val circleTransitionName = getString(R.string.transition_name_circle_view)
+      circleView.transitionName = circleTransitionName
+      ft.addSharedElement(circleView, circleTransitionName)
 
       appBar.transitionName = null
 
@@ -207,7 +208,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
       sectionInfoFragment.sharedElementEnterTransition = sharedElementsEnter
       sectionInfoFragment.sharedElementReturnTransition = sharedElementsReturn
 
-      val sharedelementCallback = CircleSharedElementCallback()
+      val sharedelementCallback = CircleSharedElementCallback(circleTransitionName)
       sectionInfoFragment.setEnterSharedElementCallback(sharedelementCallback)
       sharedElementsEnter.addListener(sharedelementCallback.transitionCallback)
     } else {

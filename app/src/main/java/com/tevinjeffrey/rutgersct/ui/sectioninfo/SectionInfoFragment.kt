@@ -29,7 +29,7 @@ import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater
 import com.tevinjeffrey.rutgersct.utils.Utils
 import kotlinx.android.synthetic.main.fragment_section_info.fab
 import kotlinx.android.synthetic.main.section_info_app_bar.courseTitleText
-import kotlinx.android.synthetic.main.section_info_app_bar.creditsLayout
+import kotlinx.android.synthetic.main.section_info_app_bar.creditsGroup
 import kotlinx.android.synthetic.main.section_info_app_bar.creditsText
 import kotlinx.android.synthetic.main.section_info_app_bar.indexNumberText
 import kotlinx.android.synthetic.main.section_info_app_bar.instructorsText
@@ -236,7 +236,7 @@ class SectionInfoFragment : BaseFragment() {
     val credits = searchViewModel.section?.credits
 
     if (credits.isNullOrEmpty() || credits == "-1") {
-      creditsLayout.visibility = View.GONE
+      creditsGroup.visibility = View.GONE
     }
     creditsText.text = credits
   }

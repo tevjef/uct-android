@@ -61,8 +61,11 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
-    val rootView = themedInflater.inflate(R.layout.fragment_tracked_sections, container, false) as ViewGroup
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity,
+        R.style.RutgersCT))
+    val rootView = themedInflater.inflate(R.layout.fragment_tracked_sections,
+        container,
+        false) as ViewGroup
 
     if (!Once.beenDone(CORRUPT_SECTIONS) && !Once.beenDone(IntroActivity.TOUR_STARTED)) {
       // Show alert
@@ -212,21 +215,17 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
     val ft = this.fragmentManager!!.beginTransaction()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      val circleView = view.findViewById<CircleView>(R.id.section_number_background)
       fab.transitionName = getString(R.string.transition_name_fab)
       ft.addSharedElement(fab, getString(R.string.transition_name_fab))
 
-      circleView.transitionName = getString(R.string.transition_name_circle_view)
-      ft.addSharedElement(circleView, getString(R.string.transition_name_circle_view))
+      val circleTransitionName = getString(R.string.transition_name_circle_view)
+      val circleView = view.findViewById<CircleView>(R.id.section_number_background)
+      circleView.transitionName = circleTransitionName
+      ft.addSharedElement(circleView, circleTransitionName)
 
-      val tsfSectionEnter = TransitionInflater
-          .from(parentActivity)
-          .inflateTransition(R.transition.tsf_section_enter)
-
-      val tsfSectionReturn = TransitionInflater
-          .from(parentActivity)
-          .inflateTransition(R.transition.tsf_section_return)
-
+      val inflater = TransitionInflater.from(parentActivity)
+      val tsfSectionEnter = inflater.inflateTransition(R.transition.tsf_section_enter)
+      val tsfSectionReturn = inflater.inflateTransition(R.transition.tsf_section_return)
       sectionInfoFragment.enterTransition = tsfSectionEnter
       sectionInfoFragment.returnTransition = tsfSectionReturn
 
@@ -236,19 +235,16 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
       sectionInfoFragment.allowReturnTransitionOverlap = false
       sectionInfoFragment.allowEnterTransitionOverlap = false
 
-      val sharedElementsEnter = TransitionInflater
-          .from(parentActivity)
-          .inflateTransition(R.transition.tsf_shared_element_enter)
-      val sharedElementsReturn = TransitionInflater
-          .from(parentActivity)
-          .inflateTransition(R.transition.tsf_shared_element_return)
+      val sharedElementsEnter = inflater.inflateTransition(R.transition.tsf_shared_element_enter)
+      val sharedElementsReturn = inflater.inflateTransition(R.transition.tsf_shared_element_return)
 
       sectionInfoFragment.sharedElementEnterTransition = sharedElementsEnter
       sectionInfoFragment.sharedElementReturnTransition = sharedElementsReturn
 
-      val sharedelementCallback = CircleSharedElementCallback()
-      sectionInfoFragment.setEnterSharedElementCallback(sharedelementCallback)
-      sharedElementsEnter.addListener(sharedelementCallback.transitionCallback)
+      val sharedElementCallback = CircleSharedElementCallback(circleTransitionName)
+      sectionInfoFragment.setEnterSharedElementCallback(sharedElementCallback)
+
+      sharedElementsEnter.addListener(sharedElementCallback.transitionCallback)
     } else {
       ft.setCustomAnimations(
           R.animator.enter,

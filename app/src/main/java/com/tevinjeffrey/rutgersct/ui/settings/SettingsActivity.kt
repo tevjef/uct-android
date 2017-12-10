@@ -16,8 +16,9 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.tevinjeffrey.rutgersct.BuildConfig
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.ui.utils.AppCompatPreferenceActivity
@@ -123,49 +124,43 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     private fun setupLicensesPref() {
       findPreference("licenses")?.apply {
         onPreferenceClickListener = Preference.OnPreferenceClickListener {
-          val gson = GsonBuilder()
-              .setPrettyPrinting()
-              .disableHtmlEscaping()
-              .create()
-
-          var licenses: String? = null
+          val moshi = Moshi.Builder().build()
           try {
-            licenses = Utils.parseResource(parentActivity, R.raw.open_source_licenses)
+            val licenses = Utils.parseResource(parentActivity, R.raw.open_source_licenses)
+            val type = Types.newParameterizedType(List::class.java, License::class.java)
+            val adapter: JsonAdapter<List<License>> = moshi.adapter(type)
+            val licenseList = adapter.fromJson(licenses).orEmpty()
+
+            val linearLayout = LinearLayout(parentActivity)
+            linearLayout.orientation = LinearLayout.VERTICAL
+            linearLayout.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            for (license in licenseList) {
+              val licenseView = LayoutInflater.from(parentActivity).inflate(R.layout.license, null)
+              val name = licenseView.findViewById<TextView>(R.id.name)
+              val author = licenseView.findViewById<TextView>(R.id.author)
+              val content = licenseView.findViewById<TextView>(R.id.content)
+              val openInBrowser = licenseView.findViewById<View>(R.id.open_in_browser)
+              openInBrowser.setOnClickListener { Utils.openLink(parentActivity, license.website.orEmpty()) }
+              name.text = license.name
+              author.text = license.author
+              content.text = license.content
+              linearLayout.addView(licenseView)
+            }
+
+            MaterialDialog.Builder(parentActivity)
+                .title("Open Source Licenses")
+                .titleColor(ContextCompat.getColor(parentActivity, R.color.primary))
+                .positiveText("Ok")
+                .positiveColor(ContextCompat.getColor(parentActivity, R.color.primary))
+                .customView(linearLayout, true)
+                .show()
           } catch (e: IOException) {
             Timber.e(e)
           }
-
-          val linearLayout = LinearLayout(parentActivity)
-          linearLayout.orientation = LinearLayout.VERTICAL
-          linearLayout.layoutParams = LinearLayout.LayoutParams(
-              ViewGroup.LayoutParams.MATCH_PARENT,
-              ViewGroup.LayoutParams.WRAP_CONTENT
-          )
-          val listType = object : TypeToken<List<License>>() {
-
-          }.type
-          val licenseList = gson.fromJson<List<License>>(licenses, listType)
-          for (license in licenseList) {
-            val licenseView = LayoutInflater.from(parentActivity).inflate(R.layout.license, null)
-            val name = licenseView.findViewById<TextView>(R.id.name)
-            val author = licenseView.findViewById<TextView>(R.id.author)
-            val content = licenseView.findViewById<TextView>(R.id.content)
-            val openInBrowser = licenseView.findViewById<View>(R.id.open_in_browser)
-            openInBrowser.setOnClickListener { Utils.openLink(parentActivity, license.website.orEmpty()) }
-            name.text = license.name
-            author.text = license.author
-            content.text = license.content
-            linearLayout.addView(licenseView)
-          }
-
-          MaterialDialog.Builder(parentActivity)
-              .title("Open Source Licenses")
-              .titleColor(ContextCompat.getColor(parentActivity, R.color.primary))
-              .positiveText("Ok")
-              .positiveColor(ContextCompat.getColor(parentActivity, R.color.primary))
-              .customView(linearLayout, true)
-              .show()
-
           true
         }
       }
