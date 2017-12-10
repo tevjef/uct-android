@@ -1,14 +1,15 @@
 package com.tevinjeffrey.rutgersct.ui.courseinfo
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.support.transition.Fade
+import android.support.transition.TransitionInflater
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
 import android.text.method.LinkMovementMethod
-import android.transition.Fade
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -16,7 +17,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Section
@@ -46,13 +46,17 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   private val headerViews = ArrayList<View>()
   private var selectedCourse: Course? = null
 
-  private lateinit var searchFlowViewModel: SearchViewModel
+  private lateinit var searchViewModel: SearchViewModel
   private lateinit var viewModel: CourseInfoViewModel
 
+  override fun onAttach(context: Context) {
+    searchViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
+    viewModel = ViewModelProviders.of(parentActivity).get(CourseInfoViewModel::class.java)
+    selectedCourse = searchViewModel.course
+    super.onAttach(context)
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
-    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-    viewModel = ViewModelProviders.of(activity).get(CourseInfoViewModel::class.java)
-    selectedCourse = searchFlowViewModel.course
     super.onCreate(savedInstanceState)
     retainInstance = true
   }
@@ -82,7 +86,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
     val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(
-        activity,
+        parentActivity,
         R.style.RutgersCT_Accent
     ))
     return themedInflater.inflate(R.layout.fragment_course_info, container, false)
@@ -98,7 +102,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
       R.id.action_add_all -> {
 
         parentActivity.backstackCount = 0
-        fragmentManager.popBackStackImmediate(
+        fragmentManager?.popBackStackImmediate(
             TrackedSectionsFragment.TAG,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
         )
@@ -114,7 +118,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
 
   override fun onItemClicked(section: Section, view: View) {
     Timber.i("Selected section: %s", section)
-    searchFlowViewModel.section = section
+    searchViewModel.section = section
     val bundle = Bundle()
     startSectionInfoFragment(bundle, view)
   }
@@ -125,8 +129,8 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
         .inflate(R.layout.course_info_metadata, null) as ViewGroup
     for (data in selectedCourse?.metadata.orEmpty()) {
       val metadata = LayoutInflater.from(parentActivity).inflate(R.layout.metadata, null) as ViewGroup
-      val title = ButterKnife.findById<TextView>(metadata, R.id.metadata_title)
-      val description = ButterKnife.findById<TextView>(metadata, R.id.metadata_text)
+      val title = metadata.findViewById<TextView>(R.id.metadata_title)
+      val description = metadata.findViewById<TextView>(R.id.metadata_text)
       description.movementMethod = LinkMovementMethod()
       title.text = data.title
       description.text = Html.fromHtml(data.content)
@@ -146,8 +150,8 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
 
   private fun setShortenedCourseInfo() {
     //String offeringUnitCode = selectedCourse.getOfferingUnitCode();
-    val subject = searchFlowViewModel.subject
-    val course = searchFlowViewModel.course
+    val subject = searchViewModel.subject
+    val course = searchViewModel.course
     if (subject != null) {
       val shortenedCourseInfo = subject.number + ": " + subject.name + " › " + course?.number
       this.shortenedCourseInfo.text = shortenedCourseInfo
@@ -161,9 +165,9 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   private fun startSectionInfoFragment(b: Bundle, clickedView: View) {
     val sectionInfoFragment = SectionInfoFragment()
 
-    val ft = fragmentManager.beginTransaction()
+    val ft = fragmentManager!!.beginTransaction()
 
-    val circleView = ButterKnife.findById<CircleView>(clickedView, R.id.section_number_background)
+    val circleView = clickedView.findViewById<CircleView>(R.id.section_number_background)
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 

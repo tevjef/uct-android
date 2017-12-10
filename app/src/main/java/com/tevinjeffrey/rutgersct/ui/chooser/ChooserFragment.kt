@@ -2,10 +2,11 @@ package com.tevinjeffrey.rutgersct.ui.chooser
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.transition.ChangeBounds
-import android.transition.Fade
+import android.support.transition.ChangeBounds
+import android.support.transition.Fade
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,13 +38,17 @@ class ChooserFragment : BaseFragment() {
   private lateinit var searchViewModel: SearchViewModel
   private lateinit var viewModel: ChooserViewModel
 
+  override fun onAttach(context: Context) {
+    searchViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
+    viewModel = ViewModelProviders.of(parentActivity).get(ChooserViewModel::class.java)
+    super.onAttach(context)
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
-    searchViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-    viewModel = ViewModelProviders.of(activity).get(ChooserViewModel::class.java)
-    super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
     retainInstance = true
 
-    viewModel.chooserSemesterLiveData.observe(this, Observer { model ->
+    viewModel.semesterData.observe(this, Observer { model ->
       if (model == null) {
         return@Observer
       }
@@ -56,7 +61,7 @@ class ChooserFragment : BaseFragment() {
     })
 
 
-    viewModel.chooserUniversityLiveData.observe(this, Observer { model ->
+    viewModel.universityData.observe(this, Observer { model ->
       if (model == null) {
         return@Observer
       }
@@ -69,21 +74,19 @@ class ChooserFragment : BaseFragment() {
 
       universitySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-          viewModel.updateDefaultUniversity(model.data[position])
+          viewModel.defaultUniversity = model.data[position]
           viewModel.loadAvailableSemesters(model.data[position].topic_name!!)
         }
 
         override fun onNothingSelected(parent: AdapterView<*>) {}
       }
-
     })
   }
 
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(activity, R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_chooser, container, false)
   }
 
@@ -91,8 +94,7 @@ class ChooserFragment : BaseFragment() {
     super.onActivityCreated(savedInstanceState)
     setToolbar(toolbar)
 
-    viewModel.loadAvailableSemesters(searchViewModel.university?.topic_name.orEmpty())
-
+    viewModel.loadUniversities()
     searchBtn.setOnClickListener {
       val radioButton = semesterRadioGroup.findViewById<RadioButton>(semesterRadioGroup.checkedRadioButtonId)
       if (radioButton == null) {
@@ -155,12 +157,12 @@ class ChooserFragment : BaseFragment() {
     semesterRadioGroup!!.setOnCheckedChangeListener { group, checkedId ->
       if (checkedId != -1) {
         val semester = group.findViewById<View>(checkedId).tag as Semester
-        viewModel.updateSemester(semester)
+        viewModel.defaultSemester = semester
       }
     }
   }
 
-  fun setUniversities(universities: List<University>) {
+  private fun setUniversities(universities: List<University>) {
     val universityList = ArrayList<String>()
     val defaultUni = viewModel.defaultUniversity
 
@@ -169,7 +171,7 @@ class ChooserFragment : BaseFragment() {
       select = 0
     }
 
-    universities.forEachIndexed { index, university ->
+    universities.forEach { university ->
       universityList.add(university.name.orEmpty())
     }
 
@@ -182,7 +184,7 @@ class ChooserFragment : BaseFragment() {
   private fun startSubjectFragment(b: Bundle) {
     val sf = SubjectFragment()
     sf.arguments = b
-    val ft = fragmentManager.beginTransaction()
+    val ft = fragmentManager!!.beginTransaction()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       sf.exitTransition = Fade(Fade.OUT)

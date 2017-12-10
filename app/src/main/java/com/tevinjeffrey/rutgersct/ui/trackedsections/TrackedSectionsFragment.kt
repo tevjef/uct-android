@@ -2,24 +2,24 @@ package com.tevinjeffrey.rutgersct.ui.trackedsections
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.transition.Fade
+import android.support.transition.TransitionInflater
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.transition.Fade
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
@@ -52,17 +52,16 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
 
   private val adapter = TrackedSectionsAdapter(this)
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    viewModel = ViewModelProviders.of(activity).get(TrackedSectionsViewModel::class.java)
-    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-    super.onCreate(savedInstanceState)
-    retainInstance = true
+  override fun onAttach(context: Context) {
+    viewModel = ViewModelProviders.of(parentActivity).get(TrackedSectionsViewModel::class.java)
+    searchFlowViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
+    super.onAttach(context)
   }
 
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(activity, R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
     val rootView = themedInflater.inflate(R.layout.fragment_tracked_sections, container, false) as ViewGroup
 
     if (!Once.beenDone(CORRUPT_SECTIONS) && !Once.beenDone(IntroActivity.TOUR_STARTED)) {
@@ -161,9 +160,7 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
   }
 
   override fun showError(t: Throwable) {
-    val message: String
-    val resources = context.resources
-    message = when (t) {
+    val message: String = when (t) {
       is UnknownHostException -> resources.getString(R.string.no_internet)
       is SocketTimeoutException -> resources.getString(R.string.timed_out)
       else -> t.message ?: ""
@@ -192,7 +189,7 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
 
   private fun startChooserFragment() {
     val chooserFragment = ChooserFragment.newInstance()
-    val ft = fragmentManager.beginTransaction()
+    val ft = fragmentManager!!.beginTransaction()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       toolbar!!.transitionName = getString(R.string.transition_name_tool_background)
@@ -212,11 +209,11 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
   }
 
   private fun startSectionInfoFragment(sectionInfoFragment: SectionInfoFragment, view: View) {
-    val ft = this.fragmentManager.beginTransaction()
+    val ft = this.fragmentManager!!.beginTransaction()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      val circleView = ButterKnife.findById<CircleView>(view, R.id.section_number_background)
-      fab!!.transitionName = getString(R.string.transition_name_fab)
+      val circleView = view.findViewById<CircleView>(R.id.section_number_background)
+      fab.transitionName = getString(R.string.transition_name_fab)
       ft.addSharedElement(fab, getString(R.string.transition_name_fab))
 
       circleView.transitionName = getString(R.string.transition_name_circle_view)

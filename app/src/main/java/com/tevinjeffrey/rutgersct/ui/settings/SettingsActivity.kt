@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -24,6 +23,7 @@ import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.ui.utils.AppCompatPreferenceActivity
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils
 import com.tevinjeffrey.rutgersct.utils.Utils
+import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
@@ -41,9 +41,9 @@ class SettingsActivity : AppCompatPreferenceActivity() {
   }
 
   private fun setToolbar() {
-    val toolbar = ButterKnife.findById<Toolbar>(this, R.id.toolbar)
+    val toolbar = findViewById<Toolbar>(R.id.toolbar)
     setSupportActionBar(toolbar)
-    toolbar.setNavigationOnClickListener { v -> onBackPressed() }
+    toolbar.setNavigationOnClickListener { onBackPressed() }
 
     val actionBar = supportActionBar
 
@@ -105,7 +105,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
           textSize = 18f
           setTextColor(ContextCompat.getColor(parentActivity, R.color.secondary_text))
           text = Html.fromHtml("Designed and developed by <b> Tevin Jeffrey</b> <br><br>" +
-              "<a href=\"http://tevinjeffrey.com/\">Website</a>"
+              "<a href=\"http://tevinjeffrey.me/\">Website</a>"
               + "       <a href=\"mailto:tev.jeffrey@gmail.com\">Email</a>")
         }
 
@@ -121,52 +121,53 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     }
 
     private fun setupLicensesPref() {
-      val licenses = findPreference("licenses")
-      licenses.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-        val gson = GsonBuilder()
-            .setPrettyPrinting()
-            .disableHtmlEscaping()
-            .create()
+      findPreference("licenses")?.apply {
+        onPreferenceClickListener = Preference.OnPreferenceClickListener {
+          val gson = GsonBuilder()
+              .setPrettyPrinting()
+              .disableHtmlEscaping()
+              .create()
 
-        var licenses: String? = null
-        try {
-          licenses = Utils.parseResource(parentActivity, R.raw.open_source_licenses)
-        } catch (e: IOException) {
-          e.printStackTrace()
+          var licenses: String? = null
+          try {
+            licenses = Utils.parseResource(parentActivity, R.raw.open_source_licenses)
+          } catch (e: IOException) {
+            Timber.e(e)
+          }
+
+          val linearLayout = LinearLayout(parentActivity)
+          linearLayout.orientation = LinearLayout.VERTICAL
+          linearLayout.layoutParams = LinearLayout.LayoutParams(
+              ViewGroup.LayoutParams.MATCH_PARENT,
+              ViewGroup.LayoutParams.WRAP_CONTENT
+          )
+          val listType = object : TypeToken<List<License>>() {
+
+          }.type
+          val licenseList = gson.fromJson<List<License>>(licenses, listType)
+          for (license in licenseList) {
+            val licenseView = LayoutInflater.from(parentActivity).inflate(R.layout.license, null)
+            val name = licenseView.findViewById<TextView>(R.id.name)
+            val author = licenseView.findViewById<TextView>(R.id.author)
+            val content = licenseView.findViewById<TextView>(R.id.content)
+            val openInBrowser = licenseView.findViewById<View>(R.id.open_in_browser)
+            openInBrowser.setOnClickListener { Utils.openLink(parentActivity, license.website.orEmpty()) }
+            name.text = license.name
+            author.text = license.author
+            content.text = license.content
+            linearLayout.addView(licenseView)
+          }
+
+          MaterialDialog.Builder(parentActivity)
+              .title("Open Source Licenses")
+              .titleColor(ContextCompat.getColor(parentActivity, R.color.primary))
+              .positiveText("Ok")
+              .positiveColor(ContextCompat.getColor(parentActivity, R.color.primary))
+              .customView(linearLayout, true)
+              .show()
+
+          true
         }
-
-        val linearLayout = LinearLayout(parentActivity)
-        linearLayout.orientation = LinearLayout.VERTICAL
-        linearLayout.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        val listType = object : TypeToken<List<License>>() {
-
-        }.type
-        val licenseList = gson.fromJson<List<License>>(licenses, listType)
-        for (license in licenseList) {
-          val licenseView = LayoutInflater.from(parentActivity).inflate(R.layout.license, null)
-          val name = ButterKnife.findById<TextView>(licenseView, R.id.name)
-          val author = ButterKnife.findById<TextView>(licenseView, R.id.author)
-          val content = ButterKnife.findById<TextView>(licenseView, R.id.content)
-          val openInBrowser = ButterKnife.findById<View>(licenseView, R.id.open_in_browser)
-          openInBrowser.setOnClickListener { Utils.openLink(parentActivity, license.website) }
-          name.text = license.name
-          author.text = license.author
-          content.text = license.content
-          linearLayout.addView(licenseView)
-        }
-
-        MaterialDialog.Builder(parentActivity)
-            .title("Open Source Licenses")
-            .titleColor(ContextCompat.getColor(parentActivity, R.color.primary))
-            .positiveText("Ok")
-            .positiveColor(ContextCompat.getColor(parentActivity, R.color.primary))
-            .customView(linearLayout, true)
-            .show()
-
-        true
       }
     }
   }

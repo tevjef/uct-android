@@ -16,14 +16,16 @@ class ChooserViewModel : ViewModel() {
 
   private var disposable: Disposable? = null
 
-  lateinit var chooserSemesterLiveData: MutableLiveData<ChooserSemesterModel>
-  lateinit var chooserUniversityLiveData: MutableLiveData<ChooserUniversityModel>
+  var semesterData = MutableLiveData<ChooserSemesterModel>()
+  var universityData = MutableLiveData<ChooserUniversityModel>()
 
-  val defaultSemester: Semester
+  var defaultSemester: Semester?
     get() = uctApi.defaultSemester
+    set(value) { uctApi.defaultSemester = value }
 
-  val defaultUniversity: University?
+  var defaultUniversity: University?
     get() = uctApi.defaultUniversity
+    set(value) { uctApi.defaultUniversity = value }
 
   fun loadAvailableSemesters(universityTopicName: String) {
     cancePreviousSubscription()
@@ -32,34 +34,22 @@ class ChooserViewModel : ViewModel() {
         .map { university -> university.available_semesters }
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            { semesters ->
-              chooserSemesterLiveData.postValue(ChooserSemesterModel(data = semesters))
-            },
             {
-              chooserSemesterLiveData.postValue(ChooserSemesterModel(error = it))
-            }
+              if (semesterData.value?.data != it) {
+                semesterData.postValue(ChooserSemesterModel(data = it))
+              }
+            },
+            { semesterData.postValue(ChooserSemesterModel(error = it)) }
         )
   }
 
   fun loadUniversities() {
-    uctApi.universities
+    uctApi.universities()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            { semesters ->
-              chooserUniversityLiveData.postValue(ChooserUniversityModel(data = semesters))
-            },
-            {
-              chooserUniversityLiveData.postValue(ChooserUniversityModel(error = it))
-            }
+            { universityData.postValue(ChooserUniversityModel(data = it)) },
+            { universityData.postValue(ChooserUniversityModel(error = it)) }
         )
-  }
-
-  fun updateDefaultUniversity(university: University) {
-    uctApi.defaultUniversity = university
-  }
-
-  fun updateSemester(semester: Semester) {
-    uctApi.defaultSemester = semester
   }
 
   private fun cancePreviousSubscription() {

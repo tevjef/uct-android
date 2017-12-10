@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.res.ResourcesCompat
@@ -21,10 +22,11 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 abstract class BaseFragment : Fragment() {
+
   val parentActivity: MainActivity
     get() = activity as MainActivity
 
-  var snackbar: Snackbar? = null
+  private var snackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -65,9 +67,7 @@ abstract class BaseFragment : Fragment() {
   }
 
   open fun showError(t: Throwable) {
-    val message: String
-    val resources = context.resources
-    message = when (t) {
+    val message: String = when (t) {
       is UnknownHostException -> resources.getString(R.string.no_internet)
       is SocketTimeoutException -> resources.getString(R.string.timed_out)
       else -> t.message ?: ""
@@ -81,7 +81,7 @@ abstract class BaseFragment : Fragment() {
       R.id.action_track -> {
 
         parentActivity.backstackCount = 0
-        fragmentManager.popBackStackImmediate(
+        fragmentManager!!.popBackStackImmediate(
             TrackedSectionsFragment.TAG,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
         )
@@ -95,7 +95,7 @@ abstract class BaseFragment : Fragment() {
     }
   }
 
-  override fun onSaveInstanceState(outState: Bundle?) {
+  override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     Icepick.saveInstanceState(this, outState)
   }
@@ -110,7 +110,7 @@ abstract class BaseFragment : Fragment() {
     )
 
     parentActivity.setSupportActionBar(toolbar)
-    toolbar.setNavigationOnClickListener { v -> parentActivity.onBackPressed() }
+    toolbar.setNavigationOnClickListener { parentActivity.onBackPressed() }
 
     val actionBar = parentActivity.supportActionBar
 
@@ -128,9 +128,14 @@ abstract class BaseFragment : Fragment() {
       outgoingFragment: Fragment,
       incomingFragment: Fragment,
       ft: FragmentTransaction) {
-    ft.addToBackStack(outgoingFragment.toString()).replace(R.id.container, incomingFragment)
+    ft.addToBackStack(outgoingFragment.toString())
+        .replace(R.id.container, incomingFragment)
         .commitAllowingStateLoss()
     parentActivity.incrementBackstackCount()
-    fragmentManager.executePendingTransactions()
+    fragmentManager!!.executePendingTransactions()
+  }
+
+  override fun toString(): String {
+    return this.javaClass.simpleName
   }
 }

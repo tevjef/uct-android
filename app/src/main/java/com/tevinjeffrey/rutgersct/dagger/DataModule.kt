@@ -45,6 +45,7 @@ class DataModule {
   fun provideUCTDatabase(context: Context): UCTDatabase {
     return Room.databaseBuilder(context.applicationContext,
         UCTDatabase::class.java, "uct")
+        .fallbackToDestructiveMigration()
         .allowMainThreadQueries()
         .build()
   }

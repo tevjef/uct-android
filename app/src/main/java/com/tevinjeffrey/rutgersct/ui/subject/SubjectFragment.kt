@@ -2,13 +2,14 @@ package com.tevinjeffrey.rutgersct.ui.subject
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.support.transition.TransitionInflater
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -38,18 +39,41 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
 
   private val adapter = SubjectAdapter(this)
 
+  override fun onAttach(context: Context) {
+    viewModel = ViewModelProviders.of(parentActivity).get(SubjectViewModel::class.java)
+    searchFlowViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
+    super.onAttach(context)
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
-    viewModel = ViewModelProviders.of(activity).get(SubjectViewModel::class.java)
-    searchFlowViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
     super.onCreate(savedInstanceState)
     retainInstance = true
+
+    viewModel.subjectData.observe(this, Observer { model ->
+      if (model == null) {
+        return@Observer
+      }
+
+      if (model.error != null) {
+        showError(model.error)
+        return@Observer
+      }
+
+      swipeRefreshLayout.isRefreshing = model.isLoading
+
+      if (model.data.isNotEmpty()) {
+        adapter.swapData(model.data)
+      }
+    })
+
+    onRefresh()
   }
 
   override fun onCreateView(
       inflater: LayoutInflater,
       container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(activity, R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_subjects, container, false)
   }
 
@@ -72,25 +96,6 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
     setToolbar(toolbar)
 
     try_again.setOnClickListener { onRefresh() }
-
-    viewModel.loadSubjectData(
-        searchFlowViewModel.university?.topic_name.orEmpty(),
-        searchFlowViewModel.semester?.season.toString(),
-        searchFlowViewModel.semester?.year.toString())
-        .observe(this, Observer { model ->
-          if (model == null) {
-            return@Observer
-          }
-
-          if (model.error != null) {
-            showError(model.error)
-            return@Observer
-          }
-
-          swipeRefreshLayout.isRefreshing = model.isLoading
-
-          adapter.swapData(model.data)
-        })
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -99,12 +104,12 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when (item.itemId) {
+    return when (item.itemId) {
       R.id.action_refresh -> {
         this.onRefresh()
-        return true
+        true
       }
-      else -> return super.onOptionsItemSelected(item)
+      else -> super.onOptionsItemSelected(item)
     }
   }
 
@@ -125,14 +130,6 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
         searchFlowViewModel.semester?.year.toString())
   }
 
-  fun showLoading(pullToRefresh: Boolean) {
-    swipeRefreshLayout.isRefreshing = pullToRefresh
-  }
-
-  private fun dismissSnackbar() {
-    snackbar?.dismiss()
-  }
-
   private fun setToolbarTitle() {
     val title = searchFlowViewModel.university?.abbr + " " + readableString(searchFlowViewModel.semester)
     super.setToolbarTitle(toolbar, title)
@@ -141,7 +138,7 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
   private fun startCourseFragement(b: Bundle) {
     val courseFragment = CourseFragment()
     courseFragment.arguments = b
-    val ft = fragmentManager.beginTransaction()
+    val ft = fragmentManager!!.beginTransaction()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       val sfTransition = TransitionInflater.from(parentActivity).inflateTransition(R.transition.sf_exit)

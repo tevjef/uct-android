@@ -32,8 +32,4 @@ class TrackedSectionsViewModel : ViewModel() {
           Timber.e(throwable)
         })
   }
-
-  private fun cancePreviousSubscription() {
-    RxUtils.disposeIfNotNull(disposable)
-  }
 }

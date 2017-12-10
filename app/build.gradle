@@ -10,11 +10,28 @@ android {
   buildToolsVersion rootProject.buildToolsVersion
 
   signingConfigs {
+    debug {
+      if (rootProject.file('debug.properties').exists()) {
+        final def props = new Properties()
+        props.load(new FileInputStream(rootProject.file('debug.properties')))
+
+        storeFile file(props['DEBUG_STORE_FILE'])
+        storePassword props['DEBUG_STORE_PASSWORD']
+        keyAlias props['DEBUG_KEY_ALIAS']
+        keyPassword props['DEBUG_KEY_PASSWORD']
+      }
+    }
     release {
-      keyAlias rootProject.keyAlias
-      keyPassword rootProject.keyPassword
-      storeFile file(rootProject.storeFile)
-      storePassword rootProject.storePassword
+      if (rootProject.file('release.properties').exists()) {
+        final def props = new Properties()
+        props.load(new FileInputStream(rootProject.file('release.properties')))
+
+        storeFile file(props['RELEASE_STORE_FILE'])
+        storePassword props['RELEASE_STORE_PASSWORD']
+        keyAlias props['RELEASE_KEY_ALIAS']
+        keyPassword props['RELEASE_KEY_PASSWORD']
+        v2SigningEnabled true
+      }
     }
   }
 
@@ -115,7 +132,7 @@ dependencies {
   compile "com.android.support:recyclerview-v7:" + rootProject.supportLibVersion
   compile "com.android.support:recyclerview-v7:" + rootProject.supportLibVersion
   compile "com.android.support:support-annotations:" + rootProject.supportLibVersion
-  compile 'com.android.support:multidex:1.0.1'
+  compile 'com.android.support:multidex:1.0.2'
 
   compile 'com.google.firebase:firebase-core:' + rootProject.playServicesVersion
   compile 'com.google.firebase:firebase-messaging:' + rootProject.playServicesVersion
@@ -148,15 +165,14 @@ dependencies {
   compile 'com.github.paolorotolo:appintro:3.4.0'
   compile 'com.jonathanfinerty.once:once:1.2.1'
   compile 'com.github.satyan:sugar:1.5'
-  compile 'com.squareup:otto:1.3.8'
-  compile 'com.jakewharton.timber:timber:4.3.1'
-  compile 'com.google.code.gson:gson:2.8.0'
+  compile 'com.jakewharton.timber:timber:4.6.0'
+  compile 'com.google.code.gson:gson:2.8.2'
+  compile 'com.facebook.stetho:stetho:' + rootProject.stetho
+  compile 'com.facebook.stetho:stetho-okhttp3:' + rootProject.stetho
 
   compile 'frankiesardo:icepick:3.2.0'
   kapt 'frankiesardo:icepick-processor:3.2.0'
 
-  compile 'com.jakewharton:butterknife:8.5.1'
-  kapt 'com.jakewharton:butterknife-compiler:8.5.1'
   compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 

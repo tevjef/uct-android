@@ -7,7 +7,7 @@
 
 
   <FrameLayout
-      android:id="@+id/rmp_progressview"
+      android:id="@+id/rmpProgressView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       >

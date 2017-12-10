@@ -10,9 +10,18 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.1'
     classpath 'com.google.gms:google-services:3.1.1'
-    classpath 'io.fabric.tools:gradle:1.24.2'
+    classpath 'io.fabric.tools:gradle:1.24.5'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
+}
+
+plugins {
+  id 'com.gradle.build-scan' version '1.11'
+}
+
+buildScan {
+  licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+  licenseAgree = 'yes'
 }
 
 allprojects {
@@ -26,23 +35,12 @@ allprojects {
 }
 
 ext {
-  Properties properties = new Properties()
-  File propertiesFile = file('local.properties')
-  propertiesFile.createNewFile()
-  propertiesFile.withInputStream {
-    properties.load(it)
-  }
-
-  keyAlias = properties.keyAlias
-  keyPassword = properties.keyPassword
-  storePassword = properties.storePassword
-  storeFile = properties.storeFile == null ? "/" : properties.storeFile
-
-  compileSdkVersion = 26
-  targetSdkVersion = 26
+  compileSdkVersion = 27
+  targetSdkVersion = 27
 
   buildToolsVersion = "26.0.2"
-  supportLibVersion = "26.1.0"
+  supportLibVersion = "27.0.1"
+  stetho = "1.5.0"
   playServicesVersion = '11.4.2'
   runnerVersion = "0.5"
   rulesVersion = "0.5"

@@ -3,7 +3,6 @@ package com.tevinjeffrey.rutgersct.ui.course
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.extensions.Utils
@@ -27,8 +26,8 @@ class CourseViewHolder private constructor(
 
   companion object {
     fun newInstance(parent: View): CourseViewHolder {
-      val courseTitle = ButterKnife.findById<TextView>(parent, R.id.list_item_title)
-      val sectionInfo = ButterKnife.findById<TextView>(parent, R.id.course_list_sections)
+      val courseTitle = parent.findViewById<TextView>(R.id.list_item_title)
+      val sectionInfo = parent.findViewById<TextView>(R.id.course_list_sections)
       return CourseViewHolder(parent, courseTitle, sectionInfo)
     }
   }

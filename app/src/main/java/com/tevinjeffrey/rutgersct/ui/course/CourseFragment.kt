@@ -2,13 +2,14 @@ package com.tevinjeffrey.rutgersct.ui.course
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.support.transition.ChangeBounds
+import android.support.transition.Fade
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.transition.ChangeBounds
-import android.transition.Fade
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -43,9 +44,13 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
 
   private val adapter = CourseAdapter(this)
 
+  override fun onAttach(context: Context) {
+    searchViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
+    viewModel = ViewModelProviders.of(parentActivity).get(CourseViewModel::class.java)
+    super.onAttach(context)
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
-    searchViewModel = ViewModelProviders.of(activity).get(SearchViewModel::class.java)
-    viewModel = ViewModelProviders.of(activity).get(CourseViewModel::class.java)
     selectedSubject = searchViewModel.subject!!
     super.onCreate(savedInstanceState)
     retainInstance = true
@@ -62,16 +67,18 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
 
       swipeRefreshLayout.isRefreshing = model.isLoading
 
-      adapter.swapData(model.data)
+      if (model.data.isNotEmpty()) {
+        adapter.swapData(model.data)
+      }
     })
 
-    viewModel.loadCourses(searchViewModel.subject?.topic_name.orEmpty())
+    onRefresh()
   }
 
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(activity, R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_courses, container, false)
   }
 
@@ -125,9 +132,7 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
   }
 
   override fun showError(t: Throwable) {
-    val message: String
-    val resources = context.resources
-    message = when (t) {
+    val message: String = when (t) {
       is UnknownHostException -> resources.getString(R.string.no_internet)
       is SocketTimeoutException -> resources.getString(R.string.timed_out)
       else -> t.message ?: ""
@@ -140,7 +145,7 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
 
   private fun startCourseInfoFragment(b: Bundle) {
     val courseInfoFragment = CourseInfoFragment()
-    val ft = fragmentManager.beginTransaction()
+    val ft = fragmentManager!!.beginTransaction()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       val changeBoundsTransition = ChangeBounds()
       changeBoundsTransition.interpolator = DecelerateInterpolator()

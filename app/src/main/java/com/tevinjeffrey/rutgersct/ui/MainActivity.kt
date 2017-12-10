@@ -4,18 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.transition.AutoTransition
+import android.support.transition.ChangeBounds
+import android.support.transition.Fade
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.transition.AutoTransition
-import android.transition.ChangeBounds
-import android.transition.Fade
 import android.view.Menu
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import com.google.firebase.iid.FirebaseInstanceId
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment
-import com.tevinjeffrey.rutgersct.utils.PreferenceUtils
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -30,10 +29,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
   //Helper methods to manage the back stack count. The count return from
   // getFragmentManager().getbackstackCount() is unreliable when using transitions
-  @JvmField @field:[State] var backstackCount: Int = 0
+  @JvmField
+  @field:[State]
+  var backstackCount: Int = 0
 
   @Inject lateinit var context: Context
-  @Inject lateinit var mPreferenceUtils: PreferenceUtils
   @Inject lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
   override fun onBackPressed() {
     if (backstackCount > 0) {
       decrementBackstackCount()
-      fragmentManager.popBackStackImmediate()
+      supportFragmentManager.popBackStackImmediate()
     } else {
       finish()
     }

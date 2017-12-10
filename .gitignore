@@ -28,7 +28,7 @@ build/
 *.bin
 *.lock
 assets/psds/
-
+*.jks
 captures/
 *.alloc
 *.hprof

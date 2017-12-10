@@ -16,7 +16,7 @@ class CourseViewModel : ViewModel() {
 
   private var disposable: Disposable? = null
 
-  lateinit var courseLiveData: MutableLiveData<CourseModel>
+  val courseLiveData = MutableLiveData<CourseModel>()
 
   fun loadCourses(topicName: String) {
     RxUtils.disposeIfNotNull(disposable)
@@ -24,11 +24,9 @@ class CourseViewModel : ViewModel() {
         .doOnSubscribe { courseLiveData.postValue(CourseModel(isLoading = true)) }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe({ courseList ->
-          courseLiveData.postValue(CourseModel(data = courseList))
-        }, { throwable ->
-          courseLiveData.postValue(CourseModel(error = throwable))
-          Timber.e(throwable)
-        })
+        .subscribe(
+            { courseLiveData.postValue(CourseModel(data = it)) },
+            { courseLiveData.postValue(CourseModel(error = it)) }
+        )
   }
 }

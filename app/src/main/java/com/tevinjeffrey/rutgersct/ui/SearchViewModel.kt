@@ -16,8 +16,6 @@ class SearchViewModel : ViewModel() {
   var section: Section? = null
 
   fun buildSubscription(): UCTSubscription {
-    val uctSubscription = UCTSubscription(section!!.topic_name)
-
     val courseBuilder = course!!.newBuilder()
     courseBuilder.sections.clear()
     courseBuilder.sections.add(section)
@@ -37,8 +35,7 @@ class SearchViewModel : ViewModel() {
     universityBuilder.available_semesters.clear()
     universityBuilder.available_semesters.add(semester)
 
-    uctSubscription.university = universityBuilder.build()
-    return uctSubscription
+    return UCTSubscription(section!!.topic_name.orEmpty(), universityBuilder.build())
   }
 
   fun newSearch() {

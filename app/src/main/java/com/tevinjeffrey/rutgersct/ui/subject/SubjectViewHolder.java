@@ -7,8 +7,6 @@ import android.widget.TextView;
 import com.tevinjeffrey.rutgersct.R;
 import com.tevinjeffrey.rutgersct.data.model.Subject;
 
-import butterknife.ButterKnife;
-
 public final class SubjectViewHolder extends RecyclerView.ViewHolder {
 
   private final View mParent;
@@ -22,7 +20,7 @@ public final class SubjectViewHolder extends RecyclerView.ViewHolder {
 
   public static SubjectViewHolder newInstance(View parent) {
 
-    TextView subjectTitle = ButterKnife.findById(parent, R.id.list_item_title);
+    TextView subjectTitle = parent.findViewById(R.id.list_item_title);
 
     return new SubjectViewHolder(parent, subjectTitle);
   }

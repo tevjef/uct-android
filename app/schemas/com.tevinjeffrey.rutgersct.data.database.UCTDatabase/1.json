@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ea03cdec8aa9dc422ccdc4a623a44d2f",
+    "identityHash": "48fddb0fdb2e4ec7977ebfdc8f7e2ad2",
     "entities": [
       {
         "tableName": "uct_subscription",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`section_topic_name` TEXT NOT NULL, `university` TEXT, PRIMARY KEY(`section_topic_name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`section_topic_name` TEXT NOT NULL, `university` TEXT NOT NULL, PRIMARY KEY(`section_topic_name`))",
         "fields": [
           {
             "fieldPath": "sectionTopicName",
@@ -18,7 +18,7 @@
             "fieldPath": "university",
             "columnName": "university",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -32,18 +32,24 @@
       },
       {
         "tableName": "default_university",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`university` TEXT NOT NULL, PRIMARY KEY(`university`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`university` TEXT NOT NULL, `key` TEXT NOT NULL, PRIMARY KEY(`key`))",
         "fields": [
           {
             "fieldPath": "university",
             "columnName": "university",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "university"
+            "key"
           ],
           "autoGenerate": false
         },
@@ -52,18 +58,24 @@
       },
       {
         "tableName": "default_semester",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`semester` TEXT NOT NULL, PRIMARY KEY(`semester`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`semester` TEXT NOT NULL, `key` TEXT NOT NULL, PRIMARY KEY(`key`))",
         "fields": [
           {
             "fieldPath": "semester",
             "columnName": "semester",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "semester"
+            "key"
           ],
           "autoGenerate": false
         },
@@ -73,7 +85,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ea03cdec8aa9dc422ccdc4a623a44d2f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"48fddb0fdb2e4ec7977ebfdc8f7e2ad2\")"
     ]
   }
 }

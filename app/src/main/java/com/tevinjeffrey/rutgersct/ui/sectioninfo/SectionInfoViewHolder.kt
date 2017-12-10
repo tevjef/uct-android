@@ -7,7 +7,6 @@ import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.ButterKnife
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Meeting
 import com.tevinjeffrey.rutgersct.data.model.Section
@@ -46,7 +45,7 @@ open class SectionInfoViewHolder(
   }
 
   fun setSectionNumber(section: Section) {
-    sectionNumberBackground.titleText = section.number
+    sectionNumberBackground.text = section.number.orEmpty()
     sectionNumberBackground.tag = section.topic_name
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -109,9 +108,9 @@ open class SectionInfoViewHolder(
   companion object {
 
     fun newInstance(parent: View): SectionInfoViewHolder {
-      val instructors = ButterKnife.findById<TextView>(parent, R.id.prof_text)
-      val sectionNumberBackground = ButterKnife.findById<CircleView>(parent, R.id.section_number_background)
-      val sectionTimeContainer = ButterKnife.findById<ViewGroup>(parent, R.id.section_item_time_container)
+      val instructors = parent.findViewById<TextView>(R.id.prof_text)
+      val sectionNumberBackground = parent.findViewById<CircleView>(R.id.section_number_background)
+      val sectionTimeContainer = parent.findViewById<ViewGroup>(R.id.section_item_time_container)
 
       return SectionInfoViewHolder(parent, instructors, sectionNumberBackground, sectionTimeContainer)
     }

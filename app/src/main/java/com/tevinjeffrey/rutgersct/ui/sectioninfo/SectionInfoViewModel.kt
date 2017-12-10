@@ -24,33 +24,32 @@ import javax.inject.Inject
 
 class SectionInfoViewModel : ViewModel() {
 
-  private val TAG = this.javaClass.simpleName
-
   @Inject lateinit var rmp: RMP
   @Inject lateinit var uctApi: UCTApi
 
   private var disposable: Disposable? = null
 
-  lateinit var sectionInfoLiveData: MutableLiveData<SectionInfoModel>
-  lateinit var rmpLiveData: MutableLiveData<RMPModel>
+  var sectionInfoData = MutableLiveData<SectionInfoModel>()
+  var rmpData = MutableLiveData<RMPModel>()
 
   lateinit var searchViewModel: SearchViewModel
 
-  fun addSection() {
+  private fun addSection() {
     uctApi
-        .subscribe(searchViewModel.buildSubscription())
+        .subscribeTo(searchViewModel.buildSubscription())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            { b -> SectionInfoModel(isSectionAdded = b) },
+            { sectionInfoData.postValue(SectionInfoModel(isSectionAdded = true)) },
             { Timber.e(it) }
         )
   }
 
-  fun removeSection() {
-    uctApi.unsubscribe(searchViewModel.section?.topic_name)
+  private fun removeSection() {
+    uctApi
+        .unsubscribeFrom(searchViewModel.section?.topic_name.orEmpty())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            { b -> SectionInfoModel(isSectionAdded = b) },
+            { sectionInfoData.postValue(SectionInfoModel(isSectionAdded = false)) },
             { Timber.e(it) }
         )
   }
@@ -58,8 +57,7 @@ class SectionInfoViewModel : ViewModel() {
   fun loadRMP() {
     val professorsNotFound = ArrayList(searchViewModel.section?.instructors)
 
-    cancePreviousSubscription()
-
+    RxUtils.disposeIfNotNull(disposable)
     disposable = buildSearchParameters()
         .flatMap<Professor> { parameter -> rmp.getProfessor(parameter) }
         //Should need this to busness code.
@@ -83,7 +81,7 @@ class SectionInfoViewModel : ViewModel() {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnTerminate {
-          rmpLiveData.postValue(RMPModel(
+          rmpData.postValue(RMPModel(
               showRatingsLayout = true,
               ratingsLayoutLoading = false,
               professorNotFound = professorsNotFound.map {
@@ -93,30 +91,26 @@ class SectionInfoViewModel : ViewModel() {
         }
         .toList()
         .subscribe(
-            { professor ->
-              rmpLiveData.postValue(RMPModel(
+            {
+              rmpData.postValue(RMPModel(
                   showRatingsLayout = true,
                   ratingsLayoutLoading = false,
-                  professor = professor
+                  professor = it
               ))
             },
             { Timber.e(it) })
   }
 
   fun setFabState(animate: Boolean) {
-    val sectionTracked = uctApi.isTopicTracked(searchViewModel.section?.topic_name)
-    sectionInfoLiveData.postValue(SectionInfoModel(
+    val sectionTracked = uctApi.isTopicTracked(searchViewModel.section?.topic_name.orEmpty())
+    sectionInfoData.postValue(SectionInfoModel(
         isSectionAdded = sectionTracked,
         shouldAnimateFabIn = animate
     ))
   }
 
-  override fun toString(): String {
-    return TAG
-  }
-
   fun toggleFab() {
-    val sectionTracked = uctApi.isTopicTracked(searchViewModel.section?.topic_name)
+    val sectionTracked = uctApi.isTopicTracked(searchViewModel.section?.topic_name.orEmpty())
     if (sectionTracked) {
       removeSection()
     } else {
@@ -144,10 +138,6 @@ class SectionInfoViewModel : ViewModel() {
 
           Observable.just(params)
         }
-  }
-
-  private fun cancePreviousSubscription() {
-    RxUtils.disposeIfNotNull(disposable)
   }
 
   private fun filterGenericInstructors(): Predicate<Instructor> {
