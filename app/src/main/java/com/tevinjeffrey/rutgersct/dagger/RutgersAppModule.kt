@@ -3,6 +3,8 @@ package com.tevinjeffrey.rutgersct.dagger
 import android.content.Context
 import android.os.Build
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.moshi.Moshi
 import com.tevinjeffrey.rmp.common.RMPModule
 import com.tevinjeffrey.rutgersct.BuildConfig
@@ -16,7 +18,6 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 import java.security.cert.CertificateException
-import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -25,7 +26,7 @@ import javax.net.ssl.X509TrustManager
   DataModule::class,
   RMPModule::class]
 )
-class RutgersAppModule {
+class RutgersAppModule(val app: RutgersCTApp) {
 
   @Provides
   fun providesMoshi(): Moshi {
@@ -33,17 +34,20 @@ class RutgersAppModule {
   }
 
   @Provides
-  fun providesOkHttpClient(userAgentInterceptor: UserAgentInterceptor): OkHttpClient {
-    var client: OkHttpClient.Builder = OkHttpClient.Builder()
-        .readTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
-        .connectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+  @PerApp
+  fun provideFirebaseAnalytics(): FirebaseAnalytics {
+    return FirebaseAnalytics.getInstance(app.applicationContext)
+  }
 
-    if (BuildConfig.DEBUG) {
-      client = unsafeOkHttpClient
-    }
+  @Provides
+  @PerApp
+  fun provideFirebaseMessaging(): FirebaseMessaging {
+    return FirebaseMessaging.getInstance()
+  }
 
-    client.addNetworkInterceptor(userAgentInterceptor)
-    return client.build()
+  @Provides
+  fun providesOkHttpClient(builder: OkHttpClient.Builder): OkHttpClient {
+    return builder.build()
   }
 
   @Provides
@@ -144,7 +148,6 @@ class RutgersAppModule {
         } catch (e: Exception) {
           throw RuntimeException(e)
         }
-
       }
   }
 }

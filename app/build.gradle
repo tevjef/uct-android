@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'io.fabric'
 
 android {
@@ -132,10 +133,12 @@ dependencies {
   implementation "com.android.support:recyclerview-v7:" + rootProject.supportLibVersion
   implementation "com.android.support:recyclerview-v7:" + rootProject.supportLibVersion
   implementation "com.android.support:support-annotations:" + rootProject.supportLibVersion
+
   implementation 'com.android.support:multidex:1.0.2'
 
   implementation 'com.google.firebase:firebase-core:' + rootProject.playServicesVersion
   implementation 'com.google.firebase:firebase-messaging:' + rootProject.playServicesVersion
+  implementation 'com.google.firebase:firebase-perf:' + rootProject.playServicesVersion
 
   implementation "io.reactivex.rxjava2:rxjava:" + rootProject.rxJava2Version
   implementation 'io.reactivex.rxjava2:rxandroid:' + rootProject.rxAndroidVersion

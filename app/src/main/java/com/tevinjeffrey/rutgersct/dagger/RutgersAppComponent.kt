@@ -22,6 +22,7 @@ interface RutgersAppComponent {
   interface Builder {
     @BindsInstance
     fun application(application: RutgersCTApp): Builder
+    fun appModule(module: RutgersAppModule): Builder
     fun build(): RutgersAppComponent
   }
 }

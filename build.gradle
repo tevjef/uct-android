@@ -12,6 +12,7 @@ buildscript {
     classpath 'com.android.tools.build:gradle:3.0.1'
     classpath 'com.google.gms:google-services:3.1.1'
     classpath 'io.fabric.tools:gradle:1.24.5'
+    classpath 'com.google.firebase:firebase-plugins:1.1.5'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
@@ -40,19 +41,19 @@ ext {
   compileSdkVersion = 27
   targetSdkVersion = 27
 
-  buildToolsVersion = "26.0.2"
-  supportLibVersion = "27.0.1"
-  stetho = "1.5.0"
-  playServicesVersion = '11.4.2'
-  runnerVersion = "0.5"
-  rulesVersion = "0.5"
-  espressoVersion = "2.2.2"
   archLifecycleVersion = "1.0.0-rc1"
   archRoomVersion = "1.0.0-rc1"
+  buildToolsVersion = "26.0.2"
   daggerVersion = '2.11'
-  rxJava2Version = '2.1.0'
-  rxAndroidVersion = '2.0.1'
-  retrofit2Version = '2.3.0'
-  okhttp3Version = '3.8.0'
+  espressoVersion = "2.2.2"
   junitVersion = '4.12'
+  okhttp3Version = '3.8.0'
+  playServicesVersion = '11.6.0'
+  retrofit2Version = '2.3.0'
+  rulesVersion = "0.5"
+  runnerVersion = "0.5"
+  rxAndroidVersion = '2.0.1'
+  rxJava2Version = '2.1.0'
+  stetho = "1.5.0"
+  supportLibVersion = "27.0.1"
 }

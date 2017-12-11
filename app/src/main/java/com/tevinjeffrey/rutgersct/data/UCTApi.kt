@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.data
 
 import com.orhanobut.hawk.Hawk
+import com.tevinjeffrey.rutgersct.data.analytics.Analytics
 import com.tevinjeffrey.rutgersct.data.database.PreferenceDao
 import com.tevinjeffrey.rutgersct.data.database.UCTSubscriptionDao
 import com.tevinjeffrey.rutgersct.data.model.Course
@@ -25,6 +26,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class UCTApi @Inject constructor(
+    private val analytics: Analytics,
     private val uctService: UCTService,
     private val subscriptionManager: SubscriptionManager,
     private val subscriptionDao: UCTSubscriptionDao,
@@ -52,7 +54,6 @@ class UCTApi @Inject constructor(
     }
   }
 
-
   private var fcmToken: String = subscriptionManager.fcmToken()
 
   var defaultSemester: Semester?
@@ -66,6 +67,7 @@ class UCTApi @Inject constructor(
       Timber.d("Setting semester: %s", semester)
       semester?.let {
         preferenceDao.updateDefaultSemester(DefaultSemester(semester))
+        analytics.setDefaultSemester(semester)
       }
     }
 
@@ -79,6 +81,7 @@ class UCTApi @Inject constructor(
     set(university) {
       Timber.d("Setting university: %s", university?.topic_name)
       university?.let {
+        analytics.setDefaultUniversity(university.topic_name.toString())
         preferenceDao.updateDefaultUniversity(DefaultUniversity(university))
       }
     }
@@ -111,7 +114,9 @@ class UCTApi @Inject constructor(
   }
 
   fun getSubjects(university: String, season: String, year: String): Observable<List<Subject>> {
-    return uctService.getSubjects(university, season, year).map { response -> response.data!!.subjects }
+    return uctService.getSubjects(university,
+        season,
+        year).map { response -> response.data!!.subjects }
   }
 
   fun getUniversity(universityTopicName: String): Observable<University> {
@@ -149,7 +154,7 @@ class UCTApi @Inject constructor(
     sendSubscription(subscription.sectionTopicName, true)
         .subscribeOn(Schedulers.io())
         .subscribe(
-            { Timber.i("Sent subscription to server. topicName: ${subscription.sectionTopicName} isSubscribed: true")},
+            { Timber.i("Sent subscription to server. topicName: ${subscription.sectionTopicName} isSubscribed: true") },
             { Timber.e(it) })
 
     return Single.defer {
@@ -164,8 +169,11 @@ class UCTApi @Inject constructor(
         .flatMap { addSubscription(it) }
   }
 
-  fun acknowledgeNotification(topicName: String, notificationId: String): Single<Boolean> {
+  fun acknowledgeNotification(topicId: String,
+                              topicName: String,
+                              notificationId: String): Single<Boolean> {
     val timeNow = ZonedDateTime.now(ZoneOffset.UTC).toOffsetDateTime().toString()
+    analytics.logRecieveNotification(topicId, topicName, notificationId)
     return uctService
         .acknowledgeNotification(timeNow, topicName, fcmToken, notificationId)
         .subscribeOn(Schedulers.io())
@@ -186,7 +194,7 @@ class UCTApi @Inject constructor(
     sendSubscription(topicName, false)
         .subscribeOn(Schedulers.io())
         .subscribe(
-            { Timber.i("Sent subscription to server. topicName: $topicName isSubscribed: false")},
+            { Timber.i("Sent subscription to server. topicName: $topicName isSubscribed: false") },
             { Timber.e(it) })
 
     return Single.defer {
@@ -195,15 +203,16 @@ class UCTApi @Inject constructor(
       } catch (e: IOException) {
         return@defer Single.error<String>(e)
       }
-      sendSubscription(topicName, false)
+      Single.just(topicName)
     }
         .subscribeOn(Schedulers.io())
-        .flatMap { removeSubscription(topicName) }
+        .flatMap { removeSubscription(it) }
   }
 
   private fun addAllSubscription(subscription: List<UCTSubscription>): Single<Boolean> {
     return Single.defer {
       subscriptionDao.insertAll(subscription)
+      analytics.logTrackedSections(subscription.size)
       Single.just(true)
     }
   }
@@ -211,13 +220,22 @@ class UCTApi @Inject constructor(
   private fun addSubscription(subscription: UCTSubscription): Single<Boolean> {
     return Single.defer {
       subscriptionDao.insertAll(listOf(subscription))
+      analytics.logSubscribe(
+          subscription.section.topic_id.orEmpty(),
+          subscription.section.topic_name.orEmpty()
+      )
       Single.just(true)
     }
   }
 
   private fun removeSubscription(topicName: String): Single<Boolean> {
     return Single.defer {
+      val subscription = subscriptionDao.getSubscription(topicName)
       subscriptionDao.deleteAll(topicName)
+      analytics.logUnsubscribe(
+          subscription.section.topic_id.orEmpty(),
+          topicName
+      )
       Single.just(true)
     }
   }

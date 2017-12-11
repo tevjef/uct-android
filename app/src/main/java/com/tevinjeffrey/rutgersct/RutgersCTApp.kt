@@ -18,6 +18,7 @@ import com.orm.SugarContext
 import com.squareup.wire.AndroidMessage
 import com.tevinjeffrey.rutgersct.dagger.DaggerRutgersAppComponent
 import com.tevinjeffrey.rutgersct.dagger.RutgersAppComponent
+import com.tevinjeffrey.rutgersct.dagger.RutgersAppModule
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -55,6 +56,7 @@ class RutgersCTApp : MultiDexApplication(), HasActivityInjector, HasBroadcastRec
     component = DaggerRutgersAppComponent
         .builder()
         .application(this)
+        .appModule(RutgersAppModule((this)))
         .build()
     component.inject(this)
 

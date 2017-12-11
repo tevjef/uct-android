@@ -155,7 +155,6 @@
       <TextView
         android:id="@+id/credits_title"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/credits"
         app:layout_constraintEnd_toEndOf="@+id/creditsText"
         app:layout_constraintStart_toStartOf="@+id/creditsText"

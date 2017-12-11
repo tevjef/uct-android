@@ -5,13 +5,15 @@ import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
 
 import com.google.firebase.messaging.FirebaseMessaging
+import timber.log.Timber
 
 import java.io.IOException
 
 import javax.inject.Inject
 
-class SubscriptionManager @Inject
-constructor(val context: Context) {
+class SubscriptionManager @Inject constructor(
+    val context: Context,
+    val messaging: FirebaseMessaging) {
 
   fun fcmToken(): String {
     return FirebaseInstanceId.getInstance().token.orEmpty()
@@ -20,14 +22,14 @@ constructor(val context: Context) {
   @Throws(IOException::class)
   fun subscribe(topicName: String) {
     val pubSub = FirebaseMessaging.getInstance()
-    Log.d("SubscriptionManager", "Subscribing: " + topicName)
+    Timber.d("Subscribing: %s", topicName)
     pubSub.subscribeToTopic(topicName)
   }
 
   @Throws(IOException::class)
   fun unsubscribe(topicName: String) {
     val pubSub = FirebaseMessaging.getInstance()
-    Log.d("SubscriptionManager", "Unsubscribing: " + topicName)
+    Timber.d("Unsubscribing: %s", topicName)
     pubSub.unsubscribeFromTopic(topicName)
   }
 

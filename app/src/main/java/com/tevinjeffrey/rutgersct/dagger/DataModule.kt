@@ -26,12 +26,8 @@ class DataModule {
 
   @Provides
   @PerApp
-  fun providePreferenceDao(context: Context): PreferenceDao {
-    val db = Room.databaseBuilder(context.applicationContext,
-        UCTDatabase::class.java, "uct")
-        .allowMainThreadQueries()
-        .build()
-    return db.preferenceDao()
+  fun providePreferenceDao(uctDatabase: UCTDatabase): PreferenceDao {
+    return uctDatabase.preferenceDao()
   }
 
   @Provides

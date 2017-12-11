@@ -18,6 +18,10 @@ interface UCTSubscriptionDao {
   @Query("DELETE FROM uct_subscription WHERE section_topic_name = :topicName")
   fun deleteAll(vararg topicName: String)
 
+  @Language("RoomSql")
+  @Query("SELECT * FROM uct_subscription WHERE section_topic_name = :topicName")
+  fun getSubscription(topicName: String): UCTSubscription
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertAll(uctSubscriptions: List<UCTSubscription>)
 

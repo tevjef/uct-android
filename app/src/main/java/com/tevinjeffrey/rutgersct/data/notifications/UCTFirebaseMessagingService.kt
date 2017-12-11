@@ -122,8 +122,8 @@ class UCTFirebaseMessagingService : FirebaseMessagingService() {
     val notificationBuilder = NotificationCompat.Builder(this, getString(R.string.channel_generic))
         .setSmallIcon(R.drawable.ic_notification)
         .setWhen(System.currentTimeMillis())
-        .setContentTitle(message.notification.title)
-        .setContentText(message.notification.body)
+        .setContentTitle(message.notification?.title)
+        .setContentText(message.notification?.body)
 
     val intent = openAppIntent()
     notificationBuilder.setContentIntent(intent)
@@ -200,7 +200,8 @@ class UCTFirebaseMessagingService : FirebaseMessagingService() {
     )
 
     uctApi.acknowledgeNotification(
-        uctNotification.topic_name.orEmpty(),
+        section.topic_id.orEmpty(),
+        section.topic_name.orEmpty(),
         uctNotification.notification_id.toString()
     ).observeOn(AndroidSchedulers.mainThread())
         .subscribe(

@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.tevinjeffrey.rutgersct.R
+import com.tevinjeffrey.rutgersct.data.analytics.Analytics
 import com.tevinjeffrey.rutgersct.ui.MainActivity
 import com.tevinjeffrey.rutgersct.ui.settings.SettingsActivity
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment
@@ -20,8 +20,11 @@ import dagger.android.support.AndroidSupportInjection
 import icepick.Icepick
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import javax.inject.Inject
 
 abstract class BaseFragment : Fragment() {
+
+  @Inject lateinit var analytics: Analytics
 
   val parentActivity: MainActivity
     get() = activity as MainActivity
@@ -41,7 +44,7 @@ abstract class BaseFragment : Fragment() {
   }
 
   private fun makeSnackBar(message: CharSequence) {
-    snackbar = Snackbar.make(view!!, message, Snackbar.LENGTH_INDEFINITE).apply {
+    snackbar = Snackbar.make(view!!, message, Snackbar.LENGTH_LONG).apply {
       setActionTextColor(ResourcesCompat.getColor(
           resources,
           android.R.color.white, null
@@ -74,6 +77,16 @@ abstract class BaseFragment : Fragment() {
     }
 
     showSnackBar(message)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    analytics.logScreenView(parentActivity, this.toString())
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    snackbar?.dismiss()
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
