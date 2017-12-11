@@ -45,13 +45,13 @@ ext {
   archRoomVersion = "1.0.0-rc1"
   buildToolsVersion = "26.0.2"
   daggerVersion = '2.11'
-  espressoVersion = "2.2.2"
+  espressoVersion = "3.0.1"
   junitVersion = '4.12'
   okhttp3Version = '3.8.0'
   playServicesVersion = '11.6.0'
   retrofit2Version = '2.3.0'
-  rulesVersion = "0.5"
-  runnerVersion = "0.5"
+  rulesVersion = "1.0.1"
+  runnerVersion = "1.0.1"
   rxAndroidVersion = '2.0.1'
   rxJava2Version = '2.1.0'
   stetho = "1.5.0"

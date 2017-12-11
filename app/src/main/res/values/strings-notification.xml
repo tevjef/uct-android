@@ -11,8 +11,8 @@
   <string name="channel_section_open">channel_section_open</string>
   <string name="channel_open_name">Open Sections</string>
   <string name="channel_open_description">Notify when sections open</string>
-  <string name="body_section_open">Section $1%s of $2%s has opened!</string>
-  <string name="body_section_closed">Section $1%s of $2%s has closed!</string>
+  <string name="body_section_open">Section %1$s of %2$s has opened!</string>
+  <string name="body_section_closed">Section %1$s of %2$s has closed!</string>
   <string name="register">Register</string>
 
 </resources>

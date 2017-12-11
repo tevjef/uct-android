@@ -40,8 +40,8 @@ android {
     applicationId 'com.tevinjeffrey.rutgersct'
     minSdkVersion 19
     targetSdkVersion rootProject.targetSdkVersion
-    versionCode 33
-    versionName '1.0.7.1'
+    versionCode 34
+    versionName '1.0.8.1'
     signingConfig signingConfigs.release
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -53,8 +53,7 @@ android {
 
     javaCompileOptions {
       annotationProcessorOptions {
-        arguments = ["room.schemaLocation":
-                         "$projectDir/schemas".toString()]
+        arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
       }
     }
   }
@@ -66,7 +65,6 @@ android {
 
   buildTypes {
     release {
-      debuggable true
       signingConfig signingConfigs.release
       shrinkResources true
       minifyEnabled true
@@ -108,18 +106,6 @@ android {
 dependencies {
   implementation project(':ratemyprofessors')
 
-  androidTestImplementation 'com.android.support.test:runner:' + rootProject.runnerVersion
-  androidTestImplementation 'com.android.support.test:rules:' + rootProject.runnerVersion
-  androidTestImplementation 'com.android.support.test.espresso:espresso-core:' + rootProject.espressoVersion
-  androidTestImplementation('com.android.support.test.espresso:espresso-contrib:2.2') {
-    exclude group: 'com.android.support', module: 'appcompat'
-    exclude group: 'com.android.support', module: 'support-v4'
-    exclude module: 'recyclerview-v7'
-  }
-  androidTestImplementation "com.android.support:support-annotations:" + rootProject.supportLibVersion
-  androidTestImplementation "com.android.support:design:" + rootProject.supportLibVersion
-  androidTestImplementation "com.android.support:appcompat-v7:" + rootProject.supportLibVersion
-
   testImplementation 'org.mockito:mockito-core:1.10.19'
   testImplementation 'junit:junit:' + rootProject.junitVersion
 
@@ -139,6 +125,7 @@ dependencies {
   implementation 'com.google.firebase:firebase-core:' + rootProject.playServicesVersion
   implementation 'com.google.firebase:firebase-messaging:' + rootProject.playServicesVersion
   implementation 'com.google.firebase:firebase-perf:' + rootProject.playServicesVersion
+  implementation 'com.google.firebase:firebase-crash:' + rootProject.playServicesVersion
 
   implementation "io.reactivex.rxjava2:rxjava:" + rootProject.rxJava2Version
   implementation 'io.reactivex.rxjava2:rxandroid:' + rootProject.rxAndroidVersion
@@ -179,6 +166,19 @@ dependencies {
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
+
+  androidTestCompile 'com.android.support.test:runner:' + rootProject.runnerVersion
+  androidTestCompile 'com.android.support.test:rules:' + rootProject.runnerVersion
+  androidTestCompile 'com.android.support.test.espresso:espresso-core:' + rootProject.espressoVersion
+  androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+    exclude group: 'com.android.support', module: 'appcompat'
+    exclude group: 'com.android.support', module: 'support-v4'
+    exclude module: 'recyclerview-v7'
+  }
+  androidTestCompile "com.android.support:support-annotations:" + rootProject.supportLibVersion
+  androidTestCompile "com.android.support:design:" + rootProject.supportLibVersion
+  androidTestCompile "com.android.support:appcompat-v7:" + rootProject.supportLibVersion
+
 }
 
 apply plugin: 'com.google.gms.google-services'

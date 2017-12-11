@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
+import com.google.firebase.crash.FirebaseCrash
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.orhanobut.hawk.Hawk
@@ -105,10 +106,12 @@ class RutgersCTApp : MultiDexApplication(), HasActivityInjector, HasBroadcastRec
       }
       if (t != null) {
         if (priority == Log.ERROR) {
+          FirebaseCrash.report(t)
           Crashlytics.logException(t)
         }
       }
       Crashlytics.log(priority, tag, message)
+      FirebaseCrash.logcat(priority, tag, message)
     }
   }
 

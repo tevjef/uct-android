@@ -20,7 +20,6 @@ import java.util.List;
 
 import okio.ByteString;
 
-@Entity(primaryKeys = {"topic_name"})
 public final class University extends AndroidMessage<University, University.Builder> {
   public static final ProtoAdapter<University> ADAPTER = new ProtoAdapter_University();
 

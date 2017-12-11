@@ -52,7 +52,6 @@ object Utils {
   @Throws(IOException::class)
   fun parseResource(context: Context, resource: Int): BufferedSource {
     val inputStream = context.resources.openRawResource(resource)
-
     return Okio.buffer(Okio.source(inputStream))
   }
 

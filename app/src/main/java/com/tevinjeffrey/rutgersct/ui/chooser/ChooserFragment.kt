@@ -45,7 +45,7 @@ class ChooserFragment : BaseFragment() {
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    super.onCreate(savedInstanceState)
     retainInstance = true
 
     viewModel.semesterData.observe(this, Observer { model ->
@@ -57,7 +57,10 @@ class ChooserFragment : BaseFragment() {
         showError(model.error)
       }
 
-      setAvailableSemesters(model.data)
+      if (model.data.isNotEmpty()) {
+        setAvailableSemesters(model.data)
+        dismissSnackbar()
+      }
     })
 
 
@@ -86,7 +89,8 @@ class ChooserFragment : BaseFragment() {
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity,
+        R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_chooser, container, false)
   }
 
@@ -225,8 +229,10 @@ class ChooserFragment : BaseFragment() {
             .excludeTarget(ImageView::class.java, true)
             .setDuration(50)
 
-        newInstance.sharedElementEnterTransition = ChangeBounds().setInterpolator(DecelerateInterpolator())
-        newInstance.sharedElementReturnTransition = ChangeBounds().setInterpolator(DecelerateInterpolator())
+        newInstance.sharedElementEnterTransition = ChangeBounds().setInterpolator(
+            DecelerateInterpolator())
+        newInstance.sharedElementReturnTransition = ChangeBounds().setInterpolator(
+            DecelerateInterpolator())
       }
 
       return newInstance

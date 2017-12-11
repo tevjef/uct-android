@@ -36,7 +36,7 @@ class IntroActivity : AppIntro2() {
 
   override fun onDonePressed() {
     Once.markDone(MainActivity.SHOW_TOUR)
-    Once.markDone(TOUR_STARTED)
+    Once.markDone(TOUR_DONE)
     val intent = Intent(this, MainActivity::class.java)
     startActivity(intent)
     finish()
@@ -51,6 +51,6 @@ class IntroActivity : AppIntro2() {
   }
 
   companion object {
-    val TOUR_STARTED = "tour_started"
+    val TOUR_DONE = "tour_started"
   }
 }

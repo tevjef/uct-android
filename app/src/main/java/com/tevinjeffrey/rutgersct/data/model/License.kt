@@ -1,6 +1,6 @@
-package com.tevinjeffrey.rutgersct.ui.settings
+package com.tevinjeffrey.rutgersct.data.model
 
-class License(
+data class License(
   val name: String? = null,
   val author: String? = null,
   val website: String? = null,

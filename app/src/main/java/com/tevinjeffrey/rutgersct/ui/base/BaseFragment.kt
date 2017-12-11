@@ -29,7 +29,7 @@ abstract class BaseFragment : Fragment() {
   val parentActivity: MainActivity
     get() = activity as MainActivity
 
-  private var snackbar: Snackbar? = null
+  internal var snackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -114,6 +114,10 @@ abstract class BaseFragment : Fragment() {
   }
 
   abstract fun injectTargets()
+
+  fun dismissSnackbar() {
+    snackbar?.dismiss()
+  }
 
   fun setToolbar(toolbar: Toolbar) {
     toolbar.setTitleTextAppearance(parentActivity, R.style.ToolbarTitleStyle)

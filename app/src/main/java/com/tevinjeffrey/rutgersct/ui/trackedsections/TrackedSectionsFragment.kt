@@ -67,7 +67,7 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
         container,
         false) as ViewGroup
 
-    if (!Once.beenDone(CORRUPT_SECTIONS) && !Once.beenDone(IntroActivity.TOUR_STARTED)) {
+    if (!Once.beenDone(CORRUPT_SECTIONS) && !Once.beenDone(IntroActivity.TOUR_DONE)) {
       // Show alert
       MaterialDialog.Builder(parentActivity)
           .title("Oops!")
@@ -114,7 +114,10 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
 
       swipeRefreshLayout.isRefreshing = model.isLoading
 
-      adapter.swapData(model.data)
+      if (model.data.isNotEmpty()) {
+        adapter.swapData(model.data)
+        dismissSnackbar()
+      }
     })
 
     viewModel.loadTrackedSections()

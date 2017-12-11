@@ -67,6 +67,9 @@
 #    @retrofit2.http.* <methods>;
 #}
 
+-keep class com.squareup.wire.** { *; }
+-keep class com.tevinjeffrey.rutgersct.data.model.** { *; }
+
 -dontwarn retrofit2.**
 -dontwarn retrofit2.Platform$Java8
 -dontnote retrofit2.Platform

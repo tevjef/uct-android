@@ -69,6 +69,7 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
 
       if (model.data.isNotEmpty()) {
         adapter.swapData(model.data)
+        dismissSnackbar()
       }
     })
 
@@ -121,9 +122,9 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
     subcomponent.inject(viewModel)
   }
 
-  override fun onItemClicked(course: Course, view: View) {
-    Timber.i("Selected course: %s", course)
-    searchViewModel.course = course
+  override fun onItemClicked(data: Course, view: View) {
+    Timber.i("Selected course: %s", data)
+    searchViewModel.course = data
     startCourseInfoFragment(Bundle.EMPTY)
   }
 

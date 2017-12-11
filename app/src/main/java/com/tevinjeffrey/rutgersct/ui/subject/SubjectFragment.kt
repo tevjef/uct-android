@@ -63,6 +63,7 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
 
       if (model.data.isNotEmpty()) {
         adapter.swapData(model.data)
+        dismissSnackbar()
       }
     })
 
