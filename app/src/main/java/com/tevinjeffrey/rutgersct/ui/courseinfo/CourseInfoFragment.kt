@@ -97,21 +97,6 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
     inflater.inflate(R.menu.menu_course_info, menu)
   }
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
-      R.id.action_add_all -> {
-
-        parentActivity.backstackCount = 0
-        fragmentManager?.popBackStackImmediate(
-            TrackedSectionsFragment.TAG,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
-        true
-      }
-      else -> super.onOptionsItemSelected(item)
-    }
-  }
-
   override fun injectTargets() {
     subcomponent.inject(viewModel)
   }

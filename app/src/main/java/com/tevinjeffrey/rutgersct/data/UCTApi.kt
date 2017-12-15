@@ -13,6 +13,7 @@ import com.tevinjeffrey.rutgersct.data.notifications.SubscriptionManager
 import com.tevinjeffrey.rutgersct.data.preference.DefaultSemester
 import com.tevinjeffrey.rutgersct.data.preference.DefaultUniversity
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -35,23 +36,6 @@ class UCTApi @Inject constructor(
   companion object {
     private val TRACKED_SECTIONS = "trackedsections"
     private val TRACKED_SECTIONS_MIGRATION = "trackedsectionsmigration"
-  }
-
-  init {
-    if (!Once.beenDone(TRACKED_SECTIONS_MIGRATION, Amount.exactly(1))) {
-      val subscriptions = Hawk.get(TRACKED_SECTIONS, ArrayList<UCTSubscription>())
-
-      Single.fromCallable({
-        if (subscriptions.isNotEmpty()) {
-          subscriptionDao.insertAll(subscriptions)
-        }
-        Single.just(true)
-      })
-          .observeOn(Schedulers.io())
-          .subscribe(
-              { Once.markDone(TRACKED_SECTIONS_MIGRATION) },
-              { Timber.e(it) })
-    }
   }
 
   private var fcmToken: String = subscriptionManager.fcmToken()
@@ -129,7 +113,24 @@ class UCTApi @Inject constructor(
   }
 
   fun refreshSubscriptions(): Observable<UCTSubscription> {
-    return Observable.fromIterable(subscriptionDao.all())
+    var compl: Completable = Single.just(true).toCompletable()
+    if (!Once.beenDone(TRACKED_SECTIONS_MIGRATION, Amount.exactly(1))) {
+      val subscriptions: List<UCTSubscription> = Hawk.get(TRACKED_SECTIONS, emptyList())
+      if (subscriptions.isNotEmpty()) {
+        compl = Single.fromCallable({
+          if (subscriptions.isNotEmpty()) {
+            subscriptionDao.insertAll(subscriptions)
+            analytics.logTrackedSectionsMigration(subscriptions.size)
+            Once.markDone(TRACKED_SECTIONS_MIGRATION)
+          }
+          true
+        }).toCompletable()
+      } else {
+        Once.markDone(TRACKED_SECTIONS_MIGRATION)
+      }
+    }
+
+    return compl.andThen(Observable.fromIterable(subscriptionDao.all()))
         .flatMap { subscription ->
           getSection(
               subscription.sectionTopicName)
@@ -171,20 +172,18 @@ class UCTApi @Inject constructor(
 
   fun acknowledgeNotification(topicId: String,
                               topicName: String,
-                              notificationId: String): Single<Boolean> {
+                              notificationId: String): Completable {
     val timeNow = ZonedDateTime.now(ZoneOffset.UTC).toOffsetDateTime().toString()
-    analytics.logRecieveNotification(topicId, topicName, notificationId)
+    analytics.logReceiveNotification(topicId, topicName, notificationId)
     return uctService
         .acknowledgeNotification(timeNow, topicName, fcmToken, notificationId)
         .subscribeOn(Schedulers.io())
-        .map { true }
   }
 
-  private fun sendSubscription(topicName: String, isSubscribed: Boolean): Single<Boolean> {
+  private fun sendSubscription(topicName: String, isSubscribed: Boolean): Completable {
     return uctService
         .subscription(isSubscribed, topicName, fcmToken)
         .subscribeOn(Schedulers.io())
-        .map { true }
   }
 
   fun unsubscribeFrom(topicName: String): Single<Boolean> {

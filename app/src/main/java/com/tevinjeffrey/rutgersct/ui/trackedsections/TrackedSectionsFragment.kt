@@ -33,7 +33,7 @@ import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
 import jonathanfinerty.once.Once
-import kotlinx.android.synthetic.main.error_view.try_again
+import kotlinx.android.synthetic.main.add_courses_to_track.emptyView
 import kotlinx.android.synthetic.main.fragment_tracked_sections.fab
 import kotlinx.android.synthetic.main.fragment_tracked_sections.list
 import kotlinx.android.synthetic.main.fragment_tracked_sections.swipeRefreshLayout
@@ -99,8 +99,7 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
 
     setToolbar(toolbar)
 
-    fab.setOnClickListener { startChooserFragment() }
-    try_again.setOnClickListener { onRefresh() }
+    fab?.setOnClickListener { startChooserFragment() }
 
     viewModel.trackedSectionsLiveData.observe(this, Observer { model ->
       if (model == null) {
@@ -114,10 +113,16 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
 
       swipeRefreshLayout.isRefreshing = model.isLoading
 
-      if (model.data.isNotEmpty()) {
-        adapter.swapData(model.data)
-        dismissSnackbar()
+      model.data?.let {
+        if (it.isNotEmpty()) {
+          dismissSnackbar()
+          emptyView.visibility = View.GONE
+        } else {
+          emptyView.visibility = View.VISIBLE
+        }
+        adapter.swapData(it)
       }
+
     })
 
     viewModel.loadTrackedSections()

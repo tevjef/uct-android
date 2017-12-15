@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  >
+
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
 
-  <android.support.v7.widget.Toolbar
+    <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
       android:theme="@style/RutgersCT.ToolbarTheme"
       android:transitionName="@string/transition_name_tool_background"
@@ -15,13 +23,13 @@
       >
 
 
-    <RelativeLayout
+      <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingRight="16dp"
         >
 
-      <TextView
+        <TextView
           android:id="@+id/header_text"
           android:layout_above="@+id/subtitle"
           android:layout_alignParentLeft="true"
@@ -31,7 +39,7 @@
           style="@style/ToolbarDisplayStyle"
           />
 
-      <TextView
+        <TextView
           android:id="@+id/subtitle"
           android:layout_alignParentBottom="true"
           android:layout_alignParentLeft="true"
@@ -40,18 +48,18 @@
           style="@style/ToolbarSubtitleStyle"
           />
 
-    </RelativeLayout>
+      </RelativeLayout>
 
-  </android.support.v7.widget.Toolbar>
+    </android.support.v7.widget.Toolbar>
 
-  <ScrollView
+    <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_above="@+id/relativeLayout2"
       android:layout_below="@id/toolbar"
       >
 
-    <LinearLayout
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="@integer/layout_direction"
@@ -60,20 +68,20 @@
         android:transitionGroup="true"
         >
 
-      <RelativeLayout
+        <RelativeLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
           >
 
-        <ImageView
+          <ImageView
             android:id="@+id/ic_university"
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_location_city"
             />
 
-        <TextView
+          <TextView
             android:id="@+id/university_title"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
@@ -88,7 +96,7 @@
             style="@style/PrimaryTextStyle"
             />
 
-        <Spinner
+          <Spinner
             android:id="@+id/universitySpinner"
             android:layout_width="wrap_content"
             android:layout_height="?attr/dropdownListPreferredItemHeight"
@@ -98,22 +106,22 @@
             android:layout_marginLeft="-8dp"
             />
 
-      </RelativeLayout>
+        </RelativeLayout>
 
-      <RelativeLayout
+        <RelativeLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
           >
 
-        <ImageView
+          <ImageView
             android:id="@+id/ic_today"
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_today"
             />
 
-        <TextView
+          <TextView
             android:id="@+id/semester_title"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
@@ -129,7 +137,7 @@
             style="@style/PrimaryTextStyle"
             />
 
-        <RadioGroup
+          <RadioGroup
             android:id="@+id/semesterRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -140,15 +148,15 @@
             >
 
 
-        </RadioGroup>
+          </RadioGroup>
 
-      </RelativeLayout>
+        </RelativeLayout>
 
-    </LinearLayout>
+      </LinearLayout>
 
-  </ScrollView>
+    </ScrollView>
 
-  <FrameLayout
+    <FrameLayout
       android:id="@+id/relativeLayout2"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
@@ -158,7 +166,7 @@
       android:background="@color/accent"
       >
 
-    <Button
+      <Button
         android:id="@+id/searchBtn"
         android:layout_width="100dp"
         android:layout_height="match_parent"
@@ -169,6 +177,7 @@
         android:textColor="@android:color/white"
         android:textSize="14sp"
         />
-  </FrameLayout>
+    </FrameLayout>
 
-</RelativeLayout>
+  </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

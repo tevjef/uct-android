@@ -64,9 +64,6 @@
     </android.support.v4.widget.SwipeRefreshLayout>
   </LinearLayout>
 
-
-  <include layout="@layout/error_view" />
-
   <include layout="@layout/add_courses_to_track" />
 
   <android.support.design.widget.FloatingActionButton

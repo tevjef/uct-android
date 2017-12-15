@@ -1,6 +1,7 @@
 package com.tevinjeffrey.rutgersct.data
 
 import com.tevinjeffrey.rutgersct.data.model.Response
+import io.reactivex.Completable
 
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -51,7 +52,7 @@ interface UCTService {
       @Field("receiveAt") receiveAt: String,
       @Field("topicName") topicName: String,
       @Field("fcmToken") fcmToken: String,
-      @Field("notificationId") notificationId: String): Single<Response>
+      @Field("notificationId") notificationId: String): Completable
 
   @FormUrlEncoded
   @Headers(ACCEPT_PROTOBUF)
@@ -59,7 +60,7 @@ interface UCTService {
   fun subscription(
       @Field("isSubscribed") isSubscribed: Boolean,
       @Field("topicName") topicName: String,
-      @Field("fcmToken") fcmToken: String): Single<Response>
+      @Field("fcmToken") fcmToken: String): Completable
 
   companion object {
     const val ACCEPT_PROTOBUF = "Accept: application/x-protobuf"

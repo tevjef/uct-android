@@ -5,5 +5,5 @@ import java.util.*
 
 class TrackedSectionsModel(
     var isLoading: Boolean = false,
-    var data: List<UCTSubscription> = ArrayList(10),
+    var data: List<UCTSubscription>? = null,
     var error: Throwable? = null)

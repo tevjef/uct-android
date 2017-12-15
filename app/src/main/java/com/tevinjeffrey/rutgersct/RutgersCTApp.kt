@@ -15,7 +15,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.orhanobut.hawk.Hawk
 import com.orhanobut.hawk.Parser
-import com.orm.SugarContext
 import com.squareup.wire.AndroidMessage
 import com.tevinjeffrey.rutgersct.dagger.DaggerRutgersAppComponent
 import com.tevinjeffrey.rutgersct.dagger.RutgersAppComponent
@@ -28,12 +27,7 @@ import dagger.android.HasServiceInjector
 import io.fabric.sdk.android.Fabric
 import jonathanfinerty.once.Once
 import timber.log.Timber
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.RandomAccessFile
 import java.lang.reflect.Type
-import java.util.*
 import javax.inject.Inject
 
 class RutgersCTApp : MultiDexApplication(), HasActivityInjector, HasBroadcastReceiverInjector, HasServiceInjector {
@@ -50,8 +44,6 @@ class RutgersCTApp : MultiDexApplication(), HasActivityInjector, HasBroadcastRec
     Hawk.init(this)
         .setParser(GsonParser(Gson()))
         .build()
-
-    SugarContext.init(this)
     Once.initialise(this)
 
     component = DaggerRutgersAppComponent
@@ -68,9 +60,6 @@ class RutgersCTApp : MultiDexApplication(), HasActivityInjector, HasBroadcastRec
       Stetho.initializeWithDefaults(this)
       Timber.plant(Timber.DebugTree())
     } else {
-      val s = getsID(applicationContext)
-
-      Crashlytics.setUserIdentifier(s)
       //Diverts logs through crash reporting APIs
       Timber.plant(CrashReportingTree())
     }
@@ -87,11 +76,6 @@ class RutgersCTApp : MultiDexApplication(), HasActivityInjector, HasBroadcastRec
 
   override fun broadcastReceiverInjector(): AndroidInjector<BroadcastReceiver>? {
     return broadcastReceiverDispatchingAndroidInjector
-  }
-
-  override fun onTerminate() {
-    super.onTerminate()
-    SugarContext.terminate()
   }
 
   override fun serviceInjector(): AndroidInjector<Service>? {
@@ -128,44 +112,6 @@ class RutgersCTApp : MultiDexApplication(), HasActivityInjector, HasBroadcastRec
 
     override fun toJson(body: Any): String {
       return this.gson.toJson(body)
-    }
-  }
-
-  companion object {
-    private val INSTALLATION = "INSTALLATION"
-    private var sID: String? = null
-
-    @Synchronized private fun getsID(context: Context): String {
-      if (sID == null) {
-        val installation = File(context.filesDir, INSTALLATION)
-        try {
-          if (!installation.exists()) {
-            writeInstallationFile(installation)
-          }
-          sID = readInstallationFile(installation)
-        } catch (e: Exception) {
-          throw RuntimeException(e)
-        }
-
-      }
-      return sID.orEmpty()
-    }
-
-    @Throws(IOException::class)
-    private fun readInstallationFile(installation: File): String {
-      val f = RandomAccessFile(installation, "r")
-      val bytes = ByteArray(f.length().toInt())
-      f.readFully(bytes)
-      f.close()
-      return String(bytes)
-    }
-
-    @Throws(IOException::class)
-    private fun writeInstallationFile(installation: File) {
-      val out = FileOutputStream(installation)
-      val id = UUID.randomUUID().toString()
-      out.write(id.toByteArray())
-      out.close()
     }
   }
 }
