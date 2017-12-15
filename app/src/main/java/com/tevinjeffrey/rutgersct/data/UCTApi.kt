@@ -1,7 +1,7 @@
 package com.tevinjeffrey.rutgersct.data
 
-import com.orhanobut.hawk.Hawk
 import com.tevinjeffrey.rutgersct.data.analytics.Analytics
+import com.tevinjeffrey.rutgersct.data.database.HawkHelper
 import com.tevinjeffrey.rutgersct.data.database.PreferenceDao
 import com.tevinjeffrey.rutgersct.data.database.UCTSubscriptionDao
 import com.tevinjeffrey.rutgersct.data.model.Course
@@ -29,12 +29,12 @@ import javax.inject.Inject
 class UCTApi @Inject constructor(
     private val analytics: Analytics,
     private val uctService: UCTService,
+    private val hawkHelper: HawkHelper,
     private val subscriptionManager: SubscriptionManager,
     private val subscriptionDao: UCTSubscriptionDao,
     private val preferenceDao: PreferenceDao) {
 
   companion object {
-    private val TRACKED_SECTIONS = "trackedsections"
     private val TRACKED_SECTIONS_MIGRATION = "trackedsectionsmigration"
   }
 
@@ -115,14 +115,12 @@ class UCTApi @Inject constructor(
   fun refreshSubscriptions(): Observable<UCTSubscription> {
     var compl: Completable = Single.just(true).toCompletable()
     if (!Once.beenDone(TRACKED_SECTIONS_MIGRATION, Amount.exactly(1))) {
-      val subscriptions: List<UCTSubscription> = Hawk.get(TRACKED_SECTIONS, emptyList())
+      val subscriptions: List<UCTSubscription> = hawkHelper.getUniversity()
       if (subscriptions.isNotEmpty()) {
         compl = Single.fromCallable({
-          if (subscriptions.isNotEmpty()) {
-            subscriptionDao.insertAll(subscriptions)
-            analytics.logTrackedSectionsMigration(subscriptions.size)
-            Once.markDone(TRACKED_SECTIONS_MIGRATION)
-          }
+          subscriptionDao.insertAll(subscriptions)
+          analytics.logTrackedSectionsMigration(subscriptions.size)
+          Once.markDone(TRACKED_SECTIONS_MIGRATION)
           true
         }).toCompletable()
       } else {

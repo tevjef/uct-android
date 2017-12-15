@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.transition.Fade
 import android.support.transition.TransitionInflater
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -20,10 +19,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.afollestad.materialdialogs.MaterialDialog
 import com.tevinjeffrey.rutgersct.R
+import com.tevinjeffrey.rutgersct.R.layout
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
-import com.tevinjeffrey.rutgersct.ui.IntroActivity
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.chooser.ChooserFragment
@@ -32,7 +30,6 @@ import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
-import jonathanfinerty.once.Once
 import kotlinx.android.synthetic.main.add_courses_to_track.emptyView
 import kotlinx.android.synthetic.main.fragment_tracked_sections.fab
 import kotlinx.android.synthetic.main.fragment_tracked_sections.list
@@ -63,23 +60,9 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
       savedInstanceState: Bundle?): View? {
     val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity,
         R.style.RutgersCT))
-    val rootView = themedInflater.inflate(R.layout.fragment_tracked_sections,
+    return themedInflater.inflate(layout.fragment_tracked_sections,
         container,
         false) as ViewGroup
-
-    if (!Once.beenDone(CORRUPT_SECTIONS) && !Once.beenDone(IntroActivity.TOUR_DONE)) {
-      // Show alert
-      MaterialDialog.Builder(parentActivity)
-          .title("Oops!")
-          .titleColor(ContextCompat.getColor(parentActivity, R.color.primary))
-          .positiveText("Ok")
-          .content(
-              "We were unable to restore your tracked sections after the latest update. We are sorry for the inconvenience.")
-          .positiveColor(ContextCompat.getColor(parentActivity, R.color.primary))
-          .show()
-      Once.markDone(CORRUPT_SECTIONS)
-    }
-    return rootView
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
