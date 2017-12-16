@@ -9,6 +9,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.tevinjeffrey.rutgersct.dagger.PerApp
 import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import timber.log.Timber
 import java.nio.charset.Charset
 import javax.inject.Inject
 
@@ -24,6 +25,10 @@ class HawkHelper @Inject constructor(
   override fun onCreate(p0: SQLiteDatabase?) {}
 
   override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {}
+
+  fun dropDatabase() {
+    context.deleteDatabase("Hawk")
+  }
 
   fun getUniversity(): List<UCTSubscription> {
     var uniStr = ""
@@ -42,10 +47,14 @@ class HawkHelper @Inject constructor(
     if (uniStr.contains("UCTSubscription")) {
       uniStr = String(Base64.decode(uniStr.substringAfter('@'), Base64.DEFAULT),
           Charset.forName("UTF-8"))
+
+      if (uniStr.isNotBlank()) {
+        val type = Types.newParameterizedType(List::class.java, UCTSubscription::class.java)
+        val adapter: JsonAdapter<List<UCTSubscription>> = moshi.adapter(type)
+        return adapter.fromJson(uniStr).orEmpty()
+      }
     }
 
-    val type = Types.newParameterizedType(List::class.java, UCTSubscription::class.java)
-    val adapter: JsonAdapter<List<UCTSubscription>> = moshi.adapter(type)
-    return adapter.fromJson(uniStr).orEmpty()
+    return emptyList()
   }
 }

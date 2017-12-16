@@ -113,19 +113,18 @@ class UCTApi @Inject constructor(
   }
 
   fun refreshSubscriptions(): Observable<UCTSubscription> {
-    var compl: Completable = Single.just(true).toCompletable()
+    var compl: Completable = Completable.complete()
     if (!Once.beenDone(TRACKED_SECTIONS_MIGRATION, Amount.exactly(1))) {
-      val subscriptions: List<UCTSubscription> = hawkHelper.getUniversity()
-      if (subscriptions.isNotEmpty()) {
         compl = Single.fromCallable({
-          subscriptionDao.insertAll(subscriptions)
-          analytics.logTrackedSectionsMigration(subscriptions.size)
+          val subscriptions: List<UCTSubscription> = hawkHelper.getUniversity()
+          if (subscriptions.isNotEmpty()) {
+            subscriptionDao.insertAll(subscriptions)
+            analytics.logTrackedSectionsMigration(subscriptions.size)
+          }
+          hawkHelper.dropDatabase()
           Once.markDone(TRACKED_SECTIONS_MIGRATION)
           true
         }).toCompletable()
-      } else {
-        Once.markDone(TRACKED_SECTIONS_MIGRATION)
-      }
     }
 
     return compl.andThen(Observable.fromIterable(subscriptionDao.all()))
