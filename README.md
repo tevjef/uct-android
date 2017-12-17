@@ -1,4 +1,4 @@
-Rutgers Course Tracker [![Build Status](https://travis-ci.org/tevjef/Rutgers-Course-Tracker.svg?branch=master)](https://travis-ci.org/tevjef/Rutgers-Course-Tracker)
+Course Tracker - Android [![Build Status](https://travis-ci.org/tevjef/Rutgers-Course-Tracker.svg?branch=master)](https://travis-ci.org/tevjef/Rutgers-Course-Tracker)
 ======================
 
 <p align="center">
@@ -17,34 +17,31 @@ I started this project on January 14th 2015 out of desperation. Other "course sn
 ## How was it made?
 RCT was developed in my spare time using <a href="https://developer.android.com/sdk/index.html">Android Studio</a> and <a href="https://www.jetbrains.com/idea/">Intellij 14.04</a>. It was designed to take advantage of the <strong>Model-View-Presenter (MVP)</strong> architectural pattern which enabled me to create a robust, extensible and testable code base.
 
-I owe the speed at which I developed the application to <a href="https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/app/build.gradle#L87-L146">many open source libraries</a>. Each one of them likely saved me from 3 days of headaches, debugging and testing. 3 of them in particular, <strong>RxJava</strong>, <strong>Retrofit</strong> and <strong>Dagger</strong>, greatly simplified my business code and reduced some very complex logic to child's play. I highly recommend using any of these libraries in you own applications.
+I owe the speed at which I developed the application to <a href="https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/app/build.gradle">many open source libraries</a>. Each one of them likely saved me from days of headaches, debugging and testing. 3 of them in particular, <strong>RxJava</strong>, <strong>Retrofit</strong> and <strong>Dagger</strong>, greatly simplified my business code and reduced some very complex logic to child's play. I highly recommend using any of these libraries in you own applications.
 
 ## Requirements
 
 - [Android SDK](http://developer.android.com/sdk/index.html).
-- Android [8.0 (API 26) ](http://developer.android.com/tools/revisions/platforms.html#8.0).
-- Android SDK Tools (Gradle 3+)
-- Android SDK Build tools 26.0.0
-- Android Support Repository
-- MinSdkVersion 15
+- Android [8.1 (API 27) ](http://developer.android.com/tools/revisions/platforms.html#8.0).
+- Android SDK Tools (Gradle 3.0+)
+- Android SDK Build tools 26.0.2
+- MinSdkVersion 19
 
 ## Libraries
 
 The libraries and tools used include:
 
-- Support library 26
-- RecyclerView
+- Android Support Library 27
+- Android Architecture Components (Room, LiveData, ViewModel)
+- Firebase (Analytics, Messaging, Performance, Crash Reporting)
 - [RxJava 2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 - [Retrofit 2](http://square.github.io/retrofit/) and [OkHttp](https://github.com/square/okhttp)
 - [Dagger 2](http://google.github.io/dagger/)
-- [Butterknife](https://github.com/JakeWharton/butterknife)
 - [Timber](https://github.com/JakeWharton/timber)
+- [Wire](https://github.com/square/wire) and [wire-gradle-plugin](https://github.com/jiechic/wire-gradle-plugin)
 - [AppIntro](https://github.com/PaoloRotolo/AppIntro)
-- [material-icon-lib](https://github.com/code-mc/material-icon-lib)
-- [Otto](http://square.github.io/otto/) 
 - [Once](https://github.com/jonfinerty/Once)
 - [IcePick](https://github.com/frankiesardo/icepick)
-- [Sugar](https://github.com/satyan/sugar)
 - [Material Dialogs](https://github.com/afollestad/material-dialogs)
 
 and [more...](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/app/src/main/res/raw/open_source_licenses.json)
@@ -52,7 +49,7 @@ and [more...](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/app/s
 # Licence
 
 ```
-Copyright 2015 Tevin Jeffrey.
+Copyright 2017 Tevin Jeffrey.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
