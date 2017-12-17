@@ -229,7 +229,8 @@ class SectionInfoFragment : BaseFragment() {
     if (searchViewModel.section?.instructors?.size != 0) {
       instructorsText.text = searchViewModel.section?.instructors.orEmpty()
           .map { it.realName() }
-          .fold("", { acc, s -> acc + " | " + s })
+          .filter { it.isNotBlank() }
+          .fold("", { acc, s -> if (acc.isEmpty()) s else "$acc | $s" })
     } else {
       instructorsText.visibility = View.GONE
     }

@@ -25,7 +25,8 @@ open class SectionInfoViewHolder(
   fun setInstructors(section: Section) {
     instructors.text = section.instructors.orEmpty()
         .map { it.realName() }
-        .fold("", { acc, s -> acc + " | " + s })
+        .filter { it.isNotBlank() }
+        .fold("", { acc, s -> if (acc.isEmpty()) s else "$acc | $s" })
   }
 
   fun setOnClickListener(listener: View.OnClickListener) {
