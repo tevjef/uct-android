@@ -19,7 +19,7 @@ import android.widget.Toast
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Semester
 import com.tevinjeffrey.rutgersct.data.model.University
-import com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils.readableString
+import com.tevinjeffrey.rutgersct.data.model.string
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment
@@ -147,7 +147,7 @@ class ChooserFragment : BaseFragment() {
       val radioButton = LayoutInflater
           .from(this.parentActivity)
           .inflate(R.layout.radio_button, null) as RadioButton
-      radioButton.text = readableString(semester)
+      radioButton.text = semester.string()
       val layoutParams = ViewGroup.LayoutParams(
           ViewGroup.LayoutParams.MATCH_PARENT,
           ViewGroup.LayoutParams.WRAP_CONTENT

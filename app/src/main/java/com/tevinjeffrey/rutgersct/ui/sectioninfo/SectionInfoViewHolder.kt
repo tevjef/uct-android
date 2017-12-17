@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Meeting
 import com.tevinjeffrey.rutgersct.data.model.Section
-import com.tevinjeffrey.rutgersct.data.model.extensions.Utils
+import com.tevinjeffrey.rutgersct.data.model.realName
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 
 open class SectionInfoViewHolder(
@@ -23,7 +23,9 @@ open class SectionInfoViewHolder(
     get() = sectionNumberBackground.tag as String
 
   fun setInstructors(section: Section) {
-    instructors.text = Utils.InstructorUtils.toString(section.instructors)
+    instructors.text = section.instructors.orEmpty()
+        .map { it.realName() }
+        .fold("", { acc, s -> acc + " | " + s })
   }
 
   fun setOnClickListener(listener: View.OnClickListener) {
@@ -112,7 +114,10 @@ open class SectionInfoViewHolder(
       val sectionNumberBackground = parent.findViewById<CircleView>(R.id.section_number_background)
       val sectionTimeContainer = parent.findViewById<ViewGroup>(R.id.section_item_time_container)
 
-      return SectionInfoViewHolder(parent, instructors, sectionNumberBackground, sectionTimeContainer)
+      return SectionInfoViewHolder(parent,
+          instructors,
+          sectionNumberBackground,
+          sectionTimeContainer)
     }
   }
 }

@@ -6,24 +6,22 @@ import android.os.Build
 import android.os.Bundle
 import android.support.transition.Fade
 import android.support.transition.TransitionInflater
-import android.support.v4.app.FragmentManager
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Section
+import com.tevinjeffrey.rutgersct.data.model.openSections
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment
-import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
@@ -129,8 +127,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   }
 
   private fun setOpenSections() {
-    openSections.text = com.tevinjeffrey.rutgersct.data.model.extensions.Utils.CourseUtils
-        .getOpenSections(selectedCourse).toString()
+    openSections.text = selectedCourse?.openSections().toString()
   }
 
   private fun setShortenedCourseInfo() {

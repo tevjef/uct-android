@@ -8,7 +8,7 @@ import com.crashlytics.android.answers.CustomEvent
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.tevinjeffrey.rutgersct.dagger.PerApp
 import com.tevinjeffrey.rutgersct.data.model.Semester
-import com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils
+import com.tevinjeffrey.rutgersct.data.model.string
 import javax.inject.Inject
 
 @PerApp
@@ -19,7 +19,7 @@ class Analytics @Inject constructor(private val firebaseAnalytics: FirebaseAnaly
   }
 
   fun setDefaultSemester(semester: Semester) {
-    firebaseAnalytics.setUserProperty(Event.defaultSemester, SemesterUtils.readableString(semester))
+    firebaseAnalytics.setUserProperty(Event.defaultSemester, semester.string())
   }
 
   fun logScreenView(activity: Activity, screenName: String) {

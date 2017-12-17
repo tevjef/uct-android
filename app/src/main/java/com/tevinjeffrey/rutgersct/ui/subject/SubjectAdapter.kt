@@ -26,7 +26,7 @@ class SubjectAdapter internal constructor(
     val subject = getItems()[position]
 
     holder.setSubjectTitle(subject)
-    holder.setOnClickListener { v -> itemClickListener.onItemClicked(subject, v) }
+    holder.setOnClickListener(View.OnClickListener { v -> itemClickListener.onItemClicked(subject, v) })
   }
 
   override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): SubjectViewHolder {

@@ -2,6 +2,7 @@ package com.tevinjeffrey.rutgersct.data.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Base64
 import com.squareup.moshi.JsonAdapter
@@ -31,18 +32,30 @@ class HawkHelper @Inject constructor(
   }
 
   fun getUniversity(): List<UCTSubscription> {
-    var uniStr = ""
-    val db = readableDatabase
-    val cursor = db.rawQuery("SELECT hawk_value FROM hawk WHERE hawk_key = 'trackedsections'",
-        null)
 
-    if (cursor.count > 0) {
-      cursor.moveToNext()
-      uniStr = cursor.getString(0) ?: ""
+    if (!context.databaseList().contains("Hawk")) {
+      return emptyList()
     }
 
-    cursor.close()
-    db.close()
+    var uniStr = ""
+
+    try {
+      val db = readableDatabase
+      val cursor = db.rawQuery("SELECT hawk_value FROM hawk WHERE hawk_key = 'trackedsections'",
+          null)
+
+      if (cursor.count > 0) {
+        cursor.moveToNext()
+        uniStr = cursor.getString(0) ?: ""
+      }
+
+
+      cursor.close()
+      db.close()
+    } catch (e: SQLiteException) {
+      Timber.e(e)
+      return emptyList()
+    }
 
     if (uniStr.contains("UCTSubscription")) {
       uniStr = String(Base64.decode(uniStr.substringAfter('@'), Base64.DEFAULT),

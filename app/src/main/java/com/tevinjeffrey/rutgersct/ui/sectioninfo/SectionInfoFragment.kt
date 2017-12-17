@@ -23,6 +23,8 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import com.tevinjeffrey.rmp.common.Professor
 import com.tevinjeffrey.rutgersct.R
+import com.tevinjeffrey.rutgersct.data.model.realName
+import com.tevinjeffrey.rutgersct.data.model.string
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater
@@ -225,8 +227,9 @@ class SectionInfoFragment : BaseFragment() {
 
   private fun setInstructors() {
     if (searchViewModel.section?.instructors?.size != 0) {
-      instructorsText.text = com.tevinjeffrey.rutgersct.data.model.extensions.Utils.InstructorUtils
-          .toString(searchViewModel.section?.instructors)
+      instructorsText.text = searchViewModel.section?.instructors.orEmpty()
+          .map { it.realName() }
+          .fold("", { acc, s -> acc + " | " + s })
     } else {
       instructorsText.visibility = View.GONE
     }
@@ -250,8 +253,7 @@ class SectionInfoFragment : BaseFragment() {
   }
 
   private fun setSemester() {
-    semesterText.text = com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils
-        .readableString(searchViewModel.semester)
+    semesterText.text = searchViewModel.semester?.string()
   }
 
   private fun setTimes() {

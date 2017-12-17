@@ -35,7 +35,7 @@ class UCTApi @Inject constructor(
     private val preferenceDao: PreferenceDao) {
 
   companion object {
-    private val TRACKED_SECTIONS_MIGRATION = "trackedsectionsmigration"
+    val TRACKED_SECTIONS_MIGRATION = "trackedsectionsmigration"
   }
 
   private var fcmToken: String = subscriptionManager.fcmToken()

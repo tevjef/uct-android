@@ -10,7 +10,8 @@ import com.tevinjeffrey.rmp.common.RMP
 import com.tevinjeffrey.rmp.common.utils.JaroWinklerDistance
 import com.tevinjeffrey.rutgersct.data.UCTApi
 import com.tevinjeffrey.rutgersct.data.model.Instructor
-import com.tevinjeffrey.rutgersct.data.model.extensions.Utils
+import com.tevinjeffrey.rutgersct.data.model.firstName
+import com.tevinjeffrey.rutgersct.data.model.lastName
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.utils.RxUtils
 import io.reactivex.Observable
@@ -19,7 +20,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.util.*
+import java.util.ArrayList
 import javax.inject.Inject
 
 class SectionInfoViewModel : ViewModel() {
@@ -65,13 +66,11 @@ class SectionInfoViewModel : ViewModel() {
           val iterator = professorsNotFound.iterator()
           while (iterator.hasNext()) {
             val i = iterator.next()
-            if (JaroWinklerDistance.getDistance(
-                Utils.InstructorUtils.getLastName(i),
-                professor.getLastName(),
+            if (JaroWinklerDistance.getDistance(i.lastName(),
+                professor.lastName.orEmpty(),
                 0.70f
-            ) > .30 || JaroWinklerDistance.getDistance(
-                Utils.InstructorUtils.getLastName(i),
-                professor.getFirstName(),
+            ) > .30 || JaroWinklerDistance.getDistance(i.lastName(),
+                professor.firstName.orEmpty(),
                 0.70f
             ) > .30) {
               iterator.remove()
@@ -84,9 +83,7 @@ class SectionInfoViewModel : ViewModel() {
           rmpData.postValue(RMPModel(
               showRatingsLayout = true,
               ratingsLayoutLoading = false,
-              professorNotFound = professorsNotFound.map {
-                Utils.InstructorUtils.getName(it)
-              }
+              professorNotFound = professorsNotFound.map { it.name }
           ))
         }
         .toList()
@@ -129,8 +126,8 @@ class SectionInfoViewModel : ViewModel() {
           val department = searchViewModel.subject?.name
           val location = searchViewModel.university?.name
           val courseNumber = searchViewModel.course?.number
-          val firstName = Utils.InstructorUtils.getFirstName(instructor)
-          val lastName = Utils.InstructorUtils.getLastName(instructor)
+          val firstName = instructor.firstName()
+          val lastName = instructor.lastName()
 
           val params = Parameter(university, department, location,
               courseNumber, firstName, lastName
@@ -141,6 +138,6 @@ class SectionInfoViewModel : ViewModel() {
   }
 
   private fun filterGenericInstructors(): Predicate<Instructor> {
-    return Predicate { instructor -> Utils.InstructorUtils.getLastName(instructor) != "STAFF" }
+    return Predicate { instructor -> instructor.lastName() != "STAFF" }
   }
 }

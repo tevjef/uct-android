@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
-import com.tevinjeffrey.rutgersct.data.model.extensions.Utils
+import com.tevinjeffrey.rutgersct.data.model.openSections
 
 class CourseViewHolder private constructor(
     private val parent: View,
@@ -21,7 +21,7 @@ class CourseViewHolder private constructor(
   }
 
   fun setSectionsInfo(course: Course) {
-    sectionInfo.text = Utils.CourseUtils.getOpenSections(course).toString() + " open sections of " + course.sections.size
+    sectionInfo.text = course.openSections().toString() + " open sections of " + course.sections.size
   }
 
   companion object {

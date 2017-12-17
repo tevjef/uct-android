@@ -18,7 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Subject
-import com.tevinjeffrey.rutgersct.data.model.extensions.Utils.SemesterUtils.readableString
+import com.tevinjeffrey.rutgersct.data.model.string
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment
@@ -74,7 +74,8 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
       inflater: LayoutInflater,
       container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity,
+        R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_subjects, container, false)
   }
 
@@ -118,9 +119,9 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
     subcomponent.inject(viewModel)
   }
 
-  override fun onItemClicked(subject: Subject, view: View) {
-    Timber.i("Selected subject: %s", subject)
-    searchFlowViewModel.subject = subject
+  override fun onItemClicked(data: Subject, view: View) {
+    Timber.i("Selected subject: %s", data)
+    searchFlowViewModel.subject = data
     startCourseFragement(Bundle())
   }
 
@@ -132,7 +133,7 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
   }
 
   private fun setToolbarTitle() {
-    val title = searchFlowViewModel.university?.abbr + " " + readableString(searchFlowViewModel.semester)
+    val title = searchFlowViewModel.university?.abbr + " " + searchFlowViewModel.semester?.string()
     super.setToolbarTitle(toolbar, title)
   }
 

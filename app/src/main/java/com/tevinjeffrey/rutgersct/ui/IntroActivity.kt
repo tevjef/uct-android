@@ -6,6 +6,8 @@ import android.support.v4.content.ContextCompat
 import com.github.paolorotolo.appintro.AppIntro2
 import com.github.paolorotolo.appintro.AppIntroFragment
 import com.tevinjeffrey.rutgersct.R
+import com.tevinjeffrey.rutgersct.data.UCTApi
+import com.tevinjeffrey.rutgersct.data.UCTApi.Companion
 import jonathanfinerty.once.Once
 
 class IntroActivity : AppIntro2() {
@@ -35,6 +37,7 @@ class IntroActivity : AppIntro2() {
   }
 
   override fun onDonePressed() {
+    Once.markDone(UCTApi.TRACKED_SECTIONS_MIGRATION)
     Once.markDone(MainActivity.SHOW_TOUR)
     Once.markDone(TOUR_DONE)
     val intent = Intent(this, MainActivity::class.java)

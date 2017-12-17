@@ -1,8 +1,5 @@
-plugins {
-  id "net.ltgt.apt" version "0.10"
-}
-
-apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -19,8 +16,31 @@ dependencies {
   compile 'com.squareup.okhttp3:logging-interceptor:' + rootProject.okhttp3Version
 
   implementation 'com.google.dagger:dagger:' + rootProject.daggerVersion
-  apt 'com.google.dagger:dagger-compiler:' + rootProject.daggerVersion
+  kapt 'com.google.dagger:dagger-compiler:' + rootProject.daggerVersion
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+repositories {
+  mavenCentral()
+}
+compileKotlin {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+compileTestKotlin {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
