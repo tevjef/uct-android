@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'wire'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -9,6 +10,14 @@ android {
 
   compileSdkVersion rootProject.compileSdkVersion
   buildToolsVersion rootProject.buildToolsVersion
+
+  sourceSets {
+    main {
+      wire {
+        srcDir "src/main/proto"
+      }
+    }
+  }
 
   signingConfigs {
     debug {
@@ -101,6 +110,11 @@ android {
   if (project.hasProperty('devBuild')) {
     aaptOptions.cruncherEnabled = false
   }
+}
+
+
+wire {
+  android = false
 }
 
 dependencies {

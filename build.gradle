@@ -14,6 +14,7 @@ buildscript {
     classpath 'io.fabric.tools:gradle:1.24.5'
     classpath 'com.google.firebase:firebase-plugins:1.1.5'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath 'com.jiechic.library.wire:wire-gradle-plugin:2.0.0'
   }
 }
 
