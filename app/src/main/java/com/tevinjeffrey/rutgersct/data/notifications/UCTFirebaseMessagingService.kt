@@ -8,28 +8,23 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat
-import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.answers.CustomEvent
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.squareup.moshi.Moshi
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.UCTApi
-import com.tevinjeffrey.rutgersct.data.model.UCTNotification
 import com.tevinjeffrey.rutgersct.ui.MainActivity
 import com.tevinjeffrey.rutgersct.utils.PreferenceUtils
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
-import java.io.IOException
 import java.math.BigInteger
 import javax.inject.Inject
-
 
 class UCTFirebaseMessagingService : FirebaseMessagingService() {
   @Inject lateinit var moshi: Moshi
@@ -106,16 +101,29 @@ class UCTFirebaseMessagingService : FirebaseMessagingService() {
   }
 
   override fun onMessageReceived(message: RemoteMessage) {
-    val data = message.data["message"]
-    Timber.d(StringBuilder().append("From: ").append(message.from).toString())
-    Timber.d(StringBuilder().append("Message: ").append(data).toString())
-
-    if (data == null) {
+    if (message.data["notificationId"] == null) {
       handleGenericNotification(message)
       return
     }
 
-    sendNotification(data)
+    val title: String = message.data["title"].orEmpty()
+    val body: String = message.data["body"].orEmpty()
+    val topicName: String = message.data["topicName"].orEmpty()
+    val topicId: String = message.data["topicId"].orEmpty()
+    val notificationId: String = message.data["notificationId"].orEmpty()
+    val status: String = message.data["status"].orEmpty()
+    val color: String = message.data["color"].orEmpty()
+    val registrationUrl: String = message.data["registrationUrl"].orEmpty()
+    sendNotification(
+        title = title,
+        body =  body,
+        color = color,
+        topicName = topicName,
+        topicId = topicId,
+        status = status,
+        notificationId = notificationId,
+        registrationUrl = registrationUrl
+    )
   }
 
   private fun handleGenericNotification(message: RemoteMessage) {
@@ -141,45 +149,27 @@ class UCTFirebaseMessagingService : FirebaseMessagingService() {
     return PendingIntent.getActivity(applicationContext, 0, notificationIntent, 0)
   }
 
-  private fun sendNotification(message: String) {
-    var uctNotification: UCTNotification? = null
-    try {
-      uctNotification = moshi.adapter(UCTNotification::class.java).fromJson(message)
-    } catch (e: IOException) {
-      Timber.e(e)
-    }
+  private fun sendNotification(title: String,
+                               body: String,
+                               status: String,
+                               color: String,
+                               topicId: String,
+                               topicName: String,
+                               notificationId: String,
+                               registrationUrl: String) {
 
-    val university = uctNotification!!.university
-    val subject = university!!.subjects[0]
-    val course = subject.courses[0]
-    val section = course.sections[0]
-
-    val title: String
-    val body: String
-    val color: Int
-    val channel: String
-
-    if (uctNotification.status == "Open") {
-      title = getString(R.string.title_section_open)
-      body = getString(R.string.body_section_open, section.number, course.name)
-      color = R.color.green
-      channel = getString(R.string.channel_section_open)
+    val channel = if (status == "Open") {
+      getString(R.string.channel_section_open)
     } else {
-      title = getString(R.string.title_section_closed)
-      body = getString(R.string.body_section_closed, section.number, course.name)
-      color = R.color.red
-      channel = getString(R.string.channel_section_closed)
+      getString(R.string.channel_section_closed)
     }
 
     val notificationBuilder = NotificationCompat.Builder(this, channel)
-        .setStyle(NotificationCompat.BigTextStyle()
-            .bigText(body)
-            .setBigContentTitle(course.name))
         .setSmallIcon(R.drawable.ic_notification)
         .setWhen(System.currentTimeMillis())
         .setPriority(NotificationCompat.PRIORITY_MAX)
         .setGroup(getString(R.string.section_notification_group))
-        .setColor(ContextCompat.getColor(this, color))
+        .setColor(Color.parseColor(color))
         .setAutoCancel(true)
         .setSound(sound)
         .setContentTitle(title)
@@ -187,7 +177,7 @@ class UCTFirebaseMessagingService : FirebaseMessagingService() {
 
     //Intent to start web browser
     val actionIntent = PendingIntent.getActivity(this, 0, Intent(Intent.ACTION_VIEW).apply {
-      data = Uri.parse(university.registration_page)
+      data = Uri.parse(registrationUrl)
     }, 0)
 
     notificationBuilder
@@ -200,20 +190,11 @@ class UCTFirebaseMessagingService : FirebaseMessagingService() {
     )
 
     uctApi.acknowledgeNotification(
-        section.topic_id.orEmpty(),
-        section.topic_name.orEmpty(),
-        uctNotification.notification_id.toString()
-    ).observeOn(AndroidSchedulers.mainThread())
-        .subscribe(
-            { Timber.i("Acknowledged notification: ${uctNotification.notification_id} for topic:" +
-                  " ${uctNotification.topic_name}")
-            },
-            { Timber.e(it) }
-        )
-
-    Answers.getInstance()
-        .logCustom(CustomEvent("receive_notification")
-            .putCustomAttribute("status", section.status)
-            .putCustomAttribute("topic", section.topic_name))
+        topicId,
+        topicName,
+        notificationId).observeOn(AndroidSchedulers.mainThread())
+        .subscribe({
+          Timber.i("Acknowledged notification: $notificationId for topic: $topicName")
+        }, { Timber.e(it) })
   }
 }

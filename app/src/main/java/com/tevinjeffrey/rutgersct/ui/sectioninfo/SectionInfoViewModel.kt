@@ -56,14 +56,14 @@ class SectionInfoViewModel : ViewModel() {
   }
 
   fun loadRMP() {
-    val professorsNotFound = ArrayList(searchViewModel.section?.instructors)
+    val professorsNotFound = searchViewModel.section?.instructors
 
     RxUtils.disposeIfNotNull(disposable)
     disposable = buildSearchParameters()
         .flatMap<Professor> { parameter -> rmp.getProfessor(parameter) }
         //Should need this to busness code.
         .doOnNext { professor ->
-          val iterator = professorsNotFound.iterator()
+          val iterator = professorsNotFound.orEmpty().toMutableList().iterator()
           while (iterator.hasNext()) {
             val i = iterator.next()
             if (JaroWinklerDistance.getDistance(i.lastName(),
@@ -83,7 +83,7 @@ class SectionInfoViewModel : ViewModel() {
           rmpData.postValue(RMPModel(
               showRatingsLayout = true,
               ratingsLayoutLoading = false,
-              professorNotFound = professorsNotFound.map { it.name }
+              professorNotFound = professorsNotFound?.map { it.name }.orEmpty()
           ))
         }
         .toList()

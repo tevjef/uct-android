@@ -31,8 +31,8 @@ class Analytics @Inject constructor(private val firebaseAnalytics: FirebaseAnaly
     val params = Bundle().apply {
       putInt(Param.sectionCount, sectionCount)
     }
-    firebaseAnalytics.logEvent(Event.subscribe, params)
-    Answers.getInstance().logEvent(Event.subscribe, params)
+    firebaseAnalytics.logEvent(Event.trackedSections, params)
+    Answers.getInstance().logEvent(Event.trackedSections, params)
   }
 
   fun logTrackedSectionsMigration(sectionCount: Int) {
@@ -62,11 +62,11 @@ class Analytics @Inject constructor(private val firebaseAnalytics: FirebaseAnaly
     Answers.getInstance().logEvent(Event.unsubscribe, params)
   }
 
-  fun logReceiveNotification(sectionTopicId: String, sectionTopicName: String, notification: String) {
+  fun logReceiveNotification(sectionTopicId: String, sectionTopicName: String, notificationId: String) {
     val params = Bundle().apply {
       putString(Param.topicId, sectionTopicId)
       putString(Param.topicName, sectionTopicName)
-      putString(Param.notificationIdentifier, notification)
+      putString(Param.notificationId, notificationId)
     }
 
     firebaseAnalytics.logEvent(Event.receiveNotification, params)
@@ -84,14 +84,13 @@ class Analytics @Inject constructor(private val firebaseAnalytics: FirebaseAnaly
   }
 
    object Param {
-     var screen_name = "screen_name"
      var name = "name"
      var number = "number"
      var topicId = "topic_id"
      var topicName = "topic_name"
      var sectionCount = "section_count"
      var semester = "semester"
-     var notificationIdentifier = "notificationIdentifier"
+     var notificationId = "notification_id"
    }
 
   object Event {
@@ -101,6 +100,6 @@ class Analytics @Inject constructor(private val firebaseAnalytics: FirebaseAnaly
     var migration = "migration"
     var unsubscribe = "unsubscribe"
     var receiveNotification = "receive_notification"
-    var popHome = "pop_home"
+    val trackedSections = "tracked_sections"
   }
 }
