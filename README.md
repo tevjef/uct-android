@@ -1,4 +1,4 @@
-Course Tracker - Android [![Build Status](https://travis-ci.org/tevjef/Rutgers-Course-Tracker.svg?branch=master)](https://travis-ci.org/tevjef/Rutgers-Course-Tracker)
+Course Tracker - Android [![Build Status](https://travis-ci.org/tevjef/uct-android.svg?branch=master)](https://travis-ci.org/tevjef/uct-android)
 ======================
 
 <p align="center">
