@@ -22,7 +22,6 @@
       android:name="com.google.firebase.messaging.default_notification_color"
       android:resource="@color/blue_grey"
       />
-
     <activity
       android:name=".ui.MainActivity"
       android:launchMode="singleTop"

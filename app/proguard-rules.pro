@@ -67,6 +67,9 @@
 #    @retrofit2.http.* <methods>;
 #}
 
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
+
 -keep class com.squareup.wire.** { *; }
 -keep class com.tevinjeffrey.rutgersct.data.model.** { *; }
 

@@ -81,7 +81,7 @@ abstract class BaseFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
-    analytics.logScreenView(parentActivity, this.toString())
+    analytics.logScreenView(parentActivity, this.javaClass.canonicalName)
   }
 
   override fun onDestroyView() {

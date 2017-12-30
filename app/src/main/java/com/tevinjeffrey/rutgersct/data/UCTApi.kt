@@ -114,17 +114,17 @@ class UCTApi @Inject constructor(
 
   fun refreshSubscriptions(): Observable<UCTSubscription> {
     var compl: Completable = Completable.complete()
-    if (!Once.beenDone(TRACKED_SECTIONS_MIGRATION, Amount.exactly(1))) {
-        compl = Single.fromCallable({
-          val subscriptions: List<UCTSubscription> = hawkHelper.getUniversity()
-          if (subscriptions.isNotEmpty()) {
-            subscriptionDao.insertAll(subscriptions)
-            analytics.logTrackedSectionsMigration(subscriptions.size)
-          }
-          hawkHelper.dropDatabase()
-          Once.markDone(TRACKED_SECTIONS_MIGRATION)
-          true
-        }).toCompletable()
+    if (!Once.beenDone(TRACKED_SECTIONS_MIGRATION, Amount.moreThan(0))) {
+      compl = Single.fromCallable({
+        val subscriptions: List<UCTSubscription> = hawkHelper.getUniversity()
+        if (subscriptions.isNotEmpty()) {
+          subscriptionDao.insertAll(subscriptions)
+          analytics.logTrackedSectionsMigration(subscriptions.size)
+        }
+        hawkHelper.dropDatabase()
+        Once.markDone(TRACKED_SECTIONS_MIGRATION)
+        true
+      }).toCompletable()
     }
 
     return compl.andThen(Observable.fromIterable(subscriptionDao.all()))
@@ -133,12 +133,7 @@ class UCTApi @Inject constructor(
               subscription.sectionTopicName)
               .map { section -> subscription to section }
         }
-        .map { pair ->
-          val newUni = pair.first.university
-          val newSub = UCTSubscription(pair.second.topic_name!!, newUni)
-          newSub.university = newUni
-          newSub
-        }
+        .map { UCTSubscription(it.second.topic_name!!, it.first.university) }
         .toList()
         .flatMap { this.addAllSubscription(it) }
         .toObservable()
