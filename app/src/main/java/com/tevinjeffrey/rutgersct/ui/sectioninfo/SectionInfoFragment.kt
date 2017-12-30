@@ -45,6 +45,7 @@ import kotlinx.android.synthetic.main.section_info_times.sectionTimesContainer
 import javax.inject.Inject
 
 class SectionInfoFragment : BaseFragment() {
+  override fun fragmentName() = "SectionInfoFragment"
 
   @Inject lateinit var subcomponent: SectionInfoSubcomponent
 

@@ -38,6 +38,7 @@ import java.util.*
 import javax.inject.Inject
 
 class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
+  override fun fragmentName() = "CourseInfoFragment"
 
   @Inject lateinit var subcomponent: CourseInfoSubcomponent
 
@@ -99,9 +100,9 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
     subcomponent.inject(viewModel)
   }
 
-  override fun onItemClicked(section: Section, view: View) {
-    Timber.i("Selected section: %s", section)
-    searchViewModel.section = section
+  override fun onItemClicked(data: Section, view: View) {
+    Timber.i("Selected section: %s", data)
+    searchViewModel.section = data
     val bundle = Bundle()
     startSectionInfoFragment(bundle, view)
   }

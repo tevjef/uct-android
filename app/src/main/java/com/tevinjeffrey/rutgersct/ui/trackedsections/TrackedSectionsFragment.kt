@@ -41,6 +41,7 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<UCTSubscription, View> {
+  override fun fragmentName() = "TrackedSectionsFragment"
 
   @Inject lateinit var subcomponent: TrackedSectionsSubcomponent
 
@@ -138,13 +139,13 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
     subcomponent.inject(viewModel)
   }
 
-  override fun onItemClicked(subscription: UCTSubscription, view: View) {
-    Timber.i("Selected subscription: %s", subscription)
-    searchFlowViewModel.university = subscription.university
-    searchFlowViewModel.subject = subscription.subject
-    searchFlowViewModel.semester = subscription.semester
-    searchFlowViewModel.course = subscription.course
-    searchFlowViewModel.section = subscription.section
+  override fun onItemClicked(data: UCTSubscription, view: View) {
+    Timber.i("Selected subscription: %s", data)
+    searchFlowViewModel.university = data.university
+    searchFlowViewModel.subject = data.subject
+    searchFlowViewModel.semester = data.semester
+    searchFlowViewModel.course = data.course
+    searchFlowViewModel.section = data.section
     startSectionInfoFragment(SectionInfoFragment.newInstance(), view)
   }
 

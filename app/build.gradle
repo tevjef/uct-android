@@ -49,7 +49,7 @@ android {
     applicationId 'com.tevinjeffrey.rutgersct'
     minSdkVersion 19
     targetSdkVersion rootProject.targetSdkVersion
-    versionCode 36
+    versionCode rootProject.buildVersion
     versionName '1.0.8.1'
     signingConfig signingConfigs.release
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -35,6 +35,8 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Course, View> {
+  override fun fragmentName() = "CourseFragment"
+
   @Inject lateinit var subcomponent: CourseSubcomponent
 
   private lateinit var selectedSubject: Subject

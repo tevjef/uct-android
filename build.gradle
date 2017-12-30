@@ -57,4 +57,10 @@ ext {
   rxJava2Version = '2.1.0'
   stetho = "1.5.0"
   supportLibVersion = "27.0.1"
+
+  if (System.getenv("BITRISE_BUILD_NUMBER") != null) {
+    buildVersion = System.getenv("BITRISE_BUILD_NUMBER").toInteger()
+  } else {
+    buildVersion = 37
+  }
 }

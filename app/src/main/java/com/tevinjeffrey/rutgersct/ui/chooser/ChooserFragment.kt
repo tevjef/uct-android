@@ -33,6 +33,8 @@ import javax.inject.Inject
 
 class ChooserFragment : BaseFragment() {
 
+  override fun fragmentName() = "ChooserFragment"
+
   @Inject lateinit var subcomponent: ChooserSubcomponent
 
   private lateinit var searchViewModel: SearchViewModel

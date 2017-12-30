@@ -26,6 +26,8 @@ abstract class BaseFragment : Fragment() {
 
   @Inject lateinit var analytics: Analytics
 
+  abstract fun fragmentName(): String
+
   val parentActivity: MainActivity
     get() = activity as MainActivity
 
@@ -81,7 +83,7 @@ abstract class BaseFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
-    analytics.logScreenView(parentActivity, this.javaClass.canonicalName)
+    analytics.logScreenView(parentActivity, fragmentName())
   }
 
   override fun onDestroyView() {
@@ -142,10 +144,10 @@ abstract class BaseFragment : Fragment() {
   }
 
   fun startFragment(
-      outgoingFragment: Fragment,
-      incomingFragment: Fragment,
+      outgoingFragment: BaseFragment,
+      incomingFragment: BaseFragment,
       ft: FragmentTransaction) {
-    ft.addToBackStack(outgoingFragment.toString())
+    ft.addToBackStack(outgoingFragment.fragmentName())
         .replace(R.id.container, incomingFragment)
         .commitAllowingStateLoss()
     parentActivity.incrementBackstackCount()

@@ -32,6 +32,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, ItemClickListener<Subject, View> {
+  override fun fragmentName() = "SubjectFragment"
+
   @Inject internal lateinit var subcomponent: SubjectSubcomponent
 
   private lateinit var searchFlowViewModel: SearchViewModel
