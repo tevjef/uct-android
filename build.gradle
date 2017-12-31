@@ -1,5 +1,5 @@
 buildscript {
-  ext.kotlin_version = '1.2.0'
+  ext.kotlin_version = '1.2.10'
   repositories {
     jcenter()
     google()
@@ -61,6 +61,6 @@ ext {
   if (System.getenv("BITRISE_BUILD_NUMBER") != null) {
     buildVersion = System.getenv("BITRISE_BUILD_NUMBER").toInteger()
   } else {
-    buildVersion = 37
+    buildVersion = 100
   }
 }
