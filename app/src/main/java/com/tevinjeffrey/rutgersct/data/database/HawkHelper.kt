@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.tevinjeffrey.rutgersct.dagger.PerApp
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 import timber.log.Timber
 import java.nio.charset.Charset
 import javax.inject.Inject
@@ -64,7 +64,7 @@ class HawkHelper @Inject constructor(
       if (uniStr.isNotBlank()) {
         val type = Types.newParameterizedType(List::class.java, UCTSubscription::class.java)
         val adapter: JsonAdapter<List<UCTSubscription>> = moshi.adapter(type)
-        return adapter.fromJson(uniStr).orEmpty()
+        return adapter.fromJson(uniStr).orEmpty().filter { it.sectionTopicName.isNotEmpty() }
       }
     }
 

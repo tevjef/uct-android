@@ -5,7 +5,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 import org.intellij.lang.annotations.Language
 
 @Dao

@@ -4,9 +4,9 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 
-import com.tevinjeffrey.rutgersct.data.preference.DefaultSemester
-import com.tevinjeffrey.rutgersct.data.preference.DefaultUniversity
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultSemester
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultUniversity
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 
 @Database(entities = [
   UCTSubscription::class,

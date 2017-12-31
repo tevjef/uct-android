@@ -5,8 +5,8 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 
-import com.tevinjeffrey.rutgersct.data.preference.DefaultSemester
-import com.tevinjeffrey.rutgersct.data.preference.DefaultUniversity
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultSemester
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultUniversity
 import org.intellij.lang.annotations.Language
 
 @Dao

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.tevinjeffrey.rutgersct.R
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 import com.tevinjeffrey.rutgersct.ui.base.BaseAdapter
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import java.math.BigInteger

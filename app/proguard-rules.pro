@@ -72,6 +72,7 @@
 
 -keep class com.squareup.wire.** { *; }
 -keep class com.tevinjeffrey.rutgersct.data.model.** { *; }
+-keep class com.tevinjeffrey.rutgersct.data.database.** { *; }
 
 -dontwarn retrofit2.**
 -dontwarn retrofit2.Platform$Java8

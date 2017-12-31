@@ -6,7 +6,7 @@ import com.tevinjeffrey.rutgersct.data.model.Section
 import com.tevinjeffrey.rutgersct.data.model.Semester
 import com.tevinjeffrey.rutgersct.data.model.Subject
 import com.tevinjeffrey.rutgersct.data.model.University
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 
 class SearchViewModel : ViewModel() {
   var university: University? = null
@@ -35,7 +35,8 @@ class SearchViewModel : ViewModel() {
     universityBuilder.available_semesters.clear()
     universityBuilder.available_semesters.add(semester)
 
-    return UCTSubscription(section!!.topic_name.orEmpty(), universityBuilder.build())
+    return UCTSubscription(section!!.topic_name.orEmpty(),
+        universityBuilder.build())
   }
 
   fun newSearch() {

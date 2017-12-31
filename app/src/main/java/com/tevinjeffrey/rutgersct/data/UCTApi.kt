@@ -10,9 +10,9 @@ import com.tevinjeffrey.rutgersct.data.model.Semester
 import com.tevinjeffrey.rutgersct.data.model.Subject
 import com.tevinjeffrey.rutgersct.data.model.University
 import com.tevinjeffrey.rutgersct.data.notifications.SubscriptionManager
-import com.tevinjeffrey.rutgersct.data.preference.DefaultSemester
-import com.tevinjeffrey.rutgersct.data.preference.DefaultUniversity
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultSemester
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultUniversity
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -50,7 +50,8 @@ class UCTApi @Inject constructor(
     set(semester) {
       Timber.d("Setting semester: %s", semester)
       semester?.let {
-        preferenceDao.updateDefaultSemester(DefaultSemester(semester))
+        preferenceDao.updateDefaultSemester(DefaultSemester(
+            semester))
         analytics.setDefaultSemester(semester)
       }
     }
@@ -66,7 +67,8 @@ class UCTApi @Inject constructor(
       Timber.d("Setting university: %s", university?.topic_name)
       university?.let {
         analytics.setDefaultUniversity(university.topic_name.toString())
-        preferenceDao.updateDefaultUniversity(DefaultUniversity(university))
+        preferenceDao.updateDefaultUniversity(DefaultUniversity(
+            university))
       }
     }
 
@@ -133,7 +135,10 @@ class UCTApi @Inject constructor(
               subscription.sectionTopicName)
               .map { section -> subscription to section }
         }
-        .map { UCTSubscription(it.second.topic_name!!, it.first.university) }
+        .map {
+          UCTSubscription(it.second.topic_name!!,
+              it.first.university)
+        }
         .toList()
         .flatMap { this.addAllSubscription(it) }
         .toObservable()

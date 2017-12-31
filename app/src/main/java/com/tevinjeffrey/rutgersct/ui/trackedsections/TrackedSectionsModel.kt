@@ -1,7 +1,6 @@
 package com.tevinjeffrey.rutgersct.ui.trackedsections
 
-import com.tevinjeffrey.rutgersct.data.search.UCTSubscription
-import java.util.*
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 
 class TrackedSectionsModel(
     var isLoading: Boolean = false,
