@@ -37,3 +37,6 @@ captures/
 
 google-services.json
 .gradle/
+
+crash-sa.json
+gradle.properties
