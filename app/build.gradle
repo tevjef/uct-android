@@ -51,7 +51,7 @@ android {
     minSdkVersion 19
     targetSdkVersion rootProject.targetSdkVersion
     versionCode rootProject.buildVersion
-    versionName '1.0.8.1'
+    versionName '1.0.9.1'
     signingConfig signingConfigs.release
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
