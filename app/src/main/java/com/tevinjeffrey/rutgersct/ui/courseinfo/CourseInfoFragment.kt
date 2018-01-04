@@ -26,6 +26,7 @@ import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
+import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.course_info_app_bar.appBar
 import kotlinx.android.synthetic.main.course_info_app_bar.courseTitleText
 import kotlinx.android.synthetic.main.course_info_app_bar.openSections
@@ -84,10 +85,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(
-        parentActivity,
-        R.style.RutgersCT_Accent
-    ))
+    val themedInflater = inflater.cloneInContext(parentActivity.wrapTheme(R.style.RutgersCT_Accent))
     return themedInflater.inflate(R.layout.fragment_course_info, container, false)
   }
 

@@ -119,7 +119,7 @@ class SectionInfoViewModel : ViewModel() {
   }
 
   private fun buildSearchParameters(): Observable<Parameter> {
-    return Observable.fromIterable(searchViewModel.section?.instructors)
+    return Observable.fromIterable(searchViewModel.section?.instructors.orEmpty())
         .filter(filterGenericInstructors())
         .flatMap { instructor ->
           val university = "rutgers"

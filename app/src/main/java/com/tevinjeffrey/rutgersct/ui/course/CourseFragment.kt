@@ -25,6 +25,7 @@ import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
+import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.error_view.try_again
 import kotlinx.android.synthetic.main.fragment_courses.list
 import kotlinx.android.synthetic.main.fragment_courses.swipeRefreshLayout
@@ -81,7 +82,7 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity, R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(parentActivity.wrapTheme(R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_courses, container, false)
   }
 
@@ -107,7 +108,7 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
     super.onCreateOptionsMenu(menu, inflater)
-    inflater!!.inflate(R.menu.menu_fragment_main, menu)
+    inflater?.inflate(R.menu.menu_fragment_main, menu)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -148,30 +149,31 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
 
   private fun startCourseInfoFragment(b: Bundle) {
     val courseInfoFragment = CourseInfoFragment()
-    val ft = fragmentManager!!.beginTransaction()
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      val changeBoundsTransition = ChangeBounds()
-      changeBoundsTransition.interpolator = DecelerateInterpolator()
+    val ft = fragmentManager?.beginTransaction()?.apply {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val changeBoundsTransition = ChangeBounds()
+        changeBoundsTransition.interpolator = DecelerateInterpolator()
 
-      courseInfoFragment.enterTransition = Fade(Fade.IN).setStartDelay(250)
-      courseInfoFragment.returnTransition = Fade(Fade.OUT).setDuration(50)
+        courseInfoFragment.enterTransition = Fade(Fade.IN).setStartDelay(250)
+        courseInfoFragment.returnTransition = Fade(Fade.OUT).setDuration(50)
 
-      courseInfoFragment.allowReturnTransitionOverlap = false
-      courseInfoFragment.allowEnterTransitionOverlap = false
+        courseInfoFragment.allowReturnTransitionOverlap = false
+        courseInfoFragment.allowEnterTransitionOverlap = false
 
-      courseInfoFragment.sharedElementEnterTransition = changeBoundsTransition
-      courseInfoFragment.sharedElementReturnTransition = changeBoundsTransition
+        courseInfoFragment.sharedElementEnterTransition = changeBoundsTransition
+        courseInfoFragment.sharedElementReturnTransition = changeBoundsTransition
 
-      ft.addSharedElement(toolbar, getString(R.string.transition_name_tool_background))
-    } else {
-      ft.setCustomAnimations(
-          R.animator.enter,
-          R.animator.exit,
-          R.animator.pop_enter,
-          R.animator.pop_exit
-      )
+        addSharedElement(toolbar, getString(R.string.transition_name_tool_background))
+      } else {
+        setCustomAnimations(
+            R.animator.enter,
+            R.animator.exit,
+            R.animator.pop_enter,
+            R.animator.pop_exit
+        )
+      }
+      courseInfoFragment.arguments = b
+      startFragment(this@CourseFragment, courseInfoFragment, this)
     }
-    courseInfoFragment.arguments = b
-    startFragment(this, courseInfoFragment, ft)
   }
 }

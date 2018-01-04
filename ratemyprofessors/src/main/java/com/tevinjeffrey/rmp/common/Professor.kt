@@ -64,13 +64,13 @@ data class Professor(
     class NameComparator(private val firstName: String) : Comparator<Professor> {
 
       override fun compare(prof1: Professor, prof2: Professor): Int {
-        return if (prof1.firstName != null && prof1.firstName!!.get(0) == firstName[0]
+        return if (prof1.firstName.orEmpty().isNotEmpty() && prof1.firstName!!.get(0) == firstName[0]
             &&
-            prof2.firstName != null
-            && prof2.firstName!!.get(0) != firstName[0]) {
+            prof2.firstName.orEmpty().isNotEmpty()
+            && prof2.firstName!![0] != firstName[0]) {
           -1
-        } else if (prof1.firstName != null
-            && prof1.firstName!!.get(0) != firstName[0] &&
+        } else if (prof1.firstName.orEmpty().isNotEmpty()
+            && prof1.firstName!![0] != firstName[0] &&
             prof2.firstName != null
             && prof2.firstName!!.get(0) == firstName[0]) {
           1

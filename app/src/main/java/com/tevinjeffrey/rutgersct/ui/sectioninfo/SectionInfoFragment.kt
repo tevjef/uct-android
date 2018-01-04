@@ -29,6 +29,7 @@ import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.utils.RatingLayoutInflater
 import com.tevinjeffrey.rutgersct.utils.Utils
+import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.fragment_section_info.fab
 import kotlinx.android.synthetic.main.section_info_app_bar.courseTitleText
 import kotlinx.android.synthetic.main.section_info_app_bar.creditsGroup
@@ -112,9 +113,9 @@ class SectionInfoFragment : BaseFragment() {
     val contextThemeWrapper: Context
     // create ContextThemeWrapper from the original Activity Context with the custom theme
     if (searchViewModel.section?.status == "Open") {
-      contextThemeWrapper = Utils.wrapContextTheme(parentActivity, R.style.RutgersCT_Green)
+      contextThemeWrapper = parentActivity.wrapTheme(R.style.RutgersCT_Green)
     } else {
-      contextThemeWrapper = Utils.wrapContextTheme(parentActivity, R.style.RutgersCT_Red)
+      contextThemeWrapper = parentActivity.wrapTheme(R.style.RutgersCT_Red)
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         parentActivity.setTaskDescription(
             ActivityManager.TaskDescription(null, null,
@@ -204,7 +205,7 @@ class SectionInfoFragment : BaseFragment() {
       }
       ObjectAnimator.ofInt(fab, "backgroundColor", fromColor, toColor).apply {
         duration = animDuration
-        addUpdateListener { fab.backgroundTintList = ColorStateList.valueOf(it.animatedValue as Int) }
+        addUpdateListener { fab?.backgroundTintList = ColorStateList.valueOf(it.animatedValue as Int) }
         setEvaluator(ArgbEvaluator())
         start()
       }

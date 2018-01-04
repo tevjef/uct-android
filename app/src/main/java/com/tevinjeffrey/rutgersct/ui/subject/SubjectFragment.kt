@@ -24,6 +24,7 @@ import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
+import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.error_view.try_again
 import kotlinx.android.synthetic.main.fragment_subjects.list
 import kotlinx.android.synthetic.main.fragment_subjects.swipeRefreshLayout
@@ -76,8 +77,7 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
       inflater: LayoutInflater,
       container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity,
-        R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(parentActivity.wrapTheme(R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_subjects, container, false)
   }
 

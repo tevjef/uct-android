@@ -23,7 +23,7 @@ import com.tevinjeffrey.rutgersct.data.model.string
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.subject.SubjectFragment
-import com.tevinjeffrey.rutgersct.utils.Utils
+import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.fragment_chooser.searchBtn
 import kotlinx.android.synthetic.main.fragment_chooser.semesterRadioGroup
 import kotlinx.android.synthetic.main.fragment_chooser.toolbar
@@ -91,8 +91,7 @@ class ChooserFragment : BaseFragment() {
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity,
-        R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(parentActivity.wrapTheme(R.style.RutgersCT))
     return themedInflater.inflate(R.layout.fragment_chooser, container, false)
   }
 
@@ -106,7 +105,7 @@ class ChooserFragment : BaseFragment() {
       if (radioButton == null) {
         Toast.makeText(
             parentActivity,
-            parentActivity.getString(R.string.select_a_semester),
+            getString(R.string.select_a_semester),
             Toast.LENGTH_SHORT
         )
             .show()
@@ -118,7 +117,7 @@ class ChooserFragment : BaseFragment() {
         Toast
             .makeText(
                 parentActivity,
-                parentActivity.getString(R.string.select_a_semester),
+                getString(R.string.select_a_semester),
                 Toast.LENGTH_SHORT
             )
             .show()

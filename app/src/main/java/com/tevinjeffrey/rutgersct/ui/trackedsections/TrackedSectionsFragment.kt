@@ -30,6 +30,7 @@ import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
 import com.tevinjeffrey.rutgersct.utils.Utils
+import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.add_courses_to_track.emptyView
 import kotlinx.android.synthetic.main.fragment_tracked_sections.fab
 import kotlinx.android.synthetic.main.fragment_tracked_sections.list
@@ -59,8 +60,7 @@ class TrackedSectionsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshList
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val themedInflater = inflater.cloneInContext(Utils.wrapContextTheme(parentActivity,
-        R.style.RutgersCT))
+    val themedInflater = inflater.cloneInContext(parentActivity.wrapTheme(R.style.RutgersCT))
     return themedInflater.inflate(layout.fragment_tracked_sections,
         container,
         false) as ViewGroup

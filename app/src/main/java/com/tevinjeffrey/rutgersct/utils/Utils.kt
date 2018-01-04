@@ -63,10 +63,10 @@ object Utils {
       window.navigationBarColor = colorDark
     }
   }
+}
 
-  fun wrapContextTheme(activity: Activity, @StyleRes styleRes: Int): Context {
-    val contextThemeWrapper = ContextThemeWrapper(activity, styleRes)
-    setWindowColor(fetchPrimaryDarkColor(contextThemeWrapper.theme), activity)
-    return contextThemeWrapper
-  }
+fun Activity.wrapTheme(@StyleRes styleRes: Int): Context {
+  val contextThemeWrapper = ContextThemeWrapper(this, styleRes)
+  Utils.setWindowColor(Utils.fetchPrimaryDarkColor(contextThemeWrapper.theme), this)
+  return contextThemeWrapper
 }
