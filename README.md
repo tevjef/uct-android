@@ -49,7 +49,7 @@ and [more...](https://github.com/tevjef/Rutgers-Course-Tracker/blob/master/app/s
 # Licence
 
 ```
-Copyright 2017 Tevin Jeffrey.
+Copyright 2018 Tevin Jeffrey.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
