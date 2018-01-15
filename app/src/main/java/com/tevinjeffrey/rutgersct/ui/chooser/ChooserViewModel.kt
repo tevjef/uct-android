@@ -34,9 +34,9 @@ class ChooserViewModel : ViewModel() {
 
   fun loadAvailableSemesters(universityTopicName: String) {
     cancePreviousSubscription()
-    disposable = Observable.just(universityData.value?.data?.firstOrNull
-        { it.topic_name == universityTopicName }
-            ?.available_semesters)
+    disposable = Observable.just(universityData.value?.data
+        ?.firstOrNull{ it.topic_name == universityTopicName }
+        ?.available_semesters.orEmpty())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             {

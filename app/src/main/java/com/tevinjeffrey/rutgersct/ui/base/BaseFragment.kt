@@ -3,6 +3,7 @@ package com.tevinjeffrey.rutgersct.ui.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -91,15 +92,28 @@ abstract class BaseFragment : Fragment() {
     snackbar?.dismiss()
   }
 
+  fun popToHome() {
+    Handler().post {
+      activity?.let {
+        parentActivity.backstackCount = 0
+        fragmentManager!!.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
+      }
+    }
+  }
+
+  fun popToHomeImmediate() {
+    parentActivity.backstackCount = 0
+    fragmentManager!!.popBackStackImmediate(
+        TrackedSectionsFragment.TAG,
+        FragmentManager.POP_BACK_STACK_INCLUSIVE
+    )
+  }
+
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item.itemId) {
       R.id.action_track -> {
-
-        parentActivity.backstackCount = 0
-        fragmentManager!!.popBackStackImmediate(
-            TrackedSectionsFragment.TAG,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        popToHomeImmediate()
         true
       }
       R.id.action_settings -> {

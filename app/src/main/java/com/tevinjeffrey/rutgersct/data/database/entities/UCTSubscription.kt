@@ -48,7 +48,7 @@ data class UCTSubscription(@PrimaryKey
     return "UCTSubscription(sectionTopicName=$sectionTopicName)"
   }
 
-  fun updateSection(section: Section): University? {
+  fun updateSection(section: Section): University {
     val courseBuilder = course.newBuilder()
     courseBuilder.sections.clear()
     courseBuilder.sections.add(section)

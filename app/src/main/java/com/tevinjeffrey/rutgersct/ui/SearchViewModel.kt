@@ -15,6 +15,9 @@ class SearchViewModel : ViewModel() {
   var course: Course? = null
   var section: Section? = null
 
+  var searchStarted: Boolean = false
+    get() = university != null
+
   fun buildSubscription(): UCTSubscription {
     val courseBuilder = course!!.newBuilder()
     courseBuilder.sections.clear()

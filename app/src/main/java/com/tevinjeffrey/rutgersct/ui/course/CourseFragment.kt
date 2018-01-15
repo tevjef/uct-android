@@ -19,12 +19,10 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.data.model.Course
-import com.tevinjeffrey.rutgersct.data.model.Subject
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.courseinfo.CourseInfoFragment
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
-import com.tevinjeffrey.rutgersct.utils.Utils
 import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.error_view.try_again
 import kotlinx.android.synthetic.main.fragment_courses.list
@@ -39,9 +37,6 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
   override fun fragmentName() = "CourseFragment"
 
   @Inject lateinit var subcomponent: CourseSubcomponent
-
-  private lateinit var selectedSubject: Subject
-
   private lateinit var searchViewModel: SearchViewModel
   private lateinit var viewModel: CourseViewModel
 
@@ -54,7 +49,9 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    selectedSubject = searchViewModel.subject!!
+    if (!searchViewModel.searchStarted) {
+      popToHome()
+    }
     super.onCreate(savedInstanceState)
     retainInstance = true
 
@@ -100,7 +97,7 @@ class CourseFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Ite
     swipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.green)
     swipeRefreshLayout.setOnRefreshListener(this)
 
-    toolbar.title = selectedSubject.number + ": " + selectedSubject.name
+    toolbar.title = searchViewModel.subject?.number + ": " + searchViewModel.subject?.name
     setToolbar(toolbar)
 
     try_again.setOnClickListener { onRefresh() }

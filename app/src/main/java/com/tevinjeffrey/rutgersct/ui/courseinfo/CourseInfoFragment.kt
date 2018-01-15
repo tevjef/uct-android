@@ -16,7 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.tevinjeffrey.rutgersct.R
-import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Section
 import com.tevinjeffrey.rutgersct.data.model.openSections
 import com.tevinjeffrey.rutgersct.ui.SearchViewModel
@@ -25,7 +24,6 @@ import com.tevinjeffrey.rutgersct.ui.sectioninfo.SectionInfoFragment
 import com.tevinjeffrey.rutgersct.ui.utils.CircleSharedElementCallback
 import com.tevinjeffrey.rutgersct.ui.utils.CircleView
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
-import com.tevinjeffrey.rutgersct.utils.Utils
 import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.course_info_app_bar.appBar
 import kotlinx.android.synthetic.main.course_info_app_bar.courseTitleText
@@ -35,7 +33,7 @@ import kotlinx.android.synthetic.main.course_info_app_bar.toolbar
 import kotlinx.android.synthetic.main.course_info_app_bar.totalSections
 import kotlinx.android.synthetic.main.fragment_course_info.list
 import timber.log.Timber
-import java.util.*
+import java.util.ArrayList
 import javax.inject.Inject
 
 class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
@@ -44,7 +42,6 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   @Inject lateinit var subcomponent: CourseInfoSubcomponent
 
   private val headerViews = ArrayList<View>()
-  private var selectedCourse: Course? = null
 
   private lateinit var searchViewModel: SearchViewModel
   private lateinit var viewModel: CourseInfoViewModel
@@ -52,7 +49,9 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   override fun onAttach(context: Context) {
     searchViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
     viewModel = ViewModelProviders.of(parentActivity).get(CourseInfoViewModel::class.java)
-    selectedCourse = searchViewModel.course
+    if (!searchViewModel.searchStarted) {
+      popToHome()
+    }
     super.onAttach(context)
   }
 
@@ -73,8 +72,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
     layoutManager.orientation = LinearLayoutManager.VERTICAL
     list.layoutManager = layoutManager
     list.setHasFixedSize(true)
-    list.adapter = CourseInfoAdapter(headerViews,
-        selectedCourse?.sections.orEmpty(), this)
+    list.adapter = CourseInfoAdapter(headerViews, searchViewModel.course?.sections.orEmpty(), this)
 
     setCourseTitle()
     setShortenedCourseInfo()
@@ -109,8 +107,9 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
     val root = parentActivity
         .layoutInflater
         .inflate(R.layout.course_info_metadata, null) as ViewGroup
-    for (data in selectedCourse?.metadata.orEmpty()) {
-      val metadata = LayoutInflater.from(parentActivity).inflate(R.layout.metadata, null) as ViewGroup
+    for (data in searchViewModel.course?.metadata.orEmpty()) {
+      val metadata = LayoutInflater.from(parentActivity).inflate(R.layout.metadata,
+          null) as ViewGroup
       val title = metadata.findViewById<TextView>(R.id.metadata_title)
       val description = metadata.findViewById<TextView>(R.id.metadata_text)
       description.movementMethod = LinkMovementMethod()
@@ -122,15 +121,15 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   }
 
   private fun setCourseTitle() {
-    courseTitleText.text = selectedCourse?.name
+    courseTitleText.text = searchViewModel.course?.name
   }
 
   private fun setOpenSections() {
-    openSections.text = selectedCourse?.openSections().toString()
+    openSections.text = searchViewModel.course?.openSections().toString()
   }
 
   private fun setShortenedCourseInfo() {
-    //String offeringUnitCode = selectedCourse.getOfferingUnitCode();
+    //String offeringUnitCode = searchViewModel.course?.getOfferingUnitCode();
     val subject = searchViewModel.subject
     val course = searchViewModel.course
     if (subject != null) {
@@ -140,7 +139,7 @@ class CourseInfoFragment : BaseFragment(), ItemClickListener<Section, View> {
   }
 
   private fun setTotalSections() {
-    totalSections.text = selectedCourse?.sections?.size.toString()
+    totalSections.text = searchViewModel.course?.sections?.size.toString()
   }
 
   private fun startSectionInfoFragment(b: Bundle, clickedView: View) {

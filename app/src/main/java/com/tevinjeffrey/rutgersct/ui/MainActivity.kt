@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.firebase.iid.FirebaseInstanceId
 import com.tevinjeffrey.rutgersct.R
 import com.tevinjeffrey.rutgersct.ui.trackedsections.TrackedSectionsFragment
@@ -68,6 +71,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
           .replace(R.id.container, tsf)
           .commit()
     }
+    // checkGooglePlayVersion()
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -102,5 +106,19 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
   companion object {
     val SHOW_TOUR = "showTour"
+  }
+
+  private fun checkGooglePlayVersion(): Boolean {
+    val apiAvailability = GoogleApiAvailability.getInstance()
+    val resultCode = apiAvailability.isGooglePlayServicesAvailable(this)
+    if (resultCode != ConnectionResult.SUCCESS) {
+      if (apiAvailability.isUserResolvableError(resultCode)) {
+        apiAvailability.getErrorDialog(this, resultCode, 42).show()
+      } else {
+        finish()
+      }
+      return false
+    }
+    return true
   }
 }

@@ -23,7 +23,6 @@ import com.tevinjeffrey.rutgersct.ui.SearchViewModel
 import com.tevinjeffrey.rutgersct.ui.base.BaseFragment
 import com.tevinjeffrey.rutgersct.ui.course.CourseFragment
 import com.tevinjeffrey.rutgersct.ui.utils.ItemClickListener
-import com.tevinjeffrey.rutgersct.utils.Utils
 import com.tevinjeffrey.rutgersct.utils.wrapTheme
 import kotlinx.android.synthetic.main.error_view.try_again
 import kotlinx.android.synthetic.main.fragment_subjects.list
@@ -37,21 +36,21 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
 
   @Inject internal lateinit var subcomponent: SubjectSubcomponent
 
-  private lateinit var searchFlowViewModel: SearchViewModel
+  private lateinit var searchViewModel: SearchViewModel
   private lateinit var viewModel: SubjectViewModel
 
   private val adapter = SubjectAdapter(this)
 
   override fun onAttach(context: Context) {
     viewModel = ViewModelProviders.of(parentActivity).get(SubjectViewModel::class.java)
-    searchFlowViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
+    searchViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
+    if (!searchViewModel.searchStarted) { popToHome() }
     super.onAttach(context)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     retainInstance = true
-
     viewModel.subjectData.observe(this, Observer { model ->
       if (model == null) {
         return@Observer
@@ -123,19 +122,19 @@ class SubjectFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, It
 
   override fun onItemClicked(data: Subject, view: View) {
     Timber.i("Selected subject: %s", data)
-    searchFlowViewModel.subject = data
+    searchViewModel.subject = data
     startCourseFragement(Bundle())
   }
 
   override fun onRefresh() {
     viewModel.loadSubjects(
-        searchFlowViewModel.university?.topic_name.orEmpty(),
-        searchFlowViewModel.semester?.season.toString(),
-        searchFlowViewModel.semester?.year.toString())
+        searchViewModel.university?.topic_name.orEmpty(),
+        searchViewModel.semester?.season.toString(),
+        searchViewModel.semester?.year.toString())
   }
 
   private fun setToolbarTitle() {
-    val title = searchFlowViewModel.university?.abbr + " " + searchFlowViewModel.semester?.string()
+    val title = searchViewModel.university?.abbr + " " + searchViewModel.semester?.string()
     super.setToolbarTitle(toolbar, title)
   }
 

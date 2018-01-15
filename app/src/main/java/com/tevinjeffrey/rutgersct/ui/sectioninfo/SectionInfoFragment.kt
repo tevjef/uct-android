@@ -56,6 +56,7 @@ class SectionInfoFragment : BaseFragment() {
   override fun onAttach(context: Context) {
     searchViewModel = ViewModelProviders.of(parentActivity).get(SearchViewModel::class.java)
     viewModel = ViewModelProviders.of(parentActivity).get(SectionInfoViewModel::class.java)
+    if (!searchViewModel.searchStarted) { popToHome() }
     viewModel.searchViewModel = searchViewModel
     super.onAttach(context)
   }

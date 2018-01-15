@@ -4,15 +4,15 @@ import com.tevinjeffrey.rutgersct.data.analytics.Analytics
 import com.tevinjeffrey.rutgersct.data.database.HawkHelper
 import com.tevinjeffrey.rutgersct.data.database.PreferenceDao
 import com.tevinjeffrey.rutgersct.data.database.UCTSubscriptionDao
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultSemester
+import com.tevinjeffrey.rutgersct.data.database.entities.DefaultUniversity
+import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 import com.tevinjeffrey.rutgersct.data.model.Course
 import com.tevinjeffrey.rutgersct.data.model.Section
 import com.tevinjeffrey.rutgersct.data.model.Semester
 import com.tevinjeffrey.rutgersct.data.model.Subject
 import com.tevinjeffrey.rutgersct.data.model.University
 import com.tevinjeffrey.rutgersct.data.notifications.SubscriptionManager
-import com.tevinjeffrey.rutgersct.data.database.entities.DefaultSemester
-import com.tevinjeffrey.rutgersct.data.database.entities.DefaultUniversity
-import com.tevinjeffrey.rutgersct.data.database.entities.UCTSubscription
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -85,7 +85,7 @@ class UCTApi @Inject constructor(
   private fun getSection(topicName: String): Observable<Section> {
     return uctService
         .getSection(topicName)
-        .map { response -> response.data!!.section!! }
+        .map { it.data!!.section!! }
         .onErrorResumeNext({ throwable: Throwable ->
           // Catch 404 exceptions
           if (throwable is HttpException) {
@@ -103,11 +103,6 @@ class UCTApi @Inject constructor(
     return uctService.getSubjects(university,
         season,
         year).map { response -> response.data!!.subjects }
-  }
-
-  fun getUniversity(universityTopicName: String): Observable<University> {
-    return uctService.getUniversity(universityTopicName)
-        .map { response -> response.data!!.university!! }
   }
 
   fun isTopicTracked(topicName: String): Boolean {
@@ -135,9 +130,8 @@ class UCTApi @Inject constructor(
               subscription.sectionTopicName)
               .map { section -> subscription to section }
         }
-        .map {
-          UCTSubscription(it.second.topic_name!!,
-              it.first.university)
+        .map { (subscription, section) ->
+          UCTSubscription(section.topic_name, subscription.updateSection(section))
         }
         .toList()
         .flatMap { this.addAllSubscription(it) }
