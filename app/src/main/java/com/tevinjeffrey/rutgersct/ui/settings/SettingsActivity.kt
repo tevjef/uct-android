@@ -81,8 +81,18 @@ class SettingsActivity : AppCompatPreferenceActivity() {
         savedInstanceState: Bundle?): View? {
       setupAboutPref()
       setupLicensesPref()
+      setupPrivacyPolicyPref()
 
       return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    private fun setupPrivacyPolicyPref() {
+      val privacyPolicy = findPreference("privacyPolicy")
+      privacyPolicy.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        Utils.openLink(parentActivity,
+            "https://api.coursetrakr.io/static/privacy_policy.html")
+        return@OnPreferenceClickListener true
+      }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

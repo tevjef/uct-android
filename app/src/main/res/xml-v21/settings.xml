@@ -32,6 +32,10 @@
         android:title="Open Source Licenses"
         />
     <Preference
+        android:key="privacyPolicy"
+        android:title="Privacy Policy"
+        />
+    <Preference
         android:key="about"
         android:title="About"
         />
